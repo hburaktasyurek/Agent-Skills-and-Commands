@@ -1,0 +1,23 @@
+# Machine-specific settings
+*.local.json
+**/settings.local.json
+
+# MCP configs with potential API keys
+cursor/mcp.json
+cursor/mcp.local.json
+
+# Agent memory (project-specific, may contain sensitive data)
+**/agent-memory/
+memory/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
