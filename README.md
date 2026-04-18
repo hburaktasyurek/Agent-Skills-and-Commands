@@ -29,22 +29,50 @@ Centralized repository for AI agent skills, commands, and templates. Clone once,
 │   └── discover-standards.md  # Extract codebase patterns as standards
 │
 ├── cursor/                    # Cursor-specific files
-│   ├── skills/                # Cursor skills (symlinked to ~/.cursor/skills/)
-│   │   ├── shell/             # Run literal shell commands
-│   │   ├── babysit/           # Keep a PR merge-ready
-│   │   ├── create-hook/       # Create Cursor hooks
-│   │   ├── create-rule/       # Create Cursor rules
-│   │   ├── create-skill/      # Guide for creating new skills
-│   │   ├── create-subagent/   # Create custom subagents
-│   │   ├── migrate-to-skills/ # Convert rules/commands to skills
-│   │   ├── statusline/        # Configure CLI status line
-│   │   ├── update-cli-config/ # Modify Cursor CLI config
-│   │   └── update-cursor-settings/ # Modify Cursor editor settings
 │   └── mcp.template.json      # MCP server config template (copy → mcp.json, add keys)
 │
 └── config/
     └── settings.template.json # Claude Code global settings template
 ```
+
+## Skill Anatomy
+
+Skills in this repo follow the conventions used by [mattpocock/skills](https://github.com/mattpocock/skills).
+
+### Frontmatter
+
+```markdown
+---
+name: skill-name
+description: [Verb-first sentence about what it does]. Use when [trigger conditions + literal phrases the user might say].
+---
+```
+
+- `name` — required. Lowercase, hyphenated, must match the directory name.
+- `description` — required. Drives skill discovery. See formula below.
+- `disable-model-invocation: true` — optional. Set this when the skill should ONLY trigger on an explicit `/skill-name` invocation, not on description matching. Useful for behavioral mode-switches (e.g. a hypothetical `zoom-out`) where you don't want the model auto-applying it from context.
+
+There is **no `type:` field**. Skill type is a conceptual decision for the author, not a declared piece of metadata.
+
+### Description formula
+
+> [What it does — verb-first, present tense, one sentence]. Use when [trigger conditions + literal phrases user might say to invoke it].
+
+Example from [skills/grill-me/SKILL.md](skills/grill-me/SKILL.md):
+
+> Interview the user relentlessly about a plan or design until reaching shared understanding, resolving each branch of the decision tree. Use when user wants to stress-test a plan, get grilled on their design, or mentions "grill me".
+
+### Skill types
+
+There are five conceptual types. Pick one before you start writing — it tells you how long the body should be and what shape it should take. The type is never declared in frontmatter.
+
+| Type | Shape | Example |
+|------|-------|---------|
+| **behavioral** | Mode/stance switch. 1–3 sentence body. | [skills/grill-me/SKILL.md](skills/grill-me/SKILL.md) |
+| **methodology** | Knowledge-dense. SKILL.md overview plus N reference docs. | [skills/tdd/SKILL.md](skills/tdd/SKILL.md), [skills/improve-codebase-architecture/SKILL.md](skills/improve-codebase-architecture/SKILL.md) |
+| **workflow** | Sequenced steps / checklist. Numbered process. | [skills/triage-issue/SKILL.md](skills/triage-issue/SKILL.md), [skills/request-refactor-plan/SKILL.md](skills/request-refactor-plan/SKILL.md) |
+| **utility** | Tool wrapper. Command/syntax plus do/don't boundaries. | _(no example in this repo)_ |
+| **authoring** | Guide for creating other things. Numbered process plus example output. | See [mattpocock/skills/write-a-skill](https://github.com/mattpocock/skills/tree/main/write-a-skill) |
 
 ## New Machine Setup
 
@@ -106,6 +134,10 @@ memory: project
 ## PROJECT CONTEXT
 [Project-specific context — customize per project, never overwritten by updates]
 ```
+
+## Sources & Credits
+
+This repo vendors content from [mattpocock/skills](https://github.com/mattpocock/skills) and adapts Brian Casel's [agent-os](https://github.com/buildermethods/agent-os), alongside original work. See [CREDITS.md](CREDITS.md) for full attribution.
 
 ## Cursor MCP Config
 

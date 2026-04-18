@@ -37,26 +37,7 @@ for cmd_file in "$REPO_DIR/commands"/*.md; do
   echo "  ✓ $cmd_name"
 done
 
-# ── 3. Cursor skills ─────────────────────────────────────────────────────────
-if [ -d "$HOME/.cursor" ]; then
-  echo ""
-  echo "→ Cursor skills (~/.cursor/skills/)"
-  mkdir -p "$HOME/.cursor/skills"
-
-  for skill_dir in "$REPO_DIR/cursor/skills"/*/; do
-    [ -d "$skill_dir" ] || continue
-    skill_name=$(basename "$skill_dir")
-    target="$HOME/.cursor/skills/$skill_name"
-    [ -L "$target" ] && rm "$target"
-    ln -s "$skill_dir" "$target"
-    echo "  ✓ $skill_name"
-  done
-else
-  echo ""
-  echo "→ Cursor not found, skipping cursor skills"
-fi
-
-# ── 4. Claude Code settings ──────────────────────────────────────────────────
+# ── 3. Claude Code settings ──────────────────────────────────────────────────
 echo ""
 if [ ! -f "$HOME/.claude/settings.json" ]; then
   cp "$REPO_DIR/config/settings.template.json" "$HOME/.claude/settings.json"
