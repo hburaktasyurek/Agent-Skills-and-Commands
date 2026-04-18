@@ -37,22 +37,11 @@ for cmd_file in "$REPO_DIR/commands"/*.md; do
   echo "  ✓ $cmd_name"
 done
 
-# ── 3. Claude Code settings ──────────────────────────────────────────────────
-echo ""
-if [ ! -f "$HOME/.claude/settings.json" ]; then
-  cp "$REPO_DIR/config/settings.template.json" "$HOME/.claude/settings.json"
-  echo "✓ Created ~/.claude/settings.json from template"
-  echo "  ⚠️  Edit ~/.claude/settings.json to add machine-specific additionalDirectories"
-else
-  echo "→ ~/.claude/settings.json already exists, skipping"
-  echo "  (compare with config/settings.template.json if needed)"
-fi
-
 # ── Done ─────────────────────────────────────────────────────────────────────
 echo ""
 echo "✓ Installation complete!"
 echo ""
 echo "Next steps:"
-echo "  1. Edit ~/.claude/settings.json to add machine-specific paths"
+echo "  1. Configure ~/.claude/settings.json as you like (allow-list, MCP servers, etc.)"
 echo "  2. Run ./init-project.sh <project-path> to set up a project"
 echo "  3. Run ./update-agents.sh to check agent versions across projects"

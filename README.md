@@ -28,11 +28,8 @@ Centralized repository for AI agent skills, commands, and templates. Clone once,
 │   ├── index-standards.md     # Rebuild standards index
 │   └── discover-standards.md  # Extract codebase patterns as standards
 │
-├── cursor/                    # Cursor-specific files
-│   └── mcp.template.json      # MCP server config template (copy → mcp.json, add keys)
-│
-└── config/
-    └── settings.template.json # Claude Code global settings template
+└── cursor/                    # Cursor-specific files
+    └── mcp.template.json      # MCP server config template (copy → mcp.json, add keys)
 ```
 
 ## Skill Anatomy
@@ -82,9 +79,7 @@ cd ~/agent-skills
 ./install.sh
 ```
 
-`install.sh` creates symlinks for skills and commands, copies settings template.
-
-Then edit `~/.claude/settings.json` to add your machine-specific `additionalDirectories`.
+`install.sh` symlinks skills and commands into `~/.claude/`. Configure `~/.claude/settings.json` separately as you prefer (allow-list, MCP servers, etc.) — settings are personal and intentionally not templated here.
 
 ## New Project Setup
 
