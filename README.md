@@ -21,15 +21,12 @@ Centralized repository for AI agent skills, commands, and templates. Clone once,
 │   ├── tech-review-cto.md     # CTO technical reviewer template
 │   └── spec-compliance-reviewer.md  # Spec vs implementation QA template
 │
-├── standards/                 # agent-os standard commands (symlinked per project)
-│   ├── shape-spec.md          # Plan mode spec shaping
-│   ├── plan-product.md        # Product documentation setup
-│   ├── inject-standards.md    # Inject relevant standards into context
-│   ├── index-standards.md     # Rebuild standards index
-│   └── discover-standards.md  # Extract codebase patterns as standards
-│
-└── cursor/                    # Cursor-specific files
-    └── mcp.template.json      # MCP server config template (copy → mcp.json, add keys)
+└── standards/                 # agent-os standard commands (symlinked per project)
+    ├── shape-spec.md          # Plan mode spec shaping
+    ├── plan-product.md        # Product documentation setup
+    ├── inject-standards.md    # Inject relevant standards into context
+    ├── index-standards.md     # Rebuild standards index
+    └── discover-standards.md  # Extract codebase patterns as standards
 ```
 
 ## Skill Anatomy
@@ -134,6 +131,3 @@ memory: project
 
 This repo vendors content from [mattpocock/skills](https://github.com/mattpocock/skills) and adapts Brian Casel's [agent-os](https://github.com/buildermethods/agent-os), alongside original work. See [CREDITS.md](CREDITS.md) for full attribution.
 
-## Cursor MCP Config
-
-`cursor/mcp.template.json` is a placeholder for MCP server configurations. Copy it and add your API keys — never commit the real file.
