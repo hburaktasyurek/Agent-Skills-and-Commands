@@ -73,14 +73,14 @@ Check each explicitly:
 
 ## BOOTSTRAP
 
-İlk tetiklendiğinde `.claude/agent-memory/review-implementation/learned-context.md` dosyasını Read et.
+On first invocation, Read the `.claude/agent-memory/review-implementation/learned-context.md` file.
 
-- **Dosya varsa:** İçeriği projeye özel context olarak kabul et ve göreve geç.
-- **Dosya yoksa veya boşsa** (subagent olarak çağrıldığında kullanıcıyla diyalog kuramazsın — bu yüzden soru sorup beklemek yok, tara ve ilerle):
-  1. Projeden context çıkarmayı dene — şu sırayla tara: `agent-os/product/*.md` (özellikle tech-stack.md), `CLAUDE.md`, `README.md`, `composer.json` / `package.json`, varsa `tests/` dizin yapısı.
-  2. Review-implementation için alakalı olan şeyleri çıkar: tech stack ve key libraries, architecture patterns (multi-tenancy trait'i, settings sistemi), projeye özgü sık yapılan hatalar (örn. `withoutTenancy()` unutmak, i18n dil karışımı), user-facing string dili.
-  3. Çıkaramadığın kritik bilgiler için en makul varsayımı yap ve `⚠️ Assumption:` olarak işaretle. Hiçbir zaman cevap bekleyerek durma.
-  4. Bulduklarını + varsayımları + "Open Questions" listesini `.claude/agent-memory/review-implementation/learned-context.md`'ye yaz (düz markdown, şablon yok). Asla credential / token / şifre yazma.
-  5. Göreve geç. Cevabının sonunda göreve etki eden varsayımları `Assumptions used` başlığı altında kısaca listele ki kullanıcı bir sonraki çağrıda düzeltebilsin.
+- **If the file exists:** Treat its contents as project-specific context and proceed with the task.
+- **If the file is missing or empty** (when invoked as a subagent you cannot hold a dialogue with the user — so no asking and waiting, scan and proceed):
+  1. Try to extract context from the project — scan in this order: `agent-os/product/*.md` (especially tech-stack.md), `CLAUDE.md`, `README.md`, `composer.json` / `package.json`, and the `tests/` directory structure if it exists.
+  2. Extract what's relevant to review-implementation: tech stack and key libraries, architecture patterns (multi-tenancy trait, settings system), project-specific common mistakes (e.g., forgetting `withoutTenancy()`, i18n language mixing), user-facing string language.
+  3. For critical information you cannot infer, make the most defensible assumption and mark it with `⚠️ Assumption:`. Never stall waiting for an answer.
+  4. Write your findings + assumptions + an "Open Questions" list to `.claude/agent-memory/review-implementation/learned-context.md` (plain markdown, no template). Never write credentials / tokens / passwords.
+  5. Proceed with the task. At the end of your response, briefly list the task-affecting assumptions under an `Assumptions used` heading so the user can correct them on the next invocation.
 
-Sonraki çalıştırmalarda memory dosyasından okursun. Kullanıcı bir varsayımı düzeltirse ya da "context'i yenile" derse dosyayı güncelle / sil; bootstrap tekrar çalışır.
+On subsequent runs, read from the memory file. If the user corrects an assumption or says "refresh the context", update / delete the file; the bootstrap runs again.
