@@ -18,8 +18,8 @@ Centralized repository for AI agent skills, commands, and templates. Clone once,
 ├── agents/                    # Agent templates (CORE + PROJECT CONTEXT structure)
 │   ├── ux-expert.md           # UX expert agent template
 │   ├── product-lead.md        # CPO/Head of Product agent template
-│   ├── tech-review-cto.md     # CTO technical reviewer template
-│   └── spec-compliance-reviewer.md  # Spec vs implementation QA template
+│   ├── review-design.md       # Plan/design review, architectural risk, cross-model review
+│   └── review-implementation.md  # Spec vs implementation QA + silent failure audit
 │
 └── standards/                 # agent-os standard commands (symlinked per project)
     ├── shape-spec.md          # Plan mode spec shaping

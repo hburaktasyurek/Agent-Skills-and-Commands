@@ -53,7 +53,7 @@ Authored by Hasan Burak Taşyürek, MIT licensed (see [LICENSE](LICENSE)).
 | make-agent-do-things command | [commands/make-agent-do-things.md](commands/make-agent-do-things.md) |
 | ux-expert agent | [agents/ux-expert.md](agents/ux-expert.md) |
 | product-lead agent | [agents/product-lead.md](agents/product-lead.md) |
-| tech-review-cto agent | [agents/tech-review-cto.md](agents/tech-review-cto.md) |
-| spec-compliance-reviewer agent | [agents/spec-compliance-reviewer.md](agents/spec-compliance-reviewer.md) |
+| review-design agent | [agents/review-design.md](agents/review-design.md) |
+| review-implementation agent | [agents/review-implementation.md](agents/review-implementation.md) |
 
 The repo's overall structure, install/init scripts, agent-template `CORE` / `PROJECT CONTEXT` split, and the curation itself are also original work.

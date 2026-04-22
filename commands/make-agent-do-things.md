@@ -22,4 +22,7 @@ Delegate implementation to one or more agents acting as senior engineers who own
 
 ## After
 
-Present the summary. Suggest `/review`.
+Present the summary. For review, suggest the appropriate agent:
+
+- `review-implementation` — for spec-vs-implementation audit after code changes
+- `review-design` — for plan or architectural review before or independently of code changes
