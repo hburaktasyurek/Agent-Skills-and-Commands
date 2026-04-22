@@ -10,7 +10,10 @@ Centralized repository for AI agent skills, commands, and templates. Clone once,
 │   ├── grill-me/              # Design interview / stress-test a plan
 │   ├── triage-issue/          # Bug investigation + GitHub issue creation
 │   ├── request-refactor-plan/ # Refactor planning with incremental commits
-│   └── improve-codebase-architecture/  # Architecture analysis
+│   ├── improve-codebase-architecture/  # Architecture analysis
+│   ├── commit-work/           # Smart commit: picks model by diff size, writes conventional commits
+│   ├── pr-branch/             # PR description with non-technical + technical blocks
+│   └── session-handoff/       # Structured handoff doc for the next session
 │
 ├── commands/                  # Claude Code global commands (symlinked to ~/.claude/commands/)
 │   └── make-agent-do-things.md  # Delegate to senior engineer agents

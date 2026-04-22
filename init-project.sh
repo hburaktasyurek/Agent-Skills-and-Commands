@@ -101,6 +101,14 @@ if [ "${#selected_agents[@]}" -gt 0 ]; then
   done
 fi
 
+# ── 5. Ensure agent-memory/ dirs exist for any agents already present ────────
+for agent_file in "$PROJECT_PATH/.claude/agents"/*.md; do
+  [ -f "$agent_file" ] || continue
+  agent_name=$(basename "$agent_file" .md)
+  memory_path="$PROJECT_PATH/.claude/agent-memory/$agent_name"
+  mkdir -p "$memory_path"
+done
+
 # ── Done ─────────────────────────────────────────────────────────────────────
 echo ""
 echo "✓ Project initialized: $PROJECT_NAME"

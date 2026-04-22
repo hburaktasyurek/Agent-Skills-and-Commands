@@ -21,7 +21,7 @@ while IFS= read -r -d '' agents_dir; do
   project_path="$(dirname "$(dirname "$agents_dir")")"
   project_name="$(basename "$project_path")"
 
-  for project_agent in "$agents_dir"*.md; do
+  for project_agent in "$agents_dir"/*.md; do
     [ -f "$project_agent" ] || continue
     agent_name=$(basename "$project_agent")
     template_file="$REPO_DIR/agents/$agent_name"

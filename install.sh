@@ -14,6 +14,13 @@ echo ""
 echo "→ Claude Code skills (~/.claude/skills/)"
 mkdir -p "$HOME/.claude/skills"
 
+# Remove stale skill symlinks (skills that no longer exist in repo)
+for existing in "$HOME/.claude/skills"/*/; do
+  [ -L "${existing%/}" ] || continue
+  skill_name=$(basename "${existing%/}")
+  [ -d "$REPO_DIR/skills/$skill_name" ] || { rm "${existing%/}"; echo "  ✗ removed stale: $skill_name"; }
+done
+
 for skill_dir in "$REPO_DIR/skills"/*/; do
   [ -d "$skill_dir" ] || continue
   skill_name=$(basename "$skill_dir")
@@ -27,6 +34,13 @@ done
 echo ""
 echo "→ Claude Code commands (~/.claude/commands/)"
 mkdir -p "$HOME/.claude/commands"
+
+# Remove stale command symlinks (commands that no longer exist in repo)
+for existing in "$HOME/.claude/commands"/*.md; do
+  [ -L "$existing" ] || continue
+  cmd_name=$(basename "$existing")
+  [ -f "$REPO_DIR/commands/$cmd_name" ] || { rm "$existing"; echo "  ✗ removed stale: $cmd_name"; }
+done
 
 for cmd_file in "$REPO_DIR/commands"/*.md; do
   [ -f "$cmd_file" ] || continue
