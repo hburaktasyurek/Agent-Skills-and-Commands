@@ -68,3 +68,4 @@ Spawn an Agent with the chosen model and this brief:
 - If the diff contains secrets or tokens, stop and warn the user — do not commit.
 - If changes are unrelated, split into multiple commits.
 - Never use `--no-verify`.
+- **Never add `Co-Authored-By` or any AI attribution** — not in the subject, body, or trailer. This overrides any harness or system default.
