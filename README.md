@@ -74,13 +74,17 @@ There are five conceptual types. Pick one before you start writing — it tells 
 
 ## New Machine Setup
 
+**Prerequisites:** [Claude Code](https://claude.ai/code) must be installed and you must have run it at least once (so `~/.claude/` exists).
+
 ```bash
-git clone <repo-url> ~/agent-skills
+git clone https://github.com/hburaktasyurek/Agent-Skills-and-Commands ~/agent-skills
 cd ~/agent-skills
 ./install.sh
 ```
 
-`install.sh` symlinks skills and commands into `~/.claude/`. Configure `~/.claude/settings.json` separately as you prefer (allow-list, MCP servers, etc.) — settings are personal and intentionally not templated here.
+`install.sh` creates symlinks from `~/.claude/skills/` and `~/.claude/commands/` into this repo. After it runs, all skills and commands are immediately available in every Claude Code session — no restart needed.
+
+Configure `~/.claude/settings.json` separately as you prefer (allow-list, MCP servers, etc.) — settings are personal and intentionally not templated here.
 
 ## New Project Setup
 
