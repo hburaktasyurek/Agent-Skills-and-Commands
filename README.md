@@ -20,11 +20,9 @@ Centralized repository for AI agent skills, commands, and templates. Clone once,
 │
 ├── agents/                    # Global Claude Code subagents (symlinked to ~/.claude/agents/)
 │   ├── senior-implementer-sonnet.md  # Frontmatter-locked Sonnet implementer
-│   └── senior-implementer-opus.md    # Frontmatter-locked Opus implementer (explicit override)
-│
-├── agent-templates/           # Per-project agent templates (CORE + PROJECT CONTEXT structure, copied by init-project.sh)
-│   ├── ux-expert.md           # UX expert agent template
-│   ├── product-lead.md        # CPO/Head of Product agent template
+│   ├── senior-implementer-opus.md    # Frontmatter-locked Opus implementer (explicit override)
+│   ├── ux-expert.md           # UX flows, microcopy, accessibility
+│   ├── product-lead.md        # CPO/Head of Product strategy
 │   ├── cto.md                 # Pre-decision technical advisor: design, packages, migration, performance, upgrades, tech debt
 │   ├── review-design.md       # Plan/design review, architectural risk, cross-model review
 │   └── review-implementation.md  # Spec vs implementation QA + silent failure audit
@@ -35,6 +33,11 @@ Centralized repository for AI agent skills, commands, and templates. Clone once,
     ├── inject-standards.md    # Inject relevant standards into context
     ├── index-standards.md     # Rebuild standards index
     └── discover-standards.md  # Extract codebase patterns as standards
+
+Plus three shell scripts at the repo root:
+- `install.sh` — symlinks skills, commands, and global agents into `~/.claude/`
+- `init-project.sh` — per-project setup (agent-os symlinks, memory scaffold, .gitignore)
+- `scan-legacy-agents.sh` — find project-local agent copies that shadow the new global agents
 ```
 
 ## Skill Anatomy
@@ -99,45 +102,65 @@ cd ~/agent-skills
 
 `init-project.sh`:
 1. Symlinks agent-os standard commands to `.claude/commands/agent-os/`
-2. Lets you pick which agent templates to copy
-3. Sets up `.claude/agent-memory/` directories
-4. Prompts you to customize the `## PROJECT CONTEXT` section in each agent
+2. Creates an empty `.claude/agent-memory/` scaffold
+3. Adds `agent-memory/` to `.claude/.gitignore` (learned context is machine-local by default)
 
-## Keeping Agents Updated
+Agents themselves are global — they live once in `~/.claude/agents/` as symlinks into this repo. No per-project copies, no version drift.
 
-When a template agent is improved (new Claude update, better prompting, etc.):
+## Migrating From The Old Flow
+
+If you previously used the copy-based flow (where `init-project.sh` copied agent templates into each project's `.claude/agents/`), those copies still take precedence over the new global symlinks — Claude Code reads project-local agents first. Running `install.sh` alone does **not** disable them.
+
+Find them with:
 
 ```bash
-./update-agents.sh /path/to/projects/dir
+./scan-legacy-agents.sh <projects-dir>
 ```
 
-Shows which project agents are behind their templates. To update manually:
-1. Open the project agent file
-2. Compare `## CORE` with the template
-3. Update `## CORE`, keep `## PROJECT CONTEXT` unchanged
-4. Update the `based-on` header with today's date + time
+The scanner walks the given directory (up to 6 levels deep) and lists every `.claude/agents/<name>.md` that is a real copy (not a symlink) and shadows a same-named global agent. It does not delete — migration is manual:
 
-## Agent Template Structure
+1. Move anything worth keeping from the copy's `## PROJECT CONTEXT` section into `<project>/.claude/agent-memory/<name>/learned-context.md`.
+2. Delete the copy so the global symlink at `~/.claude/agents/<name>.md` takes over.
 
-Each agent template uses this structure:
+Project-specific agents that don't collide with a global name (e.g. a bespoke `my-growth-strategist.md`) are ignored by the scanner and stay where they are.
+
+## How Agents Get Project Context
+
+Each agent bootstraps itself on first use. On initial trigger in a project, an agent:
+
+1. Reads `.claude/agent-memory/<agent>/learned-context.md`. If it exists, use it and proceed.
+2. If missing or empty, scans `agent-os/product/*.md`, `CLAUDE.md`, `README.md`, `composer.json` / `package.json` for context relevant to its role.
+3. For critical gaps it cannot infer, makes its best guess and marks each one with `⚠️ Assumption:`. It does **not** block on questions — subagents invoked via the Agent tool are single-turn and cannot wait for user answers.
+4. Writes findings + assumptions + an "Open Questions" list to `.claude/agent-memory/<agent>/learned-context.md` (plain markdown, no template). **Never credentials, tokens, or secrets.**
+5. Proceeds with the task. Surfaces the assumptions it used at the end of its response under an `Assumptions used` heading so the user can correct them on the next call.
+
+On later runs it reads the memory file directly. To refresh, correct an assumption in the file (or delete the file) and the next invocation will re-bootstrap.
+
+Because memory is git-ignored by default, each machine learns its own context the first time. If you want teammates to share it, remove the `.gitignore` entry and commit deliberately — but first audit the file for anything sensitive.
+
+## Agent Structure
+
+Each agent is a single `.md` file with frontmatter + body + a `## BOOTSTRAP` section:
 
 ```markdown
 ---
-based-on: agent-name@YYYY-MM-DD-HHMM
 name: agent-name
 description: "..."
 model: sonnet
+tools: Read, Grep, Glob, Write
 memory: project
 ---
 
-## CORE
-[Generic, reusable agent behavior — update when template improves]
+[Agent behavior, role, output format, rules.]
 
----
+## BOOTSTRAP
 
-## PROJECT CONTEXT
-[Project-specific context — customize per project, never overwritten by updates]
+[Lazy-discovery protocol — see section above.]
 ```
+
+`Write` is required: the BOOTSTRAP protocol persists learned context to `.claude/agent-memory/<name>/learned-context.md`. An agent without `Write` would re-bootstrap on every invocation.
+
+No `based-on:` frontmatter, no `## CORE` / `## PROJECT CONTEXT` split. Global install means one copy, tracked in git history.
 
 ## Sources & Credits
 
