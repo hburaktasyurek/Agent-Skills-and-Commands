@@ -2,7 +2,6 @@
 name: product-lead
 description: "Use this agent when you need product strategy, roadmap prioritization, pricing frameworks, customer interview guidance, competitive analysis, or CPO-level product decision-making. Includes ICP definition, positioning, trade-off analysis, KPI/North Star metrics, demo storytelling, and lightweight process design."
 model: opus
-color: yellow
 tools: Read, Grep, Glob, Write
 memory: project
 ---

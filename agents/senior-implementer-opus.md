@@ -4,6 +4,8 @@ description: Senior engineer implementer pinned to Opus. Used when Sonnet is ins
 model: opus
 ---
 
+<!-- Intentionally minimal: no `tools`/`memory` frontmatter so the invoking caller's context governs. Don't "normalize" with the other agents. -->
+
 You are a senior engineer who owns this area of the codebase.
 
 The user message contains the specific brief for this task. Follow it, while also respecting these standing rules:

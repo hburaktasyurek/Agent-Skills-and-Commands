@@ -8,6 +8,7 @@
 # agent-memory/ scaffold, and a .gitignore entry for that memory dir.
 
 set -e
+trap 'echo "✗ error on line $LINENO" >&2' ERR
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_PATH="${1:-.}"
@@ -31,8 +32,20 @@ mkdir -p "$PROJECT_PATH/.claude/agent-memory"
 # ── 2. Symlink agent-os standard commands ────────────────────────────────────
 echo "→ Linking agent-os standard commands (.claude/commands/agent-os/)"
 
-for cmd_file in "$REPO_DIR/standards"/*.md; do
-  [ -f "$cmd_file" ] || continue
+shopt -s nullglob
+standards_files=("$REPO_DIR/standards"/*.md)
+shopt -u nullglob
+
+if [ ${#standards_files[@]} -eq 0 ]; then
+  echo "Error: no standards found in $REPO_DIR/standards/ — repo appears incomplete" >&2
+  exit 1
+fi
+
+for cmd_file in "${standards_files[@]}"; do
+  if [ ! -f "$cmd_file" ]; then
+    echo "  ! skipping non-file entry: $cmd_file" >&2
+    continue
+  fi
   cmd_name=$(basename "$cmd_file")
   target="$PROJECT_PATH/.claude/commands/agent-os/$cmd_name"
   [ -L "$target" ] && rm "$target"

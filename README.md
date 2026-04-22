@@ -89,6 +89,8 @@ cd ~/agent-skills
 ./install.sh
 ```
 
+Run with `./install.sh` (not `sh install.sh`) — the scripts require bash.
+
 `install.sh` creates symlinks from `~/.claude/skills/`, `~/.claude/commands/`, and `~/.claude/agents/` into this repo. After it runs, all skills, commands, and global subagents are immediately available in every Claude Code session — no restart needed.
 
 Configure `~/.claude/settings.json` separately as you prefer (allow-list, MCP servers, etc.) — settings are personal and intentionally not templated here.
