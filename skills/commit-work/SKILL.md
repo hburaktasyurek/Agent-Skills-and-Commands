@@ -30,6 +30,8 @@ git diff --cached --stat
 
 Count the total lines changed (added + removed). If nothing is staged and nothing is modified, stop and tell the user there is nothing to commit.
 
+Do not narrate the result of Step 2 to the user. Measure silently, pick the model, spawn — no text between the diff check and the agent spawn.
+
 ## Step 3 — Choose the agent model
 
 - Total diff lines ≤ 300 → use **haiku**
