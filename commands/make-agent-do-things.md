@@ -12,13 +12,13 @@ Delegate implementation to one or more agents acting as senior engineers who own
 - Tasks are independent → spawn multiple agents in parallel, one per task
 - Tasks depend on each other → spawn a single agent, work sequentially
 
-## Spawn agent(s) with:
+## Which Subagent
 
-> You are a senior engineer who owns this area of the codebase.
-> Read CLAUDE.md first. Then explore the relevant files — understand existing patterns before touching anything.
-> Implement completely: no TODOs, no placeholders. When ambiguous, make the most defensible call and note it.
-> If the brief is wrong or unsafe to implement, stop and explain instead of guessing.
-> When done: summarize what changed and flag anything needing human review.
+Default: `subagent_type: "senior-implementer-sonnet"` — regardless of the current session model.
+
+Override to `senior-implementer-opus` when the user explicitly asks for Opus in the conversation (e.g. "bunu Opus'a ver", "use Opus"). No flag/argument — natural language only.
+
+Pass the brief (spec path or synthesized brief) as the Agent tool `prompt`. The subagent has its own standing senior-engineer rules in its definition; the brief you send is the task-specific layer on top.
 
 ## After
 
@@ -26,3 +26,5 @@ Present the summary. For review, suggest the appropriate agent:
 
 - `review-implementation` — for spec-vs-implementation audit after code changes
 - `review-design` — for plan or architectural review before or independently of code changes
+
+If the sonnet subagent stopped early citing architectural complexity, suggest retrying with `senior-implementer-opus`.

@@ -51,6 +51,27 @@ for cmd_file in "$REPO_DIR/commands"/*.md; do
   echo "  ✓ $cmd_name"
 done
 
+# ── 3. Claude Code global subagents ──────────────────────────────────────────
+echo ""
+echo "→ Claude Code global subagents (~/.claude/agents/)"
+mkdir -p "$HOME/.claude/agents"
+
+# Remove stale subagent symlinks (subagents that no longer exist in repo)
+for existing in "$HOME/.claude/agents"/*.md; do
+  [ -L "$existing" ] || continue
+  agent_name=$(basename "$existing")
+  [ -f "$REPO_DIR/agents/$agent_name" ] || { rm "$existing"; echo "  ✗ removed stale: $agent_name"; }
+done
+
+for agent_file in "$REPO_DIR/agents"/*.md; do
+  [ -f "$agent_file" ] || continue
+  agent_name=$(basename "$agent_file")
+  target="$HOME/.claude/agents/$agent_name"
+  [ -L "$target" ] && rm "$target"
+  ln -s "$agent_file" "$target"
+  echo "  ✓ $agent_name"
+done
+
 # ── Done ─────────────────────────────────────────────────────────────────────
 echo ""
 echo "✓ Installation complete!"

@@ -42,7 +42,7 @@ echo "Available agent templates:"
 
 agents=()
 i=1
-for agent_file in "$REPO_DIR/agents"/*.md; do
+for agent_file in "$REPO_DIR/agent-templates"/*.md; do
   [ -f "$agent_file" ] || continue
   agent_name=$(basename "$agent_file" .md)
   echo "  $i) $agent_name"

@@ -9,7 +9,7 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECTS_DIR="${1:-$HOME}"
 
 echo "Agent Version Check"
-echo "Templates: $REPO_DIR/agents/"
+echo "Templates: $REPO_DIR/agent-templates/"
 echo "Scanning:  $PROJECTS_DIR"
 echo ""
 
@@ -24,7 +24,7 @@ while IFS= read -r -d '' agents_dir; do
   for project_agent in "$agents_dir"/*.md; do
     [ -f "$project_agent" ] || continue
     agent_name=$(basename "$project_agent")
-    template_file="$REPO_DIR/agents/$agent_name"
+    template_file="$REPO_DIR/agent-templates/$agent_name"
 
     [ -f "$template_file" ] || continue
 
@@ -58,7 +58,7 @@ else
   echo ""
   echo "To update an agent's CORE section:"
   echo "  1. Open the project agent file"
-  echo "  2. Compare ## CORE with template in agents/<name>.md"
+  echo "  2. Compare ## CORE with template in agent-templates/<name>.md"
   echo "  3. Update ## CORE, keep ## PROJECT CONTEXT unchanged"
   echo "  4. Update the based-on header: based-on: <name>@$(date +%Y-%m-%d-%H%M)"
 fi

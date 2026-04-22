@@ -16,9 +16,13 @@ Centralized repository for AI agent skills, commands, and templates. Clone once,
 │   └── session-handoff/       # Structured handoff doc for the next session
 │
 ├── commands/                  # Claude Code global commands (symlinked to ~/.claude/commands/)
-│   └── make-agent-do-things.md  # Delegate to senior engineer agents
+│   └── make-agent-do-things.md  # Delegate to senior engineer subagents (Sonnet default, Opus override)
 │
-├── agents/                    # Agent templates (CORE + PROJECT CONTEXT structure)
+├── agents/                    # Global Claude Code subagents (symlinked to ~/.claude/agents/)
+│   ├── senior-implementer-sonnet.md  # Frontmatter-locked Sonnet implementer
+│   └── senior-implementer-opus.md    # Frontmatter-locked Opus implementer (explicit override)
+│
+├── agent-templates/           # Per-project agent templates (CORE + PROJECT CONTEXT structure, copied by init-project.sh)
 │   ├── ux-expert.md           # UX expert agent template
 │   ├── product-lead.md        # CPO/Head of Product agent template
 │   ├── cto.md                 # Pre-decision technical advisor: design, packages, migration, performance, upgrades, tech debt
@@ -82,7 +86,7 @@ cd ~/agent-skills
 ./install.sh
 ```
 
-`install.sh` creates symlinks from `~/.claude/skills/` and `~/.claude/commands/` into this repo. After it runs, all skills and commands are immediately available in every Claude Code session — no restart needed.
+`install.sh` creates symlinks from `~/.claude/skills/`, `~/.claude/commands/`, and `~/.claude/agents/` into this repo. After it runs, all skills, commands, and global subagents are immediately available in every Claude Code session — no restart needed.
 
 Configure `~/.claude/settings.json` separately as you prefer (allow-list, MCP servers, etc.) — settings are personal and intentionally not templated here.
 
