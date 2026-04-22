@@ -124,59 +124,54 @@ Example: `2026-01-15-1430-user-comment-system/`
 
 ### Step 7: Structure the Plan
 
-Now build the plan with **Task 1 always being "Save spec documentation"**.
-
-Present this structure to the user:
+Present the high-level task structure to the user (titles only, no details yet):
 
 ```
-Here's the plan structure. Task 1 saves all our shaping work before implementation begins.
+Here's the plan structure:
 
 ---
 
-## Task 1: Save Spec Documentation
+## Task 1: [First implementation task title]
 
-Create `agent-os/specs/{folder-name}/` with:
-
-- **plan.md** — This full plan
-- **shape.md** — Shaping notes (scope, decisions, context from our conversation)
-- **standards.md** — Relevant standards that apply to this work
-- **references.md** — Pointers to reference implementations studied
-- **visuals/** — Any mockups or screenshots provided
-
-## Task 2: [First implementation task]
-
-[Description based on the feature]
-
-## Task 3: [Next task]
+## Task 2: [Next task title]
 
 ...
 
 ---
 
-Does this plan structure look right? I'll fill in the implementation tasks next.
+Does this plan structure look right? (yes / adjust)
 ```
 
 ### Step 8: Complete the Plan
 
-After Task 1 is confirmed, continue building out the remaining implementation tasks based on:
+After the user confirms the structure, write out each task in full detail based on:
 - The feature scope from Step 1
 - Patterns from reference implementations (Step 3)
 - Constraints from standards (Step 5)
 
 Each task should be specific and actionable.
 
-### Step 9: Ready for Execution
+**Do not save any files in this step.** Saving happens in Step 9.
 
-When the full plan is ready:
+### Step 9: Save Spec Files Now
+
+**Do this immediately — before anything else.**
+
+Create `agent-os/specs/{folder-name}/` and write all files:
+
+- **plan.md** — The full plan with all tasks
+- **shape.md** — Shaping notes (scope, decisions, context from our conversation)
+- **standards.md** — Relevant standards that apply to this work
+- **references.md** — Pointers to reference implementations studied
+- **visuals/** — Any mockups or screenshots provided
+
+After all files are saved, output exactly one line:
 
 ```
-Plan complete. When you approve and execute:
-
-1. Task 1 will save all spec documentation first
-2. Then implementation tasks will proceed
-
-Ready to start? (approve / adjust)
+Spec saved: agent-os/specs/{folder-name}/
 ```
+
+**Stop here.** Do not proceed to implementation unless the user explicitly asks to continue.
 
 ## Output Structure
 
