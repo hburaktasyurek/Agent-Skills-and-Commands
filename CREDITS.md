@@ -55,5 +55,6 @@ Authored by Hasan Burak Taşyürek, MIT licensed (see [LICENSE](LICENSE)).
 | product-lead agent | [agents/product-lead.md](agents/product-lead.md) |
 | review-design agent | [agents/review-design.md](agents/review-design.md) |
 | review-implementation agent | [agents/review-implementation.md](agents/review-implementation.md) |
+| cto agent | [agents/cto.md](agents/cto.md) |
 
 The repo's overall structure, install/init scripts, agent-template `CORE` / `PROJECT CONTEXT` split, and the curation itself are also original work.
