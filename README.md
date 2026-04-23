@@ -39,8 +39,9 @@ Centralized repository for AI agent skills, commands, and templates. Clone once,
     ├── index-standards.md     # Rebuild standards index
     └── discover-standards.md  # Extract codebase patterns as standards
 
-Plus three shell scripts at the repo root:
-- `install.sh` — symlinks skills, commands, and global agents into `~/.claude/`
+Plus four shell scripts at the repo root:
+- `bootstrap.sh` — one-liner installer/updater (clone-or-pull, then run `install.sh`)
+- `install.sh` — symlinks skills, commands, and global agents into `~/.claude/`; auto-pulls when run from a clean clone
 - `init-project.sh` — per-project setup (agent-os symlinks, memory scaffold, .gitignore)
 - `scan-legacy-agents.sh` — find project-local agent copies that shadow the new global agents
 ```
@@ -84,21 +85,35 @@ There are five conceptual types. Pick one before you start writing — it tells 
 | **utility** | Tool wrapper. Command/syntax plus do/don't boundaries. | _(no example in this repo)_ |
 | **authoring** | Guide for creating other things. Numbered process plus example output. | See [mattpocock/skills/write-a-skill](https://github.com/mattpocock/skills/tree/main/write-a-skill) |
 
-## New Machine Setup
+## Install / Update
 
-**Prerequisites:** [Claude Code](https://claude.ai/code) must be installed and you must have run it at least once (so `~/.claude/` exists).
+**Prerequisites:** [Claude Code](https://claude.ai/code) installed and run at least once (so `~/.claude/` exists). `git` and `bash` in PATH.
+
+**One command — covers first install and updates:**
 
 ```bash
-git clone https://github.com/hburaktasyurek/Agent-Skills-and-Commands ~/agent-skills
-cd ~/agent-skills
-./install.sh
+curl -fsSL https://raw.githubusercontent.com/hburaktasyurek/Agent-Skills-and-Commands/main/bootstrap.sh | bash
 ```
 
-Run with `./install.sh` (not `sh install.sh`) — the scripts require bash.
+What it does:
+- Clones this repo to `~/agent-skills` on first run, or `git pull`s it on subsequent runs
+- Runs `install.sh`, which symlinks skills, commands, and global subagents into `~/.claude/`
 
-`install.sh` is interactive: it asks per category (skills / commands / global agents) and, if it finds legacy non-symlink files in the target dirs, asks before removing them. Press Enter to accept defaults. On a non-TTY run (pipe/CI) it installs everything and leaves any non-symlink files untouched.
+`curl | bash` has no TTY, so the installer runs non-interactively and installs every category. To choose per category, run `./install.sh` manually from the clone after bootstrap:
 
-After it runs, the selected skills, commands, and global subagents are symlinked from `~/.claude/` into this repo and immediately available in every Claude Code session — no restart needed.
+```bash
+cd ~/agent-skills && ./install.sh
+```
+
+That path is interactive (asks per category, asks before removing any legacy non-symlink files) and also auto-pulls latest before installing. Set `AGENT_SKILLS_SKIP_PULL=1` to skip the pull.
+
+**Custom install dir** (e.g. shared machine):
+
+```bash
+AGENT_SKILLS_DIR=/opt/agent-skills curl -fsSL https://raw.githubusercontent.com/hburaktasyurek/Agent-Skills-and-Commands/main/bootstrap.sh | bash
+```
+
+After install, skills / commands / global subagents are immediately available in every Claude Code session — no restart needed.
 
 Configure `~/.claude/settings.json` separately as you prefer (allow-list, MCP servers, etc.) — settings are personal and intentionally not templated here.
 

@@ -12,6 +12,24 @@ trap 'echo "✗ error on line $LINENO" >&2' ERR
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Auto-pull when running inside a git clone of this repo, unless bootstrap.sh
+# already did it (AGENT_SKILLS_SKIP_PULL=1) or the user opted out explicitly.
+# Safe: skips when there are uncommitted changes, and --ff-only prevents
+# merge surprises if local commits have diverged.
+if [ "${AGENT_SKILLS_SKIP_PULL:-0}" != "1" ] \
+   && [ -d "$REPO_DIR/.git" ] \
+   && command -v git >/dev/null 2>&1; then
+  if [ -n "$(git -C "$REPO_DIR" status --porcelain 2>/dev/null)" ]; then
+    echo "→ Skipping auto-pull: uncommitted changes in $REPO_DIR"
+  else
+    echo "→ Pulling latest from origin (set AGENT_SKILLS_SKIP_PULL=1 to skip)"
+    if ! git -C "$REPO_DIR" pull --ff-only --quiet 2>&1; then
+      echo "  · pull not fast-forward — continuing with current checkout"
+    fi
+  fi
+  echo ""
+fi
+
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
 # ask_yn <question> [default=Y|N]  → returns 0 for yes, 1 for no.
