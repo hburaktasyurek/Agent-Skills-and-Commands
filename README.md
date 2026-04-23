@@ -16,7 +16,12 @@ Centralized repository for AI agent skills, commands, and templates. Clone once,
 │   └── session-handoff/       # Structured handoff doc for the next session
 │
 ├── commands/                  # Claude Code global commands (symlinked to ~/.claude/commands/)
-│   └── make-agent-do-things.md  # Delegate to senior engineer subagents (Sonnet default, Opus override)
+│   ├── make-agent-do-things.md  # Delegate to senior engineer subagents (Sonnet default, Opus override)
+│   ├── cto.md                 # `/cto` — shim that invokes the cto agent
+│   ├── product-lead.md        # `/product-lead` — shim that invokes the product-lead agent
+│   ├── review-design.md       # `/review-design` — shim that invokes the review-design agent
+│   ├── review-implementation.md # `/review-implementation` — shim that invokes the review-implementation agent
+│   └── ux-expert.md           # `/ux-expert` — shim that invokes the ux-expert agent
 │
 ├── agents/                    # Global Claude Code subagents (symlinked to ~/.claude/agents/)
 │   ├── senior-implementer-sonnet.md  # Frontmatter-locked Sonnet implementer
