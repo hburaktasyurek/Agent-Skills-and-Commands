@@ -201,4 +201,4 @@ You can edit them directly or run /plan-product again to update.
 
 - If the user provides very brief answers, that's fine — the docs can be expanded later
 - If they want to skip a section, create the file with a placeholder like "To be defined"
-- The `/shape-spec` command will read these files when planning features, so having them populated helps with context
+- The `/to-spec` skill will read these files when planning features, so having them populated helps with context

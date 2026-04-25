@@ -13,7 +13,8 @@ Centralized repository for AI agent skills, commands, and templates. Clone once,
 │   ├── improve-codebase-architecture/  # Architecture analysis
 │   ├── commit-work/           # Smart commit: picks model by diff size, writes conventional commits
 │   ├── pr-branch/             # PR description with non-technical + technical blocks
-│   └── session-handoff/       # Structured handoff doc for the next session
+│   ├── session-handoff/       # Structured handoff doc for the next session
+│   └── to-spec/               # Convert conversation context into a spec folder (replaces shape-spec)
 │
 ├── commands/                  # Claude Code global commands (symlinked to ~/.claude/commands/)
 │   ├── make-agent-do-things.md  # Delegate to senior engineer subagents (Sonnet default, Opus override)
@@ -33,7 +34,6 @@ Centralized repository for AI agent skills, commands, and templates. Clone once,
 │   └── review-implementation.md  # Spec vs implementation QA + silent failure audit
 │
 └── standards/                 # agent-os standard commands (symlinked per project)
-    ├── shape-spec.md          # Plan mode spec shaping
     ├── plan-product.md        # Product documentation setup
     ├── inject-standards.md    # Inject relevant standards into context
     ├── index-standards.md     # Rebuild standards index

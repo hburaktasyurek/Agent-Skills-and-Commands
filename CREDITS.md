@@ -34,7 +34,6 @@ Files under [standards/](standards/) are **adapted** from agent-os, not pristine
 
 | Standard | Path |
 |----------|------|
-| shape-spec | [standards/shape-spec.md](standards/shape-spec.md) |
 | plan-product | [standards/plan-product.md](standards/plan-product.md) |
 | inject-standards | [standards/inject-standards.md](standards/inject-standards.md) |
 | index-standards | [standards/index-standards.md](standards/index-standards.md) |
@@ -48,13 +47,14 @@ Refer to the upstream repo for the original framework. Treat the versions in thi
 
 Authored by Hasan Burak Taşyürek, MIT licensed (see [LICENSE](LICENSE)).
 
-| File | Path |
-|------|------|
-| make-agent-do-things command | [commands/make-agent-do-things.md](commands/make-agent-do-things.md) |
-| ux-expert agent | [agents/ux-expert.md](agents/ux-expert.md) |
-| product-lead agent | [agents/product-lead.md](agents/product-lead.md) |
-| review-design agent | [agents/review-design.md](agents/review-design.md) |
-| review-implementation agent | [agents/review-implementation.md](agents/review-implementation.md) |
-| cto agent | [agents/cto.md](agents/cto.md) |
+| File | Path | Notes |
+|------|------|-------|
+| to-spec skill | [skills/to-spec/SKILL.md](skills/to-spec/SKILL.md) | Combines shape-spec (agent-os) + to-prd (mattpocock/skills) into a codebase-grounded spec workflow |
+| make-agent-do-things command | [commands/make-agent-do-things.md](commands/make-agent-do-things.md) | |
+| ux-expert agent | [agents/ux-expert.md](agents/ux-expert.md) | |
+| product-lead agent | [agents/product-lead.md](agents/product-lead.md) | |
+| review-design agent | [agents/review-design.md](agents/review-design.md) | |
+| review-implementation agent | [agents/review-implementation.md](agents/review-implementation.md) | |
+| cto agent | [agents/cto.md](agents/cto.md) | |
 
 The repo's overall structure, install/init scripts, agent-template `CORE` / `PROJECT CONTEXT` split, and the curation itself are also original work.

@@ -34,7 +34,7 @@ Before injecting standards, determine which scenario we're in. Read the current 
 
 1. **Conversation** — Regular chat, implementing code, answering questions
 2. **Creating a Skill** — Building a `.claude/skills/` file
-3. **Shaping/Planning** — In plan mode, building a spec, running `/shape-spec`
+3. **Shaping/Planning** — In plan mode, building a spec, running `/to-spec`
 
 **Detection logic:**
 
