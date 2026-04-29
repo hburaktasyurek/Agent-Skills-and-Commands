@@ -5,7 +5,7 @@ Centralized repository for AI agent skills, commands, and templates. Clone once,
 ## Structure
 
 ```
-├── skills/                    # Claude Code skills (symlinked to ~/.claude/skills/)
+├── skills/                    # Agent skills (cross-tool via npx skills; symlinked to ~/.claude/skills/ for Claude Code)
 │   ├── tdd/                   # Test-driven development
 │   ├── grill-me/              # Design interview / stress-test a plan
 │   ├── triage-issue/          # Bug investigation + GitHub issue creation
@@ -86,6 +86,30 @@ There are five conceptual types. Pick one before you start writing — it tells 
 | **authoring** | Guide for creating other things. Numbered process plus example output. | See [mattpocock/skills/write-a-skill](https://github.com/mattpocock/skills/tree/main/write-a-skill) |
 
 ## Install / Update
+
+### Via npx skills (cross-tool)
+
+Skills in this repo follow the [open agent skills](https://github.com/vercel-labs/skills) format and can be installed into Claude Code, Codex, Cursor, and 40+ other agents via the `skills` CLI.
+
+Install a single skill:
+
+```bash
+npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands/skills/grill-me
+```
+
+Install all skills:
+
+```bash
+npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands --all
+```
+
+Install all skills to a specific agent:
+
+```bash
+npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands --all -a claude-code
+```
+
+### Via bootstrap.sh (Claude Code only)
 
 **Prerequisites:** [Claude Code](https://claude.ai/code) installed and run at least once (so `~/.claude/` exists). `git` and `bash` in PATH.
 
