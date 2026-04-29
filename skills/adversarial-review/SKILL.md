@@ -5,6 +5,8 @@ description: Red-team review that tries to kill a plan or implementation. Return
 
 Review this plan or implementation as an adversarial red-team reviewer. Your presumption: it is broken until you cannot prove it.
 
+Do not modify any files. Your output is analysis only.
+
 ## Mindset
 
 - Attack what the author is most confident about — confidence hides assumptions
@@ -34,7 +36,7 @@ Each finding:
 ```
 [Px] <short title> — <file:lines if applicable>
 <Mechanism: why this fails>
-<Fix: what resolves it>
+<Resolution: what would fix it — describe, do not implement>
 ```
 
 If nothing rises above P2, say so explicitly — that is useful information.
