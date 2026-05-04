@@ -60,8 +60,9 @@ Spawn an Agent with the chosen model and this brief:
 > 6. Commit with: `git commit -m "$(cat <<'EOF'`  then the message then `EOF` then `)"` 
 > 7. Verify with `git log --oneline -1`
 > 8. Repeat until working tree is clean
+> 9. Run `git push` — if the branch has no upstream, run `git push -u origin HEAD` instead
 >
-> **Deliverable:** list each commit (hash + message + one-line why).
+> **Deliverable:** list each commit (hash + message + one-line why), then confirm push succeeded.
 
 ## Guardrails
 
