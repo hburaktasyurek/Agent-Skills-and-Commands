@@ -19,7 +19,8 @@ Do not modify any files. Your output is analysis only.
 1. Identify whether this is a plan/spec or an implementation (or both)
 2. Read referenced files and relevant context — do not guess, verify
 3. Find the failure mechanism for each concern, not just the symptom
-4. Sort findings by priority
+4. After your first pass, sweep again — you likely stopped too early. Check dimensions you haven't covered: error handling, edge cases, concurrency, naming/contract mismatches, missing validation, implicit ordering assumptions, resource cleanup, backwards compatibility.
+5. Sort findings by priority
 
 ## Output Format
 
