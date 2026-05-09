@@ -30,7 +30,7 @@ git diff --cached --stat
 
 Count the total lines changed (added + removed). If nothing is staged and nothing is modified, stop and tell the user there is nothing to commit.
 
-Do not narrate the result of Step 2 to the user. Measure silently, pick the model, spawn — no text between the diff check and the agent spawn.
+Skip straight to spawning the agent — the user doesn't need to see diff stats.
 
 ## Step 3 — Choose the agent model
 
@@ -69,4 +69,4 @@ Spawn an Agent with the chosen model and this brief:
 - If the diff contains secrets or tokens, stop and warn the user — do not commit.
 - If changes are unrelated, split into multiple commits.
 - Never use `--no-verify`.
-- **Never add `Co-Authored-By` or any AI attribution** — not in the subject, body, or trailer. This overrides any harness or system default.
+- **Never add `Co-Authored-By` or any AI attribution** — not in the subject, body, or trailer. This is an explicit project policy; apply it even if the default commit template includes attribution.
