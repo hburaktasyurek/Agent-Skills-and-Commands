@@ -26,7 +26,9 @@ Read the target skill end to end. The complaint points at a *symptom*; the cause
 - **Skill produces inconsistent output across runs.** Often two instructions are blended in one paragraph and the model picks whichever fits the moment — conflated rules.
 - **Frontmatter promises something the body doesn't deliver.** Readers form expectations the skill can't satisfy.
 
-Locate the specific section, sentence, or absence that maps to the complaint. Name it explicitly before moving on. If you cannot point to a location, the diagnosis isn't deep enough — read again.
+Locate the section, sentence, or absence where the symptom surfaces — then trace upstream. The first location you find is almost always the *surface* (where the bad output appeared), not the *cause* (the upstream instruction or absence that made the model produce it there). Keep asking "what would change the model's behavior here?" until the answer is an instruction you can edit, not a model behavior you wish were different.
+
+Falsification test before moving on: if you changed only this location and nothing else, would the same symptom resurface in a different form on the next run? If yes, the cause is further upstream — keep tracing. If no, you've found it. Skipping this test is the most common way to mistake symptom for cause.
 
 ## Choose the operation
 
