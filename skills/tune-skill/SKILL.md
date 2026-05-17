@@ -28,7 +28,7 @@ Read the target skill end to end. The complaint points at a *symptom*; the cause
 
 Locate the section, sentence, or absence where the symptom surfaces — then trace upstream. The first location you find is almost always the *surface* (where the bad output appeared), not the *cause* (the upstream instruction or absence that made the model produce it there). Keep asking "what would change the model's behavior here?" until the answer is an instruction you can edit, not a model behavior you wish were different.
 
-Falsification test before moving on: if you changed only this location and nothing else, would the same symptom resurface in a different form on the next run? If yes, the cause is further upstream — keep tracing. If no, you've found it. Skipping this test is the most common way to mistake symptom for cause.
+**Falsification test before moving on:** if you changed only this location with the shape you have in mind, would the same symptom resurface next month under a different label — different artifact missed, different case overlooked, different scenario the user didn't enumerate? If yes, you're not done — and the failure could be in either of two dimensions, so check both before re-proposing. **(a) Location:** is the cause upstream of where you landed? Trace further. **(b) Shape:** is your fix shaped at the case level when the cause is a generator above it — a workflow ordering, a default posture, a misframed phase boundary? Reshape rather than enumerate. Skipping this test is the most common way to mistake symptom for cause, and the most common way to ship a patch that breaks again at the next un-enumerated case.
 
 ## Choose the operation
 
