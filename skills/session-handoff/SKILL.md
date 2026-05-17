@@ -1,11 +1,12 @@
 ---
 name: session-handoff
-description: Generate a structured handoff document capturing current progress, open design questions, key decisions with rejected alternatives, and context needed to resume work. Use when ending a session, saying "continue later", "save progress", "session summary", or "pick up where I left off". Works across design sessions (grill-me, planning) and code sessions.
+description: Generate a structured handoff document capturing current progress, open design questions, key decisions with rejected alternatives, and context needed to resume work. Use when ending a session, saying "continue later", "save progress", "session summary", or "pick up where I left off". Works across design sessions (grill-me, planning), code sessions, and mixed sessions; produces only a re-run instruction when context is too thin to classify.
+allowed-tools: Bash, Write
 ---
 
 # Session Handoff
 
-Different from a wrap-up. A wrap-up is a checklist for *you*. A handoff is a document written for the *next session* — written for a stranger who has never seen this conversation.
+The next session starts with amnesia — no memory of this conversation. This document is what survives. Auto-compaction is uncontrolled amnesia; this is the controlled version: you choose what carries forward. Keep the relevant points, cut the noise between them.
 
 ## Phase Detection
 
@@ -21,26 +22,31 @@ Two independent signals determine session type:
 - Signal A only (conversation signal, git clean) → **Design phase**
 - Signal B only (git changes, no conversation signal) → **Code phase**
 - Both signals → **Mixed phase**
-- Neither signal → **Unknown**: produce a minimal fallback document using git-only Status; add to Resume Command: *"Could not determine phase — re-run /session-handoff in the original session if this is a design handoff."*
+- Neither signal → **Unknown**: there is nothing meaningful to hand off. Write Status with `Phase: Unknown` and a single Resume Command: *"Re-run /session-handoff in the original session — current context is too thin to produce a handoff."* All other sections will be empty and are omitted by the content filter.
 
 ## Workflow
 
 1. Read the conversation to determine phase (design / code / mixed / unknown).
-2. Run `git status` to confirm or upgrade to mixed. The two signals are independent — no conflict.
-3. Extract decisions from the conversation using the Key Decisions rules below. If no decisions found, note `Decisions made: 0 — no explicit choices found; verify if design session is complete`.
+2. Run `git status`. Combine the git result with Signal A using the **Phase combinations** table above to fix the final phase.
+3. Extract decisions from the conversation using the Key Decisions rules below. If no decisions found, write `Decisions made: 0 — no explicit choices found; verify if design session is complete` in the Status section.
 4. Identify open questions and blocked topics (design + mixed phases); include blocking reason where present.
-5. Exclude irrelevant sections for this phase (see Section Order below); group items by topic if any section exceeds 7 items.
-6. Write each section. Per-item check: *"Would a stranger who never saw this conversation understand this and take the right action?"*
+5. If any section exceeds 7 items, group them under topic sub-headings so the list stays scannable.
+6. Apply the two filters at the top of Output Sections (phase → content), then write each surviving section. Per-item check: *"Would a stranger who never saw this conversation understand this and take the right action?"*
 7. Final check before output: (a) no excluded section present for this phase, (b) every `Because` comes from a source turn or carries `⚠️ RATIONALE NOT FOUND`, (c) Resume Command names a concrete action.
+8. Save the document to `.handoff/YYYY-MM-DD-HHMM-session.md` in the current working directory (create the `.handoff/` directory if missing). Print the absolute path on the last line so the next session can `Read` it directly instead of being pasted in.
 
 ## Output Sections
 
-Produce the document in this order. Omit sections marked as excluded for the current phase.
+Produce the document in this order. Two filters apply, in order:
+1. **Phase filter** — omit sections marked as excluded for the current phase (e.g., What's Pending and Files Touched are hidden in design phase).
+2. **Content filter** — of the sections that survive phase filtering, omit any that have no real content. Do not write "None," "N/A," or fill with phase-default text.
+
+**Exception:** Resume Command is the only mandatory section — write it even if nothing else carries forward, so the next session has an entry point.
 
 ---
 
 ### Status
-Always included. Content adapts:
+Content adapts to phase:
 
 **Code phase:**
 - Branch, commits this session, uncommitted changes, test status.
@@ -58,12 +64,11 @@ Always included. Content adapts:
 - `Decisions made: N`
 - `Open questions: N`
 
-**Unknown phase:** Include git-only fields if available; add the re-run note.
+**Unknown phase:** `Phase: Unknown`. No other fields — the re-run note lives in Resume Command.
 
 ---
 
 ### Topics Resolved / What's Done
-Always included.
 - **Design phase:** Label as *Topics Resolved* — list design topics that reached a decision.
 - **Code phase:** Label as *What's Done* — list completed tasks.
 - **Mixed phase:** Use both labels as separate sub-lists: *Topics Resolved* for design decisions reached, *What's Done* for completed code tasks.
@@ -71,24 +76,29 @@ Always included.
 ---
 
 ### Topics Open / What's In Progress
-Always included.
-- **Design phase:** Label as *Topics Open* — list discussion points that were raised but not resolved.
+Include if non-empty.
+- **Design phase:** Label as *Topics Open* — discussion points raised but not resolved, **plus** exploratory framings, partial reasoning, and critical user statements that didn't crystallize into a decision but matter for resuming ("we noticed X but moved on").
 - **Code phase:** Label as *What's In Progress* — include `file:line` references where relevant.
+- **Mixed phase:** Use both labels as separate sub-lists: *Topics Open* for unresolved design threads, *What's In Progress* for in-flight code work.
+
+**Tiebreaker vs Gotchas:** unresolved threads from the conversation belong here; Gotchas is for non-obvious behavior in code or process, not in dialogue.
 
 ---
 
 ### What's Pending
-**Code and mixed phases only.** Hidden in design phase. List tasks not yet started; include blocking reason. In design phase, this content goes into Open Design Questions instead.
+**Code and mixed phases only.** Hidden in design phase. List tasks not yet started; include blocking reason.
 
 ---
 
 ### Open Design Questions
-**Design and mixed phases.** Also include in code phase if open design decisions exist. List topics not yet explored in grill-me, unresolved branches, and any pending design topic with its blocking reason. This is where What's Pending content lives in design phase. Do not route unstarted code tasks here — those belong in What's Pending.
+Include if non-empty. List design topics **not yet explored** in this session — questions the conversation hasn't opened, branches the user hasn't reached, areas grill-me hasn't covered yet. In design phase, this section also absorbs the content that would otherwise go in What's Pending. Do not route unstarted code tasks here — those belong in What's Pending.
+
+**Tiebreaker vs Topics Open:** if it was talked about and left hanging, it's *Topics Open*. If it wasn't talked about yet but should be, it's *Open Design Questions*.
 
 ---
 
 ### Key Decisions
-Always included. Format each decision as:
+Format each decision as:
 
 ```
 - Selected: [Z] / Rejected: [X] / Because: [rationale from conversation]
@@ -122,7 +132,7 @@ Generating a plausible-sounding rationale is not allowed.
 ---
 
 ### Do NOT
-Always included. List paths explicitly closed in this session.
+List paths explicitly closed in this session.
 
 ```
 - Do NOT [X] — [reason]
@@ -137,12 +147,12 @@ Always included. List paths explicitly closed in this session.
 ---
 
 ### Gotchas for Next Session
-Always included. Non-obvious behaviors and pre-existing traps discovered during the session — not decisions made, just observations.
+Non-obvious behaviors and pre-existing traps discovered during the session — not decisions made, just observations.
 
 ---
 
 ### Resume Command
-Always included. One concrete action, not a branch name.
+Mandatory — write it even when every other section is empty. One concrete action, not a branch name.
 
 ```
 > [Verb phrase]. [1-sentence context if needed].
@@ -163,6 +173,7 @@ Examples:
 ## Guardrails
 
 - Rationale, not just outcomes — the reason behind a decision is as important as the decision itself.
-- If rationale cannot be sourced from the conversation, flag it with `⚠️ RATIONALE NOT FOUND`. Do not generate plausible-sounding reasoning.
 - Self-contained items only — no back-references ("as discussed above", "the approach we agreed on", "see earlier"), no pronouns pointing to a prior exchange. If an item requires context to make sense, embed that context inline.
 - Keep it factual — describe state and decisions, don't infer motivation.
+- Every line earns its tokens. No prose padding, no restating, no "let me explain" framing. If a sentence doesn't change what next-session does, cut it.
+- Omit empty sections entirely. Do not write "None," "N/A," or fill with phase-default text. Better a short doc than a padded one.
