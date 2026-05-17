@@ -43,7 +43,9 @@ If the target path differs from `agent-os/specs/`, ask the user before proceedin
 
 ### Phase 2 — Evidence gathering (do not skip)
 
-For every claim you plan to make in the spec, find its source in the production codebase.
+Phase 2 is not where you verify facts you already wrote down. It is where those facts come from. Phase 1's conversation tells you what's in scope; the codebase tells you what's true. Walk the codebase first, let the facts emerge from what it actually says, then write them down.
+
+**Default posture: reader, not decider.** Most of what feels like a decision is already answered somewhere in the repo — in the tests that exercise it, the code that implements it, the migrations that shaped it, the configs that wire it. If you find yourself reaching for "we should use X," stop and grep first. A real decision is what's left after the codebase has been read and shown silent.
 
 ```
 grep -rn "ClassName\|functionName\|pattern" src/
@@ -57,7 +59,7 @@ Build a **claim → source** table in working memory:
 | `FixtureLoader` extends `BaseLoader` | `src/Loading/BaseLoader.php` | 12 |
 | Jobs dispatched via `dispatch()` | `src/Jobs/ProcessJob.php` | 47 |
 
-Read every file that the implementation will touch or extend. If a file cannot be found, note it as **unverified** — never invent it.
+If a file you expected to find cannot be located, note it as **unverified** — never invent it.
 
 **When docs and code disagree, code wins.** Comments, READMEs, and inline documentation describe intent; the running code describes reality. If you find a discrepancy, use the code as the fact and add a note in `references.md` flagging the doc as stale.
 
