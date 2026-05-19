@@ -18,22 +18,16 @@ PRs are not actively solicited. If you open one:
 
 If your idea is bigger than a small fix, fork is almost always the better path.
 
+## Skill-first
+
+New behavior is added as a skill first. Agents and slash commands stay in this repo only where they genuinely need subagent semantics — separate context window, spawnable by other skills, or constrained tool surface. If a piece of behavior could equally be a skill, make it a skill.
+
 ## If you want to add a skill (for your fork)
 
-New skills should match the conventions used throughout this repo, which follow [mattpocock/skills](https://github.com/mattpocock/skills). The full conventions are documented in the [Skill Anatomy](README.md#skill-anatomy) section of the README.
+The functional minimum is in the [Skill Anatomy](README.md#skill-anatomy) section of the README: a `skills/<name>/SKILL.md` with `name` and `description` in the frontmatter. Body shape and length vary by purpose — no template is enforced.
 
-Quick checklist:
-
-- Frontmatter has `name` and `description`. No `type` field.
-- Description follows the formula: *what it does (verb-first, present tense) + when to use it, including literal phrases the user might say*.
-- Skill body length matches the skill type — behavioral skills can be three sentences; methodology skills can be long with reference files.
-- File path is `skills/<skill-name>/SKILL.md`.
-- Reference docs live as siblings of `SKILL.md` and are linked from it.
-
-## Vendored content
-
-Skills under `skills/` and standards under `standards/` are vendored or adapted from upstream sources. See [CREDITS.md](CREDITS.md). If you submit changes touching vendored files, prefer upstreaming the change first and re-vendoring here, unless the change is specific to this repo's setup.
+When adding a skill, also list it in [skills/INDEX.md](skills/INDEX.md) under the section that fits.
 
 ## Licensing
 
-This repo is MIT licensed (see [LICENSE](LICENSE)). Vendored files retain their original licenses; CREDITS.md tracks them.
+This repo is MIT licensed (see [LICENSE](LICENSE)).
