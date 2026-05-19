@@ -2,7 +2,7 @@
 # bootstrap.sh — one-shot installer/updater.
 #
 # Clones this repo to ~/agent-skills (or pulls latest if already there),
-# then runs ./install.sh. Same command covers first install and update.
+# then runs ./scripts/install.sh. Same command covers first install and update.
 #
 # Usage:
 #   curl -fsSL https://raw.githubusercontent.com/hburaktasyurek/Agent-Skills-and-Commands/main/bootstrap.sh | bash
@@ -38,8 +38,8 @@ fi
 
 cd "$INSTALL_DIR"
 
-[ -x "./install.sh" ] || { echo "Error: install.sh not executable in $INSTALL_DIR" >&2; exit 1; }
+[ -x "./scripts/install.sh" ] || { echo "Error: scripts/install.sh not executable in $INSTALL_DIR" >&2; exit 1; }
 
 # Tell install.sh not to pull again — we just did it.
 export AGENT_SKILLS_SKIP_PULL=1
-exec ./install.sh "$@"
+exec ./scripts/install.sh "$@"

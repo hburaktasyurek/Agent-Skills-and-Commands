@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 # init-project.sh — Initialize a project with shared agent-os standards
-# Usage: ./init-project.sh [project-path]
-#        ./init-project.sh /path/to/my-project
+# Usage: ./scripts/init-project.sh [project-path]   (run from repo root)
+#        ./scripts/init-project.sh /path/to/my-project
 #
-# Agents are global (installed via ./install.sh to ~/.claude/agents/), so this
+# Agents are global (installed via ./scripts/install.sh to ~/.claude/agents/), so this
 # script only wires up per-project pieces: agent-os command symlinks, an empty
 # agent-memory/ scaffold, and a .gitignore entry for that memory dir.
 
 set -e
 trap 'echo "✗ error on line $LINENO" >&2' ERR
 
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT_PATH="${1:-.}"
 
 if [ ! -d "$PROJECT_PATH" ]; then
@@ -106,7 +106,7 @@ echo ""
 echo "✓ Project initialized: $PROJECT_NAME"
 echo ""
 echo "Next steps:"
-echo "  1. Ensure global agents are installed (./install.sh from this repo)"
+echo "  1. Ensure global agents are installed (./scripts/install.sh from this repo)"
 echo "  2. Create CLAUDE.md if it doesn't exist"
 echo "  3. Run /plan-product to populate agent-os/product/ docs"
 echo ""

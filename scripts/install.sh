@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # install.sh — Set up agent skills and commands on a new machine
-# Usage: ./install.sh
+# Usage: ./scripts/install.sh   (run from repo root)
 #
 # Interactive: asks which categories to install (skills / commands / agents)
 # and whether to remove any non-symlink leftovers it finds in the target dirs.
@@ -10,7 +10,7 @@
 set -e
 trap 'echo "✗ error on line $LINENO" >&2' ERR
 
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Auto-pull when running inside a git clone of this repo, unless bootstrap.sh
 # already did it (AGENT_SKILLS_SKIP_PULL=1) or the user opted out explicitly.
@@ -180,7 +180,7 @@ echo "✓ Installation complete!"
 echo ""
 echo "Next steps:"
 echo "  1. Configure ~/.claude/settings.json as you like (allow-list, MCP servers, etc.)"
-echo "  2. Run ./init-project.sh <project-path> to set up a project"
+echo "  2. Run ./scripts/init-project.sh <project-path> to set up a project"
 echo "  3. Upgrading from the old copy-based flow? Run"
-echo "     ./scan-legacy-agents.sh <projects-dir> to find project-local copies"
+echo "     ./scripts/scan-legacy-agents.sh <projects-dir> to find project-local copies"
 echo "     that still shadow the new global agents."

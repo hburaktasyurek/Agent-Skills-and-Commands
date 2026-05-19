@@ -16,13 +16,13 @@
 # line, blank lines and `# comments` ignored). Allowlisted copies are counted
 # separately at the end instead of flagged.
 #
-# Usage: ./scan-legacy-agents.sh <projects-dir>
-#        ./scan-legacy-agents.sh ~/projects
+# Usage: ./scripts/scan-legacy-agents.sh <projects-dir>   (run from repo root)
+#        ./scripts/scan-legacy-agents.sh ~/projects
 
 set -e
 trap 'echo "✗ error on line $LINENO" >&2' ERR
 
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 if [ -z "${1:-}" ]; then
   echo "Usage: $0 <projects-dir>"
