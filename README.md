@@ -1,6 +1,6 @@
 # Agent Skills and Commands
 
-Centralized repository for AI agent skills, commands, and subagent templates for Claude Code. Clone once, use everywhere.
+Personal skill kit for Claude Code, focused on coding and dev-workflow tasks: planning, implementation, review, and meta-skills for building more skills. Clone once, use everywhere.
 
 ## Quick Start
 
@@ -18,24 +18,27 @@ npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands/skills/grill-me
 
 ### Skills (`skills/`)
 
-Invokable via `/skill-name` in Claude Code, or installed into other agents via `npx skills`.
+Invokable via `/skill-name` in Claude Code, or installed into other agents via `npx skills`. See [skills/INDEX.md](skills/INDEX.md) for a grouped index.
 
-| Skill | Type | Description |
-|-------|------|-------------|
-| [grill-me](skills/grill-me/SKILL.md) | behavioral | Stress-test a plan — relentless interviewer that resolves each branch of the decision tree |
-| [adversarial-review](skills/adversarial-review/SKILL.md) | behavioral | Red-team review that tries to kill a plan; P0–P3 findings with verdict |
-| [tdd](skills/tdd/SKILL.md) | methodology | Red-green-refactor TDD loop with reference docs |
-| [improve-codebase-architecture](skills/improve-codebase-architecture/SKILL.md) | methodology | Find architectural improvements and deepen shallow modules |
-| [triage-issue](skills/triage-issue/SKILL.md) | workflow | Investigate a bug and file a GitHub issue with a TDD-based fix plan |
-| [request-refactor-plan](skills/request-refactor-plan/SKILL.md) | workflow | Interview-driven refactor plan, filed as a GitHub issue |
-| [commit-work](skills/commit-work/SKILL.md) | workflow | Stage and split changes into Conventional Commits (Haiku/Sonnet by diff size) |
-| [pr-branch](skills/pr-branch/SKILL.md) | workflow | Write a two-block PR description (non-technical + technical) and open a GitHub PR |
-| [session-handoff](skills/session-handoff/SKILL.md) | workflow | Structured handoff doc capturing progress, decisions, and open questions |
-| [to-spec](skills/to-spec/SKILL.md) | workflow | Convert conversation context into a spec folder |
+| Skill | Description |
+|-------|-------------|
+| [grill-me](skills/grill-me/SKILL.md) | Stress-test a plan — relentless interviewer that resolves each branch of the decision tree |
+| [adversarial-review](skills/adversarial-review/SKILL.md) | Red-team review that tries to kill a plan or spec; P0–P3 findings with verdict |
+| [spec-readiness](skills/spec-readiness/SKILL.md) | Implementation-readiness check — can an implementer start every task tomorrow? |
+| [to-spec](skills/to-spec/SKILL.md) | Turn conversation context into a production-ready spec folder |
+| [tdd](skills/tdd/SKILL.md) | Red-green-refactor TDD loop with reference docs |
+| [improve-codebase-architecture](skills/improve-codebase-architecture/SKILL.md) | Find architectural improvements and deepen shallow modules |
+| [triage-issue](skills/triage-issue/SKILL.md) | Investigate a bug and file a GitHub issue with a TDD-based fix plan |
+| [request-refactor-plan](skills/request-refactor-plan/SKILL.md) | Interview-driven refactor plan, filed as a GitHub issue |
+| [commit-work](skills/commit-work/SKILL.md) | Stage and split changes into Conventional Commits (Haiku/Sonnet by diff size) |
+| [pr-branch](skills/pr-branch/SKILL.md) | Write a two-block PR description (non-technical + technical) and open a GitHub PR |
+| [session-handoff](skills/session-handoff/SKILL.md) | Structured handoff doc capturing progress, decisions, and open questions |
+| [prompt-creator](skills/prompt-creator/SKILL.md) | Interview-driven Claude prompt builder grounded in Anthropic's best practices |
+| [tune-skill](skills/tune-skill/SKILL.md) | Tactical, complaint-driven edit to an existing skill — diagnose, smallest change, review |
 
 ### Global Subagents (`agents/`)
 
-Symlinked to `~/.claude/agents/` by `install.sh`. Invoked via the Agent tool or the slash commands below.
+Symlinked to `~/.claude/agents/` by `scripts/install.sh`. Invoked via the Agent tool or the slash commands below. These persist as agents (rather than skills) where subagent isolation matters — separate context window, spawnable by other skills, or constrained tool surface.
 
 | Agent | Description |
 |-------|-------------|
@@ -60,9 +63,11 @@ Slash commands that shim into the subagents above. Symlinked to `~/.claude/comma
 | `/ux-expert` | Invokes the `ux-expert` agent |
 | `/make-agent-do-things` | Delegates a brief to a senior engineer subagent (Sonnet default, Opus override) |
 
+> New behavior is added as a skill first. Agents/commands persist only where they genuinely need subagent semantics. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ### Standards (`standards/`)
 
-Agent-OS standard commands for per-project setup. Symlinked by `init-project.sh`.
+Per-project standards commands. Symlinked by `scripts/init-project.sh`.
 
 `plan-product` · `inject-standards` · `index-standards` · `discover-standards`
 
@@ -92,12 +97,12 @@ npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands --all -a claude-c
 curl -fsSL https://raw.githubusercontent.com/hburaktasyurek/Agent-Skills-and-Commands/main/bootstrap.sh | bash
 ```
 
-This clones the repo to `~/agent-skills` (or `git pull`s it), then runs `install.sh` to symlink skills, commands, and agents into `~/.claude/`. Everything is available immediately — no restart needed.
+This clones the repo to `~/agent-skills` (or `git pull`s it), then runs `scripts/install.sh` to symlink skills, commands, and agents into `~/.claude/`. Everything is available immediately — no restart needed.
 
-To choose which categories to install, run `install.sh` interactively after bootstrap:
+To choose which categories to install, run the installer interactively after bootstrap:
 
 ```bash
-cd ~/agent-skills && ./install.sh
+cd ~/agent-skills && ./scripts/install.sh
 ```
 
 The interactive path asks per category and prompts before removing any non-symlink files. Set `AGENT_SKILLS_SKIP_PULL=1` to skip the pull.
@@ -111,10 +116,10 @@ AGENT_SKILLS_DIR=/opt/agent-skills curl -fsSL https://raw.githubusercontent.com/
 ## New Project Setup
 
 ```bash
-cd ~/agent-skills && ./init-project.sh /path/to/my-project
+cd ~/agent-skills && ./scripts/init-project.sh /path/to/my-project
 ```
 
-This symlinks agent-os standard commands to `.claude/commands/agent-os/`, creates an empty `.claude/agent-memory/` scaffold, and adds `agent-memory/` to `.claude/.gitignore` (learned context is machine-local by default).
+This symlinks standard commands to `.claude/commands/agent-os/`, creates an empty `.claude/agent-memory/` scaffold, and adds `agent-memory/` to `.claude/.gitignore` (learned context is machine-local by default).
 
 Agents themselves are global — they live once in `~/.claude/agents/` as symlinks. No per-project copies, no version drift.
 
@@ -134,45 +139,29 @@ Memory is git-ignored by default. To share with teammates, remove the `.gitignor
 
 ## Skill Anatomy
 
-Skills follow the [mattpocock/skills](https://github.com/mattpocock/skills) convention.
-
-### Frontmatter
+Each skill is a directory under `skills/` with a `SKILL.md` at minimum:
 
 ```markdown
 ---
 name: skill-name
-description: [Verb-first sentence about what it does]. Use when [trigger conditions + literal phrases the user might say].
+description: What it does, and when to trigger it.
 ---
+
+(body — shape varies by purpose)
 ```
 
-- `name` — required. Lowercase, hyphenated, must match the directory name.
-- `description` — required. Drives skill discovery; see formula below.
-- `disable-model-invocation: true` — optional. Forces explicit `/skill-name` invocation only (useful for behavioral mode-switches).
+- `name` — required. Lowercase, hyphenated, matches the directory name.
+- `description` — required. Drives skill discovery; write it so Claude knows when to use it.
+- `disable-model-invocation: true` — optional. Forces explicit `/skill-name` invocation (useful for mode-switches).
 
-No `type:` field — skill type is a conceptual decision, not declared metadata.
-
-### Description formula
-
-> *[What it does — verb-first, present tense]. Use when [trigger conditions + literal phrases the user might say].*
-
-### Skill types
-
-Pick one before writing — it determines body length and shape.
-
-| Type | Shape |
-|------|-------|
-| **behavioral** | Mode/stance switch. 1–3 sentence body. |
-| **methodology** | Knowledge-dense. SKILL.md overview + N reference docs. |
-| **workflow** | Sequenced steps or checklist. Numbered process. |
-| **utility** | Tool wrapper. Command/syntax + do/don't boundaries. |
-| **authoring** | Guide for creating other things. Numbered process + example output. |
+Body shape and length vary by what the skill is for — some are three sentences, others are long with reference docs as siblings of `SKILL.md`. No template is enforced.
 
 ## Migrating From the Old Flow
 
 If you previously used the copy-based flow (agent templates copied into each project's `.claude/agents/`), those copies still take precedence over global symlinks. Find them with:
 
 ```bash
-./scan-legacy-agents.sh <projects-dir>
+./scripts/scan-legacy-agents.sh <projects-dir>
 ```
 
 The scanner walks up to 6 levels deep and lists every `.claude/agents/<name>.md` that is a real copy shadowing a same-named global agent. It does not delete anything — migration is manual:
@@ -182,6 +171,14 @@ The scanner walks up to 6 levels deep and lists every `.claude/agents/<name>.md`
 
 Project-specific agents that don't collide with a global name are ignored by the scanner.
 
-## Sources & Credits
+## Repository Layout
 
-This repo vendors content from [mattpocock/skills](https://github.com/mattpocock/skills) and adapts Brian Casel's [agent-os](https://github.com/buildermethods/agent-os), alongside original work. See [CREDITS.md](CREDITS.md) for full attribution.
+```
+.
+├── bootstrap.sh         # curl | bash entry point (stays at root)
+├── scripts/             # install / init-project / scan-legacy
+├── skills/              # invokable skills (see skills/INDEX.md)
+├── agents/              # global subagent templates
+├── commands/            # slash-command shims into agents
+└── standards/           # per-project standards commands
+```
