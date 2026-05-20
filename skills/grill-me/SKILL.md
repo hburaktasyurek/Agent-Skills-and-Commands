@@ -11,7 +11,7 @@ Ask the questions one at a time. Stop when every branch you've identified has be
 
 ## Question triage
 
-Before asking each question, classify it:
+Before asking, try to answer the question yourself — read the relevant file, grep the codebase, check the spec or git history. The answer is often already sitting in an artifact you haven't opened: five lines below where you stopped reading, or one grep away. Ask only what the artifacts genuinely can't tell you. Then for what remains, classify it:
 
 - **Business/domain** (how the system works, what users need, what the rules are, real-world edge cases) → **Ask the user.** They know this better than the code does.
 - **Technical/implementation** (which pattern to use, where to put code, how to structure internals, API design) → **Decide it yourself.** State your decision with a one-line reason and move on.
@@ -23,4 +23,4 @@ If the user says "I don't know," diagnose which case applies:
 
 ## Codebase consistency
 
-Before making technical decisions, explore the codebase to find existing patterns — file organization, naming conventions, code structure. New code must read like the same person wrote the rest of the project. If the codebase already answers a question, don't ask — just decide.
+Before making technical decisions, explore the codebase to find existing patterns — file organization, naming conventions, code structure. New code must read like the same person wrote the rest of the project.
