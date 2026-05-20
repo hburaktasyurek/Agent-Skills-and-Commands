@@ -15,6 +15,7 @@ Stress-test ideas before writing code.
 
 Day-to-day coding workflow.
 
+- [senior-implementer](senior-implementer/SKILL.md) — Implement a spec or brief end-to-end. Trust the spec, stop when it breaks, ship complete.
 - [tdd](tdd/SKILL.md) — Red-green-refactor TDD loop, with reference docs on tests, mocking, refactoring, deep modules, interface design.
 - [improve-codebase-architecture](improve-codebase-architecture/SKILL.md) — Find architectural improvements; deepen shallow modules; make a codebase more AI-navigable.
 
