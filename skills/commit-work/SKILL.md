@@ -39,7 +39,11 @@ Skip straight to spawning the agent — the user doesn't need to see diff stats.
 
 ## Step 4 — Spawn the commit agent
 
-Spawn an Agent with the chosen model and this brief:
+Spawn an Agent with the chosen model. Pass the brief below **verbatim** as the entire prompt — it is not a template to extend. The sub-agent has git; pre-context is speculation, git is fact.
+
+**Allowed additions:** language override from CLAUDE.md; project-specific scopes, subject limits, or trailer rules from CLAUDE.md.
+
+**Do not add:** prior-commit hashes or subjects, file lists with line counts, speculation about the change's nature ("looks like a review pass / contradiction fix / tightening"), or restated/expanded workflow steps. The sub-agent discovers all of this via `git status` + `git diff`. Pre-loading it bloats the orchestrator prompt and biases the sub-agent into forensic diff-reading instead of committing.
 
 > You are a commit agent. Your only job is to create clean, well-scoped git commits.
 >
