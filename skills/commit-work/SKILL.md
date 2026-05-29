@@ -2,7 +2,7 @@
 name: commit-work
 description: >-
   Stage intended changes, split into logical commits, and write Conventional Commit messages.
-  Spawns a Haiku or Sonnet agent based on diff size so the main model (even Opus) is never used for commits.
+  Spawns a Sonnet agent so the main model is never used for commits.
   Use when asked to commit, craft a commit message, stage changes, or split work into multiple commits.
 ---
 
@@ -10,45 +10,18 @@ description: >-
 
 Commits should be easy to review and safe to ship: only intended changes included, logically scoped, messages explain what and why.
 
-## Step 1 — Read project context
+## Step 1 — Check for changes
 
-Read `CLAUDE.md` (or `.claude/CLAUDE.md`) if it exists. Extract:
-- Commit message language (Turkish or English)
-- Any project-specific commit rules (scopes, max length, Co-Authored-By policy, etc.)
+Run `git status`. If nothing is staged and nothing is modified, stop and tell the user there is nothing to commit.
 
-If no CLAUDE.md exists, default to English.
+## Step 2 — Spawn the commit agent
 
-## Step 2 — Measure the diff
-
-Run these read-only commands to assess the working tree:
-
-```bash
-git status
-git diff --stat
-git diff --cached --stat
-```
-
-Count the total lines changed (added + removed). If nothing is staged and nothing is modified, stop and tell the user there is nothing to commit.
-
-Skip straight to spawning the agent — the user doesn't need to see diff stats.
-
-## Step 3 — Choose the agent model
-
-- Total diff lines ≤ 300 → use **haiku**
-- Total diff lines > 300 → use **sonnet**
-
-## Step 4 — Spawn the commit agent
-
-Spawn an Agent with the chosen model. Pass the brief below **verbatim** as the entire prompt — it is not a template to extend. The sub-agent has git; pre-context is speculation, git is fact.
-
-**Allowed additions:** language override from CLAUDE.md; project-specific scopes, subject limits, or trailer rules from CLAUDE.md.
-
-**Do not add:** prior-commit hashes or subjects, file lists with line counts, speculation about the change's nature ("looks like a review pass / contradiction fix / tightening"), or restated/expanded workflow steps. The sub-agent discovers all of this via `git status` + `git diff`. Pre-loading it bloats the orchestrator prompt and biases the sub-agent into forensic diff-reading instead of committing.
+Spawn a **sonnet** Agent. Pass the brief below **verbatim** as the entire prompt — it is not a template to extend. The sub-agent has git; pre-context is speculation, git is fact.
 
 > You are a commit agent. Your only job is to create clean, well-scoped git commits.
 >
 > **Rules:**
-> - Write commit messages in the language specified by CLAUDE.md (Turkish or English). If not specified, use English.
+> - Read CLAUDE.md (or `.claude/CLAUDE.md`) if it exists — use it for commit message language (Turkish or English), project-specific scopes, subject limits, and trailer rules. Default to English if absent.
 > - Use Conventional Commits: `type(scope): subject` (max 72 chars)
 > - Body explains WHY, not what (the diff shows what)
 > - No `Co-Authored-By` lines
@@ -61,16 +34,14 @@ Spawn an Agent with the chosen model. Pass the brief below **verbatim** as the e
 > 3. For mixed files use patch staging: `git add -p`
 > 4. Run `git diff --cached` to verify what will be committed
 > 5. Write the commit message — describe staged change in 1–2 sentences first (what + why); if you can't, the commit is too big, go back to step 2
-> 6. Commit with: `git commit -m "$(cat <<'EOF'`  then the message then `EOF` then `)"` 
-> 7. Verify with `git log --oneline -1`
-> 8. Repeat until working tree is clean
-> 9. Run `git push` — if the branch has no upstream, run `git push -u origin HEAD` instead
+> 6. Commit with: `git commit -m "$(cat <<'EOF'`  then the message then `EOF` then `)"`
+> 7. Repeat until working tree is clean
+> 8. Run `git push` — if the branch has no upstream, run `git push -u origin HEAD` instead
 >
 > **Deliverable:** list each commit (hash + message + one-line why), then confirm push succeeded.
 
 ## Guardrails
 
 - If the diff contains secrets or tokens, stop and warn the user — do not commit.
-- If changes are unrelated, split into multiple commits.
 - Never use `--no-verify`.
 - **Never add `Co-Authored-By` or any AI attribution** — not in the subject, body, or trailer. This is an explicit project policy; apply it even if the default commit template includes attribution.
