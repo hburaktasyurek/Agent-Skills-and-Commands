@@ -6,7 +6,9 @@ allowed-tools: Bash, Write
 
 # Session Handoff
 
-The next session starts with amnesia — no memory of this conversation. This document is what survives. Auto-compaction is uncontrolled amnesia; this is the controlled version: you choose what carries forward. Keep the relevant points, cut the noise between them.
+The next session starts with amnesia — no memory of this conversation. This document is what survives.
+
+Write for the reader, not the record. **Relevant** means needed to continue correctly without drifting — not needed to understand what happened. Irrelevant context actively causes drift; it is not neutral noise. Completed branches with no ongoing implications get omitted. Unresolved state, active constraints, and facts the next session cannot find by reading files get included.
 
 ## Phase Detection
 
@@ -22,26 +24,25 @@ Two independent signals determine session type:
 - Signal A only (conversation signal, git clean) → **Design phase**
 - Signal B only (git changes, no conversation signal) → **Code phase**
 - Both signals → **Mixed phase**
-- Neither signal → **Unknown**: there is nothing meaningful to hand off. Write Status with `Phase: Unknown` and a single Resume Command: *"Re-run /session-handoff in the original session — current context is too thin to produce a handoff."* All other sections will be empty and are omitted by the content filter.
+- Neither signal → **Unknown**: there is nothing meaningful to hand off. Write Status with `Phase: Unknown — re-run /session-handoff in the original session; current context is too thin to produce a handoff.` All other sections are omitted.
 
 ## Workflow
 
 1. Read the conversation to determine phase (design / code / mixed / unknown).
 2. Run `git status`. Combine the git result with Signal A using the **Phase combinations** table above to fix the final phase.
-3. Extract decisions from the conversation using the Key Decisions rules below. If no decisions found, write `Decisions made: 0 — no explicit choices found; verify if design session is complete` in the Status section.
-4. Identify open questions and blocked topics (design + mixed phases); include blocking reason where present.
-5. If any section exceeds 7 items, group them under topic sub-headings so the list stays scannable.
-6. Apply the two filters at the top of Output Sections (phase → content), then write each surviving section. Per-item check: *"Would a stranger who never saw this conversation understand this and take the right action?"*
-7. Final check before output: (a) no excluded section present for this phase, (b) every `Because` comes from a source turn or carries `⚠️ RATIONALE NOT FOUND`, (c) Resume Command names a concrete action.
-8. Save the document to `.handoff/YYYY-MM-DD-HHMM-session.md` in the current working directory (create the `.handoff/` directory if missing). Print the absolute path on the last line so the next session can `Read` it directly instead of being pasted in.
+3. Extract decisions from the conversation using the Key Decisions rules below. If no decisions found, write `Decisions made: 0 — no explicit choices found` in the Status section.
+4. Scan for conversation-only context: what facts, schemas, formats, lists, parameter values, or rules were established this session that the next session will need but cannot find by reading files or git history? Content already written to a file → skip. Content a fresh session would silently re-derive differently → capture in **Context Not on Disk**.
+5. Identify open questions and blocked topics (design + mixed phases); include blocking reason where present.
+6. If any section exceeds 7 items, group them under topic sub-headings so the list stays scannable.
+7. Apply the two filters at the top of Output Sections (phase → content), then write each surviving section. Per-item check: *"Would a stranger who never saw this conversation understand this and take the right action?"*
+8. Final check before output: (a) no excluded section present for this phase, (b) every `Because` comes from a source turn or carries `⚠️ RATIONALE NOT FOUND`.
+9. Save the document to `.handoff/YYYY-MM-DD-HHMM-session.md` in the current working directory (create the `.handoff/` directory if missing). Print the absolute path on the last line so the next session can `Read` it directly instead of being pasted in.
 
 ## Output Sections
 
 Produce the document in this order. Two filters apply, in order:
 1. **Phase filter** — omit sections marked as excluded for the current phase (e.g., What's Pending and Files Touched are hidden in design phase).
 2. **Content filter** — of the sections that survive phase filtering, omit any that have no real content. Do not write "None," "N/A," or fill with phase-default text.
-
-**Exception:** Resume Command is the only mandatory section — write it even if nothing else carries forward, so the next session has an entry point.
 
 ---
 
@@ -54,7 +55,7 @@ Content adapts to phase:
 **Design phase:** Git data must not appear here.
 - `Phase: Design (pre-code)`
 - `Grill-me: completed / in-progress` — infer from conversation; use `unknown` if ambiguous.
-- `Decisions made: N` (or `0 — no explicit choices found; verify if design session is complete`)
+- `Decisions made: N` (or `0 — no explicit choices found`)
 - `Open questions: N`
 
 **Mixed phase:**
@@ -64,7 +65,7 @@ Content adapts to phase:
 - `Decisions made: N`
 - `Open questions: N`
 
-**Unknown phase:** `Phase: Unknown`. No other fields — the re-run note lives in Resume Command.
+**Unknown phase:** `Phase: Unknown — re-run /session-handoff in the original session; current context is too thin to produce a handoff.` No other fields.
 
 ---
 
@@ -123,6 +124,17 @@ Generating a plausible-sounding rationale is not allowed.
 
 ---
 
+### Context Not on Disk
+Facts, schemas, formats, lists, parameter values, and rules established this session that the next session cannot find by reading files or git history — regardless of whether they were formally decided or just described. Anything a fresh session would silently re-derive differently goes here.
+
+```
+- **[Name]** — [content, with enough detail to act on without re-deriving]
+```
+
+If content is partial, append `⚠️ INCOMPLETE — [what is still open]`. Do not use this section for choices between alternatives (use Key Decisions) or for content already saved to a file.
+
+---
+
 ### Files Touched
 **Code and mixed phases only.** Hidden in design phase.
 ```
@@ -148,27 +160,6 @@ List paths explicitly closed in this session.
 
 ### Gotchas for Next Session
 Non-obvious behaviors and pre-existing traps discovered during the session — not decisions made, just observations.
-
----
-
-### Resume Command
-Mandatory — write it even when every other section is empty. One concrete action, not a branch name.
-
-```
-> [Verb phrase]. [1-sentence context if needed].
-```
-
-In mixed phase or when multiple paths are valid, list alternatives:
-```
-> Option A: Run /to-spec — all design decisions are captured above.
-> Option B: Continue grill-me from [topic] — [N] open questions remain.
-```
-
-Examples:
-- `> Run /to-spec. All decisions are captured above.`
-- `> Continue grill-me from [topic]. Last answered question: [Q].`
-- `> Implement [feature] in [file:line]. Approach is Z — see Key Decisions for why not X.`
-- `> Continue implementation of [X]. Open tasks in What's Pending.`
 
 ## Guardrails
 
