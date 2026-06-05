@@ -161,6 +161,27 @@ List paths explicitly closed in this session.
 ### Gotchas for Next Session
 Non-obvious behaviors and pre-existing traps discovered during the session — not decisions made, just observations.
 
+---
+
+### Next Session Options
+List 2–4 possible next actions derived from the session state. End with: *"Which would you like to pursue?"*
+
+The next session reads this section, presents the options to the user, and waits for their answer before doing anything.
+
+Base options on what's in the document:
+- Design phase, decisions made → `/to-spec`
+- Open questions remain → continue `/grill-me` from [specific topic]
+- Code phase, pending tasks → continue implementation of [specific item]
+- Committed work, no open tasks → `/pr-branch`
+
+Format:
+```
+> A: [option] — [one-line reason it's relevant]
+> B: [option] — [one-line reason it's relevant]
+>
+> Which would you like to pursue?
+```
+
 ## Guardrails
 
 - Rationale, not just outcomes — the reason behind a decision is as important as the decision itself.
