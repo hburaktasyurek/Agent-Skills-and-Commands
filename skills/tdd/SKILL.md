@@ -15,6 +15,10 @@ description: Test-driven development with red-green-refactor loop. Use when user
 
 See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking guidelines.
 
+## Language and tooling
+
+The principles here — behavior over implementation, mock only at system boundaries, deep modules — are language-agnostic. The examples are TypeScript/Jest for illustration only. **Before writing any test, detect the project's language, test runner, assertion style, and mocking conventions, and use those.** Translate the principle, not the syntax: a Python project gets pytest idioms and fixtures, a PHP project gets PHPUnit conventions, a JS/TS project gets the runner already in use (Jest/Vitest/node:test). Don't carry idioms from one into a project that doesn't use them.
+
 ## Anti-Pattern: Horizontal Slices
 
 **DO NOT write all tests first, then all implementation.** This is "horizontal slicing" - treating RED as "write all tests" and GREEN as "write all code."
@@ -50,12 +54,12 @@ Before writing any code:
 - [ ] Confirm with user which behaviors to test (prioritize)
 - [ ] Identify opportunities for [deep modules](deep-modules.md) (small interface, deep implementation)
 - [ ] Design interfaces for [testability](interface-design.md)
-- [ ] List the behaviors to test (not implementation steps)
+- [ ] List the behaviors to test — success paths _and_ failure modes — not implementation steps
 - [ ] Get user approval on the plan
 
 Ask: "What should the public interface look like? Which behaviors are most important to test?"
 
-**You can't test everything.** Confirm with the user exactly which behaviors matter most. Focus testing effort on critical paths and complex logic, not every possible edge case.
+**You can't test everything — but "critical behavior" includes how the system fails, not just the happy path.** Confirm with the user exactly which behaviors matter most, and treat error handling, invalid input, boundary conditions, and failure modes as first-class behaviors alongside the success path — that's where real-world bugs live. What you skip is _trivial permutations_ (every variation of an already-covered valid input), not the unhappy paths.
 
 ### 2. Tracer Bullet
 
