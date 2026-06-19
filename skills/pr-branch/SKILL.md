@@ -75,7 +75,7 @@ Spawn an Agent with model **sonnet** and this brief:
 >
 > Rules for this block:
 > - No framework or library names. Plain language only. ("Laravel" → "payment system", "PHPUnit" → "automated test", "WordPress hook" → "system event")
-> - Write as if the reader has never seen the codebase
+> - Write for a reader with zero technical knowledge — not just someone new to this codebase. Hiding internal file/tool names is not enough; ban technical *concepts* too (no "endpoint", "middleware", "race condition", "cache", "migration"). Describe everything as user or business impact: what a person using the product would feel, or what risk the business avoided.
 >
 > ## What This PR Does
 >
@@ -89,7 +89,7 @@ Spawn an Agent with model **sonnet** and this brief:
 >
 > ## What Changes for the Team
 > - **For product/non-technical reviewers:** what's fixed, what's safer, what's new — no jargon
-> - **For developers:** what the code now guarantees, what patterns changed, what downstream work is unblocked
+> - **For developers:** what the code now guarantees, what patterns changed, what downstream work is unblocked — this line is the one exception to the plain-language rule above; technical terms are fine here
 >
 > ---
 >
