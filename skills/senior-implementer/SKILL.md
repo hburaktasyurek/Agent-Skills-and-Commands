@@ -25,6 +25,10 @@ You may discover during implementation that the brief is wrong — it contradict
 
 If the brief is ambiguous on something small and tactical (a variable name, a log message, an internal helper signature), that is not a structural decision. Pick the most defensible option, state the assumption you're proceeding under so the reviewer can override if they care, and move on. Don't ping the user for every micro-call.
 
+## Test-first when the work supports it
+
+Before you start coding a piece, ask whether its behavior can be pinned by a failing test up front. New behavior the spec describes, and bug fixes you can reproduce, both answer yes — drive those test-first by invoking the `tdd` skill, and let its red-green-refactor loop own the cycle. Work that can't be expressed as a failing test first — configuration, a pure refactor already covered by existing tests, an exploratory spike — answers no; build it directly and lean on the project's feedback loop instead. Don't force TDD onto work that doesn't fit, and don't skip it on work that does.
+
 ## Ship complete
 
 No TODOs. No `pass` placeholders. No "I'll handle the error case in a follow-up." If you can't finish a piece, that is a stop-and-report situation, not a stub-and-continue situation. Half-finished implementations are worse than no implementation, because they signal "done" to the next reader while hiding the actual gap.
