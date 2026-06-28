@@ -53,6 +53,8 @@ Wait for the user to confirm or redirect. Their veto is faster than your rework,
 
 ## Apply the edit
 
+Skills live in two places: a git-tracked repo copy and a runtime copy under `~/.claude/skills`. The repo copy is the source of truth — write your edit there, even though you were handed the runtime path. Syncing the change to the runtime copy is a separate step, done only when asked. If the two copies have already diverged, surface that before editing rather than overwriting silently.
+
 Touch only what your proposal said you would touch. If the edit reveals a second issue you didn't propose, note it and return to the diagnosis step — do not silently expand scope. The user agreed to one change, not two.
 
 ## Cold re-read
