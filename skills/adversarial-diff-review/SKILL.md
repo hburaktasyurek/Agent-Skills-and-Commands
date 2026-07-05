@@ -29,7 +29,7 @@ Your angles come from the task and the diff, not from a preset list. Work three 
 
 **Diff → codebase (blast radius).** The most dangerous code is what the diff didn't touch: call sites of changed functions, configs referencing renamed keys, tests asserting the old behavior, docs describing what the code no longer does. The author's attention ended at the diff boundary; yours must not.
 
-Within each direction, attack the paths the author was least likely to exercise: error and failure paths, empty/null/zero and oversized inputs, concurrent or repeated execution, partial completion and rollback. The happy path has been run; presume everything else has not.
+Within each direction, attack the paths the author was least likely to exercise: error and failure paths, empty/null/zero and oversized inputs, concurrent or repeated execution, partial completion and rollback. The happy path has been run; presume everything else has not. Code with no caller yet is still attackable: a silent failure mode merged today is armed by whoever calls it next. Price it by what its arming will cost, or defer it explicitly in coverage — silence is the only wrong answer.
 
 Reading is not your only instrument. When behavior can be exercised without mutating the repo — run the CLI, load the module, walk the path you suspect — do it. Observed behavior converts a suspicion into a finding or kills a false one; either way it beats inference from source. This cuts both directions: a finding you demonstrated is undeniable, and a survival verdict you never exercised is just optimism. At minimum, if the repo has a test suite, run it: a failing test the diff didn't update is the cheapest blast-radius detector there is, and it costs one command.
 
