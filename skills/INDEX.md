@@ -7,7 +7,7 @@ Grouped view of the skills in this repo. The directory layout stays flat — thi
 Stress-test ideas before writing code.
 
 - [grill-me](grill-me/SKILL.md) — Relentless interviewer that resolves each branch of the decision tree.
-- [adversarial-review](adversarial-review/SKILL.md) — Red-team review that tries to kill a plan; P0–P3 findings with verdict.
+- [adversarial-spec-review](adversarial-spec-review/SKILL.md) — Red-team review that tries to kill a plan; P0–P3 findings with verdict.
 - [to-spec](to-spec/SKILL.md) — Turn a design conversation into a production-ready spec folder.
 - [spec-readiness](spec-readiness/SKILL.md) — Final gate: can an implementer start every task tomorrow?
 
@@ -31,6 +31,7 @@ When the work is "figure out what to do," not "do it."
 Wrapping work up.
 
 - [commit-work](commit-work/SKILL.md) — Stage and split changes into Conventional Commits. Delegates to Haiku/Sonnet based on diff size.
+- [adversarial-diff-review](adversarial-diff-review/SKILL.md) — Red-team review that tries to kill an implementation diff against its task definition; P0–P3 findings with file:line evidence and a coverage declaration.
 - [pr-branch](pr-branch/SKILL.md) — Write a two-block PR description (non-technical summary + technical detail), open the PR.
 - [session-handoff](session-handoff/SKILL.md) — Structured handoff doc capturing progress, decisions, and open questions.
 

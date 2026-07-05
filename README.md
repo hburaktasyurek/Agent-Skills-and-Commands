@@ -23,7 +23,7 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | Skill | Description |
 |-------|-------------|
 | [grill-me](skills/grill-me/SKILL.md) | Stress-test a plan — relentless interviewer that resolves each branch of the decision tree |
-| [adversarial-review](skills/adversarial-review/SKILL.md) | Red-team review that tries to kill a plan or spec; P0–P3 findings with verdict |
+| [adversarial-spec-review](skills/adversarial-spec-review/SKILL.md) | Red-team review that tries to kill a plan or spec; P0–P3 findings with verdict |
 | [spec-readiness](skills/spec-readiness/SKILL.md) | Implementation-readiness check — can an implementer start every task tomorrow? |
 | [to-spec](skills/to-spec/SKILL.md) | Turn conversation context into a production-ready spec folder |
 | [tdd](skills/tdd/SKILL.md) | Red-green-refactor TDD loop with reference docs |
@@ -31,6 +31,7 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [triage-issue](skills/triage-issue/SKILL.md) | Investigate a bug and file a GitHub issue with a TDD-based fix plan |
 | [request-refactor-plan](skills/request-refactor-plan/SKILL.md) | Interview-driven refactor plan, filed as a GitHub issue |
 | [commit-work](skills/commit-work/SKILL.md) | Stage and split changes into Conventional Commits (Haiku/Sonnet by diff size) |
+| [adversarial-diff-review](skills/adversarial-diff-review/SKILL.md) | Red-team review that tries to kill an implementation diff against its task definition; file:line evidence + coverage declaration |
 | [pr-branch](skills/pr-branch/SKILL.md) | Write a two-block PR description (non-technical + technical) and open a GitHub PR |
 | [session-handoff](skills/session-handoff/SKILL.md) | Structured handoff doc capturing progress, decisions, and open questions |
 | [prompt-creator](skills/prompt-creator/SKILL.md) | Interview-driven Claude prompt builder grounded in Anthropic's best practices |
