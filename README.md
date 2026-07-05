@@ -27,9 +27,7 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [spec-readiness](skills/spec-readiness/SKILL.md) | Implementation-readiness check — can an implementer start every task tomorrow? |
 | [to-spec](skills/to-spec/SKILL.md) | Turn conversation context into a production-ready spec folder |
 | [tdd](skills/tdd/SKILL.md) | Red-green-refactor TDD loop with reference docs |
-| [improve-codebase-architecture](skills/improve-codebase-architecture/SKILL.md) | Find architectural improvements and deepen shallow modules |
 | [triage-issue](skills/triage-issue/SKILL.md) | Investigate a bug and file a GitHub issue with a TDD-based fix plan |
-| [request-refactor-plan](skills/request-refactor-plan/SKILL.md) | Interview-driven refactor plan, filed as a GitHub issue |
 | [commit-work](skills/commit-work/SKILL.md) | Stage and split changes into Conventional Commits (Haiku/Sonnet by diff size) |
 | [adversarial-diff-review](skills/adversarial-diff-review/SKILL.md) | Red-team review that tries to kill an implementation diff against its task definition; file:line evidence + coverage declaration |
 | [pr-branch](skills/pr-branch/SKILL.md) | Write a two-block PR description (non-technical + technical) and open a GitHub PR |
