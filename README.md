@@ -30,6 +30,7 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [triage-issue](skills/triage-issue/SKILL.md) | Investigate a bug and file a GitHub issue with a TDD-based fix plan |
 | [commit-work](skills/commit-work/SKILL.md) | Stage and split changes into Conventional Commits (Haiku/Sonnet by diff size) |
 | [adversarial-diff-review](skills/adversarial-diff-review/SKILL.md) | Red-team review that tries to kill an implementation diff against its task definition; file:line evidence + coverage declaration |
+| [review-implementation](skills/review-implementation/SKILL.md) | Spec-vs-implementation compliance audit: checklist coverage + known-pitfall sweep (tenancy, auth, migrations, payments) |
 | [pr-branch](skills/pr-branch/SKILL.md) | Write a two-block PR description (non-technical + technical) and open a GitHub PR |
 | [session-handoff](skills/session-handoff/SKILL.md) | Structured handoff doc capturing progress, decisions, and open questions |
 | [prompt-creator](skills/prompt-creator/SKILL.md) | Interview-driven Claude prompt builder grounded in Anthropic's best practices |
@@ -45,7 +46,6 @@ Symlinked to `~/.claude/agents/` by `scripts/install.sh`. Invoked via the Agent 
 | [senior-implementer-opus](agents/senior-implementer-opus.md) | Implementer pinned to Opus for harder tasks |
 | [cto](agents/cto.md) | Pre-decision technical advisor: schema, API design, packages, migrations, performance |
 | [review-design](agents/review-design.md) | Post-decision plan review, architectural risk, cross-model second opinion |
-| [review-implementation](agents/review-implementation.md) | Spec-vs-implementation QA: missing requirements, auth gaps, silent failures |
 | [product-lead](agents/product-lead.md) | CPO-level strategy: roadmap, pricing, positioning, KPIs |
 | [ux-expert](agents/ux-expert.md) | UX flows, microcopy, accessibility, error/empty/loading states |
 
@@ -57,7 +57,6 @@ Slash commands that shim into the subagents above. Symlinked to `~/.claude/comma
 |---------|-------------|
 | `/cto` | Invokes the `cto` agent |
 | `/review-design` | Invokes the `review-design` agent |
-| `/review-implementation` | Invokes the `review-implementation` agent |
 | `/product-lead` | Invokes the `product-lead` agent |
 | `/ux-expert` | Invokes the `ux-expert` agent |
 | `/make-agent-do-things` | Delegates a brief to a senior engineer subagent (Sonnet default, Opus override) |

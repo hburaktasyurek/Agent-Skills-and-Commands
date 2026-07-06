@@ -22,9 +22,9 @@ Pass the brief (spec path or synthesized brief) as the Agent tool `prompt`. The 
 
 ## After
 
-Present the summary. For review, suggest the appropriate agent:
+Present the summary. For review, suggest the appropriate follow-up:
 
-- `review-implementation` — for spec-vs-implementation audit after code changes
-- `review-design` — for plan or architectural review before or independently of code changes
+- the `review-implementation` skill (`/review-implementation`) — for spec-vs-implementation audit after code changes
+- the `review-design` agent — for plan or architectural review before or independently of code changes
 
 If the sonnet subagent stopped early citing architectural complexity, suggest retrying with `senior-implementer-opus`.
