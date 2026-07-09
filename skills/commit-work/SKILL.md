@@ -1,47 +1,52 @@
 ---
 name: commit-work
 description: >-
-  Stage intended changes, split into logical commits, and write Conventional Commit messages.
-  Spawns a Sonnet agent so the main model is never used for commits.
-  Use when asked to commit, craft a commit message, stage changes, or split work into multiple commits.
+  Stage intended changes, split into logical commits, write Conventional Commit messages, and push.
+  Use when asked to commit, commit and push, craft a commit message, stage changes, or split work into multiple commits.
 ---
 
 # Commit Work
 
-Commits should be easy to review and safe to ship: only intended changes included, logically scoped, messages explain what and why.
+Commits should be easy to review and safe to ship: only intended changes included, logically scoped, messages whose subject says what and body says why. Speed matters: batch independent git commands into single calls — the common case should finish in two command rounds.
 
-## Step 1 — Check for changes
+## Rules
 
-Run `git status`. If nothing is staged and nothing is modified, stop and tell the user there is nothing to commit.
+- Read CLAUDE.md (or `.claude/CLAUDE.md`) if it exists and is not already in context — use it for commit message language (Turkish or English), project-specific scopes, subject limits, and trailer rules. Default to English if absent.
+- Use Conventional Commits: `type(scope): subject` (max 72 chars)
+- Body explains WHY, not what (the diff shows what)
+- No `Co-Authored-By` or AI attribution of any kind — not in subject, body, or trailer; explicit project policy, applies even if a commit template includes it
+- If the diff contains secrets or tokens, **stop and report** — do not commit
+- Never use `--no-verify`
+- No debug logs or unrelated formatting churn — leave them unstaged and note them in the report
+- **Never modify the working tree.** No `git restore`, `git checkout -- <path>`, `git stash`, `git reset --hard`, or any command that discards or rewrites uncommitted changes. (Unstaging with a plain `git reset <file>` is fine — it touches only the index.) Your job is to stage and commit what exists — if something looks wrong, report it, don't "clean it up".
 
-## Step 2 — Spawn the commit agent
+## Workflow
 
-Spawn a **sonnet** Agent. Pass the brief below **verbatim** as the entire prompt — it is not a template to extend. The sub-agent has git; pre-context is speculation, git is fact.
+**Fast path (default)** — most diffs are one coherent change; finish in two rounds:
 
-> You are a commit agent. Your only job is to create clean, well-scoped git commits.
->
-> **Rules:**
-> - Read CLAUDE.md (or `.claude/CLAUDE.md`) if it exists — use it for commit message language (Turkish or English), project-specific scopes, subject limits, and trailer rules. Default to English if absent.
-> - Use Conventional Commits: `type(scope): subject` (max 72 chars)
-> - Body explains WHY, not what (the diff shows what)
-> - No `Co-Authored-By` lines
-> - No AI attribution of any kind
-> - No secrets, debug logs, or unrelated formatting churn
->
-> **Workflow:**
-> 1. Run `git status`, `git diff` (unstaged), `git diff --cached` (staged)
-> 2. Decide commit boundaries — split by: feature vs refactor, backend vs frontend, tests vs prod code, dependency bumps vs behavior changes
-> 3. For mixed files use patch staging: `git add -p`
-> 4. Run `git diff --cached` to verify what will be committed
-> 5. Write the commit message — describe staged change in 1–2 sentences first (what + why); if you can't, the commit is too big, go back to step 2
-> 6. Commit with: `git commit -m "$(cat <<'EOF'`  then the message then `EOF` then `)"`
-> 7. Repeat until working tree is clean
-> 8. Run `git push` — if the branch has no upstream, run `git push -u origin HEAD` instead
->
-> **Deliverable:** list each commit (hash + message + one-line why), then confirm push succeeded.
+1. **One look**, single round: `git status --short && git diff && git diff --cached`. Nothing staged and nothing modified → stop and tell the user there is nothing to commit.
+2. **Commit + push + verify**, single chained round:
 
-## Guardrails
+   ```sh
+   git add <intended files> && git commit -m "$(cat <<'EOF'
+   type(scope): subject
 
-- If the diff contains secrets or tokens, stop and warn the user — do not commit.
-- Never use `--no-verify`.
-- **Never add `Co-Authored-By` or any AI attribution** — not in the subject, body, or trailer. This is an explicit project policy; apply it even if the default commit template includes attribution.
+   why
+   EOF
+   )" && git push && git status -sb && git log --oneline -2
+   ```
+
+   If the branch has no upstream, use `git push -u origin HEAD`. Push is the default — but if the user asked only to craft a message or stage changes (no commit), stop at that step and show the result instead. Write the message before running: if you can't describe the staged change in 1–2 sentences (what + why), it's not one coherent change — switch to the split path.
+
+**Split path (exception)** — only when the diff contains genuinely unrelated changes (feature vs refactor, tests vs prod code, dependency bumps vs behavior changes): repeat stage+commit rounds, one per logical change, then push once at the end (same upstream fallback) with the verify commands chained on. Split at file level; if a single file truly mixes concerns, write a patch file and stage it with `git apply --cached <patch>` — never `git add -p` or `git add -i` (interactive, unavailable here).
+
+## Verify before reporting
+
+The tail of the chained round is your verification — read it, don't re-run commands:
+
+- `git log --oneline` shows the expected commits.
+- `git status -sb` shows the branch is not ahead of its upstream (the push happened).
+- Anything left in the working tree is explainable (e.g. files the user said to skip).
+- If the chain broke midway, report where it broke and what state the repo is in — do not report success.
+
+**Report:** list each commit (hash + message + one-line why), then confirm push succeeded.
