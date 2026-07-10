@@ -6,7 +6,8 @@ Grouped view of the skills in this repo. The directory layout stays flat — thi
 
 Stress-test ideas before writing code.
 
-- [grill-me](grill-me/SKILL.md) — Relentless interviewer that resolves each branch of the decision tree.
+- [grill-me](grill-me/SKILL.md) — Relentless interviewer that resolves each branch of the decision tree. For designs that live in the user's head.
+- [task-groundwork](task-groundwork/SKILL.md) — Ground a roadmap task in its phase context by investigating artifacts; resolves the decision tree, escalates only what artifacts can't answer.
 - [adversarial-spec-review](adversarial-spec-review/SKILL.md) — Red-team review that tries to kill a plan; P0–P3 findings with verdict.
 - [to-spec](to-spec/SKILL.md) — Turn a design conversation into a production-ready spec folder.
 - [spec-readiness](spec-readiness/SKILL.md) — Final gate: can an implementer start every task tomorrow?

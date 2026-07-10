@@ -23,6 +23,7 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | Skill | Description |
 |-------|-------------|
 | [grill-me](skills/grill-me/SKILL.md) | Stress-test a plan — relentless interviewer that resolves each branch of the decision tree |
+| [task-groundwork](skills/task-groundwork/SKILL.md) | Ground a roadmap task in phase context — resolve its decision tree from artifacts, ready for to-spec |
 | [adversarial-spec-review](skills/adversarial-spec-review/SKILL.md) | Red-team review that tries to kill a plan or spec; P0–P3 findings with verdict |
 | [spec-readiness](skills/spec-readiness/SKILL.md) | Implementation-readiness check — can an implementer start every task tomorrow? |
 | [to-spec](skills/to-spec/SKILL.md) | Turn conversation context into a production-ready spec folder |
