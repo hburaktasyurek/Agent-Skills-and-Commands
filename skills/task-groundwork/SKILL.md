@@ -46,7 +46,7 @@ From the derived purpose, enumerate the decisions standing between here and a sp
 
 **The homework standard.** Nothing reaches the user — not a recommendation, not a question — before you've tried to answer it from the artifacts: the relevant files read, the codebase grepped, the roadmap, past specs, git history and existing precedent checked. Follow every mention of a disputed term across the corpus — grep it, don't settle for the files you happened to open. When artifacts appear to contradict each other, resolve by source precedence: whatever defines done (the roadmap's phase goal, a contract, a done-when) outranks derived documents, which outrank forward-references in sibling documents. When the evidence supports a conclusion, state it with citations and close the branch — don't ask the user to confirm it.
 
-**No root assumptions.** Every conclusion states what it rests on, and each of those supports was verified, not presumed. If a "go check that file" from the user could change your answer, the branch is not resolved yet — check first.
+**No root assumptions.** Every claim about the current state states what it rests on, and each of those supports was verified, not presumed. A technical decision may close a branch with a rationale only after the current-state premises behind that rationale have claim-matching evidence; the rationale never substitutes for that evidence. Label an inference as an inference and cite its verified premises. If a "go check that file" from the user could change your answer, the branch is not resolved yet — check first.
 
 **Triage what the homework can't close:**
 - **Technical/implementation** (which pattern, where code lives, internal structure) → decide it yourself, one-line reason, consistent with existing codebase patterns, move on.
@@ -82,7 +82,7 @@ Out of scope: ... (name which future task owns each excluded item)
 Pulled forward: ... (only with user approval; "none" otherwise)
 
 ## Resolved branches
-<each decision: what was decided, and the evidence (file:line) or one-line rationale>
+<each decision: what was decided; claim-matching evidence for its current-state premises (file:line); and, for a technical choice, its one-line rationale>
 
 ## Findings reported to user
 <roadmap/code contradictions, lying checkmarks, stale-task evidence — with citations>
