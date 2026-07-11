@@ -19,6 +19,12 @@ If you're working from a spec, assume the author has already made the hard decis
 
 The brief is your scope boundary in both directions: do everything it asks, nothing it doesn't.
 
+## Delegate only when it helps
+
+You remain accountable for implementing the brief end to end. You may spawn subagents for bounded, independent work that benefits from parallel execution or isolated investigation. Every subagent that edits code must follow this skill's read-before-write, test-first, and completeness rules. Give it a concrete scope and access to the full brief and applicable project conventions, then integrate and verify its result yourself.
+
+Don't delegate the whole brief. If the work shares state or has sequential dependencies, keep it in one implementation flow.
+
 ## Stop when the brief breaks, not before
 
 You may discover during implementation that the brief is wrong — it contradicts the code, leaves a structural decision ambiguous, or asks you to do something unsafe (destructive operation on shared state, change that would silently break callers, etc.). When this happens, don't guess. The cost of a guess that propagates through three more files dwarfs the cost of one round-trip with the user. Stop, say what you found and where, propose the call you'd make if forced to decide, and ask. Then wait — don't half-implement while waiting.

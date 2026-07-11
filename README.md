@@ -27,6 +27,7 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [adversarial-spec-review](skills/adversarial-spec-review/SKILL.md) | Red-team review that tries to kill a plan or spec; P0–P3 findings with verdict |
 | [spec-readiness](skills/spec-readiness/SKILL.md) | Implementation-readiness check — can an implementer start every task tomorrow? |
 | [to-spec](skills/to-spec/SKILL.md) | Turn conversation context into a production-ready spec folder |
+| [senior-implementer](skills/senior-implementer/SKILL.md) | Implement a spec or brief end-to-end; delegate only bounded, independent work when useful |
 | [tdd](skills/tdd/SKILL.md) | Red-green-refactor TDD loop with reference docs |
 | [triage-issue](skills/triage-issue/SKILL.md) | Investigate a bug and file a GitHub issue with a TDD-based fix plan |
 | [commit-work](skills/commit-work/SKILL.md) | Stage and split changes into Conventional Commits (Haiku/Sonnet by diff size) |
@@ -43,8 +44,6 @@ Symlinked to `~/.claude/agents/` by `scripts/install.sh`. Invoked via the Agent 
 
 | Agent | Description |
 |-------|-------------|
-| [senior-implementer-sonnet](agents/senior-implementer-sonnet.md) | Default implementer, pinned to Sonnet |
-| [senior-implementer-opus](agents/senior-implementer-opus.md) | Implementer pinned to Opus for harder tasks |
 | [cto](agents/cto.md) | Pre-decision technical advisor: schema, API design, packages, migrations, performance |
 | [review-design](agents/review-design.md) | Post-decision plan review, architectural risk, cross-model second opinion |
 | [product-lead](agents/product-lead.md) | CPO-level strategy: roadmap, pricing, positioning, KPIs |
@@ -60,7 +59,6 @@ Slash commands that shim into the subagents above. Symlinked to `~/.claude/comma
 | `/review-design` | Invokes the `review-design` agent |
 | `/product-lead` | Invokes the `product-lead` agent |
 | `/ux-expert` | Invokes the `ux-expert` agent |
-| `/make-agent-do-things` | Delegates a brief to a senior engineer subagent (Sonnet default, Opus override) |
 
 > New behavior is added as a skill first. Agents/commands persist only where they genuinely need subagent semantics. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
