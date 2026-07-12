@@ -1,85 +1,140 @@
 ---
 name: tune-skill
-description: Tactical, complaint-driven edit to an existing skill. Diagnoses root cause, proposes the smallest change, applies it, then spawns a cold-read reviewer to catch issues the edit introduced. Use when the user says "X skill keeps doing Y", "fix the X skill", "the X skill is broken", "update X skill", or wants to tune a working skill without a full rewrite.
+description: >-
+  Improve an existing skill against concrete user feedback, a failed run, or a repeated behavioral complaint.
+  Use when a skill keeps doing the wrong thing, misses an instruction, narrows or overgeneralizes feedback,
+  behaves inconsistently, or needs a focused update based on observed use. Locks the complaint's real scope,
+  traces evidence to the instruction-level cause, proposes the smallest effective change for confirmation,
+  edits the source copy, and validates the result with diff-aware review and fresh-context testing when available.
+  Not for creating a new skill, complaint-free auditing, or an unscoped rewrite.
 ---
 
-You are tuning an existing skill against a specific complaint. The skill is mostly working — your job is the smallest change that fixes the reported failure without degrading the rest.
+# Tune Skill
 
-The central rule: **judge every change by quality, not length.** Adding text is right when behavior is genuinely missing. Refining is right when behavior partly exists. Removing is right when text no longer earns its place. Splitting is right when one paragraph is doing two jobs. Never pad to look thorough. Never starve to look terse. If you cannot articulate why your operation beats the other three, you have not diagnosed deeply enough.
+Tune an existing skill without destabilizing what already works. The goal is not the fewest changed words; it is the narrowest change that fixes the behavioral generator, survives an adjacent case, and introduces no new ambiguity.
 
-## Hear the complaint
+## 1. Lock the complaint
 
-Capture what the user says is broken. If it is concrete enough to act on, move on. If not, ask up to three diagnostic questions — no more — then proceed even if the picture is still partial. Useful angles:
+Separate the user's feedback into three parts before diagnosing:
 
-- A specific run where the skill failed
-- What the user expected the skill to do instead
-- Whether this is repeated behavior or a one-off
+- **Behavior class:** what should change across runs.
+- **Evidence:** examples, outputs, or failed runs showing the behavior.
+- **Boundaries:** explicit corrections about what the solution must not narrow to or expand into.
 
-The reason for the cap: the root cause is your job to find, not the user's. Each extra question pushes the diagnostic load onto them and slows the loop they came here to shorten. If the complaint is still vague after three questions, name what is unclear, state your best guess at the failure mode, and proceed.
+Treat statements such as “that is only an example,” “not just this error,” or “the problem is general” as binding scope constraints. Never promote the most vivid example into the diagnosis when the user named a broader behavior.
 
-## Diagnose root cause vs symptom
+Write a one-sentence **complaint contract** at the user's abstraction level. Test it against a second plausible instance of the same behavior. If it describes only the named example, it is too narrow; if it would justify unrelated cleanup, it is too broad.
 
-Read the target skill end to end. The complaint points at a *symptom*; the cause is rarely where the user points. A few recurring patterns to recognize:
+If material uncertainty remains, ask at most three diagnostic questions total, starting with the answer that most controls scope. Proceed only when the remaining uncertainty would not change the scope, operation, or expected behavior of the edit. If a controlling uncertainty remains after the cap, state it and wait; do not force an edit from an unstable complaint contract.
 
-- **Skill keeps producing more output, never converges.** Usually a missing exit condition. It knows how to start but not when to stop.
-- **Skill misses something it should catch.** Either the instruction is absent, or it exists but is weak enough that the model overrides it under pressure. Check both.
-- **Skill produces inconsistent output across runs.** Often two instructions are blended in one paragraph and the model picks whichever fits the moment — conflated rules.
-- **Frontmatter promises something the body doesn't deliver.** Readers form expectations the skill can't satisfy.
+## 2. Resolve the target and evidence
 
-Locate the section, sentence, or absence where the symptom surfaces — then trace upstream. The first location you find is almost always the *surface* (where the bad output appeared), not the *cause* (the upstream instruction or absence that made the model produce it there). Keep asking "what would change the model's behavior here?" until the answer is an instruction you can edit, not a model behavior you wish were different.
+Find the authoritative editable skill source from the current repository, project instructions, and install documentation; prefer a git-tracked source when one exists. Do not assume a fixed runtime directory or that exactly two copies exist. A handed runtime path is evidence about what executed, not automatic permission to edit it. If only an installed or untracked copy is visible and its source of truth is unknown, stop and ask where the maintained source lives.
 
-**Falsification test before moving on:** if you changed only this location with the shape you have in mind, would the same symptom resurface next month under a different label — different artifact missed, different case overlooked, different scenario the user didn't enumerate? If yes, you're not done — and the failure could be in either of two dimensions, so check both before re-proposing. **(a) Location:** is the cause upstream of where you landed? Trace further. **(b) Shape:** is your fix shaped at the case level when the cause is a generator above it — a workflow ordering, a default posture, a misframed phase boundary? Reshape rather than enumerate. Skipping this test is the most common way to mistake symptom for cause, and the most common way to ship a patch that breaks again at the next un-enumerated case.
+Before proposing a change:
 
-## Choose the operation
+1. Read the authoritative `SKILL.md` end to end.
+2. Read directly linked resources required to understand the complained-about behavior.
+3. If a runtime or installed copy produced the failure, compare it with the source copy. Surface divergence and identify which copy explains the run.
+4. Inspect the failed output, trace, or conversation when available. Use focused git history only when intent or regression timing matters.
+5. Read and obey repository instructions before writing anywhere.
 
-Pick one consciously. The four operations exist for different reasons; the wrong one either wastes effort or makes the skill worse.
+Conversation evidence establishes how the skill failed; the skill and its resources establish why. Do not patch the skill when the evidence instead points to a tool limitation, permission boundary, stale runtime copy, or another external cause.
 
-- **Add** when the behavior is genuinely absent. You are introducing instruction that has no current home.
-- **Refine** when the behavior partly exists. Rewriting one instruction to cover the gap is usually cheaper than adding alongside, and produces less bloat.
-- **Remove** when text is vestigial — contradicted by newer additions, no longer load-bearing, or restating something the model already does well.
-- **Split** when one paragraph is doing two jobs. The instructions blend, the model conflates them, the output drifts. Two named instructions resolve it cleanly.
+## 3. Diagnose the behavioral generator
 
-If you cannot say why your choice beats the other three, return to the diagnosis step. Defaulting to **add** because it feels safest is the most common failure mode — it grows the skill without making it sharper.
+Trace backward from the bad behavior: output → decision the agent made → instruction, omission, conflict, or workflow order that made that decision reasonable. State the root cause in this form:
 
-## Propose before editing
+> Because [instruction or absence] makes or allows [decision], the skill produces [complained-about behavior] under [conditions].
 
-State the proposed edit in one or two sentences before touching the file. Include:
+Common generators include:
 
-- Which section or line you are changing
-- Which operation (add / refine / remove / split)
-- The expected behavior change
+- a missing exit condition when the skill never converges;
+- a present but weak rule that loses under pressure;
+- two distinct rules blended into one instruction;
+- a frontmatter promise the body does not implement;
+- a workflow phase that occurs too late to constrain an earlier decision;
+- a runtime/source mismatch that makes a correct repo edit appear ineffective.
 
-Wait for the user to confirm or redirect. Their veto is faster than your rework, and proposing makes your diagnosis visible — they may catch a misread you didn't.
+Run a falsification test before choosing a fix:
 
-## Apply the edit
+- **Location:** would editing the visible symptom leave the upstream cause intact?
+- **Shape:** would the same failure return under another error, artifact, or scenario the user did not enumerate?
+- **Counterfactual:** would the proposed change alter the original decision path and the adjacent test case without disturbing unrelated behavior?
 
-Skills live in two places: a git-tracked repo copy and a runtime copy under `~/.claude/skills`. The repo copy is the source of truth — write your edit there, even though you were handed the runtime path. Syncing the change to the runtime copy is a separate step, done only when asked. If the two copies have already diverged, surface that before editing rather than overwriting silently.
+If any answer is unfavorable, keep tracing. Do not turn one reported example into a list of special cases when the cause is a default posture, ordering rule, or missing decision boundary.
 
-Touch only what your proposal said you would touch. If the edit reveals a second issue you didn't propose, note it and return to the diagnosis step — do not silently expand scope. The user agreed to one change, not two.
+## 4. Choose the operation
 
-## Cold re-read
+Prefer one operation and explain why it beats the alternatives:
 
-Spawn a fresh-context Agent (subagent_type=general-purpose, model=sonnet) to audit the post-edit skill. Brief it like this:
+- **Add:** required behavior is genuinely absent and no existing instruction can cleanly carry it.
+- **Refine:** the right behavior exists but is weak, narrow, ambiguous, or placed at the wrong abstraction level.
+- **Remove:** text is vestigial, contradicted, redundant, or actively produces the failure.
+- **Split:** one instruction performs two jobs and lets the reader choose the wrong interpretation.
+- **Move:** the right rule exists but runs too early, too late, or in the wrong phase to govern the decision.
 
-> Read this skill end to end as if encountering it for the first time. Do not look for what is missing — look for what is wrong with what is there. Report:
-> - Contradictions between sections
-> - Rules that blend two distinct ideas
-> - Frontmatter description claims that don't match body behavior
-> - Vestigial text that no longer earns its place
-> - Instructions ambiguous enough that a reader could reasonably act two different ways
->
-> Under 200 words. Findings only — do not propose fixes.
+“Smallest” means least behavioral disturbance, not fewest lines. If the complaint proves that the skill needs a new architecture, broad rewrite, or evaluation program rather than a focused correction, stop and propose switching to the skill-creation workflow. Do not expand scope or switch workflows without explicit confirmation.
 
-Read the report. If real issues surface, return to the diagnosis step with the new findings. If the report is clean, you are done.
+If a coherent fix genuinely requires more than one operation, disclose every operation and why the combination is indivisible. Never hide cleanup or a second behavioral change behind a “primary” operation.
 
-This step is the most-skipped and the most-load-bearing in the whole workflow. The editor reads for what they meant to write, not what is on the page — a cold reader catches the contradictions and ambiguities you introduced and didn't notice.
+## 5. Propose before editing
 
-## Save a principle, only if new
+Before touching the file, present:
 
-If the conversation revealed a *new* feedback pattern about how this user collaborates on skills — not just a fact about the specific skill you edited — save it as a feedback memory. New means: not already covered by an existing entry. Most tuning sessions do not produce new principles. Default to not saving rather than recording variations on the same idea.
+1. the complaint contract, including explicit boundaries;
+2. the evidence-backed root cause;
+3. every section and operation to change;
+4. the expected behavior change and one adjacent case it should also handle;
+5. what will remain deliberately untouched;
+6. how the edit will be validated.
+
+Keep the proposal concise, but do not omit the reasoning needed to expose a scope mistake. Wait for confirmation unless the user has already approved this exact scope after seeing the proposal. A generic request to “update the skill” is not approval for an unshown diagnosis.
+
+## 6. Apply only the confirmed change
+
+Edit only the confirmed authoritative source and stay within its repository or project write boundaries. Do not sync, overwrite, or delete installed/runtime copies unless the user separately asks and the environment authorizes it. If source and runtime copies diverge, preserve both and report the difference.
+
+Touch only what the confirmed proposal covers. Preserve unrelated user changes in a dirty worktree. If editing exposes another issue:
+
+- pause and re-propose when the issue—whether new or pre-existing—must be resolved for the confirmed fix to be coherent or safe;
+- record it separately without editing when it is unrelated and non-blocking;
+- never fold opportunistic cleanup into the approved edit.
+
+## 7. Validate the behavior
+
+Validation must prove the complaint contract, not merely show valid Markdown.
+
+Behavioral validation is non-mutating by default. Use read-only artifacts, an isolated harness, or proposal-only stopping points; never let a tester edit the shared repository, sync runtime copies, contact external systems, or perform other consequential actions. If the behavior cannot be proved without mutation, request separate authority or report the unverified portion instead of broadening validation scope.
+
+1. Inspect the final diff for scope and run any available skill validator.
+2. Re-run the original failure path in that non-mutating boundary. If the exact artifact is unavailable, reconstruct the smallest evidence-equivalent case from the complaint without inventing missing facts. Do not claim the original behavior is resolved unless the original or evidence-equivalent case demonstrates the changed decision path; otherwise report the validation gap and keep the tune incomplete.
+3. Test the adjacent case from the proposal. For every applied edit, use fresh-context subagents when available to test the original or evidence-equivalent case and the adjacent case. Give them the skill plus realistic user requests—not the diagnosis, intended fix, or expected answer. Use independent runs when one test could leak the other case's lesson.
+4. Use a separate fresh context to cold-read the post-edit skill against the complaint contract and the pre-edit version or diff. Never reuse a behavioral tester as the cold reader.
+
+Use this cold-read brief, adapted to the available agent interface:
+
+> Given the complaint contract and the pre-edit version or diff, read the post-edit skill end to end. Findings only; do not propose fixes. Label each finding `introduced` or `pre-existing`. Check for complaint-contract violations, contradictions, blended rules, frontmatter/body mismatch, vestigial text, and instructions that permit two reasonable behaviors. Report pre-existing issues only when they block the complaint contract or make the new edit unsafe. Stay under 200 words.
+
+An `introduced` finding, a complaint-contract violation, or a pre-existing finding that makes the edit unsafe or incoherent returns the workflow to diagnosis and requires a new proposal before further editing. Do not expand the tune to search for non-blocking pre-existing issues; if other evidence independently exposes one, report it separately without editing it. If independent fresh contexts are unavailable, perform the missing checks directly as lower-confidence evidence, disclose `independent validation unavailable`, and never describe that fallback as fresh-context or independent validation.
+
+## 8. Finish with evidence
+
+Before reporting completion, verify each item:
+
+- the final behavior matches the complaint contract at the requested abstraction level;
+- the original or evidence-equivalent case and the adjacent case both demonstrate the intended decision change;
+- no explicit boundary or unrelated behavior was absorbed into the fix;
+- validation and cold-read results support the claim;
+- repo and runtime state are accurately reported.
+
+Report the changed source file, the behavioral effect, validation performed, any relevant pre-existing finding, and whether runtime copies were intentionally left untouched.
+
+Save a cross-skill feedback principle only when it is genuinely new, the user explicitly asks to retain it, and the environment provides an authorized memory mechanism. Memory work must never broaden or block the tune itself.
 
 ## What this skill is not
 
-- Not for creating a new skill from scratch — use skill-creator.
-- Not for a major rewrite where evals make sense — use skill-creator.
-- Not for auditing a skill that has no specific complaint. Without a reported failure, there is nothing to tune.
+- Not for creating a new skill from scratch—stop, propose the skill-creation workflow, and wait for confirmation.
+- Not for a complaint-free general audit—stop, propose a review workflow, and wait for confirmation.
+- Not for silently turning a focused complaint into a major rewrite.
+- Not for editing runtime copies or unrelated files without explicit authority.
