@@ -12,6 +12,7 @@ Commits should be easy to review and safe to ship: only intended changes include
 ## Rules
 
 - Read CLAUDE.md (or `.claude/CLAUDE.md`) if it exists and is not already in context — use it for commit message language (Turkish or English), project-specific scopes, subject limits, and trailer rules. Default to English if absent.
+- For GitHub-hosted repositories, prefer `gh` for every supported GitHub-side operation: repository identity and ownership, authentication, default-branch and fork metadata, pull requests, checks, and other remote state. Use `git` for local repository operations (`status`, `diff`, staging, commits, history, branches, and upstream tracking) and for transport operations such as `fetch` and `push`, which `gh` does not natively replace. Do not reimplement native Git operations through `gh api`; if `gh` is unavailable or unauthenticated, fall back to `git` only where it provides equivalent evidence.
 - Use Conventional Commits: `type(scope): subject` (max 72 chars)
 - Body explains WHY, not what (the diff shows what)
 - No `Co-Authored-By` or AI attribution of any kind — not in subject, body, or trailer; explicit project policy, applies even if a commit template includes it
@@ -24,7 +25,7 @@ Commits should be easy to review and safe to ship: only intended changes include
 
 **Fast path (default)** — most diffs are one coherent change; finish in two rounds:
 
-1. **One look**, single round: `git status --short && git diff && git diff --cached`. Nothing staged and nothing modified → stop and tell the user there is nothing to commit.
+1. **One look**, single round: `git status --short && git diff && git diff --cached`. When the repository is GitHub-hosted and commit or push is in scope, include `gh repo view --json nameWithOwner,url,defaultBranchRef` and `gh auth status --active` in this round so GitHub identity and access come from GitHub rather than URL parsing or assumptions. Nothing staged and nothing modified → stop and tell the user there is nothing to commit.
 2. **Commit + push + verify**, single chained round:
 
    ```sh
