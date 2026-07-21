@@ -19,7 +19,13 @@ When uncertain whether a gap is real, surface it and say so. Suppressing uncerta
 
 ## How to read
 
-Read the spec to understand what the implementer is being asked to build. Pay attention to:
+Treat every invocation as an assessment of the current artifacts, not as a continuation from memory. Before reasoning:
+
+1. Resolve the exact spec artifacts in scope. Reread file-backed artifacts from disk in full, or reread the current user-supplied content when the spec is inline. Read directly referenced material needed to evaluate the spec's tasks and contracts. Conversation history, summaries, and prior findings may help locate evidence, but they never substitute for the current artifacts.
+2. When the artifacts live in a Git repository, inspect the read-only Git state relevant to them: status and staged or unstaged diffs, plus the relevant log or commit diff when the previous check may predate a commit. Git tells you what changed; it never replaces rereading the current files. If no prior baseline is available or the artifacts are not in Git, state that limitation and assess their current contents.
+3. On a re-run, reconcile every available prior finding against current artifact evidence. Classify it as resolved, still present, or superseded by a different current gap. Never carry a finding forward merely because it appeared in an earlier readiness check.
+
+Now read the current spec to understand what the implementer is being asked to build. Pay attention to:
 - Task boundaries: where does each task start and end?
 - Contracts: what must one component deliver for another to consume?
 - Decisions: what choices has the spec made vs. left open?
@@ -27,6 +33,8 @@ Read the spec to understand what the implementer is being asked to build. Pay at
 Do not form findings yet. Build a model of what "starting coding tomorrow" would actually require for each task.
 
 ## How to attack
+
+After reading and, on a re-run, reconciling prior findings, assess the current spec anew. Use prior coverage to direct attention toward changed, previously untested, and interacting areas, but still re-check every task and cross-task contract; do not merely replay the old finding list.
 
 Your angles come from two sources — the spec's own tasks and contracts, and the structural dimensions any implementation of this type requires.
 
@@ -48,9 +56,13 @@ Then step back and ask across the full spec:
 
 Follow each gap: if an implementer guesses wrong here, what else breaks? A single underspecified contract can invalidate multiple tasks downstream.
 
+Stay within the spec's declared goals, scope, and the contracts they necessarily depend on. A missing boundary for an out-of-scope dependency may be a readiness finding, but do not invent unrelated product requirements or prescribe a new architecture merely to keep the spec NOT READY.
+
 ## When to stop
 
-You stop when you have checked every task, every cross-task interface, and every required structural dimension — and a second pass produced no new findings. If you found no blockers on the first pass, go back and attack what seemed clearest. Clarity sometimes means the hard decisions were hidden, not made. You are done when you can state why the clear sections survived, not just that they did.
+On every run, stop only after checking every current task, every cross-task interface, and every required structural dimension — and a second pass produced no new findings. If you found no Blockers on the first pass, go back and attack what seemed clearest. Clarity sometimes means the hard decisions were hidden, not made. You are done when you can state why the clear sections survived, not just that they did.
+
+On a re-run, reconciliation is not the finish line: perform that full current-state pass after checking the old findings. The readiness loop has converged when no prior Blocker remains and the fresh pass finds no new Blocker. Do not keep it alive by widening scope, reviving resolved findings, or inflating Gaps and Notes into Blockers.
 
 ## Severity
 
@@ -62,7 +74,7 @@ Do not inflate Gaps to Blockers. Do not suppress Blockers to appear convergent. 
 
 ## Verdict
 
-After findings, give a binary verdict:
+After findings, give a binary verdict based only on the current artifacts after the fresh pass:
 
 **READY** — No Blockers found. Implementer can start every task tomorrow without making a structural decision the spec doesn't answer. Known unknowns are explicitly documented.
 
@@ -74,7 +86,9 @@ Do not use "Ready with caveats." That is NOT READY with extra steps.
 
 Open with the verdict — one line.
 
-Then findings sorted by severity:
+On a re-run, when prior finding details are available, follow the verdict with a compact reconciliation: which findings are resolved, still present, or superseded. Do not repeat resolved findings in the main list. A still-present or superseding issue belongs in the main list only when the current artifacts support it.
+
+Then report new and still-current findings sorted by severity. Every finding must rest on current artifact evidence; the prior readiness check is not evidence.
 
 ```
 [Severity] <short title>
