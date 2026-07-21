@@ -9,13 +9,19 @@ Do not modify any files. Your output is analysis only.
 
 ## How to read
 
-Read the spec once to understand what the author believes is true. Pay attention to what they are most confident about — stated goals, claimed constraints, assumed user behavior, defined scope. Confidence is where assumptions hide.
+Treat every invocation as a review of the current artifacts, not as a continuation from memory. Before reasoning:
 
-Do not form findings yet. Just understand the shape of what they're defending — and what they have already defended against. A Risks section, explicit tradeoff justifications, or defensive caveats mean the spec has absorbed a prior review; on a re-review, only structural failures count.
+1. Resolve the exact spec files in scope and reread them from disk in full. Read directly referenced material needed to evaluate their claims. Conversation history, summaries, and previous findings may help you locate evidence, but they never substitute for the current files.
+2. When the artifacts live in a Git repository, inspect the read-only Git state relevant to them: status and staged or unstaged diffs, plus the relevant log or commit diff when the previous review may predate a commit. Git tells you what changed; it never replaces rereading the current files. If no prior baseline is available or the artifacts are not in Git, state that limitation and review their current contents.
+3. On a re-review, reconcile every available prior finding against current file evidence. Classify it as resolved, still present, or superseded by a different current failure. Never carry a finding forward merely because it appeared in an earlier review.
+
+Now read the current spec to understand what the author believes is true. Pay attention to what they are most confident about — stated goals, claimed constraints, assumed user behavior, defined scope. Confidence is where assumptions hide.
+
+Do not form new findings until you understand the current shape of what they are defending and what prior review work the spec has absorbed. A Risks section, explicit tradeoff justification, or defensive caveat is review history, not proof that the current design works.
 
 ## How to attack
 
-After reading, attack. Your angles come from the document itself, not from a preset list. Ask:
+After reading and, on a re-review, reconciling prior findings, attack the current spec anew. Use prior coverage to direct attention toward changed, previously untouched, and interacting areas; do not merely replay the old finding list. Your angles come from the document itself, not from a preset list. Ask:
 
 - What has to be true for this to work? Is it ever verified?
 - Where does the spec hand off to someone else's judgment? What happens when that judgment is wrong?
@@ -26,11 +32,13 @@ After reading, attack. Your angles come from the document itself, not from a pre
 
 For each finding you write: ask what it unlocks. A gap in auth assumptions isn't just an auth gap — it may invalidate three other sections that depend on it. Follow the cascade before moving on.
 
+Stay within the spec's declared goals, scope, and the contracts they necessarily depend on. An out-of-scope dependency may invalidate an in-scope promise, but do not turn that into unrelated product requirements or enlarge the scope merely to keep finding problems.
+
 ## When to stop
 
-**On the first pass, exhaust before you stop.** "I think I have the main ones" is the signal to keep going, not to stop. Re-attack the sections that look cleanest — clean is suspicious. Then check structural dimensions the spec never surfaced (concurrency, rollback, auth, data ownership) and see if they apply. If your output ends up with P3s but few P0/P1s, you under-attacked — the structural failures are usually there, you just stopped before finding them.
+**On the first pass, exhaust before you stop.** "I think I have the main ones" is the signal to keep going, not to stop. Re-attack the sections that look cleanest — clean is suspicious. Then check structural dimensions the spec never surfaced (concurrency, rollback, auth, data ownership) and see if they apply. After those applicable angles have survived a genuine attack, accept that result; the absence of P0/P1 findings is not permission to manufacture one.
 
-**After a genuine attack, converge at P2.** If your strongest finding is P2, the spec has survived. Stop. Do not invent P3s or stylistic gaps — false findings train the author to ignore reviews. Tell them the next step is spec-readiness, not another round of this skill.
+**On a re-review, reconciliation is not the finish line.** After checking old findings, attack the current state once across changed, interacting, and materially untested areas. Continue the adversarial-review loop only while current evidence supports a P0 or P1. When no prior P0/P1 remains and the fresh attack produces no new P0/P1, the loop has converged. If the strongest current finding is P2, the spec has survived. Stop and tell the author that the next step is spec-readiness, not another round of this skill. Do not keep the loop alive by widening scope, reviving resolved findings, or mining for P3s and stylistic gaps.
 
 ## Priority
 
@@ -47,7 +55,9 @@ Do not balance findings across priority levels. If you found five P1s and nothin
 
 If P0 or P1 findings exist, open with one sentence verdict.
 
-Then findings, sorted by priority:
+On a re-review, when prior finding details are available, place a compact reconciliation after that verdict, or first when no verdict is required: which findings are resolved, still present, or superseded. Do not repeat resolved findings in the main list. A still-present or superseding failure belongs in the main list only when the current artifacts support it.
+
+Then report new and still-current findings, sorted by priority. Every finding must rest on current artifact evidence; the prior review is not evidence.
 
 ```
 [Px] <short title>
