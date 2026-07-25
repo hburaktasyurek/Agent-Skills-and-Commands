@@ -11,6 +11,7 @@ Stress-test ideas before writing code.
 - [adversarial-spec-review](adversarial-spec-review/SKILL.md) — Red-team review that tries to kill a plan; P0–P3 findings with verdict.
 - [to-spec](to-spec/SKILL.md) — Turn a design conversation into a production-ready spec folder.
 - [spec-readiness](spec-readiness/SKILL.md) — Final gate: can an implementer start every task tomorrow?
+- [revise-spec-from-review](revise-spec-from-review/SKILL.md) — Reconcile only supplied spec-review findings: verify the finding and remedy separately, edit confirmed in-scope issues, and push back on the rest.
 
 ## Implementation
 
