@@ -50,13 +50,29 @@ A review can contain two claims:
 
 The review text is neither evidence nor authority. Verify each supplied claim independently against the current spec, repository instructions, binding task decisions, roadmap/acceptance contract, live code and tests, established system patterns, relevant standards, and history. Use only sources that bear on the supplied finding. Never fabricate a remedy claim when the reviewer offered none.
 
+### Evidence discipline
+
+Before classifying a finding or remedy, decompose only the reasoning necessary to judge it into a compact premise chain: **claim → required factual premises → evidence for each premise → warranted conclusion**. Verify every premise on which the classification, proposed failure mechanism, root cause, closure condition, or chosen edit depends. One artifact may prove several premises; do not add ceremony when direct evidence is sufficient.
+
+A plausible explanation, architectural intuition, familiar pattern, identifier name, comment, reviewer statement, or memory is not proof. The current spec proves what it says, but a challenged statement does not prove that the code, database, provider, protocol, or runtime behaves accordingly. An explicit binding user decision proves that decision, not an unstated technical mechanism.
+
+Match the evidence method to the premise:
+
+- prove positive repository facts from the exact current artifact and relevant context;
+- prove absence, uniqueness, and exhaustive claims with targeted search across the plausible owners, recording the searched boundary rather than inferring from one familiar file;
+- verify currentness when a claim can be stale, including the relevant live code, schema, tests, version, or history;
+- verify external database, provider, protocol, language, or runtime semantics against an authoritative primary source;
+- derive a conclusion only when its verified premises entail it; if multiple explanations remain possible, do not select one by familiarity.
+
+Keep this proof claim-directed. Do not inspect unrelated surfaces or turn premise verification into a new review. If a required premise remains unverified after focused checking, do not silently fill the gap: a finding that depends on it is `REJECTED` as unsupported, not disproved; a remedy that depends on it is `REJECT`; and an unproved root cause or closure condition cannot authorize an edit. `BLOCKED` remains reserved for a confirmed issue that requires a previously unmade product/scope decision.
+
 For each finding, keep a compact private ledger:
 
 | Field | Allowed result |
 |---|---|
 | Finding | `CONFIRMED`, `REJECTED`, or `BLOCKED` |
 | Proposed remedy | `USE`, `ADAPT`, `REJECT`, or `NOT_PROVIDED` |
-| Evidence | Exact artifact and the fact it proves |
+| Evidence chain | Each required premise, its exact artifact, and the conclusion it warrants |
 | Resolution | Spec edit, pushback reason, or decision dependency |
 
 Do not dump this ledger into the final response.
@@ -85,7 +101,7 @@ Then record:
 - **REJECT** — do not use it because it is wrong, incomplete, fragile, incompatible, regression-causing, out of scope, disproportionate, or assumes an unresolved decision. Rejecting the proposal does not reject a confirmed finding.
 - **NOT_PROVIDED** — the reviewer supplied no remedy. Do not invent one merely to evaluate it.
 
-First require a correct and sufficient solution. Only among solutions that pass those gates choose the one with the smallest blast radius. Do not search for a globally superior design. If the review proposes new abstractions, modes, registries, extensibility, or future-proofing, require concrete evidence that the confirmed finding cannot be closed within the existing structure.
+First require a correct and sufficient solution. Only among solutions that pass those gates choose the one with the smallest blast radius. For a `CONFIRMED` finding, smallest means the smallest root-complete resolution inside the current task boundary, not the fewest edited lines or the narrowest patch to the reported manifestation. Do not search for a globally superior design. If the review proposes new abstractions, modes, registries, extensibility, or future-proofing, require concrete evidence that the confirmed finding cannot be closed within the existing structure.
 
 When a finding is `CONFIRMED` and its remedy is `REJECT` or `NOT_PROVIDED`, derive the resolution independently from the proven failure, binding task contract, and existing system. Use the smallest existing-system-fitting change that is correct and sufficient. If no such resolution can be selected without a product/scope decision, change the finding disposition to `BLOCKED`.
 
@@ -105,17 +121,44 @@ This mapping is claim-directed. Do not inventory the repository for other risks.
 
 ### 2. Classify every finding before dependent edits
 
-Verify each finding and its proposed remedy separately. Complete the private ledger before editing any finding whose resolution depends on another.
+Verify each finding and its proposed remedy separately. Complete every required premise in the private evidence chain and the ledger before editing any finding whose resolution depends on another. Do not let an unverified premise pass merely because the conclusion appears likely.
 
 If a `BLOCKED` finding controls other edits, pause those dependent edits. Apply confirmed fixes that are independent of it. Do not let one unresolved decision prevent unrelated, safe corrections.
 
-### 3. Resolve technical gaps without reopening the project
+### 3. Prove task-owned root-cause closure
+
+Before selecting or applying a resolution for each `CONFIRMED` finding, trace the reported manifestation through the verified premise chain to the deepest evidence-supported cause owned by the current task. The reviewer's stated root cause or invariant is a lead to verify, not an authority. Every causal link must follow from proven premises; do not replace a missing link with a root assumption. Stop at the task-owned cause whose correction prevents the supplied defect from recurring across the task-owned surface; do not search for an ultimate architectural cause or unrelated defects.
+
+Keep a compact private root-closure map:
+
+| Map item | What to record |
+|---|---|
+| Reported manifestation | The exact failure the supplied finding demonstrates |
+| Proven root cause | The task-owned cause established by the verified premise chain |
+| Closure condition | The postcondition that must hold for the supplied defect to be impossible across the task-owned surface |
+| Mandatory consequence surface | The clauses, branches, producers, consumers, states, references, or side effects that must agree for closure |
+| Proof mode | The smallest evidence method sufficient to prove closure |
+
+Choose the proof mode proportionately to the finding:
+
+- for control-flow defects, trace every task-owned producer, branch, and early return that can produce the supplied failure;
+- for API or state-coherence defects, trace the relevant producers and consumers and align the returned value, persisted state, external side effects, and ownership where applicable;
+- for a wrong name, path, fact, or absence/exhaustiveness claim, use targeted search across its plausible task-owned dependents;
+- for a scope or requirement contradiction, trace the binding task contract to every derived clause needed to close that contradiction;
+- for an external mechanism claim, verify the necessary semantics against an authoritative primary source;
+- for a simple typo or isolated local fact, keep the proof local plus any mandatory dependent references; do not force a branch matrix or interaction analysis.
+
+A resolution passes root-cause closure only when it removes the proven cause across the mapped task-owned surface, propagates every mandatory in-scope consequence, leaves the relevant postconditions coherent, and adds no out-of-scope machinery. If the proposed remedy patches only the cited manifestation, mark it `ADAPT` or `REJECT`. If a supplied finding proves that an earlier accepted revision patched another manifestation of the same root cause, replace the partial workaround with the root-complete resolution instead of stacking another exception.
+
+When the resolution clarifies a task-wide rule or invariant, state it once in the spec's authoritative location and make dependent sections operationalize it without conflicting paraphrases.
+
+### 4. Resolve technical gaps without reopening the project
 
 When a confirmed finding leaves a small technical detail open, resolve it from the current mechanism, repository patterns, prior task decisions, and standards. This is normal reconciliation, not a reason to rerun all of `task-groundwork`.
 
 If resolution would change the product behavior or scope contract, reopen only that affected decision branch. Do not invent the answer and do not restart the full groundwork tree.
 
-### 4. Apply surgical spec edits
+### 5. Apply surgical spec edits
 
 For each `CONFIRMED` finding:
 
@@ -123,7 +166,7 @@ For each `CONFIRMED` finding:
 - apply its valid, narrowed form when it is `ADAPT`;
 - when it is `REJECT`, discard the proposal and apply the independently derived, existing-system-fitting resolution;
 - when it is `NOT_PROVIDED`, apply the independently derived, existing-system-fitting resolution without attributing it to the reviewer;
-- change only the clauses necessary to close the proven failure;
+- use the private root-closure map and change only the clauses necessary to satisfy its closure condition across the mapped task-owned surface;
 - update other files in the same spec folder only when the changed claim makes a dependency-cone consequence necessary to fully close the originating finding or avoid a semantic inconsistency;
 - preserve the folder's existing structure, terminology, and level of detail.
 
@@ -136,15 +179,16 @@ For each `BLOCKED` finding:
 - make no choice-dependent edit;
 - for a real product/scope decision, present two or three evidence-based alternatives with their concrete impacts and ask the user to choose.
 
-### 5. Run the change-induced regression audit
+### 6. Run the change-induced regression audit
 
-After applying the accepted resolutions, reread the complete current spec folder. Start from this run's diff and answer only: **did these edits create or activate a contradiction, leave a required consequence unpropagated, or rely on an unproved claim?** This is self-verification of the revision, not a new review of the pre-existing spec.
+After applying the accepted resolutions, reread the complete current spec folder. Start from each finding's root-closure map and this run's diff, then answer only: **did these edits fail to close the proven task-owned cause, create or activate a contradiction, leave a required consequence unpropagated, or rely on an unproved claim?** This is self-verification of the revision, not a new review of the pre-existing spec.
 
 Build a private impact map for every changed normative claim:
 
 | Map item | What to record |
 |---|---|
 | Origin | Supplied finding ID and changed requirement |
+| Root closure | Proven task-owned root cause and closure condition |
 | Spec propagation | Every clause, matrix, acceptance criterion, task, test directive, standard, and example whose meaning depends on it |
 | Contract propagation | Affected producer, return/result contract, current consumers, ownership, and error/terminal behavior |
 | Interaction propagation | Actors and operations that touch the same changed state, identity, resource, lock, transaction, retry, or invariant |
@@ -152,11 +196,12 @@ Build a private impact map for every changed normative claim:
 
 Run these checks for each map:
 
-1. **Whole-spec semantic propagation.** Compare the operational meaning of the changed claim with every dependent statement across the spec folder. A grep match locates candidates; it does not prove consistency. Check directives and their derived tests/acceptance criteria in both directions.
-2. **Producer/consumer propagation, when triggered.** If the revision changes an interface, result type/status, state meaning, ownership rule, or failure behavior, search for the current producers and consumers of that exact contract. Verify that each dependent spec clause uses the same type, transition, authority, and terminal/error interpretation.
-3. **Interaction/interleaving propagation, when triggered.** If the revision changes concurrency, locks, transactions, state transitions, identity, supersession, retries, asynchronous work, or late results, enumerate only actors and operations that touch the same changed resource or invariant. Trace the relevant before/during/after, retry, late-result, and competing-owner cases. Do not form a cross-product with every public method or expand into unrelated actors.
-4. **Negative and exhaustive claims.** For every new or strengthened claim such as “no,” “never,” “only,” “all,” “none,” “cannot,” or “already handled,” run a targeted repository search across the plausible owners. Reading one familiar file is not evidence of absence or exhaustiveness.
-5. **External mechanism claims, when triggered.** If correctness depends on database, provider, protocol, language, or runtime semantics not established by repository evidence, verify the exact mechanism against an authoritative primary source rather than memory. A resolution that still rests on an unproved mechanism does not pass the correctness gate.
+1. **Root-cause closure.** Verify that the latest diff satisfies the closure condition across the complete mapped task-owned surface. A change that fixes only the reported branch, example, sentence, or other manifestation does not pass.
+2. **Whole-spec semantic propagation.** Compare the operational meaning of the changed claim with every dependent statement across the spec folder. A grep match locates candidates; it does not prove consistency. Check directives and their derived tests/acceptance criteria in both directions.
+3. **Producer/consumer propagation, when triggered.** If the revision changes an interface, result type/status, state meaning, ownership rule, or failure behavior, search for the current producers and consumers of that exact contract. Verify that each dependent spec clause uses the same type, transition, authority, and terminal/error interpretation and, where applicable, that returned values, persisted state, external side effects, and ownership express the same authoritative postcondition.
+4. **Interaction/interleaving propagation, when triggered.** If the revision changes concurrency, locks, transactions, state transitions, identity, supersession, retries, asynchronous work, or late results, enumerate only actors and operations that touch the same changed resource or invariant. Trace the relevant before/during/after, retry, late-result, and competing-owner cases. Do not form a cross-product with every public method or expand into unrelated actors.
+5. **Negative and exhaustive claims.** For every new or strengthened claim such as “no,” “never,” “only,” “all,” “none,” “cannot,” or “already handled,” run a targeted repository search across the plausible owners. Reading one familiar file is not evidence of absence or exhaustiveness.
+6. **External mechanism claims, when triggered.** If correctness depends on database, provider, protocol, language, or runtime semantics not established by repository evidence, verify the exact mechanism against an authoritative primary source rather than memory. A resolution that still rests on an unproved mechanism does not pass the correctness gate.
 
 Attribute the result before acting:
 
@@ -166,12 +211,14 @@ Attribute the result before acting:
 
 After any audit-driven edit, rebuild the affected impact map and rerun this audit against the complete spec folder. Continue until the latest diff introduces no regression.
 
-### 6. Verify and stop
+### 7. Verify and stop
 
 Inspect the resulting diff and prove all of the following before reporting:
 
 - every edit maps to a supplied, confirmed finding;
-- each confirmed finding is fully resolved, not merely reworded;
+- every finding, remedy, root cause, closure condition, and edit depends only on verified premises; no plausible but unproved assumption entered the decision path;
+- every confirmed finding has an evidence-supported, task-owned root cause and closure condition proportionate to that finding;
+- each confirmed finding is resolved at that root across its mapped task-owned surface, not merely reworded or patched at one manifestation;
 - the change-induced regression audit ran after the latest edit, and every changed normative claim has complete semantic and triggered contract/interaction propagation;
 - every regression found during that audit was resolved under its originating supplied finding ID rather than added as a new finding;
 - rejected and blocked findings caused no unauthorized edits;
