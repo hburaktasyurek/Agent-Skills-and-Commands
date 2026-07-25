@@ -124,10 +124,10 @@ For each `CONFIRMED` finding:
 - when it is `REJECT`, discard the proposal and apply the independently derived, existing-system-fitting resolution;
 - when it is `NOT_PROVIDED`, apply the independently derived, existing-system-fitting resolution without attributing it to the reviewer;
 - change only the clauses necessary to close the proven failure;
-- update other files in the same spec folder only when they would otherwise directly contradict the accepted fix;
+- update other files in the same spec folder only when the changed claim makes a dependency-cone consequence necessary to fully close the originating finding or avoid a semantic inconsistency;
 - preserve the folder's existing structure, terminology, and level of detail.
 
-Cross-file consistency is a consequence check, not permission for a fresh review. Do not polish adjacent prose or normalize unrelated content.
+Cross-file consistency is a consequence check, not permission for a fresh review. The regression audit below rereads the complete spec, but it tests only semantics introduced or changed by this run. Do not polish adjacent prose or normalize unrelated content.
 
 For each `REJECTED` finding, make no change for that finding and retain the evidence needed for a one-line pushback.
 
@@ -136,12 +136,44 @@ For each `BLOCKED` finding:
 - make no choice-dependent edit;
 - for a real product/scope decision, present two or three evidence-based alternatives with their concrete impacts and ask the user to choose.
 
-### 5. Verify and stop
+### 5. Run the change-induced regression audit
+
+After applying the accepted resolutions, reread the complete current spec folder. Start from this run's diff and answer only: **did these edits create or activate a contradiction, leave a required consequence unpropagated, or rely on an unproved claim?** This is self-verification of the revision, not a new review of the pre-existing spec.
+
+Build a private impact map for every changed normative claim:
+
+| Map item | What to record |
+|---|---|
+| Origin | Supplied finding ID and changed requirement |
+| Spec propagation | Every clause, matrix, acceptance criterion, task, test directive, standard, and example whose meaning depends on it |
+| Contract propagation | Affected producer, return/result contract, current consumers, ownership, and error/terminal behavior |
+| Interaction propagation | Actors and operations that touch the same changed state, identity, resource, lock, transaction, retry, or invariant |
+| Proof mode | Direct source evidence, targeted search, contract trace, or bounded interleaving trace |
+
+Run these checks for each map:
+
+1. **Whole-spec semantic propagation.** Compare the operational meaning of the changed claim with every dependent statement across the spec folder. A grep match locates candidates; it does not prove consistency. Check directives and their derived tests/acceptance criteria in both directions.
+2. **Producer/consumer propagation, when triggered.** If the revision changes an interface, result type/status, state meaning, ownership rule, or failure behavior, search for the current producers and consumers of that exact contract. Verify that each dependent spec clause uses the same type, transition, authority, and terminal/error interpretation.
+3. **Interaction/interleaving propagation, when triggered.** If the revision changes concurrency, locks, transactions, state transitions, identity, supersession, retries, asynchronous work, or late results, enumerate only actors and operations that touch the same changed resource or invariant. Trace the relevant before/during/after, retry, late-result, and competing-owner cases. Do not form a cross-product with every public method or expand into unrelated actors.
+4. **Negative and exhaustive claims.** For every new or strengthened claim such as “no,” “never,” “only,” “all,” “none,” “cannot,” or “already handled,” run a targeted repository search across the plausible owners. Reading one familiar file is not evidence of absence or exhaustiveness.
+5. **External mechanism claims, when triggered.** If correctness depends on database, provider, protocol, language, or runtime semantics not established by repository evidence, verify the exact mechanism against an authoritative primary source rather than memory. A resolution that still rests on an unproved mechanism does not pass the correctness gate.
+
+Attribute the result before acting:
+
+- If reverting this run's edit would remove the contradiction, or the edit makes another clause newly inconsistent, treat it as a regression of the originating finding. Keep the same finding ID; repair the required dependent clauses or replace/revert the resolution. Do not mint a new finding.
+- If the regression cannot be resolved without a previously unmade product/scope decision, remove the choice-dependent edit and change the originating finding to `BLOCKED`.
+- If the issue would remain unchanged without this run's diff and is not required to close a supplied finding, it is pre-existing and unrelated. Do not edit or report it.
+
+After any audit-driven edit, rebuild the affected impact map and rerun this audit against the complete spec folder. Continue until the latest diff introduces no regression.
+
+### 6. Verify and stop
 
 Inspect the resulting diff and prove all of the following before reporting:
 
 - every edit maps to a supplied, confirmed finding;
 - each confirmed finding is fully resolved, not merely reworded;
+- the change-induced regression audit ran after the latest edit, and every changed normative claim has complete semantic and triggered contract/interaction propagation;
+- every regression found during that audit was resolved under its originating supplied finding ID rather than added as a new finding;
 - rejected and blocked findings caused no unauthorized edits;
 - only the named spec folder and any exact outside target explicitly authorized by the user for this run changed;
 - mandatory cross-file consequences are consistent and no unrelated cleanup slipped in;
