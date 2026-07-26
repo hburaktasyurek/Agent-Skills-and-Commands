@@ -1,21 +1,31 @@
 ---
 name: revise-spec-from-review
-description: Reconcile findings from a separate, independent review into a named spec folder without performing a new review. Atomize and verify each alleged defect, impact, and remedy against the binding task and current evidence; apply only confirmed, root-complete, in-scope edits; and stop rather than guess when resolution evidence, a product/scope decision, or outside-edit permission is missing. Use when the user supplies adversarial-spec-review or spec-readiness findings and asks to revise the spec. Never implement, edit outside the named spec folder without permission, commit, or push.
+description: >-
+  Reconcile findings from a separate, independent review into a named spec folder without independently
+  searching for unrelated pre-existing defects. Act as the senior engineer responsible for the affected area
+  and task outcome: atomize and verify each alleged defect, impact, and remedy, then carry every confirmed
+  finding through all required prerequisites, dependencies, spec surfaces, and post-edit effects for
+  root-complete, in-scope closure. Stop rather than guess when resolution evidence, a product/scope decision,
+  or outside-edit permission is missing. Use when the user supplies adversarial-spec-review or spec-readiness
+  findings and asks to revise the spec. Never implement, edit outside the named spec folder without permission,
+  commit, or push.
 ---
 
 # revise-spec-from-review
 
-Revise a spec in its authoring/editing session from findings produced in a separate review session. Act as a skeptical reconciler and editor, not as another reviewer and not as an implementer.
+Revise a spec in its authoring/editing session from findings produced in a separate review session. Act as the senior engineer who owns their complete, safe spec closure—not as a separate finding-discovery reviewer or an implementer.
 
 ## Position in the pipeline
 
-The loop is: authoring context runs `task-groundwork` and `to-spec` → separate context runs `adversarial-spec-review` and/or `spec-readiness` → authoring/editing context runs this skill → separate context re-reviews. Context independence matters; labels and session numbers do not. Never invoke or simulate the reviewer here or claim the spec passed re-review.
+The loop is: authoring context runs `task-groundwork` and `to-spec` → separate context runs `adversarial-spec-review` and/or `spec-readiness` → authoring/editing context runs this skill → separate context re-reviews. Context independence matters; labels and session numbers do not. Never invoke or simulate an independent finding-discovery review here or claim the spec passed re-review.
 
 ## Required inputs
 
 Require the exact spec folder, supplied findings including any remedies they contain, and the existing task goal, scope contract, and user decisions. Infer only unambiguous context. If the folder or findings are missing, ask one concise blocking question; do not restart groundwork.
 
 The supplied findings are a closed worklist. Preserve their parent IDs or assign `F1`, `F2`, and so on. Split a parent into internal sub-IDs such as `F1.a` only when it contains independently provable claims; this is normalization, not a new finding. Never turn verification into a general review.
+
+Treat the required task outcome—not the reviewer's proposed edit—as the unit of work. The closed worklist limits why you may enter the spec, not how far you must inspect or update within the task-owned closure of a confirmed finding. Its verified prerequisites, dependencies, contracts, interactions, and edit effects remain part of that finding; unrelated pre-existing defects do not.
 
 ## Non-negotiable boundaries
 
