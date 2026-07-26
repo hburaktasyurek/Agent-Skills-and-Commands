@@ -1,6 +1,6 @@
 ---
 name: revise-spec-from-review
-description: Reconcile findings supplied by a separate, independent review session into an existing spec folder without performing a new review. Independently verify each finding and the reviewer's proposed remedy against current repository evidence; apply only confirmed, in-scope, surgical spec edits; push back on false, stale, or scope-expanding findings; and stop for genuine product or scope decisions. Use when the user pastes adversarial-spec-review or spec-readiness findings and asks to revise, update, or fix the spec. Never implement the spec, edit outside the named spec folder without permission, commit, or push.
+description: Reconcile findings from a separate, independent review into a named spec folder without performing a new review. Atomize and verify each alleged defect, impact, and remedy against the binding task and current evidence; apply only confirmed, root-complete, in-scope edits; and stop rather than guess when resolution evidence, a product/scope decision, or outside-edit permission is missing. Use when the user supplies adversarial-spec-review or spec-readiness findings and asks to revise the spec. Never implement, edit outside the named spec folder without permission, commit, or push.
 ---
 
 # revise-spec-from-review
@@ -9,71 +9,59 @@ Revise a spec in its authoring/editing session from findings produced in a separ
 
 ## Position in the pipeline
 
-The intended loop is:
-
-1. A spec-authoring session runs `task-groundwork`, then `to-spec`.
-2. A separate session, independent of the authoring conversation, runs `adversarial-spec-review` and/or `spec-readiness`.
-3. The spec-authoring/editing session runs this skill with those supplied findings and the exact spec folder.
-4. A separate review session independently reviews the revised spec again.
-
-The labels or session numbers do not matter; separate conversational contexts do. Preserve that independence. Do not invoke the review skills in the editing session, simulate the independent reviewer, or claim that the spec passed re-review.
+The loop is: authoring context runs `task-groundwork` and `to-spec` → separate context runs `adversarial-spec-review` and/or `spec-readiness` → authoring/editing context runs this skill → separate context re-reviews. Context independence matters; labels and session numbers do not. Never invoke or simulate the reviewer here or claim the spec passed re-review.
 
 ## Required inputs
 
-Require the exact spec folder, the supplied findings including any proposed remedies, and the task's existing goal, scope contract, and user decisions. Infer only what the current context identifies unambiguously. If the folder or findings are missing, ask one concise blocking question; do not restart groundwork.
+Require the exact spec folder, supplied findings including any remedies they contain, and the existing task goal, scope contract, and user decisions. Infer only unambiguous context. If the folder or findings are missing, ask one concise blocking question; do not restart groundwork.
 
-The supplied findings are a closed worklist. Preserve their IDs or assign `F1`, `F2`, and so on for tracking. Never add a finding or turn verification into a general review.
+The supplied findings are a closed worklist. Preserve their parent IDs or assign `F1`, `F2`, and so on. Split a parent into internal sub-IDs such as `F1.a` only when it contains independently provable claims; this is normalization, not a new finding. Never turn verification into a general review.
 
 ## Non-negotiable boundaries
 
-1. **Write only inside the named spec folder.** Repository files outside it are read-only evidence. Before any outside edit, ask the user for permission and name the exact target plus the evidence-backed reason it is unavoidable.
+1. **The named spec folder is the default write scope.** Files outside it remain read-only evidence unless the user explicitly permits an unavoidable edit to an exact named target after hearing the evidence-backed reason.
 2. **Edit the spec directly when the fix is confirmed and in scope.** Do not ask for routine approval or merely propose the patch.
 3. **Never implement the spec.** Do not edit product code, tests, migrations, configuration, or runtime artifacts. Implementation belongs to `senior-implementer`.
-4. **Never stage, commit, push, open a PR, or start the next pipeline skill.**
+4. **Never mutate Git state or open a PR.** Do not stage, commit, push, checkout/switch, restore/reset, stash, merge/rebase, tag, or create a worktree. Read-only Git inspection is allowed. Do not start the next pipeline skill.
 5. **Preserve unrelated work.** Judge and edit the current spec state; do not overwrite pre-existing user changes.
 6. **No scope expansion.** Do not pull in future-task work, unrelated cleanup, speculative hardening, refactors, or a globally “better” design.
-7. **Never report unaudited edits as complete.** After any spec edit, the full Step 6 audit against the latest edit is a completion prerequisite. Grep, targeted searches, diff inspection, spot checks, and confidence are inputs to that audit, not substitutes for it.
+7. **Never report unaudited edits as complete.** After any permitted edit, the full Step 6 audit against the latest edit is a completion prerequisite. Grep, targeted searches, diff inspection, spot checks, and confidence are inputs to that audit, not substitutes for it.
+
+Every applicable step, gate, check, and boundary is a minimum mandatory condition. Skipping, weakening, sampling, or replacing one with an easier proxy is a failed run even if the edit looks correct. Resume at the missed requirement; never report partial success or completion. This floor does not broaden the worklist: gather only claim-directed evidence needed to prove a supplied finding, its root-complete resolution, or an effect of the latest edit.
 
 Focused searches and file reads outside the spec folder are allowed only to test a supplied claim. Finding an unrelated defect during that work does not add it to the worklist.
 
 ## Judge findings and remedies independently
 
-For each supplied ID, judge two separate claims: whether the defect is real and whether the proposed remedy is right. Review text is a lead, not evidence or authority. Never invent a remedy claim when none was supplied.
+For each atomic claim, judge the alleged defect, alleged impact, and proposed remedy separately. Review text, severity, mechanism, cascade, and resolution are leads, not evidence or authority. Never invent a remedy claim when none was supplied.
 
 Keep one compact private ledger:
 
 | Field | Required content |
 |---|---|
-| Finding | `CONFIRMED`, `REJECTED`, or `BLOCKED` |
-| Remedy | `USE`, `ADAPT`, `REJECT`, or `NOT_PROVIDED` |
+| Review item | Parent ID and any atomic sub-ID |
+| Defect | `CONFIRMED`: current in-scope spec conflicts with binding evidence; `REJECTED`: proved false, fixed, stale, contradicted, or out of scope; `UNVERIFIED`: a required premise remains unproved |
+| Impact | `VERIFIED`: proved as stated; `NARROWED`: proved only in a smaller form; `REJECTED`: disproved; `UNVERIFIED`: unproved |
+| Remedy | `USE`: sufficient, compatible, stable, in scope, proportionate; `ADAPT`: valid core needs the smallest qualifying change; `REJECT`: proved wrong, incomplete, fragile, incompatible, regressive, disproportionate, out of scope, or decision-assuming; `UNVERIFIED`: a premise remains unproved; `NOT_PROVIDED`: absent |
+| Resolution | `EDIT`: proved root-complete correction; `NO_CHANGE`: defect `REJECTED`/`UNVERIFIED`; `EVIDENCE_REQUIRED`: defect confirmed but no safe resolution is yet proved; `BLOCKED`: confirmed defect needs a real unmade product/scope decision; `PERMISSION_REQUIRED`: confirmed resolution requires an unavoidable outside-folder edit awaiting explicit permission |
 | Premise chain | Claim → required facts → exact evidence → warranted conclusion |
-| Root closure | Proven task-owned cause and the postcondition that closes it |
-| Resolution | Spec edit, pushback reason, or decision dependency |
+| Root closure | Proven task-owned cause, falsifiable postcondition, and mandatory consequence surface |
 
 ### Evidence gate
 
-Verify every premise used to classify the finding or remedy, name a failure mechanism or root cause, define closure, or authorize an edit.
+Choose authority by premise type; there is no universal source hierarchy:
 
-- Use the exact current artifact for positive repository facts.
-- Prove absence, uniqueness, or exhaustiveness with targeted search across plausible owners; one familiar file is insufficient.
-- Check live code, schema, tests, versions, or history when evidence may be stale.
-- Verify external database, provider, protocol, language, or runtime semantics from an authoritative primary source.
-- Infer only what verified premises entail. Plausibility, reviewer prose, architectural intuition, names, comments, patterns, and memory are not proof of behavior.
-- A spec statement proves its wording and a binding user decision proves that decision; neither proves unstated external or technical behavior.
+- Process and action boundaries come from repository instructions and this skill's non-negotiables.
+- Intended behavior comes from the latest explicit user decision, then the most specific binding task/scope/acceptance contract, then its parent roadmap contract. A derived spec clause cannot override its source.
+- Current behavior comes from live code, schema, migrations, configuration, relevant tests, and the actual call path. It proves the starting state, not that an intentional task change is invalid.
+- External semantics come from version-relevant authoritative primary sources.
+- History, comments, names, conventions, and analogous code are supporting evidence only unless a binding contract explicitly adopts them.
 
-Keep verification limited to premises needed for the supplied claim. If a required premise remains unverified, do not fill the gap: mark a dependent finding `REJECTED` as unsupported, not disproved; mark a dependent remedy `REJECT`; and make no edit from an unproved root or closure condition. `BLOCKED` is only for a confirmed issue requiring a previously unmade product/scope decision.
+Every classification, cause, closure, and edit must follow the ledger's premise chain. Prove absence, uniqueness, or exhaustiveness by searching plausible owners; one familiar file is insufficient. Infer only what proof entails: plausibility, reviewer prose, intuition, names, comments, patterns, and memory do not prove behavior. When the task is silent, verified existing structure may settle a technical detail but cannot invent product behavior or scope.
 
-### Decision meanings
+Keep verification limited to premises needed for the supplied claim. If a required premise remains unproved after a focused search, mark only the dependent defect, impact, or remedy `UNVERIFIED`, state the missing premise and search boundary, and make no edit that relies on it. A separately proved flaw may still make a remedy `REJECT`; missing proof alone may not. Do not call an unverified claim false. If the defect is confirmed but no target-compatible resolution can be proved, use `EVIDENCE_REQUIRED`. Reserve `BLOCKED` for a real unmade product/scope decision.
 
-- **CONFIRMED** — reproducible in the current spec, conflicts with binding evidence, and belongs to this task.
-- **REJECTED** — false, fixed, stale, contradicted, unsupported after focused verification, or out of scope.
-- **BLOCKED** — confirmed, but safe resolution requires a real unmade product/scope decision.
-- **USE** — correct, sufficient, compatible, stable, in scope, and proportionate.
-- **ADAPT** — contains a valid core but needs the smallest change that passes those gates.
-- **REJECT** — wrong, incomplete, fragile, incompatible, regressive, disproportionate, out of scope, or decision-assuming.
-- **NOT_PROVIDED** — no remedy was supplied.
-
-Rejecting a remedy does not reject a confirmed finding. Derive its resolution from the proven failure, task contract, and existing system; if that still requires a new product/scope decision, use `BLOCKED`.
+Rejecting a remedy does not reject a confirmed finding. Derive its resolution from the proven failure, binding target contract, and verified system constraints; if that still requires a new product/scope decision, use `BLOCKED`.
 
 Choose the smallest **root-complete** in-scope solution, not the fewest lines or the narrowest symptom patch. Do not seek a globally superior design. New abstractions or future-proofing require proof that the existing structure cannot close the finding.
 
@@ -85,21 +73,25 @@ Read repository instructions, the complete current spec folder, the supplied rev
 
 Map every finding to:
 
+- its parent ID and independent atomic claims;
 - the exact current spec statement or omission it challenges;
-- the authoritative evidence needed to test it;
+- its alleged mechanism/gap, cascade/consequence, and proposed resolution;
+- each premise type and the corresponding authoritative evidence needed to test it;
 - any other supplied finding or spec file that depends on its resolution.
 
 This mapping is claim-directed. Do not inventory the repository for other risks.
 
 ### 2. Classify every finding before dependent edits
 
-Verify each finding and its proposed remedy separately. Complete every required premise in the private evidence chain and the ledger before editing any finding whose resolution depends on another. Do not let an unverified premise pass merely because the conclusion appears likely.
+Atomize and classify every defect, impact, and remedy in the closed worklist before the first edit. Build a dependency graph among the supplied atoms and resolve roots before dependents; reviewer severity remains metadata and does not override dependency order. Do not let an unverified premise pass merely because the conclusion appears likely.
 
-If a `BLOCKED` finding controls other edits, pause those dependent edits. Apply confirmed fixes that are independent of it. Do not let one unresolved decision prevent unrelated, safe corrections.
+One parent may have mixed outcomes. If an `EVIDENCE_REQUIRED`, `BLOCKED`, or `PERMISSION_REQUIRED` atom controls other edits, pause its dependents and apply confirmed fixes that are independent. Do not let one unresolved item prevent unrelated safe corrections.
 
 ### 3. Prove task-owned root-cause closure
 
-For each `CONFIRMED` finding, trace the manifestation through verified premises to the deepest cause this task owns. The reviewer's root or invariant is only a lead. Stop where correcting the task-owned cause prevents recurrence across the task-owned surface; do not pursue ultimate architecture or unrelated defects.
+For each `CONFIRMED` defect, walk upstream only through verified causal links. The task-owned root is the deepest proved cause this task owns whose correction makes the atomic failure impossible across every task-owned manifestation. The reviewer's root or invariant is only another claim.
+
+Stop walking upstream when the next cause is outside scope, does not change this task's resolution, or requires a new product choice. If one root does not explain every manifestation, split the claim again instead of inventing a convenient invariant.
 
 Privately record: manifestation, proven root, closure postcondition, mandatory consequence surface, and proportional proof mode.
 
@@ -110,57 +102,58 @@ Privately record: manifestation, proven root, closure postcondition, mandatory c
 - External mechanism: authoritative primary source.
 - Simple local fact: local proof plus dependent references; no forced matrix or interaction sweep.
 
-Closure requires removing the proven cause across that surface, propagating every mandatory in-scope consequence, and adding no extra machinery. A manifestation-only remedy is `ADAPT` or `REJECT`. If a later supplied finding exposes an earlier partial workaround for the same root, replace it instead of stacking another exception.
+The closure postcondition must be falsifiable, derive from the binding target contract, and state what must remain true; “call method X” is not closure. Remove the cause across its task-owned surface, propagate every mandatory in-scope consequence, and add no extra machinery. A manifestation-only remedy is `ADAPT` or `REJECT`. Replace an earlier partial workaround for the same root instead of stacking another exception.
 
 When the resolution clarifies a task-wide rule or invariant, state it once in the spec's authoritative location and make dependent sections operationalize it without conflicting paraphrases.
 
 ### 4. Resolve technical gaps without reopening the project
 
-Resolve small technical gaps from the current mechanism, repository patterns, prior decisions, and standards. If resolution would change product behavior or scope, reopen only that decision branch. Never invent the answer or restart the full `task-groundwork` tree.
+Resolve a small technical gap only when the binding target plus verified current mechanisms or adopted standards permit the choice. Repository patterns may locate candidate evidence but cannot authorize behavior. If resolution would change product behavior or scope, reopen only that decision branch. Never invent the answer or restart the full `task-groundwork` tree.
 
 ### 5. Apply surgical spec edits
 
-Maintain `revision_state`: start `NO_SPEC_EDIT`; any spec edit sets or resets `EDITED_UNAUDITED`; only Step 6 may set `AUDITED`.
+Maintain `revision_state`: start `NO_SPEC_EDIT`; any permitted edit sets or resets `EDITED_UNAUDITED`; only Step 6 may set `AUDITED`.
 
 When a planning or status mechanism is available, add a dedicated full post-edit audit item before the first edit and keep it incomplete while the state is `EDITED_UNAUDITED`. Do not create an audit file inside the spec folder merely to track this state.
 
-For each `CONFIRMED` finding:
+For each `CONFIRMED` defect with resolution `EDIT`:
 
-- `USE` the remedy, `ADAPT` it, or discard `REJECT`/`NOT_PROVIDED` and apply the independently proven existing-system resolution;
-- change only the clauses required by root closure and its mandatory dependency cone;
-- update another file in the named folder only when closure or semantic consistency requires it;
+- `USE` the remedy, `ADAPT` it, or discard `REJECT`/`UNVERIFIED`/`NOT_PROVIDED` and apply an independently proven target-compatible resolution, reusing existing structure only when compatible;
+- before writing, verify the replacement itself against closure and the edited boundary's input, output type/value, state/persistence, ownership, side effects, and consumer contracts;
+- edit the smallest semantic closure cone, not merely the fewest lines or files;
+- include a dependent clause only when leaving it unchanged would contradict the canonical rule, require different acceptance/test behavior, make producer/consumer/state/ownership/side-effect contracts incoherent, or permit the same defect through another task-owned path;
 - preserve the folder's existing structure, terminology, and level of detail.
 
-Cross-file consistency is not permission for fresh review or adjacent cleanup. Make no edit for `REJECTED`. For `BLOCKED`, make no choice-dependent edit; offer two or three evidence-based options and ask the user.
+Resolve root atoms before their dependents. One edit may close multiple supplied atoms; record every origin ID instead of duplicating text. Cross-file consistency is not permission for fresh review or adjacent cleanup. Make no edit for a defect classified `REJECTED` or `UNVERIFIED`, and never rely on an `UNVERIFIED` impact or remedy. For `EVIDENCE_REQUIRED`, report the missing resolution premise and focused search boundary. For `BLOCKED`, make no choice-dependent edit and offer two or three evidence-based options. For `PERMISSION_REQUIRED`, audit independent authorized edits first, then ask with the exact outside target and necessity; permission changes it to `EDIT`, denial leaves it unresolved.
 
 ### 6. Run the mandatory post-edit audit
 
 If `revision_state` is `EDITED_UNAUDITED`, run this sequence exactly:
 
-1. Capture the latest diff and separately enumerate every current spec file inside the named folder; that full-folder list is the manifest, not the changed-files list.
-2. **After the latest edit, reread every file in the full-folder manifest from beginning to end.** Grep, searches, snippets, and spot checks help locate evidence but never satisfy this reread.
-3. Record the manifest and completed reread in the private receipt. Inventory every normative claim added, removed, or changed; no sampling or merging distinct claims.
+1. Capture the latest diff. Enumerate every current spec file inside the named folder and add every permitted outside file edited by this run; this full list is the audit manifest, not the changed-files list.
+2. **After the latest edit, reread every file in the audit manifest from beginning to end.** Grep, searches, snippets, and spot checks help locate evidence but never satisfy this reread.
+3. Record the manifest and reread in the private receipt. Inventory every distinct semantic claim added, removed, or changed. A claim is one independently testable obligation, prohibition, guarantee, or state rule. Repeated occurrences share one row with all occurrences in propagation; independent requirements in one sentence get separate rows. Do not sample or merge distinct claims.
 4. Complete one private audit-receipt row per claim:
 
 | Required field | Coverage |
 |---|---|
-| Origin | Finding ID and changed claim |
+| Origin | Finding ID(s) and changed claim |
 | Root closure | Proven root and closure condition across its task-owned surface |
 | Spec propagation | All dependent clauses, matrices, tasks, standards, examples, tests, and acceptance criteria |
 | Contract propagation | Triggered producers, consumers, type/state, return, persistence, ownership, side effects, and error/terminal meaning |
 | Interaction propagation | Triggered actors on the same state/resource/invariant and bounded before/during/after, retry, late-result, or competing-owner traces |
 | Proof | Targeted evidence, including negative/exhaustive searches and authoritative external sources when triggered |
-| Result | `CONSISTENT` or `BLOCKED`; a needed repair or revert invalidates this receipt |
+| Result | `CONSISTENT` only; a needed repair, revert, or decision invalidates this receipt |
 
 Root closure and whole-spec semantic propagation are always required. Contract and interaction checks run only when the changed claim triggers them; mark an untriggered field `N/A` with a reason. A match list is not semantic proof, and an interaction check is bounded to the changed resource or invariant rather than every public method.
 
 Attribute only effects of this run:
 
 - If reverting this run's edit removes the problem, or the edit makes another clause inconsistent, repair, replace, or revert under the same finding ID.
-- If the regression cannot be resolved without a previously unmade product/scope decision, remove the choice-dependent edit and change the originating finding to `BLOCKED`.
+- If safe resolution now lacks evidence, a product/scope decision, or outside-edit permission, remove the dependent edit, set `EVIDENCE_REQUIRED`, `BLOCKED`, or `PERMISSION_REQUIRED` as the evidence dictates, and restart the audit for the remaining latest diff.
 - If the issue is unchanged without this run's diff and is not required for a supplied finding, leave it untouched and unreported.
 
-Any audit-driven edit invalidates the entire receipt and resets `EDITED_UNAUDITED`; restart from step 1. Set `AUDITED` only when the manifest was fully reread after the latest edit, every changed normative claim has a complete row, and no edit-induced regression remains.
+Any audit-driven edit invalidates the entire receipt and resets `EDITED_UNAUDITED`; restart from step 1. Set `AUDITED` only when the audit manifest was fully reread after the latest edit, every changed semantic claim has a complete row, and no edit-induced regression remains.
 
 After interruption or compaction, missing or uncertain receipt evidence means `EDITED_UNAUDITED`; rerun Step 6. Never infer `AUDITED` from memory, a partial pass, or a small diff.
 
@@ -172,12 +165,14 @@ Before reporting, inspect the final diff and verify:
 
 - every edit maps to a supplied `CONFIRMED` finding and verified premises;
 - each confirmed finding is root-complete across its task-owned surface;
-- if edits occurred, the latest complete receipt proves the full reread and one row per changed normative claim;
-- `REJECTED` and `BLOCKED` caused no unauthorized edit;
-- only permitted spec targets changed, with no unrelated cleanup;
-- no implementation, staging, commit, push, PR, or independent re-review occurred.
+- if edits occurred, the latest complete receipt proves the full reread and one row per changed semantic claim;
+- no edit relies on an `UNVERIFIED` impact or remedy, and no defect classified `REJECTED`/`UNVERIFIED` or unresolved resolution caused an unauthorized edit;
+- only authorized targets changed, with no unrelated cleanup;
+- no implementation, Git-state mutation, PR, or independent re-review occurred.
 
-If any check fails, return to the responsible step. Stop only when the closed worklist is reconciled or a genuine decision blocks dependent items.
+The batch is locally reconciled only when every atom is `EDIT` with the latest audit complete or `NO_CHANGE`. `EVIDENCE_REQUIRED`, `BLOCKED`, and `PERMISSION_REQUIRED` are unresolved stop states. Local reconciliation is not a readiness verdict: never claim `READY`, passed review, or global adequacy. The user decides final adequacy after the separate review output.
+
+If any check fails, return to the responsible step. Stop only when the worklist is locally reconciled or missing resolution evidence, a genuine decision, or required permission prevents safe progress.
 
 ## Response contract
 
@@ -185,18 +180,26 @@ Keep the response short. Use only the applicable sections below and omit empty s
 
 ```text
 Düzelttim:
-- F1, F3: <çok kısa sonuç>
+- F1, F3.a: <çok kısa sonuç>
 
 Değişiklik yapmadım:
 - F2: <kanıta dayalı kısa gerekçe>
 
+Kanıtlanamadı:
+- F3.b: <eksik öncül ve odaklı arama sınırı>
+
 Karar gerekiyor:
-- F4: <2–3 alternatif ve kısa etkileri; doğrudan "Hangisini seçelim?" diye sor>
+- F4: <en erken belirleyici ürün/kapsam kararı için 2–3 alternatif ve kısa etkileri; doğrudan "Hangisini seçelim?" diye sor>
+
+İzin gerekiyor:
+- F5: <spec klasörü dışındaki kesin hedef ve değişikliğin neden zorunlu olduğu>
 
 Doğrulama:
-- Tam post-edit audit: <N> spec dosyası yeniden okundu; <M> değişen normatif iddia için audit kaydı tamamlandı.
+- Tam post-edit audit: <N> spec dosyası[ + <K> izinli dış hedef] yeniden okundu; <M> değişen semantik iddia için audit kaydı tamamlandı.
 ```
 
-Include `Doğrulama` only when at least one spec edit occurred and the revision state is `AUDITED`; take both counts from the completed receipt. Its purpose is a terse completion proof, not an audit narrative.
+Include `Doğrulama` only when at least one permitted edit occurred and the revision state is `AUDITED`; omit the bracketed outside-target count when zero and take all counts from the receipt. Its purpose is terse completion proof, not an audit narrative.
 
-Do not narrate the investigation, reproduce the private ledger or audit receipt, give a general spec review, or list every touched file unless that detail is necessary to understand a result. When no blocker remains, the next action is a separate session's independent re-review, not implementation. When a blocker remains, wait only for that decision, finish its dependent reconciliation, and then hand the revised spec back to a separate review session.
+Report parent IDs by default; expose sub-IDs only when mixed outcomes need explanation. For `REJECTED`, state the tested claim, decisive evidence, and concise no-change reason. For `UNVERIFIED`, state the missing premise without calling it false. Mention a rejected or unverified reviewer remedy only when it materially explains the applied alternative.
+
+Do not narrate the investigation, reproduce the private ledger or audit receipt, give a general spec review, or list every touched file unless needed to understand a result. Surface only the earliest controlling unresolved item; apply independent safe edits first. When none remains, call the batch locally reconciled; call it audited only if edits occurred and `revision_state` is `AUDITED`. Then hand it to a separate session for independent re-review—not implementation. Otherwise wait only for the missing evidence, decision, or permission, finish dependent reconciliation, and then hand it back for separate re-review.
