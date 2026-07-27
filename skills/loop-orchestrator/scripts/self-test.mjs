@@ -4,6 +4,7 @@ import fs from "node:fs";
 import { renderGoal } from "../../goal-engineering/scripts/goal-core.mjs";
 import {
   READINESS_CRITERIA,
+  SCHEDULE_APPROVAL_ACTION,
   assessReadiness,
 } from "../../loop-readiness-score/scripts/readiness-score-core.mjs";
 import { renderMethodologySkill } from "../../methodology-skill-creator/scripts/methodology-skill-core.mjs";
@@ -18,6 +19,15 @@ const fixtureUrl = new URL(
   import.meta.url,
 );
 const source = JSON.parse(fs.readFileSync(fixtureUrl, "utf8"));
+const observation = JSON.parse(
+  fs.readFileSync(
+    new URL(
+      "../../loop-run-record/evals/valid-run-record.json",
+      import.meta.url,
+    ),
+    "utf8",
+  ),
+).observation;
 const contract = canonicalContractFrom(source);
 const selection = {
   contract,
@@ -40,6 +50,7 @@ const readinessEnvelope = {
   broad: true,
   long_running: false,
   resumable: false,
+  scheduled: false,
 };
 const readyReadiness = assessReadiness(readinessEnvelope);
 const results = [];
@@ -164,6 +175,89 @@ for (const [
         ? failedGateCount === 0
         : failedGateCount > 0),
     `${result.status}/${result.next_owner}; failed_gates=${failedGateCount}; correction=${result.recommended_next_correction}`,
+  );
+}
+
+const pointFreeCorrectionEnvelope = structuredClone(readinessEnvelope);
+pointFreeCorrectionEnvelope.scheduled = true;
+pointFreeCorrectionEnvelope.goal_input.human_review_stop.approval_actions.push(
+  SCHEDULE_APPROVAL_ACTION,
+);
+delete pointFreeCorrectionEnvelope.goal_input.schedule_policy;
+pointFreeCorrectionEnvelope.goal_result = renderGoal(
+  pointFreeCorrectionEnvelope.goal_input,
+);
+pointFreeCorrectionEnvelope.readiness_answers.rollback_strategy = "no";
+const pointFreeCorrectionReadiness = assessReadiness(
+  pointFreeCorrectionEnvelope,
+);
+const pointFreeCorrectionContract = canonicalContractFrom(
+  pointFreeCorrectionEnvelope.goal_input,
+);
+const pointFreeCorrectionHandoff = terminalHandoff({
+  intent: "loop-goal",
+  canonicalContract: pointFreeCorrectionContract,
+  selection: {
+    ...selection,
+    contract: pointFreeCorrectionContract,
+  },
+  goalInput: pointFreeCorrectionEnvelope.goal_input,
+  goalResult: pointFreeCorrectionEnvelope.goal_result,
+  readinessInput: pointFreeCorrectionEnvelope,
+  readinessResult: pointFreeCorrectionReadiness,
+});
+check(
+  "orchestrator transports the point-free gate correction unchanged",
+  pointFreeCorrectionHandoff.status === "supervised" &&
+    pointFreeCorrectionHandoff.recommended_next_correction ===
+      pointFreeCorrectionReadiness.recommended_next_correction &&
+    pointFreeCorrectionHandoff.recommended_next_correction.includes(
+      "schedule policy",
+    ),
+  pointFreeCorrectionHandoff.recommended_next_correction,
+);
+
+const readyRecord = terminalHandoff({
+  intent: "record-run",
+  canonicalContract: contract,
+  selection,
+  goalInput: source,
+  goalResult,
+  readinessInput: readinessEnvelope,
+  readinessResult: readyReadiness,
+  observation,
+});
+check(
+  "record-run creates a review-required record only after ready",
+  readyRecord.status === "review-required" &&
+    readyRecord.stage === "run-record" &&
+    readyRecord.artifact.run_record.status === "review-required" &&
+    readyRecord.artifact.run_record.assessment_id ===
+      readyReadiness.assessment_id &&
+    readyRecord.next_owner === "human",
+  `${readyRecord.status}/${readyRecord.artifact.run_record.record_id}`,
+);
+
+for (const [expected, envelope, readiness] of [
+  ["blocked", blockedEnvelope, blockedReadiness],
+  ["supervised", supervisedEnvelope, supervisedReadiness],
+]) {
+  const stoppedRecord = terminalHandoff({
+    intent: "record-run",
+    canonicalContract: contract,
+    selection,
+    goalInput: envelope.goal_input,
+    goalResult: envelope.goal_result,
+    readinessInput: envelope,
+    readinessResult: readiness,
+    observation,
+  });
+  check(
+    `record-run preserves ${expected} without creating a record`,
+    stoppedRecord.status === expected &&
+      stoppedRecord.intent === "record-run" &&
+      !Object.hasOwn(stoppedRecord.artifact, "run_record"),
+    `${stoppedRecord.status}/${stoppedRecord.stage}`,
   );
 }
 

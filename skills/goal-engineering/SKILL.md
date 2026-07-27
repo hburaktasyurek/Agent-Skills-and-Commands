@@ -23,8 +23,9 @@ shared fields are always explicit:
 8. Human Review / Stop
 
 The control envelope adds boundaries and fallback. Add smallest useful run,
-checker, discovery, persistence, budget, or isolation only when the task makes
-them applicable.
+checker, discovery, execution handoff, persistence, schedule policy, budget,
+maximum iterations, isolation, or feedback only when the task makes them
+applicable.
 
 ## Workflow
 
@@ -34,10 +35,14 @@ them applicable.
    checker reading evidence that the executing agent never surfaces.
 4. Add boundaries before retry logic so a later attempt cannot redefine
    success.
-5. Add explicit success, failure, no-progress, and human-return conditions.
-6. Render with `scripts/render-goal.mjs`.
-7. Report the exact character count and effective limit.
-8. If the output exceeds the limit, return the overage and ask the caller to
+5. Separate implementer, independent reviewer, and human authority when broad
+   or mutating work needs an execution handoff.
+6. Add scheduling, iteration, and feedback controls only when the cycle needs
+   them.
+7. Add explicit success, failure, no-progress, and human-return conditions.
+8. Render with `scripts/render-goal.mjs`.
+9. Report the exact character count and effective limit.
+10. If the output exceeds the limit, return the overage and ask the caller to
    remove or rewrite optional context. Never truncate.
 
 ## Character budget
@@ -70,4 +75,3 @@ render returns the same evidence and exits non-zero.
 ## Stop
 
 Stop after one valid render or one explicit over-limit failure.
-

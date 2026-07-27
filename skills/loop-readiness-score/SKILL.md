@@ -49,9 +49,12 @@ When hard gates pass, return `supervised` if an applicable control is absent:
 
 - independent checker for medium/high-risk work;
 - smallest useful run for a broad or high-risk task;
-- budget for long-running or repeated work;
+- execution handoff for broad or mutating work;
+- budget for long-running, repeated, or scheduled work;
 - isolation for mutating work;
-- persistence for repeated or resumable work;
+- persistence for repeated, resumable, or scheduled work;
+- schedule policy and the canonical `activate or change a schedule` human
+  approval action for scheduled work;
 - explicit method-fit evidence.
 
 Return `ready` only when hard and applicable supervision gates pass.
@@ -63,9 +66,9 @@ node scripts/check-readiness-score.mjs path/to/readiness-input.json
 ```
 
 The result contains `score`, `max_score`, `score_band`, the eleven criterion
-results, verdict, hard-gate evidence, supervision-gate evidence, and the single
-recommended next correction. `blocked` exits 2, `supervised` exits 3, and
-`ready` exits 0.
+results, verdict, hard-gate evidence, supervision-gate evidence, a deterministic
+`assessment_id`, and the single recommended next correction. `blocked` exits
+2, `supervised` exits 3, and `ready` exits 0.
 
 ## Boundaries
 

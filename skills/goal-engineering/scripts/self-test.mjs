@@ -26,6 +26,37 @@ check(
     defaultResult.goal.includes(base.boundaries[0]),
   "fallback and first boundary are present",
 );
+check(
+  "cycle fields render when supplied",
+  defaultResult.goal.includes(`Execution handoff: ${base.execution_handoff}`) &&
+    defaultResult.goal.includes(`Schedule policy: ${base.schedule_policy}`) &&
+    defaultResult.goal.includes(`Maximum iterations: ${base.max_iterations}`) &&
+    defaultResult.goal.includes(`Feedback: ${base.feedback_prompt}`),
+  "execution handoff, schedule policy, maximum iterations, and feedback are present",
+);
+
+const withoutCycleFields = structuredClone(base);
+delete withoutCycleFields.execution_handoff;
+delete withoutCycleFields.schedule_policy;
+delete withoutCycleFields.max_iterations;
+delete withoutCycleFields.feedback_prompt;
+const withoutCycleResult = renderGoal(withoutCycleFields);
+check(
+  "inapplicable cycle fields vanish",
+  !withoutCycleResult.goal.includes("Execution handoff:") &&
+    !withoutCycleResult.goal.includes("Schedule policy:") &&
+    !withoutCycleResult.goal.includes("Maximum iterations:") &&
+    !withoutCycleResult.goal.includes("Feedback:") &&
+    [
+      "execution_handoff",
+      "schedule_policy",
+      "max_iterations",
+      "feedback_prompt",
+    ].every((field) =>
+      withoutCycleResult.omitted_optional_fields.includes(field),
+    ),
+  withoutCycleResult.omitted_optional_fields.join(", "),
+);
 
 for (const method of METHOD_MANIFEST) {
   const candidate = structuredClone(base);
@@ -56,6 +87,16 @@ check(
     toolRenders.map((result) => result.target_tool).join("|") ===
       "Claude Code|Codex|Cursor|other",
   "goal text, count, and limit are identical; only target_tool metadata differs",
+);
+
+const withoutTargetTool = structuredClone(base);
+delete withoutTargetTool.target_tool;
+const withoutTargetToolResult = renderGoal(withoutTargetTool);
+check(
+  "absent target_tool defaults to generic without changing goal content",
+  withoutTargetToolResult.target_tool === "generic" &&
+    withoutTargetToolResult.goal === defaultResult.goal,
+  withoutTargetToolResult.target_tool,
 );
 
 let low = 0;
@@ -141,6 +182,55 @@ expectFailure(
   oversizedLimit,
   /positive integer no greater than 4000/,
 );
+
+const zeroIterations = structuredClone(base);
+zeroIterations.max_iterations = 0;
+expectFailure(
+  "zero maximum iterations is rejected",
+  zeroIterations,
+  /max_iterations must be a positive integer/,
+);
+
+const stringIterations = structuredClone(base);
+stringIterations.max_iterations = "6";
+expectFailure(
+  "string maximum iterations is rejected",
+  stringIterations,
+  /max_iterations must be a positive integer/,
+);
+
+for (const [value, kind] of [
+  ["", "empty"],
+  ["   ", "whitespace"],
+  [null, "null"],
+  [42, "number"],
+  [{}, "object"],
+  [[], "array"],
+]) {
+  const candidate = structuredClone(base);
+  candidate.target_tool = value;
+  expectFailure(
+    `supplied ${kind} target_tool is rejected instead of defaulted`,
+    candidate,
+    /target_tool must be a non-empty string when supplied/,
+  );
+}
+
+for (const [field, value, kind] of [
+  ["execution_handoff", {}, "object"],
+  ["schedule_policy", 42, "number"],
+  ["feedback_prompt", [], "array"],
+  ["hypothesis", null, "null"],
+  ["persistence", "", "empty string"],
+]) {
+  const candidate = structuredClone(base);
+  candidate[field] = value;
+  expectFailure(
+    `supplied ${kind} ${field} is rejected instead of omitted`,
+    candidate,
+    new RegExp(`${field} must be a non-empty string when supplied`),
+  );
+}
 
 const contradictoryApproval = structuredClone(base);
 contradictoryApproval.human_review_stop.human_approval_required = false;

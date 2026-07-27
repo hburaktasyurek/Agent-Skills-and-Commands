@@ -2,6 +2,10 @@
 
 Personal skill kit for Codex, Claude Code, Cursor, and other compatible agents. Install and manage it with `npx skills`.
 
+The stable design-review-implementation-PR process, variable model policy, and
+session-based skill-improvement loop are recorded in
+[WORKFLOW.md](WORKFLOW.md).
+
 ## Quick Start
 
 ```bash
@@ -39,8 +43,9 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [methodology-selector](skills/methodology-selector/SKILL.md) | Select one of twelve canonical methodologies, or none, using positive fit, negative-fit veto, and stage precedence |
 | [goal-engineering](skills/goal-engineering/SKILL.md) | Render a verifiable loop goal from the shared eight-field contract with a universal 4,000-character ceiling |
 | [loop-readiness-score](skills/loop-readiness-score/SKILL.md) | Score eleven readiness criteria out of 100 and independently gate a rendered goal as blocked, supervised, or ready |
+| [loop-run-record](skills/loop-run-record/SKILL.md) | Bind externally supplied post-run evidence to the exact ready goal and return a deterministic record for human review |
 | [methodology-skill-creator](skills/methodology-skill-creator/SKILL.md) | Turn one selected method and task contract into one focused methodology SKILL.md; skill length is not governed by the loop-goal limit |
-| [loop-orchestrator](skills/loop-orchestrator/SKILL.md) | Coordinate selection, goal/readiness, and methodology-skill creation without duplicating their logic |
+| [loop-orchestrator](skills/loop-orchestrator/SKILL.md) | Coordinate selection, goal/readiness, methodology-skill creation, and post-run recording without duplicating their logic |
 
 ## Manage Installed Skills
 
@@ -77,5 +82,6 @@ Body shape and length vary by what the skill is for — some are three sentences
 
 ```
 .
+├── WORKFLOW.md          # stable multi-session working method
 └── skills/              # invokable skills (see skills/INDEX.md)
 ```

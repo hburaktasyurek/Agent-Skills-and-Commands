@@ -1,7 +1,9 @@
 import {
   assessReadiness,
   scoreBand,
+  stableStringify,
 } from "../../loop-readiness-score/scripts/readiness-score-core.mjs";
+import { createRunRecord } from "../../loop-run-record/scripts/run-record-core.mjs";
 
 export const CANONICAL_FIELDS = [
   "methodology",
@@ -18,20 +20,6 @@ const clone = (value) => JSON.parse(JSON.stringify(value));
 const isNonEmptyString = (value) =>
   typeof value === "string" && value.trim().length > 0;
 const countCharacters = (value) => Array.from(value).length;
-const sortValue = (value) => {
-  if (Array.isArray(value)) {
-    return value.map(sortValue);
-  }
-  if (value && typeof value === "object") {
-    return Object.fromEntries(
-      Object.keys(value)
-        .sort()
-        .map((key) => [key, sortValue(value[key])]),
-    );
-  }
-  return value;
-};
-const stableStringify = (value) => JSON.stringify(sortValue(value));
 const CREATOR_CHECKS = [
   "frontmatter_name_matches",
   "one_methodology",
@@ -76,6 +64,7 @@ export function terminalHandoff({
   goalResult,
   readinessInput,
   readinessResult,
+  observation,
   creatorResult,
 }) {
   const contract = canonicalContractFrom(canonicalContract);
@@ -88,6 +77,50 @@ export function terminalHandoff({
       canonical_contract: contract,
       artifact: selection,
       evidence: ["methodology-selector returned none"],
+      next_owner: "human",
+    };
+  }
+
+  if (intent === "record-run") {
+    const goalHandoff = terminalHandoff({
+      intent: "loop-goal",
+      canonicalContract,
+      selection,
+      goalInput,
+      goalResult,
+      readinessInput,
+      readinessResult,
+    });
+    if (goalHandoff.status !== "ready") {
+      return { ...goalHandoff, intent: "record-run" };
+    }
+    const runRecord = createRunRecord({
+      goal_input: goalInput,
+      goal_result: goalResult,
+      readiness_input: readinessInput,
+      readiness_result: readinessResult,
+      observation,
+    });
+    return {
+      intent,
+      stage: "run-record",
+      status: "review-required",
+      canonical_contract: contract,
+      artifact: {
+        goal_result: goalResult,
+        readiness_result: readinessResult,
+        run_record: runRecord,
+      },
+      evidence: [
+        ...goalHandoff.evidence,
+        `assessment_id=${runRecord.assessment_id}`,
+        `record_id=${runRecord.record_id}`,
+        `run_result=${runRecord.result}`,
+      ],
+      failed_hard_gates: [],
+      failed_supervision_gates: [],
+      recommended_next_correction:
+        readinessResult.recommended_next_correction,
       next_owner: "human",
     };
   }
@@ -124,7 +157,8 @@ export function terminalHandoff({
       !Array.isArray(readinessResult.hard_gates) ||
       readinessResult.hard_gates.length !== 14 ||
       !Array.isArray(readinessResult.supervision_gates) ||
-      readinessResult.supervision_gates.length !== 7 ||
+      readinessResult.supervision_gates.length !== 10 ||
+      !isNonEmptyString(readinessResult.assessment_id) ||
       !isNonEmptyString(readinessResult.recommended_next_correction)
     ) {
       throw new Error("Readiness verdict is missing score or gate evidence");

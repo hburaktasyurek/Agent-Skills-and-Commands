@@ -1,5 +1,10 @@
 # Modular Loop System Validation Log
 
+Historical snapshot: this log certifies the five-component system committed as
+`7fdd8e7`. The later execution-learning layer and sixth component are validated
+separately in
+[loop-run-record/references/validation-log.md](../../loop-run-record/references/validation-log.md).
+
 ## Authoritative scope
 
 Status: **complete candidate — fourth independent adversarial review PASS with

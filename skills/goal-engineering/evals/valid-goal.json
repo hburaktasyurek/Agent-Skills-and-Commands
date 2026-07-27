@@ -42,8 +42,12 @@
   "hypothesis": "A canonical manifest and eight-field contract can let focused components work together without combining their responsibilities.",
   "smallest_useful_run": "Exercise one complete selector-to-goal-to-readiness and selector-to-methodology-skill path before running the twelve-method matrix.",
   "independent_checker": "A separate reviewer checks routing, limits, hard gates, contracts, and the final diff.",
+  "execution_handoff": "An implementer edits only this repository, a separate reviewer owns the final judgment, and a human owns commit, publish, installation, scheduling, and retry decisions.",
   "persistence": "Record contracts, eval evidence, rejected shortcuts, blockers, and the next permitted expansion.",
+  "schedule_policy": "Manual runs only; do not create or activate a schedule.",
   "budget": "Stop after six revision cycles or two identical failures without new evidence.",
+  "max_iterations": 6,
   "isolation": "Make changes only in the current repository worktree.",
+  "feedback_prompt": "Record whether the hypothesis held, which evidence changed the decision, and whether the next action is stop, adjust, or human action.",
   "target_tool": "generic"
 }

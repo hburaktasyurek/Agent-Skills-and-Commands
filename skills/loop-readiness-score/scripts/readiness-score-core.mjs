@@ -1,7 +1,9 @@
+import { createHash } from "node:crypto";
 import { renderGoal } from "../../goal-engineering/scripts/goal-core.mjs";
 
 const COMMON_GOAL_LIMIT = 4000;
 const ANSWER_FACTOR = { no: 0, partial: 0.5, yes: 1 };
+export const SCHEDULE_APPROVAL_ACTION = "activate or change a schedule";
 
 export const READINESS_CRITERIA = [
   { key: "hypothesis", label: "Hypothesis", weight: 8 },
@@ -32,6 +34,21 @@ const hasNonEmptyStringArray = (value) =>
 
 const gate = (name, passed, evidence) => ({ name, passed, evidence });
 const countCharacters = (text) => Array.from(text).length;
+
+const sortJsonValue = (value) => {
+  if (Array.isArray(value)) return value.map(sortJsonValue);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.keys(value)
+        .sort()
+        .filter((key) => value[key] !== undefined)
+        .map((key) => [key, sortJsonValue(value[key])]),
+    );
+  }
+  return value;
+};
+
+export const stableStringify = (value) => JSON.stringify(sortJsonValue(value));
 
 export const scoreBand = (score) => {
   if (score < 40) return "Not ready";
@@ -116,6 +133,7 @@ export function assessReadiness(input) {
     "broad",
     "long_running",
     "resumable",
+    "scheduled",
   ];
   const applicabilityDeclared = applicabilityFields.every(
     (field) => typeof input[field] === "boolean",
@@ -135,10 +153,7 @@ export function assessReadiness(input) {
     actualGoalCount <= COMMON_GOAL_LIMIT;
   const semanticGoalMatch =
     regeneratedGoal !== null &&
-    goal.goal === regeneratedGoal.goal &&
-    goal.character_count === regeneratedGoal.character_count &&
-    goal.limit === regeneratedGoal.limit &&
-    goal.within_limit === regeneratedGoal.within_limit;
+    stableStringify(goal) === stableStringify(regeneratedGoal);
 
   const hardGates = [
     gate(
@@ -255,9 +270,25 @@ export function assessReadiness(input) {
 
   const needsChecker = riskLevel === "medium" || riskLevel === "high";
   const needsSmallRun = input.broad === true || riskLevel === "high";
-  const needsBudget = input.repeated === true || input.long_running === true;
+  const needsExecutionHandoff = input.broad === true || input.mutates === true;
+  const needsBudget =
+    input.repeated === true ||
+    input.long_running === true ||
+    input.scheduled === true;
   const needsIsolation = input.mutates === true;
-  const needsPersistence = input.repeated === true || input.resumable === true;
+  const needsPersistence =
+    input.repeated === true ||
+    input.resumable === true ||
+    input.scheduled === true;
+  const needsSchedulePolicy = input.scheduled === true;
+  const needsScheduledApproval = input.scheduled === true;
+  const schedulingApprovalDeclared =
+    humanReviewStop.human_approval_required === true &&
+    hasNonEmptyStringArray(humanReviewStop.approval_actions) &&
+    humanReviewStop.approval_actions.some(
+      (action) =>
+        action.trim().toLowerCase() === SCHEDULE_APPROVAL_ACTION,
+    );
 
   const supervisionGates = [
     gate(
@@ -291,12 +322,21 @@ export function assessReadiness(input) {
         : "not required",
     ),
     gate(
+      "execution handoff",
+      !needsExecutionHandoff || isNonEmptyString(source.execution_handoff),
+      needsExecutionHandoff
+        ? isNonEmptyString(source.execution_handoff)
+          ? "execution handoff is explicit"
+          : "required for broad or mutating work"
+        : "not required",
+    ),
+    gate(
       "budget",
       !needsBudget || isNonEmptyString(source.budget),
       needsBudget
         ? isNonEmptyString(source.budget)
           ? "budget is explicit"
-          : "required for repeated or long-running work"
+          : "required for repeated, long-running, or scheduled work"
         : "not required",
     ),
     gate(
@@ -314,7 +354,25 @@ export function assessReadiness(input) {
       needsPersistence
         ? isNonEmptyString(source.persistence)
           ? "persistence is explicit"
-          : "required for repeated or resumable work"
+          : "required for repeated, resumable, or scheduled work"
+        : "not required",
+    ),
+    gate(
+      "schedule policy",
+      !needsSchedulePolicy || isNonEmptyString(source.schedule_policy),
+      needsSchedulePolicy
+        ? isNonEmptyString(source.schedule_policy)
+          ? "schedule policy is explicit"
+          : "required for scheduled work"
+        : "not required",
+    ),
+    gate(
+      "scheduled human approval",
+      !needsScheduledApproval || schedulingApprovalDeclared,
+      needsScheduledApproval
+        ? schedulingApprovalDeclared
+          ? `required before ${SCHEDULE_APPROVAL_ACTION}`
+          : `scheduled work requires human approval action: ${SCHEDULE_APPROVAL_ACTION}`
         : "not required",
     ),
   ];
@@ -335,17 +393,22 @@ export function assessReadiness(input) {
         left.earned / left.weight - right.earned / right.weight ||
         right.weight - left.weight,
     )[0];
-  const nextCorrection =
-    failedHard[0] ||
-    (weakestCriterion
-      ? {
-          name: weakestCriterion.label,
-          evidence: `answer=${weakestCriterion.answer}, earned=${weakestCriterion.earned}/${weakestCriterion.weight}`,
-        }
-      : failedSupervision[0]) ||
-    null;
+  const passingScoreSupervisionFailure =
+    score >= 80 ? failedSupervision[0] : null;
+  let nextCorrection = failedHard[0] || null;
+  if (!nextCorrection && verdict !== "ready") {
+    nextCorrection =
+      passingScoreSupervisionFailure ||
+      (weakestCriterion
+        ? {
+            name: weakestCriterion.label,
+            evidence: `answer=${weakestCriterion.answer}, earned=${weakestCriterion.earned}/${weakestCriterion.weight}`,
+          }
+        : failedSupervision[0]) ||
+      null;
+  }
 
-  return {
+  const result = {
     score,
     max_score: MAX_SCORE,
     score_band: scoreBand(score),
@@ -357,4 +420,21 @@ export function assessReadiness(input) {
       ? `Add or correct: ${nextCorrection.name}. ${nextCorrection.evidence}`
       : "No readiness correction required.",
   };
+  const identityInput = {
+    goal_input: input.goal_input,
+    goal_result: input.goal_result,
+    readiness_answers: input.readiness_answers,
+    risk_level: input.risk_level,
+    mutates: input.mutates,
+    repeated: input.repeated,
+    broad: input.broad,
+    long_running: input.long_running,
+    resumable: input.resumable,
+    scheduled: input.scheduled,
+  };
+  const assessmentId = createHash("sha256")
+    .update(stableStringify({ input: identityInput, result }))
+    .digest("hex");
+
+  return { ...result, assessment_id: assessmentId };
 }

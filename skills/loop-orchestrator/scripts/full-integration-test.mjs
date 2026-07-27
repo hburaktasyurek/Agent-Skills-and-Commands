@@ -148,6 +148,7 @@ const matrix = METHOD_MANIFEST.map((method) => {
     broad: true,
     long_running: false,
     resumable: false,
+    scheduled: false,
   };
   const readinessResult = assessReadiness(readinessInput);
   const creatorResult = renderMethodologySkill(creatorInput);

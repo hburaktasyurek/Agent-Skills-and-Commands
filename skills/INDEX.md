@@ -28,8 +28,9 @@ order itself needs coordination.
 - [methodology-selector](methodology-selector/SKILL.md) — Select one of twelve canonical methodologies, or none, using positive fit, negative-fit veto, and stage precedence.
 - [goal-engineering](goal-engineering/SKILL.md) — Render the canonical eight-field contract plus controls into a goal; report the exact count and enforce a universal 4,000-character ceiling.
 - [loop-readiness-score](loop-readiness-score/SKILL.md) — Score eleven weighted criteria out of 100, rerender, independently recount, and gate a goal without repairing or executing it.
+- [loop-run-record](loop-run-record/SKILL.md) — Normalize externally supplied evidence after one ready run, bind it to the exact goal/readiness identity, and return it for human review.
 - [methodology-skill-creator](methodology-skill-creator/SKILL.md) — Create one task-scoped methodology SKILL.md from a completed selector contract; focused skill content may exceed the loop goal's 4,000-character ceiling.
-- [loop-orchestrator](loop-orchestrator/SKILL.md) — Preserve and route the shared contract between the focused skills; never execute or self-approve.
+- [loop-orchestrator](loop-orchestrator/SKILL.md) — Preserve and route the shared contract between focused design and evidence skills; never execute or self-approve.
 
 ## Triage & Refactor Planning
 

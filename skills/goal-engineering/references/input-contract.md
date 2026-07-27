@@ -39,13 +39,27 @@ Conditional:
 - `smallest_useful_run`: new, broad, or high-risk loops.
 - `independent_checker`: mutating, high-risk, or subjective work.
 - `discovery_source`: work discovered from changing state.
+- `execution_handoff`: who implements, who independently checks, and which
+  actions remain human-owned for broad or mutating work.
 - `persistence`: repeated or resumable work.
+- `schedule_policy`: when or whether the loop may be scheduled.
 - `budget`: long-running, repeated, scheduled, or paid work.
+- `max_iterations`: positive integer cap when retries are possible.
 - `isolation`: mutating or parallel work.
-- `target_tool`: output label; defaults to `generic`.
+- `feedback_prompt`: evidence-based post-run question that informs stop,
+  adjustment, or human return.
+- `target_tool`: output label; defaults to `generic` only when the property is
+  absent.
 - `target_limit`: only when the target is stricter than 4,000 characters.
 
-Fields are omitted only when they are inapplicable. Character pressure is not
-permission to remove a mandatory gate or silently rewrite the caller's meaning.
+Omit an optional property entirely when it is inapplicable. When an optional
+string property is present, it must be a non-empty string; an empty, null, or
+non-string value fails instead of being silently classified as omitted.
+Character pressure is not permission to remove a mandatory gate or silently
+rewrite the caller's meaning.
 When `human_approval_required` is `false`, `approval_actions` must be absent or
 an empty list; contradictory approval data fails instead of being discarded.
+When the readiness applicability declaration will set `scheduled: true`,
+`approval_actions` must include the exact action
+`activate or change a schedule`; unrelated commit or publish approval is not
+scheduling approval.

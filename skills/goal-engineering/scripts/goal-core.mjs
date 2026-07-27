@@ -34,11 +34,25 @@ const requireStringArray = (value, field) => {
 };
 
 const optionalString = (input, field, omitted) => {
-  if (!isNonEmptyString(input[field])) {
+  if (!Object.hasOwn(input, field)) {
     omitted.push(field);
     return null;
   }
+  if (!isNonEmptyString(input[field])) {
+    throw new Error(`${field} must be a non-empty string when supplied`);
+  }
   return input[field].trim();
+};
+
+const optionalPositiveInteger = (input, field, omitted) => {
+  if (!Object.hasOwn(input, field)) {
+    omitted.push(field);
+    return null;
+  }
+  if (!Number.isInteger(input[field]) || input[field] <= 0) {
+    throw new Error(`${field} must be a positive integer when supplied`);
+  }
+  return input[field];
 };
 
 const listSection = (label, items) =>
@@ -115,9 +129,11 @@ export function renderGoal(input) {
       )
     : [];
 
-  const targetTool = isNonEmptyString(input.target_tool)
-    ? input.target_tool.trim()
-    : "generic";
+  const hasTargetTool = Object.hasOwn(input, "target_tool");
+  if (hasTargetTool && !isNonEmptyString(input.target_tool)) {
+    throw new Error("target_tool must be a non-empty string when supplied");
+  }
+  const targetTool = hasTargetTool ? input.target_tool.trim() : "generic";
   const hasTargetLimit = Object.hasOwn(input, "target_limit");
   if (
     hasTargetLimit &&
@@ -144,9 +160,21 @@ export function renderGoal(input) {
     omitted,
   );
   const discoverySource = optionalString(input, "discovery_source", omitted);
+  const executionHandoff = optionalString(
+    input,
+    "execution_handoff",
+    omitted,
+  );
   const persistence = optionalString(input, "persistence", omitted);
+  const schedulePolicy = optionalString(input, "schedule_policy", omitted);
   const budget = optionalString(input, "budget", omitted);
+  const maxIterations = optionalPositiveInteger(
+    input,
+    "max_iterations",
+    omitted,
+  );
   const isolation = optionalString(input, "isolation", omitted);
+  const feedbackPrompt = optionalString(input, "feedback_prompt", omitted);
 
   const sections = [
     `/goal ${task}`,
@@ -166,6 +194,9 @@ export function renderGoal(input) {
   if (discoverySource) {
     sections.push(`Discovery: ${discoverySource}`);
   }
+  if (executionHandoff) {
+    sections.push(`Execution handoff: ${executionHandoff}`);
+  }
 
   sections.push(
     listSection("Validation", validationChecks),
@@ -182,8 +213,14 @@ export function renderGoal(input) {
   if (persistence) {
     sections.push(`Persistence: ${persistence}`);
   }
+  if (schedulePolicy) {
+    sections.push(`Schedule policy: ${schedulePolicy}`);
+  }
   if (budget) {
     sections.push(`Budget: ${budget}`);
+  }
+  if (maxIterations !== null) {
+    sections.push(`Maximum iterations: ${maxIterations}`);
   }
 
   sections.push(listSection("Stop conditions", stopConditions));
@@ -197,6 +234,9 @@ export function renderGoal(input) {
   }
 
   sections.push(`Fallback: ${fallback}`);
+  if (feedbackPrompt) {
+    sections.push(`Feedback: ${feedbackPrompt}`);
+  }
 
   const goal = sections.join("\n\n");
   const characterCount = countCharacters(goal);

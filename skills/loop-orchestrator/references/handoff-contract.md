@@ -3,8 +3,8 @@
 Every handoff returns:
 
 ```yaml
-intent: loop-goal | methodology-skill
-stage: selection | goal-render | readiness | skill-creation
+intent: loop-goal | methodology-skill | record-run
+stage: selection | goal-render | readiness | skill-creation | run-record
 status: none | failed | blocked | supervised | ready | review-required
 canonical_contract: <the unchanged eight-field contract or null>
 artifact: <component output or null>
@@ -30,6 +30,9 @@ next_owner: methodology-selector | goal-engineering | loop-readiness-score | met
   hard plus supervision gate evidence. Its verdict must agree with those
   gates.
 - `blocked` and `supervised` never become `ready` through orchestration.
+- `record-run` preserves `blocked` and `supervised` terminal states without
+  creating a record. Only an exact `ready` assessment plus complete external
+  observations reaches loop-run-record.
 - Goal handoffs retain the full goal and readiness artifacts, failed hard and
   supervision gates, score band, and the single recommended correction.
 - `ready` means the goal contract passed readiness, not that execution or an
@@ -38,6 +41,8 @@ next_owner: methodology-selector | goal-engineering | loop-readiness-score | met
   contain exactly one counted SKILL.md, and pass every creator check before it
   receives `status: review-required`.
 - Only the component that owns a failed field may correct it.
+- A run record remains `review-required`; orchestration never converts it into
+  execution, retry, scheduling, memory, or approval.
 
 `scripts/handoff-core.mjs` enforces exact deep equality across the eight fields
 and validates downstream artifact and gate evidence without reproducing method

@@ -5,6 +5,7 @@ import { renderGoal } from "../../goal-engineering/scripts/goal-core.mjs";
 import {
   MAX_SCORE,
   READINESS_CRITERIA,
+  SCHEDULE_APPROVAL_ACTION,
   assessReadiness,
   scoreBand,
 } from "./readiness-score-core.mjs";
@@ -27,6 +28,7 @@ const readyInput = {
   broad: true,
   long_running: false,
   resumable: false,
+  scheduled: false,
 };
 
 const results = [];
@@ -225,17 +227,38 @@ check(
   roundsToStrongRaw === 79.5 &&
     roundsToStrong.score === 80 &&
     roundsToStrong.score_band === "Strong loop candidate" &&
-    roundsToStrong.verdict === "ready",
-  `raw=${roundsToStrongRaw}, score=${roundsToStrong.score}, band=${roundsToStrong.score_band}, verdict=${roundsToStrong.verdict}`,
+    roundsToStrong.verdict === "ready" &&
+    roundsToStrong.recommended_next_correction ===
+      "No readiness correction required.",
+  `raw=${roundsToStrongRaw}, score=${roundsToStrong.score}, band=${roundsToStrong.score_band}, verdict=${roundsToStrong.verdict}, correction=${roundsToStrong.recommended_next_correction}`,
 );
 
 const correctionInput = structuredClone(readyInput);
 correctionInput.readiness_answers.validation = "no";
 const correction = assessReadiness(correctionInput);
 check(
-  "weakest criterion drives recommended correction",
-  correction.recommended_next_correction.includes("Validation"),
+  "a passing score without failed gates does not invent a correction",
+  correction.score === 86 &&
+    correction.verdict === "ready" &&
+    correction.recommended_next_correction ===
+      "No readiness correction required.",
   correction.recommended_next_correction,
+);
+
+const belowThresholdCorrectionInput = structuredClone(readyInput);
+belowThresholdCorrectionInput.readiness_answers.validation = "no";
+belowThresholdCorrectionInput.readiness_answers.boundaries = "no";
+const belowThresholdCorrection = assessReadiness(
+  belowThresholdCorrectionInput,
+);
+check(
+  "a failing score threshold still recommends the weakest weighted criterion",
+  belowThresholdCorrection.score === 76 &&
+    belowThresholdCorrection.verdict === "supervised" &&
+    belowThresholdCorrection.recommended_next_correction.includes(
+      "Validation",
+    ),
+  belowThresholdCorrection.recommended_next_correction,
 );
 
 for (const field of ["validation", "boundaries", "human_review_stop"]) {
@@ -301,6 +324,134 @@ check(
   "missing applicability declaration blocks",
   missingApplicabilityResult.verdict === "blocked",
   missingApplicabilityResult.verdict,
+);
+
+const broadWithoutHandoff = structuredClone(readyInput);
+delete broadWithoutHandoff.goal_input.execution_handoff;
+broadWithoutHandoff.goal_result = renderGoal(broadWithoutHandoff.goal_input);
+const broadWithoutHandoffResult = assessReadiness(broadWithoutHandoff);
+check(
+  "broad work without execution handoff requires supervision",
+  broadWithoutHandoffResult.verdict === "supervised" &&
+    broadWithoutHandoffResult.supervision_gates.find(
+      ({ name }) => name === "execution handoff",
+    )?.passed === false,
+  broadWithoutHandoffResult.verdict,
+);
+
+for (const missingField of ["schedule_policy", "budget", "persistence"]) {
+  const candidate = structuredClone(readyInput);
+  candidate.scheduled = true;
+  delete candidate.goal_input[missingField];
+  candidate.goal_result = renderGoal(candidate.goal_input);
+  if (missingField === "budget") {
+    candidate.readiness_answers.budget_limit = "no";
+  }
+  const result = assessReadiness(candidate);
+  check(
+    `scheduled work without ${missingField} requires supervision`,
+    result.verdict === "supervised",
+    result.verdict,
+  );
+}
+
+const scheduledWithoutApproval = structuredClone(readyInput);
+scheduledWithoutApproval.scheduled = true;
+scheduledWithoutApproval.goal_input.human_review_stop.human_approval_required =
+  false;
+scheduledWithoutApproval.goal_input.human_review_stop.approval_actions = [];
+scheduledWithoutApproval.goal_result = renderGoal(
+  scheduledWithoutApproval.goal_input,
+);
+scheduledWithoutApproval.readiness_answers.human_approval_gate = "no";
+const scheduledWithoutApprovalResult = assessReadiness(
+  scheduledWithoutApproval,
+);
+check(
+  "scheduled work without human approval requires supervision",
+  scheduledWithoutApprovalResult.verdict === "supervised" &&
+    scheduledWithoutApprovalResult.supervision_gates.find(
+      ({ name }) => name === "scheduled human approval",
+    )?.passed === false,
+  scheduledWithoutApprovalResult.verdict,
+);
+
+const scheduledWithUnrelatedApproval = structuredClone(readyInput);
+scheduledWithUnrelatedApproval.scheduled = true;
+const scheduledWithUnrelatedApprovalResult = assessReadiness(
+  scheduledWithUnrelatedApproval,
+);
+check(
+  "scheduled work rejects unrelated approval actions",
+  scheduledWithUnrelatedApprovalResult.verdict === "supervised" &&
+    scheduledWithUnrelatedApprovalResult.supervision_gates.find(
+      ({ name }) => name === "scheduled human approval",
+    )?.passed === false,
+  scheduledWithUnrelatedApprovalResult.verdict,
+);
+
+const scheduledWithExactApproval = structuredClone(readyInput);
+scheduledWithExactApproval.scheduled = true;
+scheduledWithExactApproval.goal_input.human_review_stop.approval_actions.push(
+  SCHEDULE_APPROVAL_ACTION,
+);
+scheduledWithExactApproval.goal_result = renderGoal(
+  scheduledWithExactApproval.goal_input,
+);
+const scheduledWithExactApprovalResult = assessReadiness(
+  scheduledWithExactApproval,
+);
+check(
+  "scheduled work accepts the canonical scheduling approval action",
+  scheduledWithExactApprovalResult.verdict === "ready",
+  scheduledWithExactApprovalResult.verdict,
+);
+
+const passingScoreWithFailedPointFreeGate = structuredClone(readyInput);
+passingScoreWithFailedPointFreeGate.scheduled = true;
+passingScoreWithFailedPointFreeGate.goal_input.human_review_stop.approval_actions.push(
+  SCHEDULE_APPROVAL_ACTION,
+);
+delete passingScoreWithFailedPointFreeGate.goal_input.schedule_policy;
+passingScoreWithFailedPointFreeGate.goal_result = renderGoal(
+  passingScoreWithFailedPointFreeGate.goal_input,
+);
+passingScoreWithFailedPointFreeGate.readiness_answers.rollback_strategy = "no";
+const passingScoreWithFailedPointFreeGateResult = assessReadiness(
+  passingScoreWithFailedPointFreeGate,
+);
+check(
+  "a passing score recommends the point-free gate that blocks readiness",
+  passingScoreWithFailedPointFreeGateResult.score === 93 &&
+    passingScoreWithFailedPointFreeGateResult.verdict === "supervised" &&
+    passingScoreWithFailedPointFreeGateResult.recommended_next_correction.includes(
+      "schedule policy",
+    ),
+  passingScoreWithFailedPointFreeGateResult.recommended_next_correction,
+);
+
+const deterministicIdentity = assessReadiness(structuredClone(readyInput));
+check(
+  "assessment identity is deterministic and content-bound",
+  deterministicIdentity.assessment_id === ready.assessment_id &&
+    assessReadiness({
+      ...structuredClone(readyInput),
+      scheduled: true,
+    }).assessment_id !== ready.assessment_id,
+  ready.assessment_id,
+);
+
+const forgedGoalMetadata = structuredClone(readyInput);
+forgedGoalMetadata.goal_result.target_tool = "FORGED";
+forgedGoalMetadata.goal_result.omitted_optional_fields = ["validation"];
+const forgedGoalMetadataResult = assessReadiness(forgedGoalMetadata);
+check(
+  "forged renderer metadata blocks exact goal-result verification",
+  forgedGoalMetadataResult.verdict === "blocked" &&
+    forgedGoalMetadataResult.hard_gates.find(
+      ({ name }) => name === "goal semantic integrity",
+    )?.passed === false,
+  forgedGoalMetadataResult.verdict,
 );
 
 const missingRisk = structuredClone(readyInput);

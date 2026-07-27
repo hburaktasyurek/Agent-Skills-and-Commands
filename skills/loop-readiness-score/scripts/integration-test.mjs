@@ -24,6 +24,7 @@ const readinessInput = {
   broad: true,
   long_running: false,
   resumable: false,
+  scheduled: false,
 };
 
 const readiness = assessReadiness(readinessInput);

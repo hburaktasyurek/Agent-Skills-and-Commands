@@ -52,11 +52,12 @@
   "repeated": true,
   "broad": true,
   "long_running": false,
-  "resumable": true
+  "resumable": true,
+  "scheduled": false
 }
 ```
 
-`risk_level`, `human_approval_required`, and all five applicability flags are
+`risk_level`, `human_approval_required`, and all six applicability flags are
 required declarations. Use explicit `false` when a condition does not apply;
 absence is unknown, not false, and blocks readiness.
 
@@ -86,9 +87,15 @@ readiness threshold. A partial or yes answer
 without corresponding structured source evidence hard-blocks the result.
 
 `goal_input` is the canonical eight-field contract plus its control envelope.
-The checker rerenders it and requires an exact match with `goal_result`, so
-complete metadata beside an incomplete executable goal cannot produce
+The checker rerenders it and requires the complete `goal_result` object,
+including `target_tool` and `omitted_optional_fields`, to match exactly.
+Complete or forged metadata beside a detached executable goal cannot produce
 `ready`.
+
+When `scheduled` is `true`, `human_approval_required` must be true and
+`approval_actions` must include the exact canonical action
+`activate or change a schedule`. An unrelated approval such as commit or
+publish does not satisfy the scheduling gate.
 
 ## Verdicts
 
@@ -99,3 +106,12 @@ complete metadata beside an incomplete executable goal cannot produce
 
 Hard gates override the numeric score. The verdict and score are evidence about
 controls, not permission to perform an external or irreversible action.
+The single recommended correction follows the verdict blocker: a hard gate
+first; when the score is already 80 or higher, the first failed supervision
+gate; otherwise the weakest weighted criterion needed to improve the score.
+A `ready` verdict has no blocker and returns
+`No readiness correction required.`
+
+The result includes a deterministic `assessment_id` bound to the exact goal,
+answers, declarations, gates, score, and verdict. A later run record must
+rerun the assessment and reject a detached or stale identity.
