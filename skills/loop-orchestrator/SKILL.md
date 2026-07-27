@@ -8,6 +8,13 @@ description: Coordinate the modular methodology and loop-design skills without d
 Move one canonical contract between focused skills. Own sequencing and handoff
 state only.
 
+## Installed dependencies
+
+Install `methodology-selector`, `goal-engineering`, `loop-readiness-score`,
+`methodology-skill-creator`, and `loop-run-record` beside this skill. The
+orchestrator coordinates those siblings and is not a standalone replacement
+for them. Stop with the missing skill names when the set is incomplete.
+
 ## Inputs
 
 - `intent`: `loop-goal`, `methodology-skill`, or `record-run`;

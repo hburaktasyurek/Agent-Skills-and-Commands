@@ -90,10 +90,16 @@ must stop before goal-engineering.
 
 ## Fixture validation
 
-Run `node scripts/self-test.mjs` to verify manifest integrity, the six incoming
-contract fields, exact slugs, must-not choices, deferred-method cases, and
-positive plus negative-fit coverage for all twelve methods. The same check
-validates the persisted per-case observations in
+Resolve the absolute directory containing this `SKILL.md`, then run:
+
+```bash
+node /absolute/path/to/methodology-selector/scripts/self-test.mjs
+```
+
+This verifies manifest integrity, the six incoming contract fields, exact
+slugs, must-not choices, deferred-method cases, and positive plus negative-fit
+coverage for all twelve methods. The same check validates the persisted
+per-case observations in
 `evals/cold-routing-results.json` against the fixtures after expectations were
 revealed. The persisted matrix records, but does not recreate, the independent
 blinded routing review.

@@ -8,6 +8,13 @@ description: Create one focused, task-scoped methodology SKILL.md from a complet
 Turn one selected method and its canonical eight-field contract into one
 reviewable methodology skill. This is not a general skill creator.
 
+## Installed dependency
+
+The renderer imports the manifest and selected method reference from the
+sibling `methodology-selector` skill. Confirm that both skills are installed
+under the same skills root. If the sibling is missing, stop and report the
+required pair; do not copy or recreate the canonical method.
+
 ## Preconditions
 
 Read [references/creator-contract.md](references/creator-contract.md).
@@ -30,8 +37,11 @@ the skill.
 3. Render one `SKILL.md`:
 
    ```bash
-   node scripts/render-methodology-skill.mjs path/to/input.json
+   node /absolute/path/to/methodology-skill-creator/scripts/render-methodology-skill.mjs /absolute/path/to/input.json
    ```
+
+   Resolve the first path from the directory containing this `SKILL.md`. The
+   agent prepares the JSON input; do not ask the human to hand-write it.
 
 4. Check that the output has repo-compatible frontmatter, one methodology,
    observable validation, quality questions, and the original human-return

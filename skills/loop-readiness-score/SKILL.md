@@ -8,6 +8,13 @@ description: Score a rendered loop goal against eleven weighted readiness criter
 Evaluate a completed goal contract. Do not select a methodology, rewrite the
 goal, run the task, or turn a score into permission.
 
+## Installed dependencies
+
+The checker imports the sibling `goal-engineering` renderer, which imports
+`methodology-selector`. Confirm that all three skills are installed under the
+same skills root. If either sibling is missing, stop and report the required
+installation set.
+
 ## Input
 
 Read [references/readiness-contract.md](references/readiness-contract.md). Use
@@ -62,9 +69,11 @@ Return `ready` only when hard and applicable supervision gates pass.
 ## Command
 
 ```bash
-node scripts/check-readiness-score.mjs path/to/readiness-input.json
+node /absolute/path/to/loop-readiness-score/scripts/check-readiness-score.mjs /absolute/path/to/readiness-input.json
 ```
 
+Resolve the first path from the directory containing this `SKILL.md`. The
+agent prepares the JSON input; do not ask the human to hand-write it.
 The result contains `score`, `max_score`, `score_band`, the eleven criterion
 results, verdict, hard-gate evidence, supervision-gate evidence, a deterministic
 `assessment_id`, and the single recommended next correction. `blocked` exits

@@ -8,6 +8,13 @@ description: Turn a selected methodology and task contract into a compact, verif
 Render a goal from an already selected methodology. Do not choose the
 methodology, execute the goal, or decide that the resulting loop is ready.
 
+## Installed dependency
+
+The renderer imports the canonical manifest from the sibling
+`methodology-selector` skill. Confirm that both skills are installed under the
+same skills root. If the sibling is missing, stop and tell the user to install
+the pair; do not run a broken command or recreate the manifest.
+
 ## Inputs
 
 Read [references/input-contract.md](references/input-contract.md). The eight
@@ -57,9 +64,11 @@ applicable.
 ## Command
 
 ```bash
-node scripts/render-goal.mjs path/to/input.json
+node /absolute/path/to/goal-engineering/scripts/render-goal.mjs /absolute/path/to/input.json
 ```
 
+Resolve the first path from the directory containing this `SKILL.md`. The
+agent prepares the JSON input; do not ask the human to hand-write it.
 Successful output is JSON containing `goal`, `character_count`, `limit`,
 `within_limit`, `target_tool`, and `omitted_optional_fields`. An over-limit
 render returns the same evidence and exits non-zero.

@@ -8,6 +8,13 @@ description: Turn externally supplied evidence from one completed loop run into 
 Record what happened in one externally executed run. This skill is a
 post-run evidence boundary, not an executor or a new readiness judge.
 
+## Installed dependencies
+
+The recorder reuses `loop-readiness-score`, which in turn requires
+`goal-engineering` and `methodology-selector`. Confirm that all four skills are
+installed under the same skills root. If any sibling is missing, stop and
+report the complete installation set.
+
 ## Preconditions
 
 Read [references/run-record-contract.md](references/run-record-contract.md).
@@ -33,8 +40,11 @@ repair them.
 6. Return the record with `review-required`.
 
 ```bash
-node scripts/create-run-record.mjs path/to/input.json
+node /absolute/path/to/loop-run-record/scripts/create-run-record.mjs /absolute/path/to/input.json
 ```
+
+Resolve the first path from the directory containing this `SKILL.md`. The
+agent prepares the JSON input; do not ask the human to hand-write it.
 
 ## Boundaries
 

@@ -19,6 +19,39 @@ npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands/skills/task-groun
 npx skills@latest remove task-groundwork -g -y
 ```
 
+## Loop Skill Dependencies
+
+The loop system is modular at runtime but some validator scripts import sibling
+skills. Installing the whole repository is the recommended setup and includes
+every dependency.
+
+For a selective installation, install the requested skill and its transitive
+dependencies together:
+
+| Skill | Required sibling skills |
+|---|---|
+| `methodology-selector` | none |
+| `goal-engineering` | `methodology-selector` |
+| `loop-readiness-score` | `goal-engineering`, `methodology-selector` |
+| `methodology-skill-creator` | `methodology-selector` |
+| `loop-run-record` | `loop-readiness-score`, `goal-engineering`, `methodology-selector` |
+| `loop-orchestrator` | all five loop skills above |
+| `workflow-step-record` | none |
+
+For example, install only the goal-rendering pair globally for all agents:
+
+```bash
+npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands \
+  -g --agent '*' \
+  --skill methodology-selector \
+  --skill goal-engineering \
+  -y
+```
+
+The `npx skills` format has no transitive dependency declaration, so selecting
+only a dependent skill is intentionally unsupported. Each dependent skill
+checks this installation precondition before its scripts are used.
+
 ## Workflow Recorder Quick Start
 
 [`workflow-step-record`](skills/workflow-step-record/README.md) is a selective
