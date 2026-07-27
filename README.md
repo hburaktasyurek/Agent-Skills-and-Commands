@@ -19,6 +19,26 @@ npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands/skills/task-groun
 npx skills@latest remove task-groundwork -g -y
 ```
 
+## Workflow Recorder Quick Start
+
+[`workflow-step-record`](skills/workflow-step-record/README.md) is a selective
+flight recorder for one workflow step. It saves the exact input before a skill,
+then its output, model/surface, observations, and next handoff. It does not
+watch sessions, run the target skill, judge the result again, or modify skills.
+
+No terminal environment variable is required. Local records default to
+`~/workflow-records`. To use a private Git, iCloud, or Drive folder, configure
+the location once:
+
+> Configure workflow-step-record to use
+> `/absolute/path/to/my/workflow-records`.
+
+Later sessions and supported agent surfaces reuse the saved choice. Recording
+is optional and most useful for experiments, review failures, repeated
+workarounds, and evidence intended for later skill improvement. See the
+[setup and first-run guide](skills/workflow-step-record/README.md) for storage,
+SSD-use, synchronization, and security details.
+
 ## Skills
 
 Invokable via `/skill-name` in Claude Code, or installed into other agents via `npx skills`. See [skills/INDEX.md](skills/INDEX.md) for a grouped index.
@@ -33,11 +53,12 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [senior-implementer](skills/senior-implementer/SKILL.md) | Implement a spec or brief end-to-end; delegate only bounded, independent work when useful |
 | [tdd](skills/tdd/SKILL.md) | Red-green-refactor TDD loop with reference docs |
 | [triage-issue](skills/triage-issue/SKILL.md) | Investigate a bug and file a GitHub issue with a TDD-based fix plan |
-| [commit-work](skills/commit-work/SKILL.md) | Stage and split changes into Conventional Commits (Haiku/Sonnet by diff size) |
+| [commit-work](skills/commit-work/SKILL.md) | Stage intended changes, split coherent Conventional Commits, push, and verify without choosing a model |
 | [adversarial-diff-review](skills/adversarial-diff-review/SKILL.md) | Red-team review that tries to kill an implementation diff against its task definition; file:line evidence + coverage declaration |
 | [review-implementation](skills/review-implementation/SKILL.md) | Spec-vs-implementation compliance audit: checklist coverage + known-pitfall sweep (tenancy, auth, migrations, payments) |
 | [pr-branch](skills/pr-branch/SKILL.md) | Write a two-block PR description (non-technical + technical) and open a GitHub PR |
 | [session-handoff](skills/session-handoff/SKILL.md) | Structured handoff doc capturing progress, decisions, and open questions |
+| [workflow-step-record](skills/workflow-step-record/SKILL.md) | Snapshot one workflow skill's exact input before it runs, then bind its output and receipt into an immutable, portable record |
 | [prompt-creator](skills/prompt-creator/SKILL.md) | Interview-driven Claude prompt builder grounded in Anthropic's best practices |
 | [tune-skill](skills/tune-skill/SKILL.md) | Tactical, complaint-driven edit to an existing skill — diagnose, smallest change, review |
 | [methodology-selector](skills/methodology-selector/SKILL.md) | Select one of twelve canonical methodologies, or none, using positive fit, negative-fit veto, and stage precedence |

@@ -1,0 +1,22 @@
+{
+  "output_sources": [
+    {
+      "kind": "groundwork-output",
+      "source_type": "inline",
+      "locator": "## Status\nready for to-spec"
+    }
+  ],
+  "receipt": {
+    "kind": "completion",
+    "status": "completed",
+    "evidence": [
+      "Groundwork returned the canonical ready status."
+    ]
+  },
+  "observations": [],
+  "next": {
+    "session_type": "design",
+    "skill": "to-spec",
+    "input_reference": "groundwork-output"
+  }
+}

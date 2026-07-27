@@ -32,6 +32,13 @@ order itself needs coordination.
 - [methodology-skill-creator](methodology-skill-creator/SKILL.md) — Create one task-scoped methodology SKILL.md from a completed selector contract; focused skill content may exceed the loop goal's 4,000-character ceiling.
 - [loop-orchestrator](loop-orchestrator/SKILL.md) — Preserve and route the shared contract between focused design and evidence skills; never execute or self-approve.
 
+## Workflow Evidence
+
+Preserve what each real workflow step received and produced without changing
+the workflow or judging the step again.
+
+- [workflow-step-record](workflow-step-record/SKILL.md) — Two-phase `start`/`finish` evidence record for the stable design-review-implementation-PR workflow; immutable snapshots, explicit model/surface metadata, zero-setup local storage, and optional user-controlled sync.
+
 ## Triage & Refactor Planning
 
 When the work is "figure out what to do," not "do it."
@@ -42,7 +49,7 @@ When the work is "figure out what to do," not "do it."
 
 Wrapping work up.
 
-- [commit-work](commit-work/SKILL.md) — Stage and split changes into Conventional Commits. Delegates to Haiku/Sonnet based on diff size.
+- [commit-work](commit-work/SKILL.md) — Stage intended changes, split coherent Conventional Commits, push, and verify without choosing a model.
 - [adversarial-diff-review](adversarial-diff-review/SKILL.md) — Red-team review that tries to kill an implementation diff against its task definition; P0–P3 findings with file:line evidence and a coverage declaration.
 - [review-implementation](review-implementation/SKILL.md) — Systematic spec-vs-implementation compliance audit: checklist coverage plus known-pitfall sweep (tenancy, auth, migrations, payments); Ready-for-PR verdict.
 - [pr-branch](pr-branch/SKILL.md) — Write a two-block PR description (non-technical summary + technical detail), open the PR.

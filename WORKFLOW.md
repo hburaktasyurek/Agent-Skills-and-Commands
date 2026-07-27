@@ -156,6 +156,40 @@ next_skill: <exact skill name or human action>
 human_action_required: <scope, commit, push, install, merge, or none>
 ```
 
+## Exact step evidence
+
+`session-handoff` helps another session continue. It is not a performance
+record. When a workflow step should contribute evidence for later skill
+improvement, use
+[`workflow-step-record`](skills/workflow-step-record/SKILL.md) in two phases:
+
+```text
+workflow-step-record start
+        ↓
+one canonical workflow skill
+        ↓
+workflow-step-record finish
+        ↓
+switch sessions
+```
+
+Start must run before the target skill so an editing skill cannot erase its
+own input state. Finish must run in the same session, using the exact output
+and a structured receipt. A missing output leaves the run `pending`; it is not
+silently treated as failure or completion.
+
+Records default to `~/workflow-records`; no per-terminal environment variable
+is required. A private Git, iCloud, Drive, or other directory can be selected
+once with the recorder's `configure` command. Git is optional. The recorder
+writes evidence only; the human owns Git operations, retention, access control,
+and any external synchronization.
+
+The recorder does not run the target skill, repeat a review, rank a model,
+find patterns, edit a skill, or authorize the next action. See the
+[first-run guide](skills/workflow-step-record/README.md) for setup and the
+[record contract](skills/workflow-step-record/references/record-contract.md)
+for the exact artifact matrix and limits.
+
 ## Skill-improvement observation loop
 
 The workflow stays stable, but its skills are expected to evolve.
@@ -170,7 +204,10 @@ After each session, record problems such as:
 - the same workaround was needed in several tasks;
 - a review or readiness gate repeatedly found the same class of defect.
 
-Periodically evaluate the observations:
+Do not infer a recurring skill defect until the same skill and problem
+category appear in at least three different tasks. Attempts within one task
+are not independent evidence. Once that threshold exists, periodically
+evaluate the observations:
 
 1. Group repeated problems by skill and failure type.
 2. Separate one-off model mistakes from reproducible skill-instruction defects.
