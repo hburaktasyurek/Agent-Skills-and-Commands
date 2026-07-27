@@ -11,7 +11,7 @@ curl -fsSL https://raw.githubusercontent.com/hburaktasyurek/Agent-Skills-and-Com
 Or install a single skill via `npx`:
 
 ```bash
-npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands/skills/grill-me
+npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands/skills/task-groundwork
 ```
 
 ## What's Included
@@ -22,7 +22,6 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 
 | Skill | Description |
 |-------|-------------|
-| [grill-me](skills/grill-me/SKILL.md) | Stress-test a plan — relentless interviewer that resolves each branch of the decision tree |
 | [task-groundwork](skills/task-groundwork/SKILL.md) | Ground a roadmap task in phase context — resolve its decision tree from artifacts, ready for to-spec |
 | [adversarial-spec-review](skills/adversarial-spec-review/SKILL.md) | Red-team review that tries to kill a plan or spec; P0–P3 findings with verdict |
 | [spec-readiness](skills/spec-readiness/SKILL.md) | Implementation-readiness check — can an implementer start every task tomorrow? |
@@ -77,7 +76,7 @@ Skills follow the [open agent skills](https://github.com/vercel-labs/skills) for
 
 ```bash
 # Single skill
-npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands/skills/grill-me
+npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands/skills/task-groundwork
 
 # All skills
 npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands --all
