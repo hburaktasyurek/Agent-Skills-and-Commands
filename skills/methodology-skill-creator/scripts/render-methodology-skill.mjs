@@ -18,4 +18,3 @@ try {
   process.stderr.write(`${error instanceof Error ? error.message : error}\n`);
   process.exit(1);
 }
-
