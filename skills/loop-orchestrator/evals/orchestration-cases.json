@@ -1,0 +1,53 @@
+{
+  "skill_name": "loop-orchestrator",
+  "cases": [
+    {
+      "id": "negative-fit-stops",
+      "intent": "loop-goal",
+      "selection": "none",
+      "expected_status": "none",
+      "expected_next_owner": "human",
+      "must_not_call": [
+        "goal-engineering",
+        "loop-readiness-score",
+        "methodology-skill-creator"
+      ]
+    },
+    {
+      "id": "goal-path-ready-is-not-execution",
+      "intent": "loop-goal",
+      "selection": "work-breakdown-structure",
+      "readiness": "ready",
+      "expected_status": "ready",
+      "expected_next_owner": "human",
+      "must_not_claim": [
+        "task executed",
+        "merge approved",
+        "deployment approved"
+      ]
+    },
+    {
+      "id": "goal-path-supervised-stops",
+      "intent": "loop-goal",
+      "selection": "smart-goals",
+      "readiness": "supervised",
+      "expected_status": "supervised",
+      "expected_next_owner": "human",
+      "must_not_call": [
+        "methodology-skill-creator"
+      ]
+    },
+    {
+      "id": "creator-path-skips-goal-readiness",
+      "intent": "methodology-skill",
+      "selection": "five-whys",
+      "creator_result": "valid",
+      "expected_status": "review-required",
+      "expected_next_owner": "human",
+      "must_not_call": [
+        "goal-engineering",
+        "loop-readiness-score"
+      ]
+    }
+  ]
+}

@@ -19,6 +19,18 @@ Day-to-day coding workflow.
 - [senior-implementer](senior-implementer/SKILL.md) — Implement a spec or brief end-to-end. Trust the spec, stop when it breaks, ship complete.
 - [tdd](tdd/SKILL.md) — Red-green-refactor TDD loop, with reference docs on tests, mocking, refactoring, deep modules, interface design.
 
+## Loop Engineering
+
+Design small, verifiable agent loops and methodology-specific instructions.
+Use the focused skills directly, or use the thin orchestrator when the handoff
+order itself needs coordination.
+
+- [methodology-selector](methodology-selector/SKILL.md) — Select one of twelve canonical methodologies, or none, using positive fit, negative-fit veto, and stage precedence.
+- [goal-engineering](goal-engineering/SKILL.md) — Render the canonical eight-field contract plus controls into a goal; report the exact count and enforce a universal 4,000-character ceiling.
+- [loop-readiness-score](loop-readiness-score/SKILL.md) — Score eleven weighted criteria out of 100, rerender, independently recount, and gate a goal without repairing or executing it.
+- [methodology-skill-creator](methodology-skill-creator/SKILL.md) — Create one task-scoped methodology SKILL.md from a completed selector contract; focused skill content may exceed the loop goal's 4,000-character ceiling.
+- [loop-orchestrator](loop-orchestrator/SKILL.md) — Preserve and route the shared contract between the focused skills; never execute or self-approve.
+
 ## Triage & Refactor Planning
 
 When the work is "figure out what to do," not "do it."

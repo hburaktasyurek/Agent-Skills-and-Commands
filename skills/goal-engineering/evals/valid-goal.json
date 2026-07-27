@@ -1,0 +1,49 @@
+{
+  "methodology": "work-breakdown-structure",
+  "task": "Build and validate the complete modular loop system across all twelve canonical methodologies.",
+  "audience": "Skill authors and independent reviewers.",
+  "context": "The repository distributes only skills. Five interoperable components share one canonical contract and one methodology manifest.",
+  "output_format": "Five focused skills, twelve-method routing coverage, deterministic checks, independent review, and recorded evidence.",
+  "validation": {
+    "checks": [
+      "Routing positive, negative-fit, and boundary cases match expected methods.",
+      "Every rendered goal reports its character count and stays within the effective limit.",
+      "Readiness hard gates block missing validation, boundaries, stop conditions, or required approval."
+    ],
+    "evidence": [
+      "Changed-file list and command results.",
+      "Routing results, goal lengths, and readiness verdicts.",
+      "Independent review decision against the goal and final diff."
+    ]
+  },
+  "method_fit": {
+    "best_when": "A large deliverable needs reviewable work packages and an integration slice.",
+    "avoid_when": "The task is already small enough for one bounded run.",
+    "reason": "The system has five focused components with explicit contracts and ordered dependencies."
+  },
+  "human_review_stop": {
+    "stop_conditions": [
+      "Stop when all twelve-method checks and both integration paths pass.",
+      "Stop after two identical failures without new evidence.",
+      "Stop when a shared contract change requires a human scope decision."
+    ],
+    "human_approval_required": true,
+    "approval_actions": [
+      "committing or publishing the changes",
+      "installing repository skills globally"
+    ]
+  },
+  "boundaries": [
+    "Do not edit outside this repository or installed copies.",
+    "Do not duplicate subskill logic or build a monolith.",
+    "Do not silently truncate a goal or let a creator approve its own output."
+  ],
+  "fallback": "Preserve the diff and evidence, name the smallest unresolved contract or validation blocker, and propose one bounded next experiment.",
+  "hypothesis": "A canonical manifest and eight-field contract can let focused components work together without combining their responsibilities.",
+  "smallest_useful_run": "Exercise one complete selector-to-goal-to-readiness and selector-to-methodology-skill path before running the twelve-method matrix.",
+  "independent_checker": "A separate reviewer checks routing, limits, hard gates, contracts, and the final diff.",
+  "persistence": "Record contracts, eval evidence, rejected shortcuts, blockers, and the next permitted expansion.",
+  "budget": "Stop after six revision cycles or two identical failures without new evidence.",
+  "isolation": "Make changes only in the current repository worktree.",
+  "target_tool": "generic"
+}
