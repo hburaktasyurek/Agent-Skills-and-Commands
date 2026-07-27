@@ -2,6 +2,10 @@
 
 Personal skill kit for Codex, Claude Code, Cursor, and other compatible agents. Install and manage it with `npx skills`.
 
+The stable design-review-implementation-PR process, variable model policy, and
+session-based skill-improvement loop are recorded in
+[WORKFLOW.md](WORKFLOW.md).
+
 ## Quick Start
 
 ```bash
@@ -14,6 +18,59 @@ npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands/skills/task-groun
 # Remove one global skill
 npx skills@latest remove task-groundwork -g -y
 ```
+
+## Loop Skill Dependencies
+
+The loop system is modular at runtime but some validator scripts import sibling
+skills. Installing the whole repository is the recommended setup and includes
+every dependency.
+
+For a selective installation, install the requested skill and its transitive
+dependencies together:
+
+| Skill | Required sibling skills |
+|---|---|
+| `methodology-selector` | none |
+| `goal-engineering` | `methodology-selector` |
+| `loop-readiness-score` | `goal-engineering`, `methodology-selector` |
+| `methodology-skill-creator` | `methodology-selector` |
+| `loop-run-record` | `loop-readiness-score`, `goal-engineering`, `methodology-selector` |
+| `loop-orchestrator` | all five loop skills above |
+| `workflow-step-record` | none |
+
+For example, install only the goal-rendering pair globally for all agents:
+
+```bash
+npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands \
+  -g --agent '*' \
+  --skill methodology-selector \
+  --skill goal-engineering \
+  -y
+```
+
+The `npx skills` format has no transitive dependency declaration, so selecting
+only a dependent skill is intentionally unsupported. Each dependent skill
+checks this installation precondition before its scripts are used.
+
+## Workflow Recorder Quick Start
+
+[`workflow-step-record`](skills/workflow-step-record/README.md) is a selective
+flight recorder for one workflow step. It saves the exact input before a skill,
+then its output, model/surface, observations, and next handoff. It does not
+watch sessions, run the target skill, judge the result again, or modify skills.
+
+No terminal environment variable is required. Local records default to
+`~/workflow-records`. To use a private Git, iCloud, or Drive folder, configure
+the location once:
+
+> Configure workflow-step-record to use
+> `/absolute/path/to/my/workflow-records`.
+
+Later sessions and supported agent surfaces reuse the saved choice. Recording
+is optional and most useful for experiments, review failures, repeated
+workarounds, and evidence intended for later skill improvement. See the
+[setup and first-run guide](skills/workflow-step-record/README.md) for storage,
+SSD-use, synchronization, and security details.
 
 ## Skills
 
@@ -29,13 +86,20 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [senior-implementer](skills/senior-implementer/SKILL.md) | Implement a spec or brief end-to-end; delegate only bounded, independent work when useful |
 | [tdd](skills/tdd/SKILL.md) | Red-green-refactor TDD loop with reference docs |
 | [triage-issue](skills/triage-issue/SKILL.md) | Investigate a bug and file a GitHub issue with a TDD-based fix plan |
-| [commit-work](skills/commit-work/SKILL.md) | Stage and split changes into Conventional Commits (Haiku/Sonnet by diff size) |
+| [commit-work](skills/commit-work/SKILL.md) | Stage intended changes, split coherent Conventional Commits, push, and verify without choosing a model |
 | [adversarial-diff-review](skills/adversarial-diff-review/SKILL.md) | Red-team review that tries to kill an implementation diff against its task definition; file:line evidence + coverage declaration |
 | [review-implementation](skills/review-implementation/SKILL.md) | Spec-vs-implementation compliance audit: checklist coverage + known-pitfall sweep (tenancy, auth, migrations, payments) |
 | [pr-branch](skills/pr-branch/SKILL.md) | Write a two-block PR description (non-technical + technical) and open a GitHub PR |
 | [session-handoff](skills/session-handoff/SKILL.md) | Structured handoff doc capturing progress, decisions, and open questions |
+| [workflow-step-record](skills/workflow-step-record/SKILL.md) | Snapshot one workflow skill's exact input before it runs, then bind its output and receipt into an immutable, portable record |
 | [prompt-creator](skills/prompt-creator/SKILL.md) | Interview-driven Claude prompt builder grounded in Anthropic's best practices |
 | [tune-skill](skills/tune-skill/SKILL.md) | Tactical, complaint-driven edit to an existing skill — diagnose, smallest change, review |
+| [methodology-selector](skills/methodology-selector/SKILL.md) | Select one of twelve canonical methodologies, or none, using positive fit, negative-fit veto, and stage precedence |
+| [goal-engineering](skills/goal-engineering/SKILL.md) | Render a verifiable loop goal from the shared eight-field contract with a universal 4,000-character ceiling |
+| [loop-readiness-score](skills/loop-readiness-score/SKILL.md) | Score eleven readiness criteria out of 100 and independently gate a rendered goal as blocked, supervised, or ready |
+| [loop-run-record](skills/loop-run-record/SKILL.md) | Bind externally supplied post-run evidence to the exact ready goal and return a deterministic record for human review |
+| [methodology-skill-creator](skills/methodology-skill-creator/SKILL.md) | Turn one selected method and task contract into one focused methodology SKILL.md; skill length is not governed by the loop-goal limit |
+| [loop-orchestrator](skills/loop-orchestrator/SKILL.md) | Coordinate selection, goal/readiness, methodology-skill creation, and post-run recording without duplicating their logic |
 
 ## Manage Installed Skills
 
@@ -72,5 +136,6 @@ Body shape and length vary by what the skill is for — some are three sentences
 
 ```
 .
+├── WORKFLOW.md          # stable multi-session working method
 └── skills/              # invokable skills (see skills/INDEX.md)
 ```

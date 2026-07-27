@@ -19,6 +19,26 @@ Day-to-day coding workflow.
 - [senior-implementer](senior-implementer/SKILL.md) — Implement a spec or brief end-to-end. Trust the spec, stop when it breaks, ship complete.
 - [tdd](tdd/SKILL.md) — Red-green-refactor TDD loop, with reference docs on tests, mocking, refactoring, deep modules, interface design.
 
+## Loop Engineering
+
+Design small, verifiable agent loops and methodology-specific instructions.
+Use the focused skills directly, or use the thin orchestrator when the handoff
+order itself needs coordination.
+
+- [methodology-selector](methodology-selector/SKILL.md) — Select one of twelve canonical methodologies, or none, using positive fit, negative-fit veto, and stage precedence.
+- [goal-engineering](goal-engineering/SKILL.md) — Render the canonical eight-field contract plus controls into a goal; report the exact count and enforce a universal 4,000-character ceiling.
+- [loop-readiness-score](loop-readiness-score/SKILL.md) — Score eleven weighted criteria out of 100, rerender, independently recount, and gate a goal without repairing or executing it.
+- [loop-run-record](loop-run-record/SKILL.md) — Normalize externally supplied evidence after one ready run, bind it to the exact goal/readiness identity, and return it for human review.
+- [methodology-skill-creator](methodology-skill-creator/SKILL.md) — Create one task-scoped methodology SKILL.md from a completed selector contract; focused skill content may exceed the loop goal's 4,000-character ceiling.
+- [loop-orchestrator](loop-orchestrator/SKILL.md) — Preserve and route the shared contract between focused design and evidence skills; never execute or self-approve.
+
+## Workflow Evidence
+
+Preserve what each real workflow step received and produced without changing
+the workflow or judging the step again.
+
+- [workflow-step-record](workflow-step-record/SKILL.md) — Two-phase `start`/`finish` evidence record for the stable design-review-implementation-PR workflow; immutable snapshots, explicit model/surface metadata, zero-setup local storage, and optional user-controlled sync.
+
 ## Triage & Refactor Planning
 
 When the work is "figure out what to do," not "do it."
@@ -29,7 +49,7 @@ When the work is "figure out what to do," not "do it."
 
 Wrapping work up.
 
-- [commit-work](commit-work/SKILL.md) — Stage and split changes into Conventional Commits. Delegates to Haiku/Sonnet based on diff size.
+- [commit-work](commit-work/SKILL.md) — Stage intended changes, split coherent Conventional Commits, push, and verify without choosing a model.
 - [adversarial-diff-review](adversarial-diff-review/SKILL.md) — Red-team review that tries to kill an implementation diff against its task definition; P0–P3 findings with file:line evidence and a coverage declaration.
 - [review-implementation](review-implementation/SKILL.md) — Systematic spec-vs-implementation compliance audit: checklist coverage plus known-pitfall sweep (tenancy, auth, migrations, payments); Ready-for-PR verdict.
 - [pr-branch](pr-branch/SKILL.md) — Write a two-block PR description (non-technical summary + technical detail), open the PR.

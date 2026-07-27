@@ -1,0 +1,372 @@
+{
+  "skill_name": "methodology-selector",
+  "contract_version": 2,
+  "cases": [
+    {
+      "id": "pyramid-positive",
+      "kind": "positive",
+      "input": {
+        "task": "Recommend whether engineering should adopt a mandatory independent checker.",
+        "audience": "Engineering executives.",
+        "context": "The evidence is complete and the decision is ready for a concise recommendation.",
+        "output_format": "Executive memo led by one conclusion and non-overlapping support.",
+        "validation": {"checks": ["Conclusion appears first and every point supports it."], "evidence": ["Memo outline and final recommendation."]},
+        "human_review_stop": {"stop_conditions": ["Stop after one reviewable recommendation."], "human_approval_required": true, "approval_actions": ["sending the memo"]}
+      },
+      "expected_methodology": "pyramid-principle",
+      "must_not_select": ["aida", "star"]
+    },
+    {
+      "id": "pyramid-negative",
+      "kind": "negative-fit",
+      "input": {
+        "task": "Explore an unfamiliar incident and discover what questions should be asked.",
+        "audience": "Investigators.",
+        "context": "Evidence is incomplete and no conclusion is defensible.",
+        "output_format": "Open questions and evidence gaps.",
+        "validation": {"checks": ["No unsupported conclusion is presented."], "evidence": ["List of unknowns."]},
+        "human_review_stop": {"stop_conditions": ["Stop before recommending a cause."], "human_approval_required": false, "approval_actions": []}
+      },
+      "expected_methodology": "none",
+      "must_not_select": ["pyramid-principle"]
+    },
+    {
+      "id": "five-whys-positive",
+      "kind": "positive",
+      "input": {
+        "task": "Find why the same registry authentication failure returns in every update run.",
+        "audience": "Maintainers.",
+        "context": "One error signature repeated in four identical runs.",
+        "output_format": "Evidence-backed causal chain and validation check.",
+        "validation": {"checks": ["Every why follows from evidence."], "evidence": ["Error and configuration evidence."]},
+        "human_review_stop": {"stop_conditions": ["Stop at an actionable cause or broken evidence chain."], "human_approval_required": true, "approval_actions": ["changing credentials"]}
+      },
+      "expected_methodology": "five-whys",
+      "must_not_select": ["swot", "pdca"]
+    },
+    {
+      "id": "five-whys-negative",
+      "kind": "negative-fit",
+      "input": {
+        "task": "Explain an incident with unrelated database, DNS, and credential failures.",
+        "audience": "Incident reviewers.",
+        "context": "Telemetry suggests three independent causes.",
+        "output_format": "Separated evidence gaps.",
+        "validation": {"checks": ["Independent causes are not forced into one chain."], "evidence": ["Telemetry by symptom."]},
+        "human_review_stop": {"stop_conditions": ["Stop before assigning one root cause."], "human_approval_required": true, "approval_actions": ["publishing a root cause"]}
+      },
+      "expected_methodology": "none",
+      "must_not_select": ["five-whys"]
+    },
+    {
+      "id": "five-w-two-h-positive",
+      "kind": "positive",
+      "input": {
+        "task": "Turn a vague request to improve release operations into a complete operating frame.",
+        "audience": "Release owners.",
+        "context": "Owner, timing, location, approach, and effort are unknown.",
+        "output_format": "What, why, who, where, when, how, and how-much frame.",
+        "validation": {"checks": ["All seven questions are answered or marked unknown."], "evidence": ["Completed operating frame."]},
+        "human_review_stop": {"stop_conditions": ["Stop when the frame is complete."], "human_approval_required": true, "approval_actions": ["assigning owners"]}
+      },
+      "expected_methodology": "five-w-two-h",
+      "must_not_select": ["smart-goals"]
+    },
+    {
+      "id": "five-w-two-h-negative",
+      "kind": "negative-fit",
+      "input": {
+        "task": "Change one documented Node version from 22.3 to 22.4.",
+        "audience": "Repository users.",
+        "context": "File, old value, new value, and validation are known.",
+        "output_format": "One edited file.",
+        "validation": {"checks": ["Old value absent; new value present."], "evidence": ["Focused search result."]},
+        "human_review_stop": {"stop_conditions": ["Stop after the check passes."], "human_approval_required": false, "approval_actions": []}
+      },
+      "expected_methodology": "none",
+      "must_not_select": ["five-w-two-h", "work-breakdown-structure"]
+    },
+    {
+      "id": "smart-positive",
+      "kind": "positive",
+      "input": {
+        "task": "Make contributor onboarding documentation better.",
+        "audience": "New contributors.",
+        "context": "The intention is vague but success can be measured in one bounded run.",
+        "output_format": "Specific measurable bounded goal.",
+        "validation": {"checks": ["A reviewer can determine completion objectively."], "evidence": ["Metric and stop boundary."]},
+        "human_review_stop": {"stop_conditions": ["Stop when the goal is measurable."], "human_approval_required": true, "approval_actions": ["publishing"]}
+      },
+      "expected_methodology": "smart-goals",
+      "must_not_select": ["okr", "work-breakdown-structure"]
+    },
+    {
+      "id": "smart-negative",
+      "kind": "negative-fit",
+      "input": {
+        "task": "Discover whether users have an onboarding problem at all.",
+        "audience": "Product researchers.",
+        "context": "No honest success metric is known before discovery.",
+        "output_format": "Research questions.",
+        "validation": {"checks": ["Questions do not invent a target metric."], "evidence": ["Unknowns and research plan."]},
+        "human_review_stop": {"stop_conditions": ["Stop before inventing success."], "human_approval_required": false, "approval_actions": []}
+      },
+      "expected_methodology": "none",
+      "must_not_select": ["smart-goals", "okr"]
+    },
+    {
+      "id": "pdca-positive",
+      "kind": "positive",
+      "input": {
+        "task": "Improve a weekly dependency-update workflow through measured iterations.",
+        "audience": "Maintenance team.",
+        "context": "The workflow repeats and each change can be tested on one package.",
+        "output_format": "Plan, bounded run, evidence check, and next action.",
+        "validation": {"checks": ["The next cycle follows measured evidence."], "evidence": ["Before/after run notes."]},
+        "human_review_stop": {"stop_conditions": ["Stop after keep/change/stop decision."], "human_approval_required": true, "approval_actions": ["standardizing the workflow"]}
+      },
+      "expected_methodology": "pdca",
+      "must_not_select": ["smart-goals"]
+    },
+    {
+      "id": "pdca-negative",
+      "kind": "negative-fit",
+      "input": {
+        "task": "Choose one database vendor from three candidates for a one-time purchase.",
+        "audience": "Architecture council.",
+        "context": "Explicit weighted criteria exist and there is no improvement cycle.",
+        "output_format": "Scored comparison and recommendation.",
+        "validation": {"checks": ["Scores follow predefined weights."], "evidence": ["Decision table."]},
+        "human_review_stop": {"stop_conditions": ["Stop after recommendation."], "human_approval_required": true, "approval_actions": ["purchasing"]}
+      },
+      "expected_methodology": "decision-matrix",
+      "must_not_select": ["pdca"]
+    },
+    {
+      "id": "swot-positive",
+      "kind": "positive",
+      "input": {
+        "task": "Assess whether the product should enter a new market.",
+        "audience": "Product leadership.",
+        "context": "Internal capabilities and external conditions both affect direction.",
+        "output_format": "SWOT analysis and one strategic move.",
+        "validation": {"checks": ["Internal and external factors remain separate."], "evidence": ["Four-quadrant analysis."]},
+        "human_review_stop": {"stop_conditions": ["Stop after one evidence-backed direction."], "human_approval_required": true, "approval_actions": ["changing strategy"]}
+      },
+      "expected_methodology": "swot",
+      "must_not_select": ["five-whys"]
+    },
+    {
+      "id": "swot-negative",
+      "kind": "negative-fit",
+      "input": {
+        "task": "Find why one deployment command fails with the same error every time.",
+        "audience": "Operators.",
+        "context": "One recurring operational failure is isolated.",
+        "output_format": "Root-cause hypothesis.",
+        "validation": {"checks": ["Each causal step cites evidence."], "evidence": ["Command and logs."]},
+        "human_review_stop": {"stop_conditions": ["Stop at actionable cause."], "human_approval_required": true, "approval_actions": ["changing deployment configuration"]}
+      },
+      "expected_methodology": "five-whys",
+      "must_not_select": ["swot"]
+    },
+    {
+      "id": "star-positive",
+      "kind": "positive",
+      "input": {
+        "task": "Describe a real migration project for a behavioral interview.",
+        "audience": "Interview panel.",
+        "context": "Situation, responsibility, actions, and observed result are known.",
+        "output_format": "Concise project story.",
+        "validation": {"checks": ["Situation, task, action, and result are present."], "evidence": ["Observable result."]},
+        "human_review_stop": {"stop_conditions": ["Stop after the result and lesson."], "human_approval_required": true, "approval_actions": ["submitting the answer"]}
+      },
+      "expected_methodology": "star",
+      "must_not_select": ["pyramid-principle"]
+    },
+    {
+      "id": "star-negative",
+      "kind": "negative-fit",
+      "input": {
+        "task": "Recommend whether the company should adopt a new review policy.",
+        "audience": "Executives.",
+        "context": "The evidence supports a conclusion; a story is not requested.",
+        "output_format": "Conclusion-first recommendation memo.",
+        "validation": {"checks": ["Every argument supports the recommendation."], "evidence": ["Memo structure."]},
+        "human_review_stop": {"stop_conditions": ["Stop after recommendation."], "human_approval_required": true, "approval_actions": ["adopting the policy"]}
+      },
+      "expected_methodology": "pyramid-principle",
+      "must_not_select": ["star"]
+    },
+    {
+      "id": "aida-positive",
+      "kind": "positive",
+      "input": {
+        "task": "Write a launch email that moves readers to one trial signup.",
+        "audience": "Prospective users.",
+        "context": "The message is persuasive and has one action.",
+        "output_format": "Attention, interest, desire, action email.",
+        "validation": {"checks": ["One credible benefit and one CTA."], "evidence": ["Final email."]},
+        "human_review_stop": {"stop_conditions": ["Stop after one clear CTA."], "human_approval_required": true, "approval_actions": ["sending the email"]}
+      },
+      "expected_methodology": "aida",
+      "must_not_select": ["pyramid-principle"]
+    },
+    {
+      "id": "aida-negative",
+      "kind": "negative-fit",
+      "input": {
+        "task": "Explain garbage collection neutrally to a beginner.",
+        "audience": "Junior developers.",
+        "context": "The content is educational and must not persuade.",
+        "output_format": "Plain-language explanation with example.",
+        "validation": {"checks": ["A beginner can explain the example back."], "evidence": ["Explanation and example."]},
+        "human_review_stop": {"stop_conditions": ["Stop when accurate and clear."], "human_approval_required": false, "approval_actions": []}
+      },
+      "expected_methodology": "feynman",
+      "must_not_select": ["aida"]
+    },
+    {
+      "id": "feynman-positive",
+      "kind": "positive",
+      "input": {
+        "task": "Explain distributed consensus so a beginner can reveal understanding gaps.",
+        "audience": "Junior engineers.",
+        "context": "Plain language and one concrete example are required.",
+        "output_format": "Simple explanation and test example.",
+        "validation": {"checks": ["Vague terms are explained and example is accurate."], "evidence": ["Before/after explanation."]},
+        "human_review_stop": {"stop_conditions": ["Stop when plain and accurate."], "human_approval_required": false, "approval_actions": []}
+      },
+      "expected_methodology": "feynman",
+      "must_not_select": ["star"]
+    },
+    {
+      "id": "feynman-negative",
+      "kind": "negative-fit",
+      "input": {
+        "task": "Produce an expert-level protocol specification with formal terminology.",
+        "audience": "Protocol implementers.",
+        "context": "Advanced technical precision is required; simplification would lose meaning.",
+        "output_format": "Normative technical specification.",
+        "validation": {"checks": ["All required formal terms remain precise."], "evidence": ["Specification checks."]},
+        "human_review_stop": {"stop_conditions": ["Stop when normative requirements are complete."], "human_approval_required": true, "approval_actions": ["publishing the specification"]}
+      },
+      "expected_methodology": "none",
+      "must_not_select": ["feynman"]
+    },
+    {
+      "id": "okr-positive",
+      "kind": "positive",
+      "input": {
+        "task": "Set quarterly direction and measurable outcomes for the platform team.",
+        "audience": "Platform team.",
+        "context": "The team needs one memorable direction and two to four outcome measures.",
+        "output_format": "Objective, key results, and review cadence.",
+        "validation": {"checks": ["Key results measure outcomes."], "evidence": ["OKR set and cadence."]},
+        "human_review_stop": {"stop_conditions": ["Stop when objective and key results are reviewable."], "human_approval_required": true, "approval_actions": ["adopting the OKR"]}
+      },
+      "expected_methodology": "okr",
+      "must_not_select": ["smart-goals"]
+    },
+    {
+      "id": "okr-negative",
+      "kind": "negative-fit",
+      "input": {
+        "task": "Run a five-item release checklist once.",
+        "audience": "Release operator.",
+        "context": "The task is already bounded and has no broader objective.",
+        "output_format": "Completed checklist.",
+        "validation": {"checks": ["All five items pass."], "evidence": ["Checklist result."]},
+        "human_review_stop": {"stop_conditions": ["Stop after the checklist."], "human_approval_required": true, "approval_actions": ["releasing"]}
+      },
+      "expected_methodology": "none",
+      "must_not_select": ["okr", "work-breakdown-structure"]
+    },
+    {
+      "id": "wbs-positive",
+      "kind": "positive",
+      "input": {
+        "task": "Plan migration of twelve dependent packages to a new API.",
+        "audience": "Implementers and reviewers.",
+        "context": "The deliverable needs safe, owned, reviewable batches.",
+        "output_format": "Work packages with owners, dependencies, and validation.",
+        "validation": {"checks": ["Every package is independently reviewable."], "evidence": ["Package matrix."]},
+        "human_review_stop": {"stop_conditions": ["Stop when packages are bounded and ordered."], "human_approval_required": true, "approval_actions": ["beginning implementation"]}
+      },
+      "expected_methodology": "work-breakdown-structure",
+      "must_not_select": ["smart-goals"]
+    },
+    {
+      "id": "wbs-negative",
+      "kind": "negative-fit",
+      "input": {
+        "task": "Rename one exact configuration key in one file.",
+        "audience": "Maintainers.",
+        "context": "The change and validation command are fully specified.",
+        "output_format": "One focused edit.",
+        "validation": {"checks": ["Old key absent and new key present."], "evidence": ["Search result."]},
+        "human_review_stop": {"stop_conditions": ["Stop after validation."], "human_approval_required": false, "approval_actions": []}
+      },
+      "expected_methodology": "none",
+      "must_not_select": ["work-breakdown-structure", "five-w-two-h"]
+    },
+    {
+      "id": "decision-matrix-positive",
+      "kind": "positive",
+      "input": {
+        "task": "Choose one queue service from four candidates.",
+        "audience": "Architecture council.",
+        "context": "Cost, reliability, latency, and operations have explicit weights.",
+        "output_format": "Weighted matrix and recommendation.",
+        "validation": {"checks": ["Recommendation matches weighted scores."], "evidence": ["Criteria, weights, and scores."]},
+        "human_review_stop": {"stop_conditions": ["Stop after recommendation and caveats."], "human_approval_required": true, "approval_actions": ["purchasing"]}
+      },
+      "expected_methodology": "decision-matrix",
+      "must_not_select": ["swot"]
+    },
+    {
+      "id": "decision-matrix-negative",
+      "kind": "negative-fit",
+      "input": {
+        "task": "Reject any vendor that cannot meet one mandatory legal constraint.",
+        "audience": "Procurement.",
+        "context": "One non-negotiable constraint decides the outcome.",
+        "output_format": "Constraint check.",
+        "validation": {"checks": ["Only compliant vendors remain."], "evidence": ["Compliance evidence."]},
+        "human_review_stop": {"stop_conditions": ["Stop after applying the constraint."], "human_approval_required": true, "approval_actions": ["selecting a vendor"]}
+      },
+      "expected_methodology": "none",
+      "must_not_select": ["decision-matrix"]
+    },
+    {
+      "id": "decompose-before-measure",
+      "kind": "overlap",
+      "input": {
+        "task": "Build a twelve-method modular skill system and define measurable completion.",
+        "audience": "Skill authors and reviewers.",
+        "context": "Components and dependencies must be separated before package goals are measured.",
+        "output_format": "Phased work packages with validation.",
+        "validation": {"checks": ["Every package and integration path has checks."], "evidence": ["Work package matrix."]},
+        "human_review_stop": {"stop_conditions": ["Stop on shared-contract decisions."], "human_approval_required": true, "approval_actions": ["changing scope"]}
+      },
+      "expected_methodology": "work-breakdown-structure",
+      "expected_deferred_method": "smart-goals",
+      "must_not_select": ["okr"]
+    },
+    {
+      "id": "cause-before-improvement",
+      "kind": "overlap",
+      "input": {
+        "task": "Improve a repeated CI workflow, but first determine why one failure keeps returning.",
+        "audience": "CI maintainers.",
+        "context": "The improvement cycle cannot be planned until the recurring cause is actionable.",
+        "output_format": "Root-cause chain followed by a deferred improvement cycle.",
+        "validation": {"checks": ["Cause is evidenced before cycle design."], "evidence": ["Causal chain and deferred method."]},
+        "human_review_stop": {"stop_conditions": ["Stop if evidence breaks."], "human_approval_required": true, "approval_actions": ["changing CI policy"]}
+      },
+      "expected_methodology": "five-whys",
+      "expected_deferred_method": "pdca",
+      "must_not_select": ["swot"]
+    }
+  ]
+}

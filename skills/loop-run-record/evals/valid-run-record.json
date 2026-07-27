@@ -1,0 +1,25 @@
+{
+  "observation": {
+    "check_results": [
+      {
+        "check": "Routing positive, negative-fit, and boundary cases match expected methods.",
+        "status": "pass",
+        "evidence": ["Selector self-test passed with the recorded case matrix."]
+      },
+      {
+        "check": "Every rendered goal reports its character count and stays within the effective limit.",
+        "status": "pass",
+        "evidence": ["Goal renderer reported a passing Unicode count."]
+      },
+      {
+        "check": "Readiness hard gates block missing validation, boundaries, stop conditions, or required approval.",
+        "status": "pass",
+        "evidence": ["Readiness hard-gate matrix passed."]
+      }
+    ],
+    "hypothesis_outcome": "confirmed",
+    "feedback": "The bounded run produced the expected evidence without widening scope.",
+    "next_action": "stop",
+    "human_return_reason": "A human must review the record before commit or another run."
+  }
+}
