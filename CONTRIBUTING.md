@@ -18,11 +18,7 @@ PRs are not actively solicited. If you open one:
 
 If your idea is bigger than a small fix, fork is almost always the better path.
 
-## Skill-first
-
-New behavior is added as a skill first. Agents and slash commands stay in this repo only where they genuinely need subagent semantics — separate context window, spawnable by other skills, or constrained tool surface. If a piece of behavior could equally be a skill, make it a skill.
-
-## If you want to add a skill (for your fork)
+## Adding a skill to your fork
 
 The functional minimum is in the [Skill Anatomy](README.md#skill-anatomy) section of the README: a `skills/<name>/SKILL.md` with `name` and `description` in the frontmatter. Body shape and length vary by purpose — no template is enforced.
 
