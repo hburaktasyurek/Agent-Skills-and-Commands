@@ -83,7 +83,8 @@ Evidence to surface:
 
 ## Human review and stop
 
-- Stop with negative-fit evidence when the task is already narrow and only needs direct specification or execution.
+- Stop with negative-fit evidence when the task is already narrow and only needs direct specification or execution. Do not enumerate the seven-question frame after finding negative fit; state only why the method adds no decision value, the bounded direct-execution scope, and any necessary verification guard.
+- Do not treat the absence of a roadmap, ticket, predecessor task, or other planning artifact as missing context or a stop condition. A direct request is sufficient task authority unless it identifies another source as controlling. Do not group an absent planning artifact with missing implementation evidence or attach any recommendation, readiness, verification, or stop consequence to its absence; omit it from evidence-gap lists.
 - Stop when decision-changing evidence is unavailable or contradictory, the operating frame cannot be completed without guessing, or a material product or real-use priority remains unresolved.
 - Stop when the task is already complete, obsolete, materially misframed, or every plausible route remains unsafe.
 - Keep the result blocked when a required write lacks explicit permission.
