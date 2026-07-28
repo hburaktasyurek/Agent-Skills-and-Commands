@@ -36,7 +36,6 @@ dependencies together:
 | `methodology-skill-creator` | `methodology-selector` |
 | `loop-run-record` | `loop-readiness-score`, `goal-engineering`, `methodology-selector` |
 | `loop-orchestrator` | all five loop skills above |
-| `workflow-step-record` | none |
 
 For example, install only the goal-rendering pair globally for all agents:
 
@@ -51,26 +50,6 @@ npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands \
 The `npx skills` format has no transitive dependency declaration, so selecting
 only a dependent skill is intentionally unsupported. Each dependent skill
 checks this installation precondition before its scripts are used.
-
-## Workflow Recorder Quick Start
-
-[`workflow-step-record`](skills/workflow-step-record/README.md) is a selective
-flight recorder for one workflow step. It saves the exact input before a skill,
-then its output, model/surface, observations, and next handoff. It does not
-watch sessions, run the target skill, judge the result again, or modify skills.
-
-No terminal environment variable is required. Local records default to
-`~/workflow-records`. To use a private Git, iCloud, or Drive folder, configure
-the location once:
-
-> Configure workflow-step-record to use
-> `/absolute/path/to/my/workflow-records`.
-
-Later sessions and supported agent surfaces reuse the saved choice. Recording
-is optional and most useful for experiments, review failures, repeated
-workarounds, and evidence intended for later skill improvement. See the
-[setup and first-run guide](skills/workflow-step-record/README.md) for storage,
-SSD-use, synchronization, and security details.
 
 ## Skills
 
@@ -91,7 +70,6 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [review-implementation](skills/review-implementation/SKILL.md) | Spec-vs-implementation compliance audit: checklist coverage + known-pitfall sweep (tenancy, auth, migrations, payments) |
 | [pr-branch](skills/pr-branch/SKILL.md) | Write a two-block PR description (non-technical + technical) and open a GitHub PR |
 | [session-handoff](skills/session-handoff/SKILL.md) | Structured handoff doc capturing progress, decisions, and open questions |
-| [workflow-step-record](skills/workflow-step-record/SKILL.md) | Snapshot one workflow skill's exact input before it runs, then bind its output and receipt into an immutable, portable record |
 | [prompt-creator](skills/prompt-creator/SKILL.md) | Interview-driven Claude prompt builder grounded in Anthropic's best practices |
 | [tune-skill](skills/tune-skill/SKILL.md) | Tactical, complaint-driven edit to an existing skill — diagnose, smallest change, review |
 | [methodology-selector](skills/methodology-selector/SKILL.md) | Select one of twelve canonical methodologies, or none, using positive fit, negative-fit veto, and stage precedence |

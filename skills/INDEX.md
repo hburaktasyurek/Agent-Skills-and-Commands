@@ -32,13 +32,6 @@ order itself needs coordination.
 - [methodology-skill-creator](methodology-skill-creator/SKILL.md) — Create one task-scoped methodology SKILL.md from a completed selector contract; focused skill content may exceed the loop goal's 4,000-character ceiling.
 - [loop-orchestrator](loop-orchestrator/SKILL.md) — Preserve and route the shared contract between focused design and evidence skills; never execute or self-approve.
 
-## Workflow Evidence
-
-Preserve what each real workflow step received and produced without changing
-the workflow or judging the step again.
-
-- [workflow-step-record](workflow-step-record/SKILL.md) — Two-phase `start`/`finish` evidence record for the stable design-review-implementation-PR workflow; immutable snapshots, explicit model/surface metadata, zero-setup local storage, and optional user-controlled sync.
-
 ## Triage & Refactor Planning
 
 When the work is "figure out what to do," not "do it."
