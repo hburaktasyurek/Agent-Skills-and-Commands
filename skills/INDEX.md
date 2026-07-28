@@ -6,7 +6,7 @@ Grouped view of the skills in this repo. The directory layout stays flat — thi
 
 Stress-test ideas before writing code.
 
-- [task-groundwork](task-groundwork/SKILL.md) — Ground a roadmap task in its phase context by investigating artifacts; resolves the decision tree, escalates only what artifacts can't answer.
+- [task-groundwork](task-groundwork/SKILL.md) — Ground a non-trivial software task with 5W2H into an evidence-backed decision context from any authoritative task source.
 - [grill-me](grill-me/SKILL.md) — Stress-test a plan, decision, or idea through a one-question-at-a-time interview.
 - [adversarial-spec-review](adversarial-spec-review/SKILL.md) — Red-team review that tries to kill a plan; P0–P3 findings with verdict.
 - [to-spec](to-spec/SKILL.md) — Turn a design conversation into a production-ready spec folder.

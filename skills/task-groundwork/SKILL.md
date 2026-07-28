@@ -1,100 +1,99 @@
 ---
 name: task-groundwork
-description: Turn a roadmap task into a fully resolved decision tree, ready for spec writing. Reads the roadmap, codebase, git history and past specs to place the task in its phase context — what past tasks left behind, what future tasks expect — then resolves every decision branch with artifact evidence, escalating to the user only what artifacts genuinely can't answer. Use at task kickoff, whenever the user names a roadmap task to start ("start task 3.2", "görev 5'e başlayalım", "take the next roadmap item"), or wants a task grounded before running to-spec. For stress-testing a design that lives in the user's head rather than in artifacts, use grill-me instead.
+description: "Apply 5W2H to ground a non-trivial software task into a complete, evidence-backed decision context before specification or implementation for agents and humans deciding how to change complex software systems. Use when this bounded task matches the recorded method fit; preserve validation and human-review conditions."
 ---
 
-# task-groundwork
+# 5W2H: task-groundwork
 
-A roadmap task arrives as a title and a few lines of detail. Between that and a spec sits a layer of unmade decisions: what the task actually means given what the code looks like today, what earlier tasks left behind, what later tasks will expect, and which choices must be made to serve the phase's goal. This skill does that groundwork — it interrogates the artifacts, not the user. The user is the escalation path, not the primary source.
+## Assignment contract
 
-**Position in the pipeline:** this runs at task kickoff, before to-spec. Its output is resolved conversation context — to-spec is what persists it into a spec folder. Do not write a briefing file. The one artifact this skill does write is a deferral note in the roadmap (see Deferral protocol), because the user navigates every task from the roadmap and a deferral recorded anywhere else is a deferral hidden.
+Methodology: 5W2H (`five-w-two-h`)
 
-**Sibling, not replacement, of grill-me:** grill-me extracts a design from the user's head by interview; this skill extracts it from the repo by investigation. Same destination — every branch of the decision tree resolved — opposite default direction.
+Task: ground a non-trivial software task into a complete, evidence-backed decision context before specification or implementation
 
-## Rules that don't bend
+Audience: agents and humans deciding how to change complex software systems
 
-Each of these is explained in context below; they are collected here because skipping any one of them silently corrupts the pipeline downstream:
+Context: Input may be any authoritative task description or a direct user request; no particular planning artifact is required. Investigate the current system, relevant history, available plans, and real-use constraints only where they can change task meaning, feasible routes, scope, or acceptance. Match each claim to the source type that can establish it, distinguish fact from inference, and trace transitive effects until more evidence would no longer change the decision. Evaluate implementation routes qualitatively: do not use numeric or aggregate scores, and allow a load-bearing safety, correctness, compatibility, or real-use invariant to outweigh an option's other advantages. Default to read-only inspection and safe non-mutating execution; ask before any write. Other helpers or supplied skill outputs may contribute evidence, but the selected methodology remains the sole method and consequential next actions remain human-owned.
 
-1. **Write no code and edit no files.** The only write this skill ever performs is the deferral note in the roadmap, and only after explicit user approval.
-2. **No deferral, no pull-forward, no roadmap correction without the user's explicit approval.** You may propose; you may not decide.
-3. **Every question to the user carries its search trail.** No trail, no question — go back to the homework.
-4. **Questions come one at a time, in plain prose — never through the AskUserQuestion tool** — and only after the investigation is complete.
-5. **After every user answer, re-verify the affected branches before asking the next question.** The tree is live.
+Required output: Return a concise grounding brief that states the task purpose, decision-relevant system frame, scope, resolved decision tree, chosen route with evidence and caveats, unresolved human decisions or approved deferrals, and readiness for the next stage. Use only headings that improve comprehension; omit empty or process-provenance sections.
 
-## The three failure modes this skill exists to prevent
+## Method fit
 
-1. **Context blindness.** Treating the task as an isolated work order — executing its literal text without asking how it serves the phase goal, what predecessors actually delivered, or what successors will build on. The fix is Phase 1: the purpose derivation is mandatory, not decorative.
-2. **Scope leak.** Drifting into work that belongs to a task five or twenty steps ahead, because the agent never learned those tasks exist. Pulling future work forward is sometimes right — but only ever as an explicit, user-approved decision with a stated reason, never as drift.
-3. **Silent deferral.** Investigation reveals the task differs from its roadmap description, and instead of resolving the conflict or asking, the agent shrugs it into "later." The deferral is recorded nowhere, rides invisibly through the next tasks, and surfaces only when twenty tasks of work turn out to be built on it. Deferral is not a decision this skill may make alone — see the protocol below.
+- Best when: A vague task needs a complete operating frame.
+- Avoid when: The question is already narrow and only needs execution.
+- Selection evidence: A non-trivial change in a complex software system cannot be grounded safely until the relevant purpose, actors, locations, timing, behavior, effort or risk, failure modes, and real success conditions are complete. The requested artifact is explicitly that operating frame plus an evidence-backed route recommendation; scoring, work-package decomposition, execution, and summary writing are not the dominant need.
 
-## Phase 1 — Locate and orient
+## Canonical method
 
-Find the roadmap. The user usually points at it ("read agent-os/roadmap.md", a README pointer, a path given at project start); large roadmaps may split into per-phase folders with an index file. Check the obvious candidates before asking — but if you genuinely cannot identify the roadmap or the task the user means, ask; guessing at the wrong task poisons everything downstream.
+Source: [Loop Engineering Methodology Skill Generator](https://loopengineering.app/methodology-skill-generator/)
 
-Then orient — answer each of these from artifacts before building any decision tree:
+## Definition
 
-- **Purpose derivation:** what is the phase's goal, and how does this task serve it? Re-derive the task's purpose from the phase, don't just restate the task's title. A task whose derived purpose doesn't match its written description is a finding, not a nuisance.
-- **The past:** what did prior tasks in this phase (and load-bearing earlier phases) actually deliver? Read the code and git history — verify, don't trust checkmarks. Note anything they were supposed to leave for this task but didn't.
-- **The future:** what do upcoming tasks expect this task to produce? Read ahead in the roadmap far enough to know where this task's boundary is — that boundary is what makes scope leak detectable.
-- **Open deferrals:** scan the roadmap for deferral notes from earlier tasks that touch this one. An inherited deferral becomes a branch of this task's tree.
+Frame a problem by answering what, why, who, where, when, how, and how much.
 
-If orientation reveals the task itself is stale — already done, obsolete, mis-scoped at roadmap-writing time — stop and surface that to the user with evidence and a proposed roadmap correction. Grounding a task nobody should do is the most expensive form of diligence.
+## Fit
 
-## Phase 2 — Build and resolve the decision tree
+- Best when a vague task needs a complete operating frame.
+- Avoid when the question is already narrow and only needs execution.
 
-From the derived purpose, enumerate the decisions standing between here and a spec: interfaces to define, data to shape, behaviors to pin down, edge cases the phase context makes real. Then resolve branches one by one under the homework standard:
+## Principles
 
-**The homework standard.** Nothing reaches the user — not a recommendation, not a question — before you've tried to answer it from the artifacts: the relevant files read, the codebase grepped, the roadmap, past specs, git history and existing precedent checked. Follow every mention of a disputed term across the corpus — grep it, don't settle for the files you happened to open. When artifacts appear to contradict each other, resolve by source precedence: whatever defines done (the roadmap's phase goal, a contract, a done-when) outranks derived documents, which outrank forward-references in sibling documents. When the evidence supports a conclusion, state it with citations and close the branch — don't ask the user to confirm it.
+- Cover the whole situation before choosing a fix.
+- Separate observed facts from assumptions.
+- Make ownership and timing explicit.
+- Surface cost or effort early.
 
-**No root assumptions.** Every claim about the current state states what it rests on, and each of those supports was verified, not presumed. A technical decision may close a branch with a rationale only after the current-state premises behind that rationale have claim-matching evidence; the rationale never substitutes for that evidence. Label an inference as an inference and cite its verified premises. If a "go check that file" from the user could change your answer, the branch is not resolved yet — check first.
+## Steps
 
-**Triage what the homework can't close:**
-- **Technical/implementation** (which pattern, where code lives, internal structure) → decide it yourself, one-line reason, consistent with existing codebase patterns, move on.
-- **Business/domain** (what users need, real-world rules, priorities) → still try the artifacts first — roadmap prose, past specs and commit messages encode more business intent than expected. Only when they're genuinely silent does the question go to the user.
+1. Define what is happening.
+2. Explain why it matters.
+3. Name who is involved.
+4. Clarify where and when it occurs.
+5. Describe how it should be handled.
+6. Estimate how much time, cost, effort, or risk is involved.
 
-**Scope contract.** As branches resolve, maintain an explicit boundary: in scope, out of scope, and — separately — anything you propose pulling forward from a future task, with the reason. A pull-forward is always presented to the user as a decision; it never happens implicitly.
+## Quality questions
 
-## Phase 3 — Ask what remains
+- Are all seven questions answered?
+- Are assumptions marked?
+- Is ownership clear?
+- Is cost or effort visible?
 
-Bring questions only after the investigation is complete, one at a time, in plain conversational prose — never through the AskUserQuestion tool. Lead with the question itself as one bolded sentence; beneath it, only what's needed to answer — options and their implications as short bullets if it's a fork — and the search trail compact at the end: where you looked, what each source said or didn't, why that leaves the answer to the user. A question without an honest trail means the homework isn't done; go back.
+## Stop
 
-**The tree is live, not a fixed list.** The user's answer routinely changes the tree — it names a file you missed, contradicts an assumption, reopens a closed branch. After every answer, re-run the homework on affected branches before asking the next question: follow the pointer, re-verify, prune or grow the tree accordingly. Never work through a stale question queue while the answers have been reshaping the ground under it.
+Stop when the operating frame is complete. Choose direct execution instead
+when the task was already narrow. Stop and ask for human help if the task does
+not fit 5W2H, required context is missing, or validation cannot be satisfied
+without guessing.
 
-If the user says "I don't know": rephrase toward a business angle they can answer; if none exists, make the call yourself as technical; if it's genuinely unknowable, it becomes a deferral candidate — which has its own protocol.
+## Validation
 
-## Deferral protocol
+- The task is identified from the available authoritative description or direct request without requiring a particular planning format.
+- The what, why, who, where, when, how, and how much frame covers every actor, flow, state, timing edge, capability, failure mode, effort or risk, and real success condition that could change the decision, but does not expand into an exhaustive system inventory.
+- Material current-state claims have claim-matching evidence, inferences are labeled, and investigation stops only when more evidence would not change feasible routes, scope, acceptance, or the recommendation.
+- Plausible implementation routes are surfaced, impossible or unsafe routes are eliminated with evidence, and the chosen route uses qualitative senior-engineering judgment rather than numeric or aggregate scoring.
+- Scope, system effects, caveats, unresolved human decisions, and approved deferrals are explicit; no material branch or contradiction is silently hidden.
+- The result is concise and actionable for the next stage, and it does not require a specific source artifact unless the current task itself makes that artifact authoritative.
 
-A branch may be deferred only with the user's explicit approval, never by your own judgment. When you believe deferral is right, propose it: what the open point is, why it can't be resolved now, what it will block or risk later. If the user approves, record it in the roadmap next to the affected task or phase — a short note naming the open point and the task it was deferred from — so the next task's groundwork inherits it automatically. An unrecorded deferral is the failure mode this skill exists to kill; there is no category of "quietly unresolved."
+Evidence to surface:
 
-## Done — and stop
+- Cite the task source and the code, tests, configuration, schemas, safe observations, history, plans, contracts, or product evidence actually used, with file and line references where available.
+- Surface the decision-relevant operating frame and the reason further investigation stopped.
+- For each material branch, record viable routes, evidence-backed eliminations, the chosen route, senior-engineering rationale, and caveats.
 
-The task is grounded when every identified branch is closed by evidence, by a stated technical decision, by a user answer, or by an approved-and-recorded deferral. Don't invent new branches to keep going.
+## Human review and stop
 
-Close with a summary the user can eyeball and to-spec can consume. Use this exact structure — to-spec reads it as its input, and a missing section is indistinguishable from "nothing found there":
+- Stop with negative-fit evidence when the task is already narrow and only needs direct specification or execution. Do not enumerate the seven-question frame after finding negative fit; state only why the method adds no decision value, the bounded direct-execution scope, and any necessary verification guard.
+- Do not treat the absence of a roadmap, ticket, predecessor task, or other planning artifact as missing context or a stop condition. A direct request is sufficient task authority unless it identifies another source as controlling. Do not group an absent planning artifact with missing implementation evidence or attach any recommendation, readiness, verification, or stop consequence to its absence; omit it from evidence-gap lists.
+- Stop when decision-changing evidence is unavailable or contradictory, the operating frame cannot be completed without guessing, or a material product or real-use priority remains unresolved.
+- Stop when the task is already complete, obsolete, materially misframed, or every plausible route remains unsafe.
+- Keep the result blocked when a required write lacks explicit permission.
 
-```
-## Purpose (derived from phase)
-<the phase goal, quoted with its source line, and the task's purpose derived from it>
+Human approval is required before: any repository write, deferring a material decision or changing task scope, choosing among product or real-use priorities that available evidence cannot resolve.
 
-## Scope contract
-In scope: ...
-Out of scope: ... (name which future task owns each excluded item)
-Pulled forward: ... (only with user approval; "none" otherwise)
+## Boundaries
 
-## Resolved branches
-<each decision: what was decided; claim-matching evidence for its current-state premises (file:line); and, for a technical choice, its one-line rationale>
-
-## Findings reported to user
-<roadmap/code contradictions, lying checkmarks, stale-task evidence — with citations>
-
-## User decisions
-<what they answered and which branches it changed; "none yet" if questions are pending>
-
-## Deferrals
-<approved deferrals and where in the roadmap each is recorded; proposals still awaiting approval>
-
-## Status
-<"ready for to-spec" — or exactly which open questions block it>
-```
-
-Then stop and tell the user the task is ready for to-spec. Do not invoke to-spec yourself — each pipeline step is run by the user.
+- Apply only 5W2H; do not blend another methodology.
+- Do not change the task contract to make validation easier.
+- Do not perform an approval action without the required human decision.
+- Stop when the task no longer matches the recorded method fit.

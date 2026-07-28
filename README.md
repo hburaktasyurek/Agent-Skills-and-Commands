@@ -57,7 +57,7 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 
 | Skill | Description |
 |-------|-------------|
-| [task-groundwork](skills/task-groundwork/SKILL.md) | Ground a roadmap task in phase context — resolve its decision tree from artifacts, ready for to-spec |
+| [task-groundwork](skills/task-groundwork/SKILL.md) | Ground a non-trivial software task with 5W2H into an evidence-backed decision context, ready for specification or implementation |
 | [grill-me](skills/grill-me/SKILL.md) | Stress-test a plan, decision, or idea through a one-question-at-a-time interview |
 | [adversarial-spec-review](skills/adversarial-spec-review/SKILL.md) | Red-team review that tries to kill a plan or spec; P0–P3 findings with verdict |
 | [spec-readiness](skills/spec-readiness/SKILL.md) | Implementation-readiness check — can an implementer start every task tomorrow? |
