@@ -1,140 +1,117 @@
 ---
 name: tune-skill
 description: >-
-  Improve an existing skill against concrete user feedback, a failed run, or a repeated behavioral complaint.
-  Use when a skill keeps doing the wrong thing, misses an instruction, narrows or overgeneralizes feedback,
-  behaves inconsistently, or needs a focused update based on observed use. Locks the complaint's real scope,
-  traces evidence to the instruction-level cause, proposes the smallest effective change for confirmation,
-  edits the source copy, and validates the result with diff-aware review and fresh-context testing when available.
-  Not for creating a new skill, complaint-free auditing, or an unscoped rewrite.
+  Improve one existing skill from concrete user feedback, a failed run, or
+  another observed behavior complaint using a bounded PDCA cycle. Use when an
+  existing skill behaves incorrectly or its instructions, methodology,
+  original contract, package boundary, runtime copy, or tuning scope may be
+  responsible. Applies a direct change only when the correction belongs inside
+  one skill package; otherwise routes the work to its owning workflow.
 ---
 
-# Tune Skill
+# PDCA: tune-skill
 
-Tune an existing skill without destabilizing what already works. The goal is not the fewest changed words; it is the narrowest change that fixes the behavioral generator, survives an adjacent case, and introduces no new ambiguity.
+## Assignment contract
 
-## 1. Lock the complaint
+Methodology: PDCA (`pdca`)
 
-Separate the user's feedback into three parts before diagnosing:
+Task: Improve one existing agent skill against a concrete observed behavior complaint by making the smallest evidence-backed change inside that skill package, while routing methodology, original task-contract, multi-skill, and self-tuning problems to their owning workflow instead of patching them.
 
-- **Behavior class:** what should change across runs.
-- **Evidence:** examples, outputs, or failed runs showing the behavior.
-- **Boundaries:** explicit corrections about what the solution must not narrow to or expand into.
+Audience: Agents maintaining skills in this repository and humans reviewing proposed skill changes.
 
-Treat statements such as “that is only an example,” “not just this error,” or “the problem is general” as binding scope constraints. Never promote the most vivid example into the diagnosis when the user named a broader behavior.
+Context: Authority: Resolve and obey repository instructions, then locate the maintained source copy. Installed and runtime copies are evidence only and remain read-only during this skill; global copies are always read-only. Any later installation or synchronization is a separate human-owned task outside tune-skill. Preserve unrelated working-tree changes. Never commit, push, install, or modify global copies.
 
-Write a one-sentence **complaint contract** at the user's abstraction level. Test it against a second plausible instance of the same behavior. If it describes only the named example, it is too narrow; if it would justify unrelated cleanup, it is too broad.
+PDCA operating frame:
 
-If material uncertainty remains, ask at most three diagnostic questions total, starting with the answer that most controls scope. Proceed only when the remaining uncertainty would not change the scope, operation, or expected behavior of the edit. If a controlling uncertainty remains after the cap, state it and wait; do not force an edit from an unstable complaint contract.
+Plan: Read the target SKILL.md end to end, its behavior-relevant linked resources, the failed output or conversation, and any available source/runtime difference. Lock one complaint contract containing the behavior class, evidence, expected behavior, and preservation boundary. Obtain facts from artifacts rather than the user. If a material product or scope decision remains ambiguous, run a bounded Interview of at most three questions: ask one question at a time, state the artifact facts that leave the decision open, include the recommended answer, and make no change until shared understanding is explicit. An Interview turn also uses the four-line output: `Result: blocked`; `Change` names the unresolved decision and confirms no edit; `Evidence` gives the relevant artifact facts plus the recommendation; `Next` contains exactly one question for the human. If a controlling ambiguity remains after three questions, stay blocked and name it; do not guess or continue interviewing. Before classification, return `blocked` when available evidence cannot determine which class owns the complaint; missing direct-edit approval does not prevent classification but always prevents Do. Otherwise use the first matching class in this precedence: (1) self-tuning always returns to methodology-selector and methodology-skill-creator from a separate design/creation session that is not recursively running the current tune-skill; (2) external-cause when tools, permissions, or stale runtime copies fully explain the reported behavior; (3) return-to-methodology when a methodology-generated skill selected the wrong method; (4) return-to-contract when its selected method is valid but its original eight fields are wrong; (5) return-to-loop for multi-skill, shared-contract, architectural, outside-package, broad redesign, or any correction whose responsibility is not one direct tune; (6) direct-tune only when the remaining cause and complete correction stay inside one target package; otherwise `blocked`. A specific earlier class is not reclassified merely because its resolution occurs outside the target package. Use exact owners: return-to-methodology goes to methodology-selector and then methodology-skill-creator; return-to-contract rebuilds the eight-field methodology-selector contract and then returns to methodology-skill-creator; return-to-loop goes to loop-orchestrator with a new loop-goal intent; external-cause goes to the human or tool/runtime owner named by the evidence; blocked goes to the human who owns the missing evidence or authority. For direct-tune, trace the failed output back to the instruction, omission, conflict, or workflow order that allowed it. Plan the smallest behavioral change that fixes the complaint and one adjacent case without disturbing preserved behavior. Present the complaint, evidence-backed diagnosis, exact target-package files, proposed behavioral change, preserved behavior, and validation plan. The approval proposal itself must use the four-line output: `Result: blocked`; `Change` names the exact files, proposed behavior, and preserved behavior; `Evidence` compresses the complaint, diagnosis, and validation plan; `Next` asks the human to approve or correct that exact scope. Wait for human approval unless that same proposal was already approved after being shown.
 
-## 2. Resolve the target and evidence
+Do: After approval, edit only the causally required files inside the one target skill package, including its SKILL.md, references, evals, or scripts when necessary for one coherent correction. If new evidence makes another package, shared contract, methodology, or original contract relevant, stop before widening the edit, return to Plan, and reclassify under the same precedence using the current evidence. Do not automatically revert, reset, or discard changes already made. When reclassification occurs after an edit, return `Result: blocked`; list the exact partial files and state in `Change`, give the reclassification evidence in `Evidence`, and name the human plus owning workflow that must decide whether to preserve or revert them in `Next`. Do not mix unrelated cleanup into the change.
 
-Find the authoritative editable skill source from the current repository, project instructions, and install documentation; prefer a git-tracked source when one exists. Do not assume a fixed runtime directory or that exactly two copies exist. A handed runtime path is evidence about what executed, not automatic permission to edit it. If only an installed or untracked copy is visible and its source of truth is unknown, stop and ask where the maintained source lives.
+Check: Inspect the complete target-package diff and run available structural validators. All behavioral validation is non-mutating by default: use read-only artifacts or an isolated harness, and do not let a tester edit the shared repository or runtime, synchronize installed/global copies, contact external systems, or perform another consequential action. If valid proof requires mutation, stop for separate authority; inability to obtain safe proof prevents completion. Reproduce the original failure or the smallest evidence-equivalent case, run one adjacent case that would expose example-specific overfitting, and obtain a non-mutating independent cold-read against the complaint and prior version or diff. A Markdown check is not behavioral evidence. If a check cannot run or fails, do not claim completion; return to Plan with a new proposal, route, or block.
 
-Before proposing a change:
+Act: Keep the change only when all three behavioral checks support the complaint contract and scope stayed fixed. Otherwise adjust through a newly approved plan, route to the owning workflow, or stop. End the invocation after that check-and-act decision.
 
-1. Read the authoritative `SKILL.md` end to end.
-2. Read directly linked resources required to understand the complained-about behavior.
-3. If a runtime or installed copy produced the failure, compare it with the source copy. Surface divergence and identify which copy explains the run.
-4. Inspect the failed output, trace, or conversation when available. Use focused git history only when intent or regression timing matters.
-5. Read and obey repository instructions before writing anywhere.
+Required output: Return exactly four concise lines and no default detail: Result: changed | routed | blocked; Change: the behavior changed or the reason for routing/blocking; Evidence: the original/equivalent case, adjacent case, and cold-read outcome, or the evidence supporting the route/block; Next: the exact next skill, human owner, or none. Supply diagnostic or diff detail only when requested.
 
-Conversation evidence establishes how the skill failed; the skill and its resources establish why. Do not patch the skill when the evidence instead points to a tool limitation, permission boundary, stale runtime copy, or another external cause.
+## Method fit
 
-## 3. Diagnose the behavioral generator
+- Best when: A workflow should improve through repeated measured cycles.
+- Avoid when: The task is a one-off decision with no next cycle.
+- Selection evidence: Skill tuning repeats across real usage: plan one bounded behavioral change, apply it once, compare evidence with the complaint, then keep, adjust, route, or stop without silently widening scope.
 
-Trace backward from the bad behavior: output → decision the agent made → instruction, omission, conflict, or workflow order that made that decision reasonable. State the root cause in this form:
+## Canonical method
 
-> Because [instruction or absence] makes or allows [decision], the skill produces [complained-about behavior] under [conditions].
+Source: [canonical PDCA reference](../methodology-selector/references/pdca.md)
 
-Common generators include:
+## Definition
 
-- a missing exit condition when the skill never converges;
-- a present but weak rule that loses under pressure;
-- two distinct rules blended into one instruction;
-- a frontmatter promise the body does not implement;
-- a workflow phase that occurs too late to constrain an earlier decision;
-- a runtime/source mismatch that makes a correct repo edit appear ineffective.
+Improve a process by planning a change, running it on a small scale, checking
+the evidence, and acting on what was learned.
 
-Run a falsification test before choosing a fix:
+## Fit
 
-- **Location:** would editing the visible symptom leave the upstream cause intact?
-- **Shape:** would the same failure return under another error, artifact, or scenario the user did not enumerate?
-- **Counterfactual:** would the proposed change alter the original decision path and the adjacent test case without disturbing unrelated behavior?
+- Best when a workflow should improve through repeated measured cycles.
+- Avoid when the task is a one-off decision with no next cycle.
 
-If any answer is unfavorable, keep tracing. Do not turn one reported example into a list of special cases when the cause is a default posture, ordering rule, or missing decision boundary.
+## Principles
 
-## 4. Choose the operation
+- Keep the planned change small enough to test.
+- Run it within a fixed boundary.
+- Compare the result with the expectation.
+- Standardize, adjust, or stop before the next cycle.
 
-Prefer one operation and explain why it beats the alternatives:
+## Steps
 
-- **Add:** required behavior is genuinely absent and no existing instruction can cleanly carry it.
-- **Refine:** the right behavior exists but is weak, narrow, ambiguous, or placed at the wrong abstraction level.
-- **Remove:** text is vestigial, contradicted, redundant, or actively produces the failure.
-- **Split:** one instruction performs two jobs and lets the reader choose the wrong interpretation.
-- **Move:** the right rule exists but runs too early, too late, or in the wrong phase to govern the decision.
+1. Plan the smallest useful change.
+2. Do one bounded run.
+3. Check the evidence against the hypothesis.
+4. Act by keeping, changing, or stopping the loop.
 
-“Smallest” means least behavioral disturbance, not fewest lines. If the complaint proves that the skill needs a new architecture, broad rewrite, or evaluation program rather than a focused correction, stop and propose switching to the skill-creation workflow. Do not expand scope or switch workflows without explicit confirmation.
+## Quality questions
 
-If a coherent fix genuinely requires more than one operation, disclose every operation and why the combination is indivisible. Never hide cleanup or a second behavioral change behind a “primary” operation.
+- Was the change small enough to evaluate?
+- Was the result measured?
+- Is the next action based on evidence?
+- Did scope remain fixed during the run?
 
-## 5. Propose before editing
+## Stop
 
-Before touching the file, present:
+Stop after the check-and-act decision. Do not manufacture a next cycle for a
+one-off task. Stop and ask for human help if the task does not fit PDCA,
+required context is missing, or validation cannot be satisfied without
+guessing.
 
-1. the complaint contract, including explicit boundaries;
-2. the evidence-backed root cause;
-3. every section and operation to change;
-4. the expected behavior change and one adjacent case it should also handle;
-5. what will remain deliberately untouched;
-6. how the edit will be validated.
+## Validation
 
-Keep the proposal concise, but do not omit the reasoning needed to expose a scope mistake. Wait for confirmation unless the user has already approved this exact scope after seeing the proposal. A generic request to “update the skill” is not approval for an unshown diagnosis.
+- The complaint is locked at the user's stated abstraction and traced to current artifact evidence before a change is proposed.
+- A bounded Interview asks one decision question at a time, includes a recommended answer, and runs only when material ambiguity remains after repository investigation.
+- The run classifies the work as direct-tune, return-to-methodology, return-to-contract, return-to-loop, external-cause, or blocked and names the owning next workflow.
+- No target source is edited before the human approves the exact diagnosis, files, behavioral change, and preservation boundary.
+- A direct tune changes only causally required files inside one target skill package and leaves installed or global copies untouched.
+- A methodology-generated skill keeps its selected methodology and eight-field contract; incompatible corrections are routed upstream.
+- The original or evidence-equivalent failure, one adjacent case, and a non-mutating independent cold-read all support completion; a missing or failed check prevents a completed result.
+- The final response contains only Result, Change, Evidence, and Next unless the user requests details.
 
-## 6. Apply only the confirmed change
+Evidence to surface:
 
-Edit only the confirmed authoritative source and stay within its repository or project write boundaries. Do not sync, overwrite, or delete installed/runtime copies unless the user separately asks and the environment authorizes it. If source and runtime copies diverge, preserve both and report the difference.
+- The complaint contract and the artifact evidence used to diagnose it.
+- The approved file scope and final diff for the target skill package.
+- Observed results for the original or evidence-equivalent case, adjacent case, and independent cold-read.
+- The final four-line Result, Change, Evidence, and Next report.
 
-Touch only what the confirmed proposal covers. Preserve unrelated user changes in a dirty worktree. If editing exposes another issue:
+## Human review and stop
 
-- pause and re-propose when the issue—whether new or pre-existing—must be resolved for the confirmed fix to be coherent or safe;
-- record it separately without editing when it is unrelated and non-blocking;
-- never fold opportunistic cleanup into the approved edit.
+- The complaint, expected behavior, or preservation boundary remains ambiguous after the bounded Interview.
+- The evidence points to a wrong methodology or original eight-field contract.
+- The correction requires another skill package, shared contract, architectural redesign, or tune-skill modifying itself.
+- The approved file scope would be exceeded.
+- The original failure, adjacent case, or independent cold-read cannot be run or does not support completion.
 
-## 7. Validate the behavior
+Human approval is required before: editing the target skill package after reviewing the exact diagnosis and proposed change.
 
-Validation must prove the complaint contract, not merely show valid Markdown.
+## Boundaries
 
-Behavioral validation is non-mutating by default. Use read-only artifacts, an isolated harness, or proposal-only stopping points; never let a tester edit the shared repository, sync runtime copies, contact external systems, or perform other consequential actions. If the behavior cannot be proved without mutation, request separate authority or report the unverified portion instead of broadening validation scope.
-
-1. Inspect the final diff for scope and run any available skill validator.
-2. Re-run the original failure path in that non-mutating boundary. If the exact artifact is unavailable, reconstruct the smallest evidence-equivalent case from the complaint without inventing missing facts. Do not claim the original behavior is resolved unless the original or evidence-equivalent case demonstrates the changed decision path; otherwise report the validation gap and keep the tune incomplete.
-3. Test the adjacent case from the proposal. For every applied edit, use fresh-context subagents when available to test the original or evidence-equivalent case and the adjacent case. Give them the skill plus realistic user requests—not the diagnosis, intended fix, or expected answer. Use independent runs when one test could leak the other case's lesson.
-4. Use a separate fresh context to cold-read the post-edit skill against the complaint contract and the pre-edit version or diff. Never reuse a behavioral tester as the cold reader.
-
-Use this cold-read brief, adapted to the available agent interface:
-
-> Given the complaint contract and the pre-edit version or diff, read the post-edit skill end to end. Findings only; do not propose fixes. Label each finding `introduced` or `pre-existing`. Check for complaint-contract violations, contradictions, blended rules, frontmatter/body mismatch, vestigial text, and instructions that permit two reasonable behaviors. Report pre-existing issues only when they block the complaint contract or make the new edit unsafe. Stay under 200 words.
-
-An `introduced` finding, a complaint-contract violation, or a pre-existing finding that makes the edit unsafe or incoherent returns the workflow to diagnosis and requires a new proposal before further editing. Do not expand the tune to search for non-blocking pre-existing issues; if other evidence independently exposes one, report it separately without editing it. If independent fresh contexts are unavailable, perform the missing checks directly as lower-confidence evidence, disclose `independent validation unavailable`, and never describe that fallback as fresh-context or independent validation.
-
-## 8. Finish with evidence
-
-Before reporting completion, verify each item:
-
-- the final behavior matches the complaint contract at the requested abstraction level;
-- the original or evidence-equivalent case and the adjacent case both demonstrate the intended decision change;
-- no explicit boundary or unrelated behavior was absorbed into the fix;
-- validation and cold-read results support the claim;
-- repo and runtime state are accurately reported.
-
-Report the changed source file, the behavioral effect, validation performed, any relevant pre-existing finding, and whether runtime copies were intentionally left untouched.
-
-Save a cross-skill feedback principle only when it is genuinely new, the user explicitly asks to retain it, and the environment provides an authorized memory mechanism. Memory work must never broaden or block the tune itself.
-
-## What this skill is not
-
-- Not for creating a new skill from scratch—stop, propose the skill-creation workflow, and wait for confirmation.
-- Not for a complaint-free general audit—stop, propose a review workflow, and wait for confirmation.
-- Not for silently turning a focused complaint into a major rewrite.
-- Not for editing runtime copies or unrelated files without explicit authority.
+- Apply only PDCA; do not blend another methodology.
+- Do not change the task contract to make validation easier.
+- Do not perform an approval action without the required human decision.
+- Stop when the task no longer matches the recorded method fit.
