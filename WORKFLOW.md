@@ -82,6 +82,7 @@ the repository or Git for additional evidence within its own responsibility.
 | `adversarial-diff-review` | Diff boundary: branch or working-tree range, and/or PR number when a PR exists |
 | `skill-brief` | Skill-design intent or incomplete checklist; may use bounded grill-me |
 | `skill-router` | Required `job` text; optional `exclude` skill-name list |
+| `skill-composition` | Exactly one of `target`, `proposal_path`, or `fixture_path` |
 | `skill-path-selector` | Completed selector checklist (via `skill-brief` when incomplete) |
 | `skill-creator` | Selector path for draft mode, or purpose_pass draft path + explicit human ship |
 | `skill-review` | `.skill-proposals/<skill_name>/` plus checklist purpose fields |
@@ -94,6 +95,10 @@ receives the spec cluster itself rather than a paraphrase of it.
 When unsure which **existing** catalog skill fits the current job, optionally
 run `skill-router` for a single recommendation (`skill` | `none` | `blocked`).
 It does not replace WORKFLOW session transitions or propose skill chains.
+
+Before shipping a skill (or on a draft under `.skill-proposals/`), optionally
+run `skill-composition` to check invoke/forbid/require edges against the
+catalog. It is not a substitute for `skill-review` purpose judgment.
 
 ## Exact transitions
 
@@ -170,6 +175,7 @@ Recorded under `skills/lifecycle-build/selections/` before each SKILL.md:
 |---|---|---|
 | `skill-brief` | `five-w-two-h` | Checklist operating frame; bounded grill-me tool use |
 | `skill-router` | `decision-matrix` | Single catalog skill pick, or none/blocked |
+| `skill-composition` | `none` (procedural) | Invoke/forbid/require consistency check |
 | `skill-path-selector` | `decision-matrix` | Path choice among options with criteria |
 | `skill-review` | `smart-goals` | Draft judged as measurable finishability |
 | `revise-skill-from-review` | `pdca` | Bounded change inside review/revise cycles |

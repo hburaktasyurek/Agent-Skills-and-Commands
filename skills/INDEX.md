@@ -55,6 +55,7 @@ Building and tuning the system itself.
 
 - [skill-brief](skill-brief/SKILL.md) — 5W2H: fill the skill-path-selector checklist; use bounded grill-me only for missing fields.
 - [skill-router](skill-router/SKILL.md) — Decision Matrix: recommend exactly one catalog skill for a job, or none/blocked.
+- [skill-composition](skill-composition/SKILL.md) — Procedural: check one skill's invoke/forbid/require edges against the catalog.
 - [skill-path-selector](skill-path-selector/SKILL.md) — Decision Matrix: choose methodology / decompose / procedural / blocked from the skill checklist (via skill-brief when incomplete).
 - [skill-creator](skill-creator/SKILL.md) — Procedural harness: draft under `.skill-proposals/` or ship after purpose_pass.
 - [skill-review](skill-review/SKILL.md) — SMART Goals: purpose_pass / purpose_fail on a draft path only.

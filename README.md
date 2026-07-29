@@ -74,6 +74,7 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [prompt-creator](skills/prompt-creator/SKILL.md) | Interview-driven Claude prompt builder grounded in Anthropic's best practices |
 | [skill-brief](skills/skill-brief/SKILL.md) | 5W2H: fill the skill-path-selector checklist; use bounded grill-me only for missing fields |
 | [skill-router](skills/skill-router/SKILL.md) | Decision Matrix: recommend exactly one catalog skill for a job, or none/blocked |
+| [skill-composition](skills/skill-composition/SKILL.md) | Check one skill's invoke/forbid/require edges against the catalog |
 | [skill-path-selector](skills/skill-path-selector/SKILL.md) | Decision Matrix: choose methodology, decompose, procedural, or blocked from a skill-design checklist |
 | [skill-creator](skills/skill-creator/SKILL.md) | Draft a skill under `.skill-proposals/` or ship a purpose_pass draft into `skills/` |
 | [skill-review](skills/skill-review/SKILL.md) | SMART Goals: purpose_pass or purpose_fail for a `.skill-proposals/` draft; analysis only |
