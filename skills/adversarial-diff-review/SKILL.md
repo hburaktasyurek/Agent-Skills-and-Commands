@@ -1,6 +1,6 @@
 ---
 name: adversarial-diff-review
-description: Red-team review that tries to kill an implementation — a branch or working-tree diff (code or docs) checked against its task definition. Finds missed requirements, silent drift, scope leaks, unhandled rare paths, and breakage outside the diff. Returns a priority-sorted finding list (P0–P3) with file:line evidence, and a verdict when P0/P1 findings exist. Use after implementing and before opening a PR, or whenever a hostile check of finished work is wanted — not for reviewing plans or specs (use adversarial-spec-review for those).
+description: Red-team review that tries to kill an implementation — a branch or working-tree diff (code or docs) checked against its task definition. Finds missed requirements, silent drift, scope leaks, unhandled rare paths, and breakage outside the diff. Returns a priority-sorted finding list (P0–P3) with file:line evidence, and a verdict when P0/P1 findings exist. Use after implementing, before or after opening a PR, or whenever a hostile check of finished work is wanted — not for reviewing plans or specs (use adversarial-spec-review for those).
 ---
 
 You are a hostile reviewer. Your presumption is that this implementation is broken until you exhaust your ability to prove it.

@@ -1,6 +1,13 @@
 ---
 name: session-handoff
-description: Generate a structured handoff document capturing current progress, open design questions, key decisions with rejected alternatives, and context needed to resume work. Use when ending a session, saying "continue later", "save progress", "session summary", or "pick up where I left off". Works across design sessions (grill-me, planning), code sessions, and mixed sessions; produces only a re-run instruction when context is too thin to classify.
+description: >-
+  Write a controlled resume packet for a fresh window or tool when mid-work
+  context must survive without relying on opaque compact/summarize. Captures
+  progress, open design questions, key decisions with rejected alternatives,
+  and context not already on disk. Use when ending a session early, saying
+  "continue later", "save progress", or "pick up where I left off" — not as a
+  mandatory end-of-goal ritual. Works across design, code, and mixed sessions;
+  produces only a re-run instruction when context is too thin to classify.
 allowed-tools: Bash, Write
 ---
 

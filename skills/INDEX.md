@@ -47,7 +47,7 @@ Wrapping work up.
 - [adversarial-diff-review](adversarial-diff-review/SKILL.md) — Red-team review that tries to kill an implementation diff against its task definition; P0–P3 findings with file:line evidence and a coverage declaration.
 - [review-implementation](review-implementation/SKILL.md) — Systematic spec-vs-implementation compliance audit: checklist coverage plus known-pitfall sweep (tenancy, auth, migrations, payments); Ready-for-PR verdict.
 - [pr-branch](pr-branch/SKILL.md) — Write a two-block PR description (non-technical summary + technical detail), open the PR.
-- [session-handoff](session-handoff/SKILL.md) — Structured handoff doc capturing progress, decisions, and open questions.
+- [session-handoff](session-handoff/SKILL.md) — Optional controlled resume packet for a fresh window when mid-work context must survive; not a mandatory end-of-goal step.
 
 ## Meta — Skills About Skills
 

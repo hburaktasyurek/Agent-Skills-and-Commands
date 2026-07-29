@@ -42,13 +42,10 @@ spec-readiness
 IMPLEMENTATION SESSION
 senior-implementer
       ↓
-COMMIT / PR SESSION
-commit-work
-      ↓
-pr-branch
-      ↓
-REVIEW SESSION
-adversarial-diff-review
+REVIEW and/or COMMIT / PR SESSION
+adversarial-diff-review may run on the branch or working-tree
+diff before a PR, on a PR after it is opened, or both.
+commit-work and pr-branch stay in a separate commit/PR session.
       ├─ FAIL → IMPLEMENTATION SESSION
       │          bounded correction from review findings
       │                ↓
@@ -74,7 +71,7 @@ the repository or Git for additional evidence within its own responsibility.
 
 | Skill | Explicit input |
 |---|---|
-| `task-groundwork` | Roadmap file path and task number |
+| `task-groundwork` | Any authoritative task description or direct user request; roadmap path and task number are common, not required |
 | `to-spec` | Sufficiently resolved conversation and authoritative task artifacts for one bounded software change |
 | `adversarial-spec-review` | Spec cluster path |
 | `revise-spec-from-review` | Complete output from the failed `adversarial-spec-review` or `spec-readiness` run |
@@ -82,7 +79,7 @@ the repository or Git for additional evidence within its own responsibility.
 | `senior-implementer` | Approved spec cluster path |
 | `commit-work` | No explicit input; inspect the current Git worktree and diff |
 | `pr-branch` | No explicit input; inspect the current branch, commits, and Git diff |
-| `adversarial-diff-review` | PR number |
+| `adversarial-diff-review` | Diff boundary: branch or working-tree range, and/or PR number when a PR exists |
 
 Do not replace these artifact references with a summary from memory. A review
 failure is handed back as its complete output, and a spec-consuming skill
@@ -110,12 +107,16 @@ receives the spec cluster itself rather than a paraphrase of it.
    path.
 2. Use `senior-implementer` for the implementation.
 3. Do not open the PR inside the implementation session.
-4. Start a separate commit/PR session. Invoke `commit-work`, then `pr-branch`,
-   without a separate task input; each reads the relevant Git state.
-5. Start a review session and give the PR number to
-   `adversarial-diff-review`.
-6. On failure, return the complete findings to an implementation session,
-   apply only bounded corrections, and rerun `adversarial-diff-review`.
+4. Run `adversarial-diff-review` in a separate review session against the
+   current branch or working-tree diff, against an opened PR, or both. Timing
+   relative to `pr-branch` does not matter; the review boundary must be
+   explicit.
+5. Start a separate commit/PR session when ready to ship commits or open the
+   PR. Invoke `commit-work`, then `pr-branch` as needed; each reads the
+   relevant Git state.
+6. On review failure, return the complete findings to an implementation
+   session, apply only bounded corrections, and rerun
+   `adversarial-diff-review` against the updated boundary.
 7. A passing diff review returns the decision to the human. It does not merge
    automatically.
 
@@ -132,10 +133,22 @@ receives the spec cluster itself rather than a paraphrase of it.
 - Low-cost models may be tested for bounded commit/PR work; design,
   implementation, and review models may be chosen separately.
 
-## Session handoff record
+## Optional session continuity
 
-Each session should leave enough information for a different window, tool, or
-model to continue without guessing:
+Goal-oriented runs often stay in one session until the goal completes; the
+agent may compact or summarize internally along the way. That is the default.
+Do not require a handoff document or YAML record after every session.
+
+Use `session-handoff` only when you need a **controlled** resume packet for a
+fresh window or tool — for example mid-work context pressure, switching
+surfaces, or pausing overnight — instead of relying on opaque compact/summarize
+output. Prefer durable artifacts already produced by the workflow (spec,
+review findings, diff, PR, loop run record) when those are enough to continue.
+
+When a handoff doc already exists, treat it as optional evidence. If you want a
+compact checklist for a session-type change, this shape is enough; it is not a
+mandatory schema and need not match the markdown sections `session-handoff`
+writes:
 
 ```yaml
 task: <stable task identifier and outcome>
