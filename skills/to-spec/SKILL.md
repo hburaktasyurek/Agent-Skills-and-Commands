@@ -1,6 +1,6 @@
 ---
 name: to-spec
-description: "Apply Work Breakdown Structure to produce an evidence-backed four-file specification for one bounded software change. Use when The required four-file specification and ordered implementation work packages must be decomposed into independently reviewable deliverables. Triggers: to-spec; write the spec; hand this off."
+description: "Apply Work Breakdown Structure to produce an evidence-backed four-file specification for one bounded software change. Use when the required four-file specification and ordered implementation work packages must be decomposed into independently reviewable deliverables. Triggers: to-spec; write the spec; hand this off."
 ---
 
 # to-spec
@@ -21,7 +21,7 @@ Create exactly one folder at `agent-os/specs/YYYY-MM-DD-HHMM-<slug>/` containing
 
 ## When to use
 
-- Use when: The required four-file specification and ordered implementation work packages must be decomposed into independently reviewable deliverables
+- Use when: the required four-file specification and ordered implementation work packages must be decomposed into independently reviewable deliverables
 - Do not use when: The requested outcome is not this multi-deliverable specification cluster or cannot be decomposed without fabricating work
 - Why Work Breakdown Structure: For this skill, the Work Breakdown Structure subject is the mandatory four-file specification and its implementation work packages, not the size of the underlying software change. A small bounded code change remains authorized because the cluster still has four non-overlapping responsibilities. Stop subdividing once each artifact or package is bounded, reviewable, validated, and ordered.
 

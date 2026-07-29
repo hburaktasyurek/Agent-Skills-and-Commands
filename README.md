@@ -116,12 +116,14 @@ description: What it does, and when to trigger it.
 - `description` — required. Drives skill discovery; write it so Claude knows when to use it.
 - `disable-model-invocation: true` — optional. Forces explicit `/skill-name` invocation (useful for mode-switches).
 
-Body shape and length vary by what the skill is for — some are three sentences, others are long with reference docs as siblings of `SKILL.md`. No template is enforced.
+Body shape and length vary by purpose. Methodology-generated skills follow a discovery-boundary formula (see `methodology-skill-creator/references/creator-contract.md`); procedural skills use a short summary/when pattern without `Apply Method`. The full skill-design standard is the Skill design loop in [WORKFLOW.md](WORKFLOW.md).
 
 ## Repository Layout
 
 ```
 .
-├── WORKFLOW.md          # stable multi-session working method
-└── skills/              # invokable skills (see skills/INDEX.md)
+├── WORKFLOW.md           # stable multi-session working method
+├── skills/               # invokable skills (see skills/INDEX.md)
+│   └── lifecycle-build/  # support fixtures and smokes (no root SKILL.md)
+└── .skill-proposals/     # gitignored drafts from skill-creator
 ```

@@ -1,13 +1,13 @@
 ---
 name: skill-router
-description: "Apply Decision Matrix to Recommend exactly one catalog skill for a job, or none/blocked with evidence. Use when Several options must be compared using explicit criteria. Triggers: skill-router; which skill; route skill."
+description: "Apply Decision Matrix to recommend exactly one catalog skill for a job, or none/blocked with evidence. Use when several options must be compared using explicit criteria. Triggers: skill-router; which skill; route skill."
 ---
 
 # skill-router
 
 ## Objective
 
-Apply Decision Matrix (`decision-matrix`) to this job: Recommend exactly one INDEX-listed catalog skill for a required job using INDEX and SKILL.md fit evidence, or none when zero or multiple fit, or blocked when job/catalog is unusable; never recommend skill-router; never propose chains or execute the skill.
+Apply Decision Matrix (`decision-matrix`) to this job: recommend exactly one INDEX-listed catalog skill for a required job using INDEX and SKILL.md fit evidence, or none when zero or multiple fit, or blocked when job/catalog is unusable; never recommend skill-router; never propose chains or execute the skill.
 
 Produce the result for Agents unsure which catalog skill to run; humans checking the pick.
 
@@ -21,7 +21,7 @@ YAML primary verdict skill|none|blocked with rationale, near_misses, or missing 
 
 ## When to use
 
-- Use when: Caller has a job description and needs one catalog skill recommendation, or an honest none/blocked. (Decision Matrix fit: several catalog options compared with explicit criteria.)
+- Use when: caller has a job description and needs one catalog skill recommendation, or an honest none/blocked. (Decision Matrix fit: several catalog options compared with explicit criteria.)
 - Do not use when: Caller wants a WORKFLOW chain; designing a new skill (skill-path-selector / skill-brief); selecting a thinking methodology only (methodology-selector); executing or installing a skill; post-ship tune; or taste / one hard constraint already determines the choice without catalog compare.
 - Why Decision Matrix: Many catalog skills are options; fit uses explicit criteria and hard gates. Hard constraints (empty job, missing catalog, self-exclusion) apply directly without scoring; remaining choice is multi-option compare.
 

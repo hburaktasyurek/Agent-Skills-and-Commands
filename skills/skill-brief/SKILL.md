@@ -1,13 +1,13 @@
 ---
 name: skill-brief
-description: "Apply 5W2H to Fill the skill-path-selector checklist from skill-design intent, using bounded grill-me only for missing fields. Use when A vague task needs a complete operating frame. Triggers: skill-brief; skill design brief; grill to checklist."
+description: "Apply 5W2H to fill the skill-path-selector checklist from skill-design intent, using bounded grill-me only for missing fields. Use when a vague task needs a complete operating frame. Triggers: skill-brief; skill design brief; grill to checklist."
 ---
 
 # skill-brief
 
 ## Objective
 
-Apply 5W2H (`five-w-two-h`) to this job: Produce a completed skill-path-selector checklist from skill-design intent. When checklist fields are incomplete, use grill-me under brief-owned bounds (field-scoped questions, one at a time, hard stop when the checklist is complete or blocked, default max 8 decision questions). Never invent field values. Do not select a create path, write SKILL.md, or ship.
+Apply 5W2H (`five-w-two-h`) to this job: produce a completed skill-path-selector checklist from skill-design intent. When checklist fields are incomplete, use grill-me under brief-owned bounds (field-scoped questions, one at a time, hard stop when the checklist is complete or blocked, default max 8 decision questions). Never invent field values. Do not select a create path, write SKILL.md, or ship.
 
 Produce the result for Agents in the skill-design loop and humans reviewing the checklist before path selection.
 
@@ -21,7 +21,7 @@ YAML checklist ready for skill-path-selector, or blocked with missing_fields lis
 
 ## When to use
 
-- Use when: Skill design is starting and the skill-path-selector checklist is missing or incomplete; or skill-path-selector invokes skill-brief for intake. (5W2H fit: a vague skill-design intent needs a complete operating frame.)
+- Use when: skill design is starting and the skill-path-selector checklist is missing or incomplete; or skill-path-selector invokes skill-brief for intake. (5W2H fit: a vague skill-design intent needs a complete operating frame.)
 - Do not use when: Checklist already complete; path selection; drafting or shipping a skill; post-ship behavior complaints (tune-skill); open-ended grilling unrelated to skill design; or the question is already narrow and only needs execution.
 - Why 5W2H: The job is to turn vague skill-design intent into a complete fixed operating frame (the selector checklist). Catalog precedence allows 5W2H when that complete frame is the requested artifact.
 

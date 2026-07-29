@@ -71,6 +71,9 @@ When `invocation` is non-empty, append:
 
 Normalize `skill_summary`, `best_when`, and each alias: trim; collapse internal
 whitespace to a single space; strip a trailing `.`; reject any newline.
+Then apply `decapitalizeForGlue`: lowercase the first character unless the
+string starts with an acronym (`/^[A-Z]{2,}([^a-z]|$)/`).
+Reject `skill_summary` that contains a nested Apply-formula (`/^Apply\s+.+\s+to\b/i`).
 
 Limits:
 

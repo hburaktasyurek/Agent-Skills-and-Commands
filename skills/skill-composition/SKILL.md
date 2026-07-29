@@ -1,6 +1,6 @@
 ---
 name: skill-composition
-description: "Check one skill's invoke/forbid/require edges against the catalog. Use when A single skill package needs an invoke/forbid/require consistency check against the INDEX catalog. Triggers: skill-composition; composition check; check skill deps."
+description: "Check one skill's invoke/forbid/require edges against the catalog. Use when a single skill package needs an invoke/forbid/require consistency check against the INDEX catalog. Triggers: skill-composition; composition check; check skill deps."
 ---
 
 # skill-composition
@@ -51,7 +51,7 @@ YAML with `verdict`, extracted `invokes` / `forbids` / `requires`, `findings` on
 
 ## When to use
 
-- Use when: A single skill package (catalog, draft proposal, or lifecycle fixture) needs an invoke/forbid/require consistency check against the INDEX catalog
+- Use when: a single skill package (catalog, draft proposal, or lifecycle fixture) needs an invoke/forbid/require consistency check against the INDEX catalog
 - Do not use when: Purpose review (`skill-review`); which-skill routing (`skill-router`); designing a new skill path; building a full-repo composition encyclopedia; editing skills to add dependency frontmatter
 
 ## Invocation
@@ -72,6 +72,7 @@ YAML with `verdict`, extracted `invokes` / `forbids` / `requires`, `findings` on
 
 - Checks: Primary verdict is exactly one of composition_ok, composition_fail, blocked; no repository files edited by this skill
 - Evidence: Returned YAML; for fail, each finding cites a quote and rule number
+- Rules engine self-test: `node skills/skill-composition/scripts/self-test.mjs` covers consistency rules 1–4 on pre-extracted edge fixtures; extraction from SKILL.md prose remains agent-judged
 
 ## Boundaries
 

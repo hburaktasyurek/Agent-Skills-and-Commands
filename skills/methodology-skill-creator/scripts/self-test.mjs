@@ -13,10 +13,10 @@ const base = JSON.parse(fs.readFileSync(fixtureUrl, "utf8"));
 const results = [];
 
 const TG_DESCRIPTION =
-  "Apply 5W2H to ground a non-trivial software task into an evidence-backed decision context before specification or implementation. Use when A vague task needs a complete operating frame. Triggers: start task N; take the next roadmap item; görev N'e başlayalım.";
+  "Apply 5W2H to ground a non-trivial software task into an evidence-backed decision context before specification or implementation. Use when a vague task needs a complete operating frame. Triggers: start task N; take the next roadmap item; görev N'e başlayalım.";
 
 const TS_DESCRIPTION =
-  "Apply Work Breakdown Structure to produce an evidence-backed four-file specification for one bounded software change. Use when The required four-file specification and ordered implementation work packages must be decomposed into independently reviewable deliverables. Triggers: to-spec; write the spec; hand this off.";
+  "Apply Work Breakdown Structure to produce an evidence-backed four-file specification for one bounded software change. Use when the required four-file specification and ordered implementation work packages must be decomposed into independently reviewable deliverables. Triggers: to-spec; write the spec; hand this off.";
 
 const extractDescription = (skillMarkdown) => {
   const match = skillMarkdown.match(/^description: (.+)$/m);
@@ -203,6 +203,15 @@ expectFailure(
   "composed description over limit is rejected",
   longDescription,
   /description exceeds/,
+);
+
+const nestedApply = structuredClone(base);
+nestedApply.skill_name = "test-nested-apply";
+nestedApply.skill_summary = "Apply closed purpose-fail remedies to a skill draft";
+expectFailure(
+  "nested Apply-formula in skill_summary is rejected",
+  nestedApply,
+  /nested Apply-formula/,
 );
 
 const longAlias = structuredClone(base);

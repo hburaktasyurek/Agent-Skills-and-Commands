@@ -160,7 +160,7 @@ score.
 
 ## Rejected shortcuts
 
-- Using the existing general skill-creator.
+- Absorbing `skill-creator` draft/ship/purpose gates into methodology-skill-creator or loop-orchestrator.
 - Treating a passing slice, infrastructure, fixtures, or partial matrix as
   completion.
 - One monolithic skill or duplicated canonical methodology data.

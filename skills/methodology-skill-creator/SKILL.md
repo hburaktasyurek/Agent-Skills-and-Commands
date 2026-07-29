@@ -78,7 +78,7 @@ suffix in description; the full list renders under `## Invocation`.
 
 ## Boundaries
 
-- Do not use or recreate a general-purpose skill-creator workflow.
+- Do not absorb `skill-creator` draft/ship/purpose gates; this skill only renders methodology SKILL.md content.
 - Do not select a methodology or merge multiple methods.
 - Do not invent method principles outside the canonical reference.
 - Do not generate itself.

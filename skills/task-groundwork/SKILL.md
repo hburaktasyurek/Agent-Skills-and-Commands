@@ -1,6 +1,6 @@
 ---
 name: task-groundwork
-description: "Apply 5W2H to ground a non-trivial software task into an evidence-backed decision context before specification or implementation. Use when A vague task needs a complete operating frame. Triggers: start task N; take the next roadmap item; görev N'e başlayalım."
+description: "Apply 5W2H to ground a non-trivial software task into an evidence-backed decision context before specification or implementation. Use when a vague task needs a complete operating frame. Triggers: start task N; take the next roadmap item; görev N'e başlayalım."
 ---
 
 # task-groundwork
@@ -21,7 +21,7 @@ Return a concise grounding brief that states the task purpose, decision-relevant
 
 ## When to use
 
-- Use when: A vague task needs a complete operating frame
+- Use when: a vague task needs a complete operating frame
 - Do not use when: The question is already narrow and only needs execution
 - Why 5W2H: A non-trivial change in a complex software system cannot be grounded safely until the relevant purpose, actors, locations, timing, behavior, effort or risk, failure modes, and real success conditions are complete. The requested artifact is explicitly that operating frame plus an evidence-backed route recommendation; scoring, work-package decomposition, execution, and summary writing are not the dominant need.
 
