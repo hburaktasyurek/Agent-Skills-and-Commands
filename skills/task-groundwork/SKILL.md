@@ -1,31 +1,33 @@
 ---
 name: task-groundwork
-description: "Apply 5W2H to ground a non-trivial software task into a complete, evidence-backed decision context before specification or implementation for agents and humans deciding how to change complex software systems. Use when this bounded task matches the recorded method fit; preserve validation and human-review conditions."
+description: "Apply 5W2H to ground a non-trivial software task into a complete, evidence-backed decision context before specification or implementation for agents and humans deciding how to change complex software systems. Follow the embedded method, validation, and human-stop rules."
 ---
 
-# 5W2H: task-groundwork
+# task-groundwork
 
-## Assignment contract
+## Objective
 
-Methodology: 5W2H (`five-w-two-h`)
+Apply 5W2H (`five-w-two-h`) to this job: ground a non-trivial software task into a complete, evidence-backed decision context before specification or implementation
 
-Task: ground a non-trivial software task into a complete, evidence-backed decision context before specification or implementation
+Produce the result for agents and humans deciding how to change complex software systems.
 
-Audience: agents and humans deciding how to change complex software systems
+## Operating instructions
 
-Context: Input may be any authoritative task description or a direct user request; no particular planning artifact is required. Investigate the current system, relevant history, available plans, and real-use constraints only where they can change task meaning, feasible routes, scope, or acceptance. Match each claim to the source type that can establish it, distinguish fact from inference, and trace transitive effects until more evidence would no longer change the decision. Evaluate implementation routes qualitatively: do not use numeric or aggregate scores, and allow a load-bearing safety, correctness, compatibility, or real-use invariant to outweigh an option's other advantages. Default to read-only inspection and safe non-mutating execution; ask before any write. Other helpers or supplied skill outputs may contribute evidence, but the selected methodology remains the sole method and consequential next actions remain human-owned.
+Input may be any authoritative task description or a direct user request; no particular planning artifact is required. Investigate the current system, relevant history, available plans, and real-use constraints only where they can change task meaning, feasible routes, scope, or acceptance. Match each claim to the source type that can establish it, distinguish fact from inference, and trace transitive effects until more evidence would no longer change the decision. Evaluate implementation routes qualitatively: do not use numeric or aggregate scores, and allow a load-bearing safety, correctness, compatibility, or real-use invariant to outweigh an option's other advantages. Default to read-only inspection and safe non-mutating execution; ask before any write. Other helpers or supplied skill outputs may contribute evidence, but the selected methodology remains the sole method and consequential next actions remain human-owned.
 
-Required output: Return a concise grounding brief that states the task purpose, decision-relevant system frame, scope, resolved decision tree, chosen route with evidence and caveats, unresolved human decisions or approved deferrals, and readiness for the next stage. Use only headings that improve comprehension; omit empty or process-provenance sections.
+## Required deliverable
 
-## Method fit
+Return a concise grounding brief that states the task purpose, decision-relevant system frame, scope, resolved decision tree, chosen route with evidence and caveats, unresolved human decisions or approved deferrals, and readiness for the next stage. Use only headings that improve comprehension; omit empty or process-provenance sections.
 
-- Best when: A vague task needs a complete operating frame.
-- Avoid when: The question is already narrow and only needs execution.
-- Selection evidence: A non-trivial change in a complex software system cannot be grounded safely until the relevant purpose, actors, locations, timing, behavior, effort or risk, failure modes, and real success conditions are complete. The requested artifact is explicitly that operating frame plus an evidence-backed route recommendation; scoring, work-package decomposition, execution, and summary writing are not the dominant need.
+## When to use
 
-## Canonical method
+- Use when: A vague task needs a complete operating frame.
+- Do not use when: The question is already narrow and only needs execution.
+- Why 5W2H: A non-trivial change in a complex software system cannot be grounded safely until the relevant purpose, actors, locations, timing, behavior, effort or risk, failure modes, and real success conditions are complete. The requested artifact is explicitly that operating frame plus an evidence-backed route recommendation; scoring, work-package decomposition, execution, and summary writing are not the dominant need.
 
-Source: [Loop Engineering Methodology Skill Generator](https://loopengineering.app/methodology-skill-generator/)
+## Workflow
+
+Apply this 5W2H procedure while executing the job:
 
 ## Definition
 
@@ -66,7 +68,7 @@ when the task was already narrow. Stop and ask for human help if the task does
 not fit 5W2H, required context is missing, or validation cannot be satisfied
 without guessing.
 
-## Validation
+## Execution checks
 
 - The task is identified from the available authoritative description or direct request without requiring a particular planning format.
 - The what, why, who, where, when, how, and how much frame covers every actor, flow, state, timing edge, capability, failure mode, effort or risk, and real success condition that could change the decision, but does not expand into an exhaustive system inventory.
@@ -75,7 +77,7 @@ without guessing.
 - Scope, system effects, caveats, unresolved human decisions, and approved deferrals are explicit; no material branch or contradiction is silently hidden.
 - The result is concise and actionable for the next stage, and it does not require a specific source artifact unless the current task itself makes that artifact authoritative.
 
-Evidence to surface:
+## Evidence to return
 
 - Cite the task source and the code, tests, configuration, schemas, safe observations, history, plans, contracts, or product evidence actually used, with file and line references where available.
 - Surface the decision-relevant operating frame and the reason further investigation stopped.

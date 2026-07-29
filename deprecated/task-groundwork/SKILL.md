@@ -5,8 +5,6 @@ description: Turn a roadmap task into a fully resolved decision tree, ready for 
 
 # task-groundwork
 
-> Deprecated archive. The active `task-groundwork` skill lives under `skills/task-groundwork`.
-
 A roadmap task arrives as a title and a few lines of detail. Between that and a spec sits a layer of unmade decisions: what the task actually means given what the code looks like today, what earlier tasks left behind, what later tasks will expect, and which choices must be made to serve the phase's goal. This skill does that groundwork — it interrogates the artifacts, not the user. The user is the escalation path, not the primary source.
 
 **Position in the pipeline:** this runs at task kickoff, before to-spec. Its output is resolved conversation context — to-spec is what persists it into a spec folder. Do not write a briefing file. The one artifact this skill does write is a deferral note in the roadmap (see Deferral protocol), because the user navigates every task from the roadmap and a deferral recorded anywhere else is a deferral hidden.
