@@ -20,7 +20,9 @@ artifact.
 
 ```text
 DESIGN SESSION
-resolved conversation + authoritative task artifacts
+authoritative task description or direct user request
+      ↓
+task-groundwork
       ↓
 to-spec
       ↓
@@ -53,6 +55,9 @@ commit-work and pr-branch stay in a separate commit/PR session.
       └─ PASS → human-owned merge decision
 ```
 
+For sticky undecided product or design forks, optionally run `grill-me` before
+or during groundwork; it is not a required node on this path.
+
 ## Session responsibilities
 
 | Session | Owns | Must not absorb |
@@ -72,7 +77,7 @@ the repository or Git for additional evidence within its own responsibility.
 | Skill | Explicit input |
 |---|---|
 | `task-groundwork` | Any authoritative task description or direct user request; roadmap path and task number are common, not required |
-| `to-spec` | Sufficiently resolved conversation and authoritative task artifacts for one bounded software change |
+| `to-spec` | `task-groundwork` result or equivalent grounded frame (see Spec design loop skip rule), plus conversation and other authoritative task artifacts for one bounded software change |
 | `adversarial-spec-review` | Spec cluster path |
 | `revise-spec-from-review` | Complete output from the failed `adversarial-spec-review` or `spec-readiness` run |
 | `spec-readiness` | Spec cluster path |
@@ -104,16 +109,26 @@ catalog. It is not a substitute for `skill-review` purpose judgment.
 
 ### Spec design loop
 
-1. Start `to-spec` with sufficiently resolved conversation and authoritative
-   task artifacts for one bounded software change.
-2. Give the resulting spec cluster path to `adversarial-spec-review`.
-3. On failure, return the spec and complete review findings to the design
+1. Run `task-groundwork` on the authoritative task description or direct user
+   request, unless the skip rule applies. Skip `task-groundwork` only when the
+   design session already contains a written grounded frame that states all of:
+   (a) task identity/authority source, (b) in-scope outcome, (c) explicit
+   out-of-scope or non-goals, (d) acceptance or stop conditions for the next
+   stage. A roadmap or ticket id alone is never enough.
+2. Run `to-spec` with that groundwork result (or equivalent grounded frame) plus
+   conversation and other authoritative task artifacts for one bounded software
+   change.
+3. Give the resulting spec cluster path to `adversarial-spec-review`.
+4. On failure, return the spec and complete review findings to the design
    session. Use `revise-spec-from-review`, then rerun
-   `adversarial-spec-review`.
-4. On pass, run `spec-readiness` with the spec cluster path.
-5. On readiness failure, return the spec and readiness findings to the design
-   session. Use `revise-spec-from-review`, then rerun `spec-readiness`.
-6. Only a passing spec review and passing readiness result permit handoff to
+   `adversarial-spec-review`. Do not mandate a full `task-groundwork` re-run
+   unless the findings invalidate the grounded frame (task identity, scope, or
+   acceptance); if they do, re-ground then continue.
+5. On pass, run `spec-readiness` with the spec cluster path.
+6. On readiness failure, return the spec and readiness findings to the design
+   session. Use `revise-spec-from-review`, then rerun `spec-readiness`. Same
+   re-ground rule as step 4.
+7. Only a passing spec review and passing readiness result permit handoff to
    implementation.
 
 ### Implementation and PR loop
