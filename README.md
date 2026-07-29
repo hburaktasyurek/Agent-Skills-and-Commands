@@ -67,8 +67,8 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [tdd](skills/tdd/SKILL.md) | Red-green-refactor TDD loop with reference docs |
 | [triage-issue](skills/triage-issue/SKILL.md) | Investigate a bug and file a GitHub issue with a TDD-based fix plan |
 | [commit-work](skills/commit-work/SKILL.md) | Stage intended changes, split coherent Conventional Commits, and verify; push only when explicitly asked |
-| [adversarial-diff-review](skills/adversarial-diff-review/SKILL.md) | Red-team review that tries to kill an implementation diff against its task definition; file:line evidence + coverage declaration |
-| [review-implementation](skills/review-implementation/SKILL.md) | Spec-vs-implementation compliance audit: checklist coverage + known-pitfall sweep (tenancy, auth, migrations, payments) |
+| [adversarial-diff-review](skills/adversarial-diff-review/SKILL.md) | Hostile shipping/merge gate: kill-test branch/PR diff vs task definition; file:line evidence + coverage declaration |
+| [review-implementation](skills/review-implementation/SKILL.md) | Before-PR named-spec compliance: checklist + pitfall sweep; Ready-for-PR (not the hostile merge gate) |
 | [pr-branch](skills/pr-branch/SKILL.md) | Write a two-block PR description (non-technical + technical) and open a GitHub PR |
 | [session-handoff](skills/session-handoff/SKILL.md) | Optional controlled resume packet for a fresh window; not required when a goal-oriented session can finish on its own |
 | [prompt-creator](skills/prompt-creator/SKILL.md) | Interview-driven Claude prompt builder grounded in Anthropic's best practices |

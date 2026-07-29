@@ -22,7 +22,7 @@ when_not: >
 success_signal: >
   Primary verdict is exactly one of skill|none|blocked per plan rules; skill
   names are INDEX∩SKILL.md only; self-exclusion held; ties yield none +
-  near_misses (not a chain); S1–S3 smokes match expected primaries.
+  near_misses (not a chain); S1–S5 smokes match expected primaries.
 boundaries: >
   Do not invent skill names outside catalog.
   Do not recommend skill-router.

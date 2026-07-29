@@ -44,14 +44,23 @@ spec-readiness
 IMPLEMENTATION SESSION
 senior-implementer
       ↓
-REVIEW and/or COMMIT / PR SESSION
-adversarial-diff-review may run on the branch or working-tree
-diff before a PR, on a PR after it is opened, or both.
-commit-work and pr-branch stay in a separate commit/PR session.
+REVIEW SESSION (compliance)
+review-implementation
+(skip when no approved spec cluster path was handed to implementation)
       ├─ FAIL → IMPLEMENTATION SESSION
-      │          bounded correction from review findings
-      │                ↓
-      │          adversarial-diff-review again
+      │          bounded fixes → review-implementation again
+      └─ Ready-for-PR: Yes
+            ↓
+COMMIT / PR SESSION
+commit-work → pr-branch as needed
+      ↓
+REVIEW SESSION (hostile)
+adversarial-diff-review
+(preferred on opened PR; branch/worktree boundary allowed)
+      ├─ FAIL → IMPLEMENTATION SESSION
+      │          bounded fixes; invalidate Ready-for-PR if impl changed
+      │          → review-implementation again when named spec
+      │          → adversarial-diff-review again
       └─ PASS → human-owned merge decision
 ```
 
@@ -63,8 +72,8 @@ or during groundwork; it is not a required node on this path.
 | Session | Owns | Must not absorb |
 |---|---|---|
 | Design | Grounding the task, resolving decisions, writing the spec, applying verified spec-review corrections | Implementation, PR creation, merge |
-| Review | Hostile review of the spec or diff, readiness judgment, evidence-backed verdict | Quietly rewriting the reviewed artifact or approving its own fixes |
-| Implementation | Implementing the approved spec and applying bounded diff-review corrections | Redesigning the spec, opening the PR, merging |
+| Review | Spec compliance (`review-implementation`), hostile review of the spec or diff (`adversarial-*-review`), readiness judgment, evidence-backed verdict | Quietly rewriting the reviewed artifact or approving its own fixes or merge |
+| Implementation | Implementing the approved spec and applying bounded corrections from compliance or diff-review findings | Redesigning the spec, opening the PR, merging |
 | Commit / PR | Staging intentional changes, creating commits, writing the PR description, opening the PR | Implementation changes, independent review, merge |
 | Human | Choosing tools/models, approving scope changes, deciding commit/push/install/merge | Delegating irreversible authority merely because a score or review passed |
 
@@ -82,6 +91,7 @@ the repository or Git for additional evidence within its own responsibility.
 | `revise-spec-from-review` | Complete output from the failed `adversarial-spec-review` or `spec-readiness` run |
 | `spec-readiness` | Spec cluster path |
 | `senior-implementer` | Approved spec cluster path |
+| `review-implementation` | Approved spec cluster path (named-spec compliance; optional changed-files/PR argument as the skill allows) |
 | `commit-work` | No explicit input; inspect the current Git worktree and diff |
 | `pr-branch` | No explicit input; inspect the current branch, commits, and Git diff |
 | `adversarial-diff-review` | Diff boundary: branch or working-tree range, and/or PR number when a PR exists |
@@ -133,22 +143,49 @@ catalog. It is not a substitute for `skill-review` purpose judgment.
 
 ### Implementation and PR loop
 
-1. Start a separate implementation session with the approved spec cluster
-   path.
-2. Use `senior-implementer` for the implementation.
-3. Do not open the PR inside the implementation session.
-4. Run `adversarial-diff-review` in a separate review session against the
-   current branch or working-tree diff, against an opened PR, or both. Timing
-   relative to `pr-branch` does not matter; the review boundary must be
-   explicit.
-5. Start a separate commit/PR session when ready to ship commits or open the
-   PR. Invoke `commit-work`, then `pr-branch` as needed; each reads the
-   relevant Git state.
-6. On review failure, return the complete findings to an implementation
-   session, apply only bounded corrections, and rerun
-   `adversarial-diff-review` against the updated boundary.
-7. A passing diff review returns the decision to the human. It does not merge
-   automatically.
+1. **Start implementation.**
+   - **Named spec:** Start a separate implementation session with the approved
+     spec cluster path (directory or primary file). A roadmap or ticket id or
+     chat bullets without that path are not a named spec. Use
+     `senior-implementer` with that path. Do not open the PR inside the
+     implementation session.
+   - **No named spec** (docs-only, skill-kit prose, conversation-only work):
+     Implement without requiring `senior-implementer` or a spec cluster path.
+     Skip compliance (`review-implementation`). Do not open the PR inside the
+     implementation work either.
+2. **Compliance (named spec only):** Skip this step when there is no named
+   spec. Otherwise, in a separate review session, run
+   `review-implementation` against the approved spec cluster path. On
+   compliance FAIL, return complete findings to an implementation session for
+   bounded fixes, then rerun `review-implementation`. Do not open the PR while
+   compliance is failed or not yet run when a named spec exists.
+3. Start a separate commit/PR session when Ready-for-PR is Yes (or when there
+   is no named spec). Invoke `commit-work`, then `pr-branch` as needed.
+4. **Hostile gate:** In a separate review session, run
+   `adversarial-diff-review` against the opened PR and/or an explicit
+   branch/worktree range (preferred on the opened PR). On the named-spec path,
+   do not use adversarial alone as the pre-PR review.
+5. On adversarial FAIL, return complete findings to an implementation session
+   for bounded corrections. Any implementation change after a Yes Ready-for-PR
+   **invalidates** that Yes until `review-implementation` is re-run and returns
+   Yes again (named-spec path only); then rerun `adversarial-diff-review`
+   against the updated boundary.
+6. A passing adversarial diff review returns the decision to the human. It does
+   not merge automatically. Ready-for-PR: Yes does not authorize merge and does
+   not replace adversarial pass.
+
+### Which implementation review
+
+These are sequential roles on the named-spec path, not a pick-one chooser:
+
+| Role | Skill | When |
+|---|---|---|
+| Spec × code compliance + known-pitfall sweep; Ready-for-PR | `review-implementation` | Named spec present; after implement, before opening the PR |
+| Hostile kill-test vs task definition + Git/PR diff; shipping / merge gate | `adversarial-diff-review` | After commit/PR on the preferred path; never the sole pre-PR review when a named spec exists |
+
+If the user invokes only one review skill by name, run only that skill. Vague
+“review this” with no spec path and no diff/PR → `skill-router` may return
+`none`; do not invent a default.
 
 ### Skill design loop
 
