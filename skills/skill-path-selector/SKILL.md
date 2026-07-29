@@ -13,7 +13,7 @@ Produce the result for Agents designing skills in this repository and humans rev
 
 ## Operating instructions
 
-Require checklist fields: purpose, audience, when_to_use, when_not, success_signal, boundaries, context, output_format, skill_name, skill_summary; optional invocation and replace. Hard gates: missing field or name collision without replace → blocked. Options: methodology, decompose, procedural, blocked. Criteria before scoring: (1) checklist completeness, (2) collision, (3) hybrid/multi-responsibility, (4) honest catalog method fit via methodology-selector without method-name bias, (5) narrow procedure when no method fits. Map checklist to eight fields when invoking methodology-selector. Preserve deferred_method; never blend methods. Do not write SKILL.md files.
+If the skill-design checklist is missing or incomplete, invoke `skill-brief` first (it may use `grill-me` under brief-owned bounds). Do not call bare `grill-me` from this skill. Require checklist fields: purpose, audience, when_to_use, when_not, success_signal, boundaries, context, output_format, skill_name, skill_summary; optional invocation and replace. Hard gates: missing field or name collision without replace → blocked. Options: methodology, decompose, procedural, blocked. Criteria before scoring: (1) checklist completeness, (2) collision, (3) hybrid/multi-responsibility, (4) honest catalog method fit via methodology-selector without method-name bias, (5) narrow procedure when no method fits. Map checklist to eight fields when invoking methodology-selector. Preserve deferred_method; never blend methods. Do not write SKILL.md files.
 
 ## Required deliverable
 

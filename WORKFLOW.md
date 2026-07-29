@@ -80,7 +80,8 @@ the repository or Git for additional evidence within its own responsibility.
 | `commit-work` | No explicit input; inspect the current Git worktree and diff |
 | `pr-branch` | No explicit input; inspect the current branch, commits, and Git diff |
 | `adversarial-diff-review` | Diff boundary: branch or working-tree range, and/or PR number when a PR exists |
-| `skill-path-selector` | Completed selector checklist after grill-me (see Skill design loop) |
+| `skill-brief` | Skill-design intent or incomplete checklist; may use bounded grill-me |
+| `skill-path-selector` | Completed selector checklist (via `skill-brief` when incomplete) |
 | `skill-creator` | Selector path for draft mode, or purpose_pass draft path + explicit human ship |
 | `skill-review` | `.skill-proposals/<skill_name>/` plus checklist purpose fields |
 | `revise-skill-from-review` | Draft path plus complete purpose_fail remedies |
@@ -131,11 +132,15 @@ Prefer methodology-bound skills. **Never author a new skill's SKILL.md before
 method-name bias in the request). Drafts live under gitignored
 `.skill-proposals/`; canonical packages live under `skills/` only after ship.
 
-1. Run `grill-me` until shared understanding of the new skill.
-2. Fill the selector checklist (no invented fields): purpose, audience,
-   when_to_use, when_not, success_signal, boundaries, context, output_format,
-   skill_name, skill_summary; optional invocation.
-3. Run `skill-path-selector` → `methodology` | `decompose` | `procedural` |
+1. Run `skill-path-selector`. If the checklist is missing or incomplete, it
+   invokes `skill-brief` first. `skill-brief` owns intake and may use
+   `grill-me` under brief bounds (field-scoped, one question at a time, default
+   max 8); it does not call open-ended grill-me as the loop entry.
+2. `skill-brief` returns the selector checklist (no invented fields): purpose,
+   audience, when_to_use, when_not, success_signal, boundaries, context,
+   output_format, skill_name, skill_summary; optional invocation — or
+   `blocked` with missing fields.
+3. `skill-path-selector` → `methodology` | `decompose` | `procedural` |
    `blocked` (it may invoke `methodology-selector` on the methodology branch).
 4. On `decompose` or `blocked`, stop. On `methodology` or `procedural`,
    continue.
@@ -158,6 +163,7 @@ Recorded under `skills/lifecycle-build/selections/` before each SKILL.md:
 
 | Package | methodology-selector | Notes |
 |---|---|---|
+| `skill-brief` | `five-w-two-h` | Checklist operating frame; bounded grill-me tool use |
 | `skill-path-selector` | `decision-matrix` | Path choice among options with criteria |
 | `skill-review` | `smart-goals` | Draft judged as measurable finishability |
 | `revise-skill-from-review` | `pdca` | Bounded change inside review/revise cycles |

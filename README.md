@@ -72,6 +72,7 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [pr-branch](skills/pr-branch/SKILL.md) | Write a two-block PR description (non-technical + technical) and open a GitHub PR |
 | [session-handoff](skills/session-handoff/SKILL.md) | Optional controlled resume packet for a fresh window; not required when a goal-oriented session can finish on its own |
 | [prompt-creator](skills/prompt-creator/SKILL.md) | Interview-driven Claude prompt builder grounded in Anthropic's best practices |
+| [skill-brief](skills/skill-brief/SKILL.md) | 5W2H: fill the skill-path-selector checklist; use bounded grill-me only for missing fields |
 | [skill-path-selector](skills/skill-path-selector/SKILL.md) | Decision Matrix: choose methodology, decompose, procedural, or blocked from a skill-design checklist |
 | [skill-creator](skills/skill-creator/SKILL.md) | Draft a skill under `.skill-proposals/` or ship a purpose_pass draft into `skills/` |
 | [skill-review](skills/skill-review/SKILL.md) | SMART Goals: purpose_pass or purpose_fail for a `.skill-proposals/` draft; analysis only |
