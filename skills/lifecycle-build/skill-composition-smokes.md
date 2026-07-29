@@ -10,6 +10,7 @@ Manner-only constraints (e.g. bare grill-me) are not forbids.
 **extracted (observed):**
 
 ```yaml
+subject: skills/skill-path-selector/SKILL.md
 invokes:
   - skill-brief
   - methodology-selector
@@ -29,6 +30,7 @@ requires: []
 **extracted (observed):**
 
 ```yaml
+subject: skills/skill-creator/SKILL.md
 invokes:
   - methodology-skill-creator
   - loop-orchestrator
@@ -60,6 +62,7 @@ missing:
 **input:** `fixture_path: skills/lifecycle-build/fixtures/bad-composition/SKILL.md`
 
 ```yaml
+subject: skills/lifecycle-build/fixtures/bad-composition/SKILL.md
 verdict: composition_fail
 invokes:
   - not-a-real-skill-xyz

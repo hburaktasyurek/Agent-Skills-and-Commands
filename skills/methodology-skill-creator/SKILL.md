@@ -41,7 +41,9 @@ Contract checklist (exact):
 5. Fit stripped; When to use is fit surface
 6. summary ≤ 160; description ≤ 400; alias ≤ 48
 7. newline rejected; whitespace normalized
-8. limit failures throw before checks; no new CREATOR_CHECKS keys
+8. `decapitalizeForGlue` on summary and best_when before description glue
+9. nested Apply-formula reject only for `Apply {manifest display name} to …`
+10. limit failures throw before checks; no new CREATOR_CHECKS keys
 
 Frontmatter description is cold discovery only. The eight fields stay in the
 body. Optional `invocation` aliases: first three may appear as a Triggers
@@ -78,7 +80,7 @@ suffix in description; the full list renders under `## Invocation`.
 
 ## Boundaries
 
-- Do not use or recreate a general-purpose skill-creator workflow.
+- Do not absorb `skill-creator` draft/ship/purpose gates; this skill only renders methodology SKILL.md content.
 - Do not select a methodology or merge multiple methods.
 - Do not invent method principles outside the canonical reference.
 - Do not generate itself.

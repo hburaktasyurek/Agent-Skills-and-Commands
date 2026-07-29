@@ -7,9 +7,9 @@ Grouped view of the skills in this repo. The directory layout stays flat — thi
 Stress-test ideas before writing code.
 
 - [task-groundwork](task-groundwork/SKILL.md) — Apply 5W2H to ground a non-trivial software task into an evidence-backed decision context before specification or implementation.
-- [grill-me](grill-me/SKILL.md) — Stress-test a plan, decision, or idea through a one-question-at-a-time interview.
-- [adversarial-spec-review](adversarial-spec-review/SKILL.md) — Red-team review that tries to kill a plan; P0–P3 findings with verdict.
+- [grill-me](grill-me/SKILL.md) — (optional) Stress-test a plan, decision, or idea through a one-question-at-a-time interview.
 - [to-spec](to-spec/SKILL.md) — Apply Work Breakdown Structure to produce an evidence-backed four-file specification for one bounded software change.
+- [adversarial-spec-review](adversarial-spec-review/SKILL.md) — Red-team review that tries to kill a plan; P0–P3 findings with verdict.
 - [spec-readiness](spec-readiness/SKILL.md) — Final gate: can an implementer start every task tomorrow?
 - [revise-spec-from-review](revise-spec-from-review/SKILL.md) — Reconcile only supplied spec-review findings: verify the finding and remedy separately, edit confirmed in-scope issues, and push back on the rest.
 

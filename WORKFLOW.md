@@ -102,7 +102,7 @@ the repository or Git for additional evidence within its own responsibility.
 | `skill-router` | Required `job` text; optional `exclude` skill-name list |
 | `skill-composition` | Exactly one of `target`, `proposal_path`, or `fixture_path` |
 | `skill-path-selector` | Completed selector checklist (via `skill-brief` when incomplete) |
-| `skill-creator` | Selector path for draft mode, or purpose_pass draft path + explicit human ship |
+| `skill-creator` | Selector path for draft mode, or purpose_pass draft path + explicit human ship + composition_ok or human composition skip |
 | `skill-review` | `.skill-proposals/<skill_name>/` plus checklist purpose fields |
 | `revise-skill-from-review` | Draft path plus complete purpose_fail remedies |
 
@@ -114,9 +114,11 @@ When unsure which **existing** catalog skill fits the current job, optionally
 run `skill-router` for a single recommendation (`skill` | `none` | `blocked`).
 It does not replace WORKFLOW session transitions or propose skill chains.
 
-Before shipping a skill (or on a draft under `.skill-proposals/`), optionally
-run `skill-composition` to check invoke/forbid/require edges against the
-catalog. It is not a substitute for `skill-review` purpose judgment.
+Before shipping a skill, `skill-creator` ship mode requires a
+`composition_ok` verdict from `skill-composition` on the current draft (or an
+explicit human composition skip with reason). Composition is an artifact
+prerequisite of ship, not a substitute for `skill-review` purpose judgment.
+It may also be run independently on any draft or catalog skill.
 
 ## Exact transitions
 
@@ -214,8 +216,10 @@ method-name bias in the request). Drafts live under gitignored
 5. `skill-creator` **draft** writes only `.skill-proposals/<skill_name>/`.
 6. Separate session: `skill-review` on that draft path.
 7. On `purpose_fail`, `revise-skill-from-review` then re-run `skill-review`.
-8. On `purpose_pass`, human **ship** → `skill-creator` ship mode (copy →
-   INDEX/README → delete draft last). Install/global remains human-owned.
+8. On `purpose_pass`, human **ship** → `skill-creator` ship mode requires
+   `composition_ok` from `skill-composition` on the current draft (or an
+   explicit human composition skip with reason) → copy → INDEX/README →
+   delete draft last. Install/global remains human-owned.
 9. After ship, behavior complaints use `tune-skill`, not `skill-review`.
 
 Checklist → eight-field map: purpose→task; audience→audience; context→context;

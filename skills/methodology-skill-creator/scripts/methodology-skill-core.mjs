@@ -47,6 +47,19 @@ const list = (items) => items.map((item) => `- ${item}`).join("\n");
 
 const countCharacters = (value) => Array.from(value).length;
 
+const escapeRegExp = (value) =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/**
+ * Lowercase the first character for mid-sentence glue unless it looks like an
+ * acronym (two or more leading uppercase letters, e.g. "API", "5W2H").
+ */
+export function decapitalizeForGlue(s) {
+  if (/^[A-Z]{2,}([^a-z]|$)/.test(s)) return s;
+  if (/^[A-Z]/.test(s)) return s[0].toLowerCase() + s.slice(1);
+  return s;
+}
+
 /** Normalize discovery strings: trim, collapse whitespace, strip trailing `.`, reject newlines. */
 export function normalizeDiscoveryString(value, field) {
   if (typeof value !== "string") {
@@ -106,10 +119,22 @@ export function renderMethodologySkill(input) {
     throw new Error(`skill_name already exists in this skill collection: ${skillName}`);
   }
 
-  const skillSummary = normalizeDiscoveryString(
+  const skillSummaryRaw = normalizeDiscoveryString(
     input.skill_summary,
     "skill_summary",
   );
+  for (const method of METHOD_MANIFEST) {
+    const pattern = new RegExp(
+      `^Apply\\s+${escapeRegExp(method.name)}\\s+to\\b`,
+      "i",
+    );
+    if (pattern.test(skillSummaryRaw)) {
+      throw new Error(
+        "skill_summary must not contain a nested Apply-formula (Apply {Methodology} to …)",
+      );
+    }
+  }
+  const skillSummary = decapitalizeForGlue(skillSummaryRaw);
   if (countCharacters(skillSummary) > SKILL_SUMMARY_LIMIT) {
     throw new Error(
       `skill_summary exceeds ${SKILL_SUMMARY_LIMIT} characters`,
@@ -182,7 +207,9 @@ export function renderMethodologySkill(input) {
   const bestWhenRaw = requireString(methodFit, "best_when");
   const avoidWhen = requireString(methodFit, "avoid_when");
   const fitReason = requireString(methodFit, "reason");
-  const bestWhen = normalizeDiscoveryString(bestWhenRaw, "method_fit.best_when");
+  const bestWhen = decapitalizeForGlue(
+    normalizeDiscoveryString(bestWhenRaw, "method_fit.best_when"),
+  );
 
   const humanReviewStop = contract.human_review_stop;
   const stopConditions = requireStringArray(

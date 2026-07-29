@@ -1,6 +1,6 @@
 ---
 name: skill-composition
-description: "Check one skill's invoke/forbid/require edges against the catalog. Use when A single skill package needs an invoke/forbid/require consistency check against the INDEX catalog. Triggers: skill-composition; composition check; check skill deps."
+description: "Check one skill's invoke/forbid/require edges against the catalog. Use when a single skill package needs an invoke/forbid/require consistency check against the INDEX catalog. Triggers: skill-composition; composition check; check skill deps."
 ---
 
 # skill-composition
@@ -40,18 +40,24 @@ Any break → `composition_fail` with closed findings (id, rule, quote, remedy h
 
 1. Every `invokes` / `forbids` / `requires` target exists in INDEX ∩ `skills/<name>/SKILL.md`
 2. No name appears in both `invokes` and `forbids`
-3. If subject package name is `skill-composition`, it must not `invokes: skill-composition`
+3. Subject must not `invokes` itself (same package name)
 4. Checker edits nothing
 
 If all extracted edges pass → `composition_ok` (include the extracted edge lists as evidence).
 
 ## Required deliverable
 
-YAML with `verdict`, extracted `invokes` / `forbids` / `requires`, `findings` on fail, `missing` on blocked.
+YAML with:
+
+- `subject` — the resolved `SKILL.md` path (for `target`: `skills/<name>/SKILL.md`; otherwise the supplied `proposal_path` or `fixture_path`)
+- `verdict`
+- extracted `invokes` / `forbids` / `requires`
+- `findings` on fail
+- `missing` on blocked (omit `subject` when no path was resolved)
 
 ## When to use
 
-- Use when: A single skill package (catalog, draft proposal, or lifecycle fixture) needs an invoke/forbid/require consistency check against the INDEX catalog
+- Use when: a single skill package (catalog, draft proposal, or lifecycle fixture) needs an invoke/forbid/require consistency check against the INDEX catalog
 - Do not use when: Purpose review (`skill-review`); which-skill routing (`skill-router`); designing a new skill path; building a full-repo composition encyclopedia; editing skills to add dependency frontmatter
 
 ## Invocation
@@ -65,13 +71,14 @@ YAML with `verdict`, extracted `invokes` / `forbids` / `requires`, `findings` on
 1. Resolve input to a single subject `SKILL.md` path or `blocked`.
 2. Load catalog = INDEX-listed names that have `skills/<name>/SKILL.md`.
 3. Extract edges per the table (manner-only excluded from forbids).
-4. Apply consistency rules; emit `composition_ok` or `composition_fail` with F1.. findings.
+4. Apply consistency rules; emit `composition_ok` or `composition_fail` with `subject` set to the resolved path and F1.. findings on fail.
 5. Stop. Do not edit, ship, install, or claim purpose_pass.
 
 ## Validation
 
 - Checks: Primary verdict is exactly one of composition_ok, composition_fail, blocked; no repository files edited by this skill
-- Evidence: Returned YAML; for fail, each finding cites a quote and rule number
+- Evidence: Returned YAML including `subject` when a path was resolved; for fail, each finding cites a quote and rule number
+- Rules engine self-test: `node skills/skill-composition/scripts/self-test.mjs` covers consistency rules 1–3 on pre-extracted edge fixtures; rule 4 (checker edits nothing) is agent-enforced, not machine-checked; extraction from SKILL.md prose remains agent-judged
 
 ## Boundaries
 

@@ -1,13 +1,13 @@
 ---
 name: skill-review
-description: "Apply SMART Goals to Judge whether a skill draft achieves its stated purpose. Use when A goal must become measurable enough for an agent or person to finish. Triggers: skill-review; purpose review draft."
+description: "Apply SMART Goals to judge whether a skill draft achieves its stated purpose. Use when a goal must become measurable enough for an agent or person to finish. Triggers: skill-review; purpose review draft."
 ---
 
 # skill-review
 
 ## Objective
 
-Apply SMART Goals (`smart-goals`) to this job: Judge whether a skill draft under .skill-proposals achieves its stated purpose; return purpose_pass or purpose_fail with a closed remedy list; edit nothing. Treat the draft objective as the outcome under test and require reviewer-checkable success evidence, concrete boundaries, and a human approval gate the executing agent does not self-approve.
+Apply SMART Goals (`smart-goals`) to this job: judge whether a skill draft under .skill-proposals achieves its stated purpose; return purpose_pass or purpose_fail with a closed remedy list; edit nothing. Treat the draft objective as the outcome under test and require reviewer-checkable success evidence, concrete boundaries, and a human approval gate the executing agent does not self-approve.
 
 Produce the result for Agents in a separate review session and humans deciding whether to ship.
 
@@ -21,7 +21,7 @@ YAML verdict with draft_path, per-question evidence, and remedies on fail.
 
 ## When to use
 
-- Use when: A goal must become measurable enough for an agent or person to finish
+- Use when: a goal must become measurable enough for an agent or person to finish
 - Do not use when: The work is still exploratory and no honest success condition can yet be named.
 - Why SMART Goals: Draft judged as goal-shaped instructions for measurable finishability.
 

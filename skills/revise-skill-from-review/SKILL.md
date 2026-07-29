@@ -1,13 +1,13 @@
 ---
 name: revise-skill-from-review
-description: "Apply PDCA to Apply closed purpose-fail remedies to a skill draft. Use when A workflow should improve through repeated measured cycles. Triggers: revise-skill-from-review; revise skill draft."
+description: "Apply PDCA to apply closed purpose-fail remedies to a skill draft. Use when a workflow should improve through repeated measured cycles. Triggers: revise-skill-from-review; revise skill draft."
 ---
 
 # revise-skill-from-review
 
 ## Objective
 
-Apply PDCA (`pdca`) to this job: Apply a closed purpose_fail remedy list to a skill draft under .skill-proposals only; verify each gap; make the smallest in-scope edits; leave re-review to a separate session; do not invent findings or ship.
+Apply PDCA (`pdca`) to this job: apply a closed purpose_fail remedy list to a skill draft under .skill-proposals only; verify each gap; make the smallest in-scope edits; leave re-review to a separate session; do not invent findings or ship.
 
 Produce the result for Agents in the skill-design authoring session and humans.
 
@@ -21,7 +21,7 @@ Per-remedy reconciliation summary and updated draft files when confirmed.
 
 ## When to use
 
-- Use when: A workflow should improve through repeated measured cycles
+- Use when: a workflow should improve through repeated measured cycles
 - Do not use when: The task is a one-off decision with no next cycle.
 - Why PDCA: Create-loop supplies re-review as next cycle after this bounded change.
 

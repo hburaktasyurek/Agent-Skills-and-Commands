@@ -50,7 +50,9 @@ Contract checklist (exact):
 5. Fit stripped; When to use is fit surface
 6. summary ≤ 160; description ≤ 400; alias ≤ 48
 7. newline rejected; whitespace normalized
-8. limit failures throw before checks; no new CREATOR_CHECKS keys
+8. `decapitalizeForGlue` on summary and best_when before description glue
+9. nested Apply-formula reject only for `Apply {manifest display name} to …`
+10. limit failures throw before checks; no new CREATOR_CHECKS keys
 
 `invocation` is optional. When present it must be a non-empty string list.
 Aliases beyond the first three appear only under `## Invocation`.
@@ -71,6 +73,12 @@ When `invocation` is non-empty, append:
 
 Normalize `skill_summary`, `best_when`, and each alias: trim; collapse internal
 whitespace to a single space; strip a trailing `.`; reject any newline.
+Then apply `decapitalizeForGlue`: lowercase the first character unless the
+string starts with an acronym (`/^[A-Z]{2,}([^a-z]|$)/`).
+Reject `skill_summary` only when it starts with
+`Apply {MethodologyDisplayName} to …` for a display name from the methodology
+manifest (case-insensitive). Ordinary English such as
+`apply closed purpose-fail remedies to a skill draft` must render.
 
 Limits:
 

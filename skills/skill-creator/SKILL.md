@@ -1,19 +1,19 @@
 ---
 name: skill-creator
-description: "Draft skill proposals under .skill-proposals or ship after purpose_pass. Use when A skill-path-selector path is methodology or procedural, or a human orders ship. Triggers: skill-creator; draft skill; ship skill."
+description: "Draft skill proposals under .skill-proposals or ship after purpose_pass. Use when a skill-path-selector path is methodology or procedural, or a human orders ship. Triggers: skill-creator; draft skill; ship skill."
 ---
 
 # skill-creator
 
 ## Objective
 
-Persist a methodology or procedural skill proposal only under .skill-proposals, or ship a purpose_pass draft into skills/ after explicit human approval
+Persist a methodology or procedural skill proposal only under .skill-proposals, or ship a purpose_pass draft into skills/ after explicit human approval and composition_ok (or an explicit human composition skip)
 
 Produce the result for Agents running the skill-design loop and humans who approve ship.
 
 ## When to use
 
-- Use when: A skill-path-selector path is methodology or procedural, or a human orders ship
+- Use when: a skill-path-selector path is methodology or procedural, or a human orders ship
 - Do not use when: purpose judgment or path selection is still needed
 
 ## Invocation
@@ -35,14 +35,18 @@ Produce the result for Agents running the skill-design loop and humans who appro
 ### Ship mode
 
 1. Require explicit human ship and purpose_pass for this draft.
-2. Copy .skill-proposals/<skill_name>/ to skills/<skill_name>/.
-3. Update skills/INDEX.md and README.md Meta entries from the skill description.
-4. Only then delete .skill-proposals/<skill_name>/. On any failure, stop and keep the draft.
+2. Require composition evidence for the current draft:
+   - A `composition_ok` verdict from `skill-composition` for this draft path, produced in **this ship attempt** against the **current** draft content. Any edit to the draft after the verdict invalidates it; re-run `skill-composition` with `proposal_path`.
+   - Or an explicit human skip utterance naming this skill and giving a reason. Agent may not offer skip as default or invent a skip. Echo `composition_skip: { by: human, skill: <name>, reason: <reason> }` in the ship result.
+   - Composition is an artifact prerequisite of ship mode (same class as purpose_pass), not an invoked skill.
+3. Copy .skill-proposals/<skill_name>/ to skills/<skill_name>/.
+4. Update skills/INDEX.md and README.md Meta entries from the skill description.
+5. Only then delete .skill-proposals/<skill_name>/. On any failure, stop and keep the draft.
 
 ## Validation
 
-- Checks: Draft mode writes only under .skill-proposals/<skill_name>/; ship mode leaves skills/<skill_name>/ present and removes the draft only after copy and INDEX/README succeed
-- Evidence to return: Surfaced result that demonstrates: Draft mode writes only under .skill-proposals/<skill_name>/; ship mode leaves skills/<skill_name>/ present and removes the draft only after copy and INDEX/README succeed
+- Checks: Draft mode writes only under .skill-proposals/<skill_name>/; ship mode requires composition_ok for the current draft path in this ship attempt (or a recorded composition_skip from an explicit human utterance), then leaves skills/<skill_name>/ present and removes the draft only after copy and INDEX/README succeed
+- Evidence to return: Draft path proof; for ship, the composition_ok YAML (subject = draft path) or composition_skip record, plus proof that skills/<skill_name>/ exists and the draft was removed only after copy and INDEX/README succeed
 
 ## Boundaries
 

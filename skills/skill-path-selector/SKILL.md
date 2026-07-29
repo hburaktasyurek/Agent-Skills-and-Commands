@@ -1,13 +1,13 @@
 ---
 name: skill-path-selector
-description: "Apply Decision Matrix to Choose one skill-create path from a completed checklist. Use when Several options must be compared using explicit criteria. Triggers: select skill path; skill-path-selector."
+description: "Apply Decision Matrix to choose one skill-create path from a completed checklist. Use when several options must be compared using explicit criteria. Triggers: select skill path; skill-path-selector."
 ---
 
 # skill-path-selector
 
 ## Objective
 
-Apply Decision Matrix (`decision-matrix`) to this job: Choose one create path (methodology, decompose, procedural, or blocked) from a completed skill-design checklist using explicit criteria, including honest preference for a catalog methodology when fit is real, stopping on hybrid scope, and blocking on missing fields or name collision.
+Apply Decision Matrix (`decision-matrix`) to this job: choose one create path (methodology, decompose, procedural, or blocked) from a completed skill-design checklist using explicit criteria, including honest preference for a catalog methodology when fit is real, stopping on hybrid scope, and blocking on missing fields or name collision.
 
 Produce the result for Agents designing skills in this repository and humans reviewing the path.
 
@@ -21,7 +21,7 @@ YAML with path, rationale, optional contract/selection handoff, optional smaller
 
 ## When to use
 
-- Use when: Several options must be compared using explicit criteria
+- Use when: several options must be compared using explicit criteria
 - Do not use when: Taste or one hard constraint determines the choice.
 - Why Decision Matrix: Four create paths compared with explicit criteria; hard gates applied directly.
 

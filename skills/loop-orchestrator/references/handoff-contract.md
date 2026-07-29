@@ -13,7 +13,7 @@ evidence:
 failed_hard_gates: <failed hard-gate records for a goal handoff>
 failed_supervision_gates: <failed supervision-gate records for a goal handoff>
 recommended_next_correction: <single readiness correction for a goal handoff>
-next_owner: methodology-selector | goal-engineering | loop-readiness-score | methodology-skill-creator | human | none
+next_owner: methodology-selector | goal-engineering | loop-readiness-score | methodology-skill-creator | loop-run-record | human | none
 ```
 
 ## Handoff invariants
