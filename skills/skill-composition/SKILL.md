@@ -40,7 +40,7 @@ Any break → `composition_fail` with closed findings (id, rule, quote, remedy h
 
 1. Every `invokes` / `forbids` / `requires` target exists in INDEX ∩ `skills/<name>/SKILL.md`
 2. No name appears in both `invokes` and `forbids`
-3. If subject package name is `skill-composition`, it must not `invokes: skill-composition`
+3. Subject must not `invokes` itself (same package name)
 4. Checker edits nothing
 
 If all extracted edges pass → `composition_ok` (include the extracted edge lists as evidence).

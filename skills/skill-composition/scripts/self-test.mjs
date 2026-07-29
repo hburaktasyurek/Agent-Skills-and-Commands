@@ -71,10 +71,10 @@ check(
   `${r2.verdict}; rule 2 found`,
 );
 
-// Extra: self-invoke → fail rule 3
+// Extra: self-invoke (any subject) → fail rule 3
 const r3 = checkCompositionRules({
-  subject_name: "skill-composition",
-  invokes: ["skill-composition"],
+  subject_name: "skill-router",
+  invokes: ["skill-router"],
   forbids: [],
   requires: [],
   catalog,
