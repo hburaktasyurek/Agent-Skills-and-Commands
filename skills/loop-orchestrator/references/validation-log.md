@@ -90,16 +90,16 @@ score.
   The independent reviewer then certified
   `evals/cold-routing-results.json` against the timestamped decisions: exact
   26/26 evidence, 12/12 positive downstream seeds, and no P0-P3 findings.
-- `node skills/goal-engineering/scripts/self-test.mjs`: 22 assertions pass,
+- `node skills/goal-engineering/scripts/self-test.mjs`: 38 assertions pass,
   including all 12 slugs, identical content for Claude Code/Codex/Cursor/other,
   exact 4,000 pass, full 4,001 failure without truncation, stricter explicit
   limits, invalid limits, `none`, and approval consistency. Sample goal:
   2,550/4,000.
-- `node skills/methodology-skill-creator/scripts/self-test.mjs`: 18 assertions
+- `node skills/methodology-skill-creator/scripts/self-test.mjs`: 32 assertions
   pass, including one task-scoped render for each of 12 methods and a focused
   4,620-character skill accepted without truncation. Skill character counts
   are informational.
-- `node skills/loop-readiness-score/scripts/self-test.mjs`: 38 assertions pass.
+- `node skills/loop-readiness-score/scripts/self-test.mjs`: 49 assertions pass.
   The 11 weights total 100; No/Partial/Yes yield 0/50/100; all score bands,
   the exact 39/40/59/60/79/80 boundaries, recommended correction, and all 14
   hard-gate overrides are exercised. Fractional odd-weight cases prove
@@ -107,7 +107,7 @@ score.
   Each hard gate returns `blocked` even when the remaining score would pass.
 - `node skills/loop-readiness-score/scripts/integration-test.mjs`: PASS at
   100/100 and `ready`; the generated goal is 2,550/4,000.
-- `node skills/loop-orchestrator/scripts/self-test.mjs`: 16 assertions pass for
+- `node skills/loop-orchestrator/scripts/self-test.mjs`: 20 assertions pass for
   exact eight-field handoff and terminal states `none`, `blocked`,
   `supervised`, `ready`, and `review-required`, without status upgrades. Missing
   goals, changed goal contracts, forged scores or gate verdicts, incomplete
