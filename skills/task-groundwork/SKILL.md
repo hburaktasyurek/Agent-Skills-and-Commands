@@ -1,13 +1,13 @@
 ---
 name: task-groundwork
-description: "Apply 5W2H to ground a non-trivial software task into a complete, evidence-backed decision context before specification or implementation for agents and humans deciding how to change complex software systems. Follow the embedded method, validation, and human-stop rules."
+description: "Apply 5W2H to ground a non-trivial software task into an evidence-backed decision context before specification or implementation. Use when A vague task needs a complete operating frame. Triggers: start task N; take the next roadmap item; görev N'e başlayalım."
 ---
 
 # task-groundwork
 
 ## Objective
 
-Apply 5W2H (`five-w-two-h`) to this job: ground a non-trivial software task into a complete, evidence-backed decision context before specification or implementation
+Apply 5W2H (`five-w-two-h`) to this job: ground a non-trivial software task into an evidence-backed decision context before specification or implementation
 
 Produce the result for agents and humans deciding how to change complex software systems.
 
@@ -21,9 +21,15 @@ Return a concise grounding brief that states the task purpose, decision-relevant
 
 ## When to use
 
-- Use when: A vague task needs a complete operating frame.
-- Do not use when: The question is already narrow and only needs execution.
+- Use when: A vague task needs a complete operating frame
+- Do not use when: The question is already narrow and only needs execution
 - Why 5W2H: A non-trivial change in a complex software system cannot be grounded safely until the relevant purpose, actors, locations, timing, behavior, effort or risk, failure modes, and real success conditions are complete. The requested artifact is explicitly that operating frame plus an evidence-backed route recommendation; scoring, work-package decomposition, execution, and summary writing are not the dominant need.
+
+## Invocation
+
+- start task N
+- take the next roadmap item
+- görev N'e başlayalım
 
 ## Workflow
 
@@ -32,11 +38,6 @@ Apply this 5W2H procedure while executing the job:
 ## Definition
 
 Frame a problem by answering what, why, who, where, when, how, and how much.
-
-## Fit
-
-- Best when a vague task needs a complete operating frame.
-- Avoid when the question is already narrow and only needs execution.
 
 ## Principles
 

@@ -17,6 +17,11 @@ const METHODS = Object.fromEntries(
   ]),
 );
 
+export const SKILL_SUMMARY_LIMIT = 160;
+export const DESCRIPTION_LIMIT = 400;
+export const ALIAS_LIMIT = 48;
+export const TRIGGERS_IN_DESCRIPTION = 3;
+
 const isNonEmptyString = (value) =>
   typeof value === "string" && value.trim().length > 0;
 
@@ -40,11 +45,49 @@ const requireStringArray = (value, field) => {
 
 const list = (items) => items.map((item) => `- ${item}`).join("\n");
 
+const countCharacters = (value) => Array.from(value).length;
+
+/** Normalize discovery strings: trim, collapse whitespace, strip trailing `.`, reject newlines. */
+export function normalizeDiscoveryString(value, field) {
+  if (typeof value !== "string") {
+    throw new Error(`Missing required string: ${field}`);
+  }
+  if (/[\r\n]/.test(value)) {
+    throw new Error(`newline rejected in ${field}`);
+  }
+  let normalized = value.trim().replace(/\s+/g, " ");
+  if (normalized.endsWith(".")) {
+    normalized = normalized.slice(0, -1).trimEnd();
+  }
+  if (!normalized) {
+    throw new Error(`Missing required string: ${field}`);
+  }
+  return normalized;
+}
+
 const stripTitleAndExternalSource = (markdown) =>
   markdown
     .replace(/^# .+\n+/, "")
     .replace(/^Source:\s+\[[^\]]+\]\(https?:\/\/[^)]+\)\n+/, "")
     .trim();
+
+/** Remove the canonical ## Fit section; keep Definition / Principles / Steps / Quality / Stop. */
+export function stripFitSection(methodBody) {
+  return methodBody
+    .replace(/(?:^|\n)## Fit\n[\s\S]*?(?=(?:\n## )|$)/g, "\n")
+    .replace(/^\n+/, "")
+    .trim();
+}
+
+function buildDescription(methodDisplayName, skillSummary, bestWhen, aliases) {
+  let description =
+    `Apply ${methodDisplayName} to ${skillSummary}. Use when ${bestWhen}.`;
+  if (aliases.length > 0) {
+    const triggerAliases = aliases.slice(0, TRIGGERS_IN_DESCRIPTION);
+    description += ` Triggers: ${triggerAliases.join("; ")}.`;
+  }
+  return description;
+}
 
 export function renderMethodologySkill(input) {
   if (!input || typeof input !== "object" || Array.isArray(input)) {
@@ -61,6 +104,36 @@ export function renderMethodologySkill(input) {
   const existingSkillUrl = new URL(`../../${skillName}/SKILL.md`, import.meta.url);
   if (fs.existsSync(existingSkillUrl)) {
     throw new Error(`skill_name already exists in this skill collection: ${skillName}`);
+  }
+
+  const skillSummary = normalizeDiscoveryString(
+    input.skill_summary,
+    "skill_summary",
+  );
+  if (countCharacters(skillSummary) > SKILL_SUMMARY_LIMIT) {
+    throw new Error(
+      `skill_summary exceeds ${SKILL_SUMMARY_LIMIT} characters`,
+    );
+  }
+
+  let invocationAliases = [];
+  if (Object.hasOwn(input, "invocation")) {
+    if (
+      !Array.isArray(input.invocation) ||
+      input.invocation.length === 0 ||
+      input.invocation.some((item) => typeof item !== "string")
+    ) {
+      throw new Error("invocation must be a non-empty string list when present");
+    }
+    invocationAliases = input.invocation.map((alias, index) => {
+      const normalized = normalizeDiscoveryString(alias, `invocation[${index}]`);
+      if (countCharacters(normalized) > ALIAS_LIMIT) {
+        throw new Error(
+          `invocation alias exceeds ${ALIAS_LIMIT} characters: ${normalized}`,
+        );
+      }
+      return normalized;
+    });
   }
 
   const contract = input.contract;
@@ -106,9 +179,10 @@ export function renderMethodologySkill(input) {
   );
 
   const methodFit = contract.method_fit;
-  const bestWhen = requireString(methodFit, "best_when");
+  const bestWhenRaw = requireString(methodFit, "best_when");
   const avoidWhen = requireString(methodFit, "avoid_when");
   const fitReason = requireString(methodFit, "reason");
+  const bestWhen = normalizeDiscoveryString(bestWhenRaw, "method_fit.best_when");
 
   const humanReviewStop = contract.human_review_stop;
   const stopConditions = requireStringArray(
@@ -137,16 +211,37 @@ export function renderMethodologySkill(input) {
       )
     : [];
 
+  const description = buildDescription(
+    method.displayName,
+    skillSummary,
+    bestWhen,
+    invocationAliases,
+  );
+  if (countCharacters(description) > DESCRIPTION_LIMIT) {
+    throw new Error(
+      `description exceeds ${DESCRIPTION_LIMIT} characters`,
+    );
+  }
+  const expectedPrefix = `Apply ${method.displayName} to ${skillSummary}. Use when ${bestWhen}.`;
+  if (
+    !description.startsWith(expectedPrefix) ||
+    description.includes(` for ${audience}`) ||
+    description.includes(
+      "Follow the embedded method, validation, and human-stop rules.",
+    )
+  ) {
+    throw new Error(
+      "description must not leak audience, contract.task, or embedded-method boilerplate",
+    );
+  }
+
   const methodUrl = new URL(
     `../../methodology-selector/${methodRef}`,
     import.meta.url,
   );
-  const methodBody = stripTitleAndExternalSource(
-    fs.readFileSync(methodUrl, "utf8"),
+  const methodBody = stripFitSection(
+    stripTitleAndExternalSource(fs.readFileSync(methodUrl, "utf8")),
   );
-  const description =
-    `Apply ${method.displayName} to ${task} for ${audience}. ` +
-    `Follow the embedded method, validation, and human-stop rules.`;
 
   const sections = [
     "---",
@@ -175,6 +270,13 @@ export function renderMethodologySkill(input) {
     `- Use when: ${bestWhen}`,
     `- Do not use when: ${avoidWhen}`,
     `- Why ${method.displayName}: ${fitReason}`,
+  ];
+
+  if (invocationAliases.length > 0) {
+    sections.push("", "## Invocation", "", list(invocationAliases));
+  }
+
+  sections.push(
     "",
     "## Workflow",
     "",
@@ -204,7 +306,7 @@ export function renderMethodologySkill(input) {
     "- Do not change the task contract to make validation easier.",
     "- Do not perform an approval action without the required human decision.",
     "- Stop when the task no longer matches the recorded method fit.",
-  ];
+  );
 
   const skillMarkdown = `${sections.join("\n")}\n`;
   const checks = {
@@ -237,12 +339,12 @@ export function renderMethodologySkill(input) {
     canonical_method_sections_present:
       [
         "## Definition",
-        "## Fit",
         "## Principles",
         "## Steps",
         "## Quality questions",
         "## Stop",
-      ].every((heading) => skillMarkdown.includes(heading)),
+      ].every((heading) => skillMarkdown.includes(heading)) &&
+      !skillMarkdown.includes("## Fit"),
     operational_skill_structure:
       [
         "## Objective",

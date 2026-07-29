@@ -5,6 +5,8 @@
 ```json
 {
   "skill_name": "bounded-skill-name",
+  "skill_summary": "Short outcome-only phrase for discovery.",
+  "invocation": ["optional alias", "..."],
   "contract": {
     "methodology": "Exact slug from methodology-selector/references/manifest.json",
     "task": "Task outcome",
@@ -36,6 +38,59 @@
 The `contract` must be the canonical handoff from methodology-selector.
 `method_ref` must match the selected slug; callers cannot inject an arbitrary
 file.
+
+Discovery fields sit outside the eight-field contract.
+
+Contract checklist (exact):
+
+1. `skill_summary` required
+2. description formula uses skill_summary not task
+3. Triggers suffix max 3
+4. `## Invocation` holds full alias list
+5. Fit stripped; When to use is fit surface
+6. summary ≤ 160; description ≤ 400; alias ≤ 48
+7. newline rejected; whitespace normalized
+8. limit failures throw before checks; no new CREATOR_CHECKS keys
+
+`invocation` is optional. When present it must be a non-empty string list.
+Aliases beyond the first three appear only under `## Invocation`.
+
+## Description discovery boundary
+
+Frontmatter `description` is cold discovery only:
+
+```text
+Apply {MethodologyDisplayName} to {skill_summary}. Use when {best_when}.
+```
+
+When `invocation` is non-empty, append:
+
+```text
+ Triggers: {alias1}; {alias2}; {alias3}.
+```
+
+Normalize `skill_summary`, `best_when`, and each alias: trim; collapse internal
+whitespace to a single space; strip a trailing `.`; reject any newline.
+
+Limits:
+
+- summary ≤ 160; description ≤ 400; alias ≤ 48
+- newline rejected; whitespace normalized
+- limit failures throw before checks; no new CREATOR_CHECKS keys
+
+Description must not contain `audience`, the boilerplate
+`Follow the embedded method, validation, and human-stop rules.`, the full
+`contract.task`, or validation/stop lists.
+
+## Body runtime boundary
+
+The eight fields stay in the body. Fit stripped; When to use is fit surface.
+Workflow inlines the canonical method with the `## Fit` block removed.
+Definition, Principles, Steps, Quality questions, and Stop remain.
+
+Body order: Objective → Operating instructions → Required deliverable →
+When to use → Invocation (if present) → Workflow → Execution checks →
+Evidence to return → Human review and stop → Boundaries.
 
 ## Output
 

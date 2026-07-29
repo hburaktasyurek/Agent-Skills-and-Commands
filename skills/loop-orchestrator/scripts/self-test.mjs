@@ -410,6 +410,8 @@ check(
 
 const creatorArtifact = renderMethodologySkill({
   skill_name: "bounded-method-skill",
+  skill_summary:
+    "Produce one focused methodology skill for the orchestrator handoff case",
   contract,
   selection: {
     methodology_name: selection.selection.methodology_name,

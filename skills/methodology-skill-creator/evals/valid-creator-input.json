@@ -1,5 +1,6 @@
 {
   "skill_name": "migration-work-breakdown",
+  "skill_summary": "Decompose a twelve-package API migration into independently reviewable work packages",
   "contract": {
     "methodology": "work-breakdown-structure",
     "task": "Decompose a twelve-package API migration into independently reviewable work packages.",

@@ -57,11 +57,11 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 
 | Skill | Description |
 |-------|-------------|
-| [task-groundwork](skills/task-groundwork/SKILL.md) | Ground a non-trivial software task with 5W2H into an evidence-backed decision context, ready for specification or implementation |
+| [task-groundwork](skills/task-groundwork/SKILL.md) | Apply 5W2H to ground a non-trivial software task into an evidence-backed decision context before specification or implementation. |
 | [grill-me](skills/grill-me/SKILL.md) | Stress-test a plan, decision, or idea through a one-question-at-a-time interview |
 | [adversarial-spec-review](skills/adversarial-spec-review/SKILL.md) | Red-team review that tries to kill a plan or spec; P0–P3 findings with verdict |
 | [spec-readiness](skills/spec-readiness/SKILL.md) | Implementation-readiness check — can an implementer start every task tomorrow? |
-| [to-spec](skills/to-spec/SKILL.md) | Apply Work Breakdown Structure to resolved task context and create a production-ready four-file spec folder |
+| [to-spec](skills/to-spec/SKILL.md) | Apply Work Breakdown Structure to produce an evidence-backed four-file specification for one bounded software change. |
 | [revise-spec-from-review](skills/revise-spec-from-review/SKILL.md) | Verify supplied review findings and apply only confirmed, in-scope, surgical spec revisions |
 | [senior-implementer](skills/senior-implementer/SKILL.md) | Implement a spec or brief end-to-end; delegate only bounded, independent work when useful |
 | [tdd](skills/tdd/SKILL.md) | Red-green-refactor TDD loop with reference docs |

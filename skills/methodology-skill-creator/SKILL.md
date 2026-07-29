@@ -24,10 +24,28 @@ Read [references/creator-contract.md](references/creator-contract.md).
 - `selection.method_ref` matches the selected methodology;
 - the caller supplies a new lowercase, hyphenated skill name that does not
   collide with an existing skill;
+- the caller supplies `skill_summary` required;
 - one method and one task scope are requested.
 
 Stop on a failed precondition. Do not choose a replacement method or broaden
 the skill.
+
+## Discovery vs runtime
+
+Contract checklist (exact):
+
+1. `skill_summary` required
+2. description formula uses skill_summary not task
+3. Triggers suffix max 3
+4. `## Invocation` holds full alias list
+5. Fit stripped; When to use is fit surface
+6. summary ≤ 160; description ≤ 400; alias ≤ 48
+7. newline rejected; whitespace normalized
+8. limit failures throw before checks; no new CREATOR_CHECKS keys
+
+Frontmatter description is cold discovery only. The eight fields stay in the
+body. Optional `invocation` aliases: first three may appear as a Triggers
+suffix in description; the full list renders under `## Invocation`.
 
 ## Workflow
 
@@ -45,9 +63,11 @@ the skill.
 
 4. Check that the output reads as direct runtime instructions rather than an
    assignment report: Objective, Operating instructions, Required deliverable,
-   When to use, Workflow, Execution checks, Evidence to return, and the original
-   human-return boundary. It must also have repo-compatible frontmatter, one
-   methodology, and the canonical quality questions.
+   When to use, optional Invocation, Workflow (without `## Fit`), Execution
+   checks, Evidence to return, and the original human-return boundary. It must
+   also have repo-compatible frontmatter, one methodology, and the canonical
+   quality questions. Description must follow the skill_summary formula and
+   must not leak task, audience, or embedded-method boilerplate.
    `character_count` is evidence for review, not a 4,000-character gate.
    Keep the skill focused, but allow it to exceed 4,000 characters when the
    task contract and canonical method content require that space.
@@ -67,6 +87,7 @@ the skill.
 - Do not judge loop readiness or approve the generated skill.
 - Do not truncate or reject a skill merely because it exceeds 4,000
   characters; that hard limit belongs only to generated loop goals.
+- Do not put `contract.task` or `audience` into the frontmatter description.
 
 ## Stop
 

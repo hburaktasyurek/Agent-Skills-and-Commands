@@ -178,3 +178,11 @@ Maximum six revision cycles; stop after two identical failures without new
 evidence. If blocked, preserve the uncommitted diff and evidence, name the
 smallest failed criterion, and propose one bounded correction without marking
 the goal complete.
+
+## Discovery boundary (methodology-skill-creator)
+
+Frontmatter `description` is cold discovery only: `skill_summary` + `best_when`
+(+ optional Triggers suffix max 3). It must not leak `contract.task`,
+`audience`, or embedded-method boilerplate. Runtime eight fields stay in the
+body; `## Fit` is stripped and When to use is the fit surface. Limit and
+newline failures throw before checks; no new CREATOR_CHECKS keys.

@@ -124,6 +124,8 @@ const matrix = METHOD_MANIFEST.map((method) => {
   };
   const creatorInput = {
     skill_name: `integration-${method.slug}`,
+    skill_summary:
+      "Produce one focused methodology skill for the selected cold-routing case",
     contract: canonicalContract,
     selection: {
       methodology_name: method.name,
