@@ -27,10 +27,43 @@ for (const method of METHOD_MANIFEST) {
   check(
     `${method.slug} renders one valid skill`,
     Object.keys(result.files).length === 1 &&
-      Object.values(result.checks).every(Boolean),
+      Object.values(result.checks).every(Boolean) &&
+      !result.files["SKILL.md"].includes("https://loopengineering.app/"),
     `${result.character_count} characters`,
   );
 }
+
+const contractUrl = structuredClone(base);
+contractUrl.skill_name = "test-contract-url-preserved";
+contractUrl.contract.context =
+  "Use the task-owned evidence at https://example.com/task-evidence.";
+const contractUrlResult = renderMethodologySkill(contractUrl);
+check(
+  "only canonical external attribution is removed",
+  contractUrlResult.files["SKILL.md"].includes(
+    "https://example.com/task-evidence",
+  ) &&
+    !contractUrlResult.files["SKILL.md"].includes(
+      "https://loopengineering.app/",
+    ),
+  "contract URL preserved; canonical external attribution absent",
+);
+
+const operationalResult = renderMethodologySkill({
+  ...structuredClone(base),
+  skill_name: "test-operational-runtime-skill",
+});
+check(
+  "generated artifact is an operational skill, not an assignment report",
+  operationalResult.checks.operational_skill_structure &&
+    operationalResult.files["SKILL.md"].includes("## Objective") &&
+    operationalResult.files["SKILL.md"].includes("## Operating instructions") &&
+    operationalResult.files["SKILL.md"].includes("## Workflow") &&
+    operationalResult.files["SKILL.md"].includes("## Execution checks") &&
+    !operationalResult.files["SKILL.md"].includes("## Assignment contract") &&
+    !operationalResult.files["SKILL.md"].includes("\nContext: "),
+  "operational headings present; assignment-report headings absent",
+);
 
 const overFourThousand = structuredClone(base);
 overFourThousand.skill_name = "test-long-focused-methodology-skill";

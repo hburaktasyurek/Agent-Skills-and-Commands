@@ -27,6 +27,7 @@ const CREATOR_CHECKS = [
   "validation_present",
   "human_return_present",
   "canonical_method_sections_present",
+  "operational_skill_structure",
 ];
 
 export function canonicalContractFrom(source) {

@@ -20,7 +20,7 @@ artifact.
 
 ```text
 DESIGN SESSION
-task-groundwork
+resolved conversation + authoritative task artifacts
       ↓
 to-spec
       ↓
@@ -75,7 +75,7 @@ the repository or Git for additional evidence within its own responsibility.
 | Skill | Explicit input |
 |---|---|
 | `task-groundwork` | Roadmap file path and task number |
-| `to-spec` | Complete `task-groundwork` output |
+| `to-spec` | Sufficiently resolved conversation and authoritative task artifacts for one bounded software change |
 | `adversarial-spec-review` | Spec cluster path |
 | `revise-spec-from-review` | Complete output from the failed `adversarial-spec-review` or `spec-readiness` run |
 | `spec-readiness` | Spec cluster path |
@@ -92,16 +92,16 @@ receives the spec cluster itself rather than a paraphrase of it.
 
 ### Spec design loop
 
-1. Start `task-groundwork` with the roadmap path and task number.
-2. Pass its complete output to `to-spec`.
-3. Give the resulting spec cluster path to `adversarial-spec-review`.
-4. On failure, return the spec and complete review findings to the design
+1. Start `to-spec` with sufficiently resolved conversation and authoritative
+   task artifacts for one bounded software change.
+2. Give the resulting spec cluster path to `adversarial-spec-review`.
+3. On failure, return the spec and complete review findings to the design
    session. Use `revise-spec-from-review`, then rerun
    `adversarial-spec-review`.
-5. On pass, run `spec-readiness` with the spec cluster path.
-6. On readiness failure, return the spec and readiness findings to the design
+4. On pass, run `spec-readiness` with the spec cluster path.
+5. On readiness failure, return the spec and readiness findings to the design
    session. Use `revise-spec-from-review`, then rerun `spec-readiness`.
-7. Only a passing spec review and passing readiness result permit handoff to
+6. Only a passing spec review and passing readiness result permit handoff to
    implementation.
 
 ### Implementation and PR loop

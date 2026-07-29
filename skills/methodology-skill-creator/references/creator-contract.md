@@ -47,8 +47,12 @@ The renderer returns:
 - `files`, containing exactly one proposed `SKILL.md`;
 - `character_count`;
 - `checks`, showing frontmatter, eight-field preservation, one-method scope,
-  validation, canonical method sections including quality questions, and
-  human-return coverage.
+  operational runtime structure, validation, canonical method sections
+  including quality questions, and human-return coverage.
+
+The proposed `SKILL.md` renders the preserved fields as direct runtime
+instructions. It must not expose the handoff as an `Assignment contract` report
+with `Task`, `Audience`, or `Context` labels.
 
 `character_count` is informational. Methodology skills have no 4,000-character
 hard limit; they should remain focused and may use references when detail grows.

@@ -40,7 +40,11 @@ const requireStringArray = (value, field) => {
 
 const list = (items) => items.map((item) => `- ${item}`).join("\n");
 
-const stripTitle = (markdown) => markdown.replace(/^# .+\n+/, "").trim();
+const stripTitleAndExternalSource = (markdown) =>
+  markdown
+    .replace(/^# .+\n+/, "")
+    .replace(/^Source:\s+\[[^\]]+\]\(https?:\/\/[^)]+\)\n+/, "")
+    .trim();
 
 export function renderMethodologySkill(input) {
   if (!input || typeof input !== "object" || Array.isArray(input)) {
@@ -137,11 +141,12 @@ export function renderMethodologySkill(input) {
     `../../methodology-selector/${methodRef}`,
     import.meta.url,
   );
-  const methodBody = stripTitle(fs.readFileSync(methodUrl, "utf8"));
+  const methodBody = stripTitleAndExternalSource(
+    fs.readFileSync(methodUrl, "utf8"),
+  );
   const description =
     `Apply ${method.displayName} to ${task} for ${audience}. ` +
-    `Use when this bounded task matches the recorded method fit; preserve ` +
-    `validation and human-review conditions.`;
+    `Follow the embedded method, validation, and human-stop rules.`;
 
   const sections = [
     "---",
@@ -149,35 +154,39 @@ export function renderMethodologySkill(input) {
     `description: ${JSON.stringify(description)}`,
     "---",
     "",
-    `# ${method.displayName}: ${skillName}`,
+    `# ${skillName}`,
     "",
-    "## Assignment contract",
+    "## Objective",
     "",
-    `Methodology: ${method.displayName} (\`${methodology}\`)`,
+    `Apply ${method.displayName} (\`${methodology}\`) to this job: ${task}`,
     "",
-    `Task: ${task}`,
+    `Produce the result for ${audience}.`,
     "",
-    `Audience: ${audience}`,
+    "## Operating instructions",
     "",
-    `Context: ${context}`,
+    context,
     "",
-    `Required output: ${outputFormat}`,
+    "## Required deliverable",
     "",
-    "## Method fit",
+    outputFormat,
     "",
-    `- Best when: ${bestWhen}`,
-    `- Avoid when: ${avoidWhen}`,
-    `- Selection evidence: ${fitReason}`,
+    "## When to use",
     "",
-    "## Canonical method",
+    `- Use when: ${bestWhen}`,
+    `- Do not use when: ${avoidWhen}`,
+    `- Why ${method.displayName}: ${fitReason}`,
+    "",
+    "## Workflow",
+    "",
+    `Apply this ${method.displayName} procedure while executing the job:`,
     "",
     methodBody,
     "",
-    "## Validation",
+    "## Execution checks",
     "",
     list(validationChecks),
     "",
-    "Evidence to surface:",
+    "## Evidence to return",
     "",
     list(validationEvidence),
     "",
@@ -197,7 +206,7 @@ export function renderMethodologySkill(input) {
     "- Stop when the task no longer matches the recorded method fit.",
   ];
 
-  const skillMarkdown = sections.join("\n");
+  const skillMarkdown = `${sections.join("\n")}\n`;
   const checks = {
     frontmatter_name_matches: skillMarkdown.startsWith(
       `---\nname: ${skillName}\n`,
@@ -234,6 +243,26 @@ export function renderMethodologySkill(input) {
         "## Quality questions",
         "## Stop",
       ].every((heading) => skillMarkdown.includes(heading)),
+    operational_skill_structure:
+      [
+        "## Objective",
+        "## Operating instructions",
+        "## Required deliverable",
+        "## When to use",
+        "## Workflow",
+        "## Execution checks",
+        "## Evidence to return",
+        "## Human review and stop",
+      ].every((heading) => skillMarkdown.includes(heading)) &&
+      ![
+        "## Assignment contract",
+        "\nTask: ",
+        "\nAudience: ",
+        "\nContext: ",
+        "\nRequired output: ",
+        "## Method fit",
+        "Selection evidence:",
+      ].some((marker) => skillMarkdown.includes(marker)),
   };
 
   if (Object.values(checks).some((passed) => !passed)) {

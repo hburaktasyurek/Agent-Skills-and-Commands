@@ -43,9 +43,11 @@ the skill.
    Resolve the first path from the directory containing this `SKILL.md`. The
    agent prepares the JSON input; do not ask the human to hand-write it.
 
-4. Check that the output has repo-compatible frontmatter, one methodology,
-   observable validation, quality questions, and the original human-return
-   boundary.
+4. Check that the output reads as direct runtime instructions rather than an
+   assignment report: Objective, Operating instructions, Required deliverable,
+   When to use, Workflow, Execution checks, Evidence to return, and the original
+   human-return boundary. It must also have repo-compatible frontmatter, one
+   methodology, and the canonical quality questions.
    `character_count` is evidence for review, not a 4,000-character gate.
    Keep the skill focused, but allow it to exceed 4,000 characters when the
    task contract and canonical method content require that space.

@@ -61,7 +61,7 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [grill-me](skills/grill-me/SKILL.md) | Stress-test a plan, decision, or idea through a one-question-at-a-time interview |
 | [adversarial-spec-review](skills/adversarial-spec-review/SKILL.md) | Red-team review that tries to kill a plan or spec; P0–P3 findings with verdict |
 | [spec-readiness](skills/spec-readiness/SKILL.md) | Implementation-readiness check — can an implementer start every task tomorrow? |
-| [to-spec](skills/to-spec/SKILL.md) | Turn conversation context into a production-ready spec folder |
+| [to-spec](skills/to-spec/SKILL.md) | Apply Work Breakdown Structure to resolved task context and create a production-ready four-file spec folder |
 | [revise-spec-from-review](skills/revise-spec-from-review/SKILL.md) | Verify supplied review findings and apply only confirmed, in-scope, surgical spec revisions |
 | [senior-implementer](skills/senior-implementer/SKILL.md) | Implement a spec or brief end-to-end; delegate only bounded, independent work when useful |
 | [tdd](skills/tdd/SKILL.md) | Red-green-refactor TDD loop with reference docs |
