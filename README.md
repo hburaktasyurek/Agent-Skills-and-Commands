@@ -63,7 +63,7 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [spec-readiness](skills/spec-readiness/SKILL.md) | Implementation-readiness check — can an implementer start every task tomorrow? |
 | [to-spec](skills/to-spec/SKILL.md) | Apply Work Breakdown Structure to produce an evidence-backed four-file specification for one bounded software change. |
 | [revise-spec-from-review](skills/revise-spec-from-review/SKILL.md) | Verify supplied review findings and apply only confirmed, in-scope, surgical spec revisions |
-| [senior-implementer](skills/senior-implementer/SKILL.md) | Implement a spec or brief end-to-end; delegate only bounded, independent work when useful |
+| [senior-implementer](skills/senior-implementer/SKILL.md) | Implement a spec or brief end-to-end, and apply complete review findings as bounded fixes |
 | [tdd](skills/tdd/SKILL.md) | Red-green-refactor TDD loop with reference docs |
 | [triage-issue](skills/triage-issue/SKILL.md) | Investigate a bug and file a GitHub issue with a TDD-based fix plan |
 | [commit-work](skills/commit-work/SKILL.md) | Stage intended changes, split coherent Conventional Commits, and verify; push only when explicitly asked |
