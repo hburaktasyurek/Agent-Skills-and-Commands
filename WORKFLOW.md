@@ -81,6 +81,7 @@ the repository or Git for additional evidence within its own responsibility.
 | `pr-branch` | No explicit input; inspect the current branch, commits, and Git diff |
 | `adversarial-diff-review` | Diff boundary: branch or working-tree range, and/or PR number when a PR exists |
 | `skill-brief` | Skill-design intent or incomplete checklist; may use bounded grill-me |
+| `skill-router` | Required `job` text; optional `exclude` skill-name list |
 | `skill-path-selector` | Completed selector checklist (via `skill-brief` when incomplete) |
 | `skill-creator` | Selector path for draft mode, or purpose_pass draft path + explicit human ship |
 | `skill-review` | `.skill-proposals/<skill_name>/` plus checklist purpose fields |
@@ -89,6 +90,10 @@ the repository or Git for additional evidence within its own responsibility.
 Do not replace these artifact references with a summary from memory. A review
 failure is handed back as its complete output, and a spec-consuming skill
 receives the spec cluster itself rather than a paraphrase of it.
+
+When unsure which **existing** catalog skill fits the current job, optionally
+run `skill-router` for a single recommendation (`skill` | `none` | `blocked`).
+It does not replace WORKFLOW session transitions or propose skill chains.
 
 ## Exact transitions
 
@@ -164,6 +169,7 @@ Recorded under `skills/lifecycle-build/selections/` before each SKILL.md:
 | Package | methodology-selector | Notes |
 |---|---|---|
 | `skill-brief` | `five-w-two-h` | Checklist operating frame; bounded grill-me tool use |
+| `skill-router` | `decision-matrix` | Single catalog skill pick, or none/blocked |
 | `skill-path-selector` | `decision-matrix` | Path choice among options with criteria |
 | `skill-review` | `smart-goals` | Draft judged as measurable finishability |
 | `revise-skill-from-review` | `pdca` | Bounded change inside review/revise cycles |
