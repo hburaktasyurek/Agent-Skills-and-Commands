@@ -47,7 +47,13 @@ If all extracted edges pass → `composition_ok` (include the extracted edge lis
 
 ## Required deliverable
 
-YAML with `verdict`, extracted `invokes` / `forbids` / `requires`, `findings` on fail, `missing` on blocked.
+YAML with:
+
+- `subject` — the resolved `SKILL.md` path (for `target`: `skills/<name>/SKILL.md`; otherwise the supplied `proposal_path` or `fixture_path`)
+- `verdict`
+- extracted `invokes` / `forbids` / `requires`
+- `findings` on fail
+- `missing` on blocked (omit `subject` when no path was resolved)
 
 ## When to use
 
@@ -65,13 +71,13 @@ YAML with `verdict`, extracted `invokes` / `forbids` / `requires`, `findings` on
 1. Resolve input to a single subject `SKILL.md` path or `blocked`.
 2. Load catalog = INDEX-listed names that have `skills/<name>/SKILL.md`.
 3. Extract edges per the table (manner-only excluded from forbids).
-4. Apply consistency rules; emit `composition_ok` or `composition_fail` with F1.. findings.
+4. Apply consistency rules; emit `composition_ok` or `composition_fail` with `subject` set to the resolved path and F1.. findings on fail.
 5. Stop. Do not edit, ship, install, or claim purpose_pass.
 
 ## Validation
 
 - Checks: Primary verdict is exactly one of composition_ok, composition_fail, blocked; no repository files edited by this skill
-- Evidence: Returned YAML; for fail, each finding cites a quote and rule number
+- Evidence: Returned YAML including `subject` when a path was resolved; for fail, each finding cites a quote and rule number
 - Rules engine self-test: `node skills/skill-composition/scripts/self-test.mjs` covers consistency rules 1–3 on pre-extracted edge fixtures; rule 4 (checker edits nothing) is agent-enforced, not machine-checked; extraction from SKILL.md prose remains agent-judged
 
 ## Boundaries
