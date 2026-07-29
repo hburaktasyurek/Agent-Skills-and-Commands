@@ -1,14 +1,6 @@
 ---
 name: revise-spec-from-review
-description: >-
-  Reconcile findings from a separate, independent review into a named spec folder without independently
-  searching for unrelated pre-existing defects. Act as the senior engineer responsible for the affected area
-  and task outcome: atomize and verify each alleged defect, impact, and remedy, then carry every confirmed
-  finding through all required prerequisites, dependencies, spec surfaces, and post-edit effects for
-  root-complete, in-scope closure. Stop rather than guess when resolution evidence, a product/scope decision,
-  or outside-edit permission is missing. Use when the user supplies adversarial-spec-review or spec-readiness
-  findings and asks to revise the spec. Never implement, edit outside the named spec folder without permission,
-  commit, or push.
+description: "Reconcile supplied adversarial-spec-review or spec-readiness findings into a named spec folder as a closed worklist—no unrelated defect hunt, no implementation, commit, or push. Use when revising a spec from complete review findings. Triggers: revise-spec-from-review."
 ---
 
 # revise-spec-from-review

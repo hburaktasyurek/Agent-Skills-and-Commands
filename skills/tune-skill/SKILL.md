@@ -1,12 +1,6 @@
 ---
 name: tune-skill
-description: >-
-  Improve one existing skill from concrete user feedback, a failed run, or
-  another observed behavior complaint using a bounded PDCA cycle. Use when an
-  existing skill behaves incorrectly or its instructions, methodology,
-  original contract, package boundary, runtime copy, or tuning scope may be
-  responsible. Applies a direct change only when the correction belongs inside
-  one skill package; otherwise routes the work to its owning workflow.
+description: "Improve one existing shipped skill from concrete feedback or a failed run via bounded PDCA. Use when skill instructions or package behavior look wrong and the fix belongs in that one package; otherwise route to the owning workflow. Triggers: tune-skill."
 ---
 
 # PDCA: tune-skill

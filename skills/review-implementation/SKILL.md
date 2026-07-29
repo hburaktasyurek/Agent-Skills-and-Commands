@@ -1,12 +1,6 @@
 ---
 name: review-implementation
-description: >-
-  Spec-vs-implementation compliance audit after implement and before opening a
-  PR: walk the approved named spec as a checklist, run the known-pitfall sweep
-  (tenancy, auth, N+1, migrations, payments, and other silent failures), and
-  produce a Spec Compliance Report with Ready-for-PR. Use when a feature was
-  implemented against a named spec — not the hostile shipping/merge gate (use
-  adversarial-diff-review for that).
+description: "Named-spec compliance audit after implement and before PR: checklist plus known-pitfall sweep; Ready-for-PR report. Use when a feature was built against a named spec—not the hostile shipping/merge gate (use adversarial-diff-review). Triggers: review-implementation."
 ---
 
 Your job is to find every deviation, omission, and risk between the spec and the implementation before it becomes a fix commit.

@@ -1,6 +1,6 @@
 ---
 name: methodology-selector
-description: Select one best-fit methodology from the canonical twelve-method catalog, or explicitly select none. Use before goal engineering or methodology-skill creation when a task needs a structured reasoning, communication, planning, improvement, or decision method. Returns positive fit, negative-fit veto, rationale, deferred method, and the canonical reference; it does not create skills, write goals, or perform the task.
+description: "Select one best-fit methodology from the twelve-method catalog, or none. Use when a task needs a structured method before goal engineering or methodology-skill creation. Returns fit, veto, rationale, and canonical reference—does not create skills or perform the task. Triggers: methodology-selector."
 ---
 
 # Methodology Selector

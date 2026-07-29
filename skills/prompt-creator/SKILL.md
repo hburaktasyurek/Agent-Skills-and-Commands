@@ -1,6 +1,6 @@
 ---
 name: prompt-creator
-description: Build high-quality Claude prompts step by step using an interview-driven approach grounded in Anthropic's official best practices. Use this skill whenever the user wants to create, write, improve, or refine a prompt for Claude — whether they say "write a prompt", "help me prompt Claude to do X", "create a system prompt", "I need a prompt for...", "how should I instruct Claude to...", "my prompt isn't working", or any similar phrasing. Also trigger when the user describes a task and asks how to instruct an AI to do it, or when they want to improve Claude's output quality by fixing the prompt. Trigger even if the user only has a vague idea — the interview will draw out the details.
+description: "Build Claude prompts via an interview grounded in Anthropic best practices. Use when creating, writing, improving, or fixing a prompt—or when the idea is still vague. Triggers: write a prompt; create a system prompt; my prompt isn't working; help me prompt Claude."
 ---
 
 # Prompt Creator

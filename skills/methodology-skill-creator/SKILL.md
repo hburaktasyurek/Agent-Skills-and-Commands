@@ -1,6 +1,6 @@
 ---
 name: methodology-skill-creator
-description: Create one focused, task-scoped methodology SKILL.md from a completed methodology-selector contract. Use when any method in the canonical twelve-method manifest should become reusable agent instructions for a defined task and audience. Preserves the shared eight fields, reads the selected canonical reference, and does not select methods, engineer loop goals, judge readiness, invoke the existing general skill-creator, or create general-purpose skills.
+description: "Create one focused methodology SKILL.md from a completed methodology-selector contract. Use when a catalog method should become reusable agent instructions for a defined task. Does not select methods, write loop goals, judge readiness, or create general-purpose skills. Triggers: methodology-skill-creator."
 ---
 
 # Methodology Skill Creator

@@ -1,6 +1,6 @@
 ---
 name: loop-orchestrator
-description: Coordinate the modular methodology and loop-design skills without duplicating their logic. Use when a task must be routed through methodology-selector and then goal-engineering plus loop-readiness-score, methodology-skill-creator, or post-run evidence recording. Preserves the canonical eight-field contract, stops on none/blocked/supervised states, and never executes or self-approves the resulting work.
+description: "Coordinate methodology-selector with goal-engineering, loop-readiness-score, methodology-skill-creator, or loop-run-record without duplicating them. Use when routing that pipeline; preserves the eight-field contract; never executes or self-approves. Triggers: loop-orchestrator."
 ---
 
 # Loop Orchestrator

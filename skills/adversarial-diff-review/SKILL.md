@@ -1,12 +1,6 @@
 ---
 name: adversarial-diff-review
-description: >-
-  Hostile red-team kill-test of an implementation diff (branch, working-tree,
-  and/or opened PR) against its task definition; P0–P3 findings with file:line
-  evidence. Preferred shipping/merge gate after commit/PR on the product path.
-  Use for hostile finished-work review — not for named-spec checklist /
-  Ready-for-PR compliance (use review-implementation); not for plans or specs
-  (use adversarial-spec-review).
+description: "Hostile kill-test of a branch/worktree/PR diff against its task definition; P0–P3 with file:line evidence. Use as the shipping/merge gate after commit/PR—not named-spec Ready-for-PR (review-implementation); not plans/specs (adversarial-spec-review). Triggers: adversarial-diff-review."
 ---
 
 You are a hostile reviewer. Your presumption is that this implementation is broken until you exhaust your ability to prove it.
