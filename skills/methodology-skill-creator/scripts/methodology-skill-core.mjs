@@ -47,6 +47,9 @@ const list = (items) => items.map((item) => `- ${item}`).join("\n");
 
 const countCharacters = (value) => Array.from(value).length;
 
+const escapeRegExp = (value) =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 /**
  * Lowercase the first character for mid-sentence glue unless it looks like an
  * acronym (two or more leading uppercase letters, e.g. "API", "5W2H").
@@ -120,10 +123,16 @@ export function renderMethodologySkill(input) {
     input.skill_summary,
     "skill_summary",
   );
-  if (/^Apply\s+.+\s+to\b/i.test(skillSummaryRaw)) {
-    throw new Error(
-      "skill_summary must not contain a nested Apply-formula (starts with 'Apply … to')",
+  for (const method of METHOD_MANIFEST) {
+    const pattern = new RegExp(
+      `^Apply\\s+${escapeRegExp(method.name)}\\s+to\\b`,
+      "i",
     );
+    if (pattern.test(skillSummaryRaw)) {
+      throw new Error(
+        "skill_summary must not contain a nested Apply-formula (Apply {Methodology} to …)",
+      );
+    }
   }
   const skillSummary = decapitalizeForGlue(skillSummaryRaw);
   if (countCharacters(skillSummary) > SKILL_SUMMARY_LIMIT) {

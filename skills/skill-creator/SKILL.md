@@ -7,7 +7,7 @@ description: "Draft skill proposals under .skill-proposals or ship after purpose
 
 ## Objective
 
-Persist a methodology or procedural skill proposal only under .skill-proposals, or ship a purpose_pass draft into skills/ after explicit human approval
+Persist a methodology or procedural skill proposal only under .skill-proposals, or ship a purpose_pass draft into skills/ after explicit human approval and composition_ok (or an explicit human composition skip)
 
 Produce the result for Agents running the skill-design loop and humans who approve ship.
 
@@ -45,8 +45,8 @@ Produce the result for Agents running the skill-design loop and humans who appro
 
 ## Validation
 
-- Checks: Draft mode writes only under .skill-proposals/<skill_name>/; ship mode leaves skills/<skill_name>/ present and removes the draft only after copy and INDEX/README succeed
-- Evidence to return: Surfaced result that demonstrates: Draft mode writes only under .skill-proposals/<skill_name>/; ship mode leaves skills/<skill_name>/ present and removes the draft only after copy and INDEX/README succeed
+- Checks: Draft mode writes only under .skill-proposals/<skill_name>/; ship mode requires composition_ok for the current draft path in this ship attempt (or a recorded composition_skip from an explicit human utterance), then leaves skills/<skill_name>/ present and removes the draft only after copy and INDEX/README succeed
+- Evidence to return: Draft path proof; for ship, the composition_ok YAML (subject = draft path) or composition_skip record, plus proof that skills/<skill_name>/ exists and the draft was removed only after copy and INDEX/README succeed
 
 ## Boundaries
 

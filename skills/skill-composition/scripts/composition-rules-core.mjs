@@ -1,6 +1,7 @@
 /**
  * Deterministic consistency rules for pre-extracted skill edges.
- * Rules 1–4 from skill-composition/SKILL.md.
+ * Machine-checks rules 1–3 from skill-composition/SKILL.md.
+ * Rule 4 (checker edits nothing) is agent-enforced, not in this engine.
  * Does NOT parse SKILL.md prose — extraction is agent-judged.
  */
 

@@ -72,7 +72,7 @@ YAML with `verdict`, extracted `invokes` / `forbids` / `requires`, `findings` on
 
 - Checks: Primary verdict is exactly one of composition_ok, composition_fail, blocked; no repository files edited by this skill
 - Evidence: Returned YAML; for fail, each finding cites a quote and rule number
-- Rules engine self-test: `node skills/skill-composition/scripts/self-test.mjs` covers consistency rules 1–4 on pre-extracted edge fixtures; extraction from SKILL.md prose remains agent-judged
+- Rules engine self-test: `node skills/skill-composition/scripts/self-test.mjs` covers consistency rules 1–3 on pre-extracted edge fixtures; rule 4 (checker edits nothing) is agent-enforced, not machine-checked; extraction from SKILL.md prose remains agent-judged
 
 ## Boundaries
 

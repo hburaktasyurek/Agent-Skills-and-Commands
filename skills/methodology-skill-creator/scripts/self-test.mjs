@@ -207,11 +207,27 @@ expectFailure(
 
 const nestedApply = structuredClone(base);
 nestedApply.skill_name = "test-nested-apply";
-nestedApply.skill_summary = "Apply closed purpose-fail remedies to a skill draft";
+nestedApply.skill_summary = "Apply PDCA to closed remedies";
 expectFailure(
-  "nested Apply-formula in skill_summary is rejected",
+  "nested Apply-formula with manifest methodology name is rejected",
   nestedApply,
   /nested Apply-formula/,
+);
+
+const englishApplyTo = structuredClone(base);
+englishApplyTo.skill_name = "test-english-apply-to";
+englishApplyTo.skill_summary =
+  "apply closed purpose-fail remedies to a skill draft";
+englishApplyTo.contract.methodology = "pdca";
+englishApplyTo.selection.methodology_name = "PDCA";
+englishApplyTo.selection.method_ref = "references/pdca.md";
+const englishApplyToResult = renderMethodologySkill(englishApplyTo);
+check(
+  "ordinary apply … to … skill_summary renders",
+  extractDescription(englishApplyToResult.files["SKILL.md"]).startsWith(
+    "Apply PDCA to apply closed purpose-fail remedies to a skill draft.",
+  ),
+  extractDescription(englishApplyToResult.files["SKILL.md"]),
 );
 
 const longAlias = structuredClone(base);
