@@ -21,7 +21,8 @@ for them. Stop with the missing skill names when the set is incomplete.
 - Task, Audience, Context, Output Format, Validation, and Human Review / Stop;
 - the control envelope and explicit applicability declarations when
   `intent: loop-goal`;
-- `skill_name` when `intent: methodology-skill`.
+- `skill_name` and `skill_summary` when `intent: methodology-skill` (both
+  required); optional `invocation` aliases when supplied.
 
 Read [references/handoff-contract.md](references/handoff-contract.md).
 
@@ -37,8 +38,10 @@ Read [references/handoff-contract.md](references/handoff-contract.md).
      to [goal-engineering](../goal-engineering/SKILL.md), then pass both
      `goal_input` and `goal_result` to
      [loop-readiness-score](../loop-readiness-score/SKILL.md).
-   - `methodology-skill`: pass the canonical contract, selection metadata, and
-     requested name to
+   - `methodology-skill`: if `skill_name` or `skill_summary` is missing, stop
+     and return the missing field; do not call the creator. Otherwise pass the
+     canonical contract, selection metadata, `skill_name`, `skill_summary`, and
+     optional `invocation` to
      [methodology-skill-creator](../methodology-skill-creator/SKILL.md).
    - `record-run`: first verify the exact goal/readiness handoff. Preserve
      `blocked` or `supervised`; only then pass complete external observations

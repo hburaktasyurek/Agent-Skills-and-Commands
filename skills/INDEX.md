@@ -43,7 +43,7 @@ When the work is "figure out what to do," not "do it."
 
 Wrapping work up.
 
-- [commit-work](commit-work/SKILL.md) — Stage intended changes, split coherent Conventional Commits, push, and verify without choosing a model.
+- [commit-work](commit-work/SKILL.md) — Stage intended changes, split coherent Conventional Commits, and verify; push only when explicitly asked.
 - [adversarial-diff-review](adversarial-diff-review/SKILL.md) — Red-team review that tries to kill an implementation diff against its task definition; P0–P3 findings with file:line evidence and a coverage declaration.
 - [review-implementation](review-implementation/SKILL.md) — Systematic spec-vs-implementation compliance audit: checklist coverage plus known-pitfall sweep (tenancy, auth, migrations, payments); Ready-for-PR verdict.
 - [pr-branch](pr-branch/SKILL.md) — Write a two-block PR description (non-technical summary + technical detail), open the PR.
