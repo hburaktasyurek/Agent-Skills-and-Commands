@@ -80,6 +80,10 @@ the repository or Git for additional evidence within its own responsibility.
 | `commit-work` | No explicit input; inspect the current Git worktree and diff |
 | `pr-branch` | No explicit input; inspect the current branch, commits, and Git diff |
 | `adversarial-diff-review` | Diff boundary: branch or working-tree range, and/or PR number when a PR exists |
+| `skill-path-selector` | Completed selector checklist after grill-me (see Skill design loop) |
+| `skill-creator` | Selector path for draft mode, or purpose_pass draft path + explicit human ship |
+| `skill-review` | `.skill-proposals/<skill_name>/` plus checklist purpose fields |
+| `revise-skill-from-review` | Draft path plus complete purpose_fail remedies |
 
 Do not replace these artifact references with a summary from memory. A review
 failure is handed back as its complete output, and a spec-consuming skill
@@ -119,6 +123,45 @@ receives the spec cluster itself rather than a paraphrase of it.
    `adversarial-diff-review` against the updated boundary.
 7. A passing diff review returns the decision to the human. It does not merge
    automatically.
+
+### Skill design loop
+
+Prefer methodology-bound skills. **Never author a new skill's SKILL.md before
+`methodology-selector` returns a contract for that skill's purpose** (no
+method-name bias in the request). Drafts live under gitignored
+`.skill-proposals/`; canonical packages live under `skills/` only after ship.
+
+1. Run `grill-me` until shared understanding of the new skill.
+2. Fill the selector checklist (no invented fields): purpose, audience,
+   when_to_use, when_not, success_signal, boundaries, context, output_format,
+   skill_name, skill_summary; optional invocation.
+3. Run `skill-path-selector` → `methodology` | `decompose` | `procedural` |
+   `blocked` (it may invoke `methodology-selector` on the methodology branch).
+4. On `decompose` or `blocked`, stop. On `methodology` or `procedural`,
+   continue.
+5. `skill-creator` **draft** writes only `.skill-proposals/<skill_name>/`.
+6. Separate session: `skill-review` on that draft path.
+7. On `purpose_fail`, `revise-skill-from-review` then re-run `skill-review`.
+8. On `purpose_pass`, human **ship** → `skill-creator` ship mode (copy →
+   INDEX/README → delete draft last). Install/global remains human-owned.
+9. After ship, behavior complaints use `tune-skill`, not `skill-review`.
+
+Checklist → eight-field map: purpose→task; audience→audience; context→context;
+output_format→output_format; success_signal→validation check + evidence;
+boundaries→stop_conditions with `human_approval_required: true` and
+`approval_actions` including `ship skill to skills/`; skill_name /
+skill_summary / invocation stay creator inputs.
+
+#### Lifecycle package selections (purpose-first)
+
+Recorded under `skills/lifecycle-build/selections/` before each SKILL.md:
+
+| Package | methodology-selector | Notes |
+|---|---|---|
+| `skill-path-selector` | `decision-matrix` | Path choice among options with criteria |
+| `skill-review` | `smart-goals` | Draft judged as measurable finishability |
+| `revise-skill-from-review` | `pdca` | Bounded change inside review/revise cycles |
+| `skill-creator` | `none` (procedural harness) | Persist/ship file gates only |
 
 ## Tool and model policy
 
@@ -204,9 +247,12 @@ When an issue warrants investigation:
    and later verdict.
 4. Use methodology selection, goal engineering, readiness, and run records when
    an improvement is broad enough to need a controlled loop.
-5. Use `tune-skill` for a concrete, reproducible behavior complaint.
-6. Add a new skill only when the responsibility is genuinely distinct; prefer
-   improving or connecting small existing skills.
+5. Use `tune-skill` for a concrete, reproducible behavior complaint on an
+   already shipped skill.
+6. Add a new skill through the Skill design loop when the responsibility is
+   genuinely distinct; run `methodology-selector` on the purpose before writing
+   SKILL.md. Create-loop purpose failures use `revise-skill-from-review` on
+   drafts — do not overload `tune-skill` for unshipped proposals.
 7. Require human review before changing the repository source of truth.
 
 `revise-spec-from-review` is an example of this evolution: it was introduced

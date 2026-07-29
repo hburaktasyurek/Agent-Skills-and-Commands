@@ -20,9 +20,17 @@ If your idea is bigger than a small fix, fork is almost always the better path.
 
 ## Adding a skill to your fork
 
-The functional minimum is in the [Skill Anatomy](README.md#skill-anatomy) section of the README: a `skills/<name>/SKILL.md` with `name` and `description` in the frontmatter. Body shape and length vary by purpose — no template is enforced.
+Follow the Skill design loop in [WORKFLOW.md](WORKFLOW.md): `grill-me` →
+checklist → `skill-path-selector` (which may run `methodology-selector` on the
+purpose before any SKILL.md) → `skill-creator` draft under `.skill-proposals/` →
+separate `skill-review` → optional `revise-skill-from-review` → human **ship**
+into `skills/`. Prefer a methodology-bound skill; if the idea is not reducible
+to one method, decompose. After ship, use `tune-skill` for behavior complaints.
 
-When adding a skill, also list it in [skills/INDEX.md](skills/INDEX.md) under the section that fits.
+The functional minimum remains in the [Skill Anatomy](README.md#skill-anatomy)
+section of the README: a `skills/<name>/SKILL.md` with `name` and `description`
+in the frontmatter. When adding a skill, also list it in
+[skills/INDEX.md](skills/INDEX.md) under the section that fits.
 
 ## Licensing
 

@@ -53,5 +53,9 @@ Wrapping work up.
 
 Building and tuning the system itself.
 
+- [skill-path-selector](skill-path-selector/SKILL.md) — Decision Matrix: choose methodology / decompose / procedural / blocked from the skill checklist (after grill-me).
+- [skill-creator](skill-creator/SKILL.md) — Procedural harness: draft under `.skill-proposals/` or ship after purpose_pass.
+- [skill-review](skill-review/SKILL.md) — SMART Goals: purpose_pass / purpose_fail on a draft path only.
+- [revise-skill-from-review](revise-skill-from-review/SKILL.md) — PDCA: closed-list draft edits after purpose_fail.
 - [prompt-creator](prompt-creator/SKILL.md) — Interview-driven Claude prompt builder grounded in Anthropic's best practices.
-- [tune-skill](tune-skill/SKILL.md) — Tactical, complaint-driven edit to an existing skill: diagnose root cause, smallest change, cold-read review.
+- [tune-skill](tune-skill/SKILL.md) — Tactical, complaint-driven edit to an existing shipped skill: diagnose root cause, smallest change, cold-read review.

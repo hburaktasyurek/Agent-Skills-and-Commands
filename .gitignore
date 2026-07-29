@@ -17,3 +17,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Local skill-design drafts (ship copies into skills/)
+.skill-proposals/

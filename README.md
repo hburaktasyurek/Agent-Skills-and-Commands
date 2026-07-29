@@ -72,6 +72,10 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [pr-branch](skills/pr-branch/SKILL.md) | Write a two-block PR description (non-technical + technical) and open a GitHub PR |
 | [session-handoff](skills/session-handoff/SKILL.md) | Optional controlled resume packet for a fresh window; not required when a goal-oriented session can finish on its own |
 | [prompt-creator](skills/prompt-creator/SKILL.md) | Interview-driven Claude prompt builder grounded in Anthropic's best practices |
+| [skill-path-selector](skills/skill-path-selector/SKILL.md) | Decision Matrix: choose methodology, decompose, procedural, or blocked from a skill-design checklist |
+| [skill-creator](skills/skill-creator/SKILL.md) | Draft a skill under `.skill-proposals/` or ship a purpose_pass draft into `skills/` |
+| [skill-review](skills/skill-review/SKILL.md) | SMART Goals: purpose_pass or purpose_fail for a `.skill-proposals/` draft; analysis only |
+| [revise-skill-from-review](skills/revise-skill-from-review/SKILL.md) | PDCA: apply closed purpose-fail remedies to a draft under `.skill-proposals/` only |
 | [tune-skill](skills/tune-skill/SKILL.md) | Tactical, complaint-driven edit to an existing skill — diagnose, smallest change, review |
 | [methodology-selector](skills/methodology-selector/SKILL.md) | Select one of twelve canonical methodologies, or none, using positive fit, negative-fit veto, and stage precedence |
 | [goal-engineering](skills/goal-engineering/SKILL.md) | Render a verifiable loop goal from the shared eight-field contract with a universal 4,000-character ceiling |
