@@ -1,6 +1,6 @@
 ---
 name: skill-creator
-description: "Draft skill proposals under .skill-proposals or ship after purpose_pass. Use when a skill-path-selector path is methodology or procedural, or a human orders ship. Triggers: skill-creator; draft skill; ship skill."
+description: "Draft skill proposals under .skill-proposals or ship after purpose_pass. Create entry: if path or checklist is missing, invoke skill-path-selector first. Triggers: skill-creator; draft skill; ship skill."
 ---
 
 # skill-creator
@@ -13,8 +13,8 @@ Produce the result for Agents running the skill-design loop and humans who appro
 
 ## When to use
 
-- Use when: a skill-path-selector path is methodology or procedural, or a human orders ship
-- Do not use when: purpose judgment or path selection is still needed
+- Use when: drafting or shipping a skill (create entry), including when path or checklist is not ready yet; or a human orders ship
+- Do not use when: the job is only purpose judgment (`skill-review`) or only path selection with no create/ship intent
 
 ## Invocation
 
@@ -26,7 +26,7 @@ Produce the result for Agents running the skill-design loop and humans who appro
 
 ### Draft mode
 
-1. Require skill-path-selector path methodology or procedural plus checklist fields including skill_summary.
+1. If skill-path-selector path (methodology or procedural) or checklist fields including skill_summary are missing, invoke `skill-path-selector` first (it may invoke `skill-brief`). Do not invent checklist fields or path; do not absorb path selection. Once path is methodology or procedural and the checklist is complete, continue.
 2. Block if skills/<skill_name>/ or .skill-proposals/<skill_name>/ exists unless human replace is true.
 3. For methodology: run methodology-skill-creator / loop-orchestrator render; write files only under .skill-proposals/<skill_name>/ (remap any skills/ target).
 4. For procedural: write SKILL.md under .skill-proposals/<skill_name>/ using summary/when description formula without Apply Method.
@@ -45,17 +45,18 @@ Produce the result for Agents running the skill-design loop and humans who appro
 
 ## Validation
 
-- Checks: Draft mode writes only under .skill-proposals/<skill_name>/; ship mode requires composition_ok for the current draft path in this ship attempt (or a recorded composition_skip from an explicit human utterance), then leaves skills/<skill_name>/ present and removes the draft only after copy and INDEX/README succeed
-- Evidence to return: Draft path proof; for ship, the composition_ok YAML (subject = draft path) or composition_skip record, plus proof that skills/<skill_name>/ exists and the draft was removed only after copy and INDEX/README succeed
+- Checks: Missing draft path/checklist invokes `skill-path-selector` and writes no draft yet; draft mode writes only under .skill-proposals/<skill_name>/; ship mode requires composition_ok for the current draft path in this ship attempt (or a recorded composition_skip from an explicit human utterance), then leaves skills/<skill_name>/ present and removes the draft only after copy and INDEX/README succeed
+- Evidence to return: Selector invoke proof when inputs were missing; draft path proof; for ship, the composition_ok YAML (subject = draft path) or composition_skip record, plus proof that skills/<skill_name>/ exists and the draft was removed only after copy and INDEX/README succeed
 
 ## Boundaries
 
 - Do not select methodologies or judge purpose.
 - Do not write skills/<name>/ in draft mode.
 - Do not commit, push, or run npx skills install.
-- Do not absorb skill-path-selector or skill-review jobs.
+- Do not perform path selection or purpose judgment inside this skill; those jobs belong to `skill-path-selector` and `skill-review`. Invoking `skill-path-selector` for missing draft inputs is required, not a substitute for absorbing its judgment.
+- Do not absorb `skill-review` jobs.
 
 ## Human review and stop
 
 Human approval is required before: ship skill to skills/.
-Stop after draft write pending review, or after ship completes, or when a ship step fails with draft preserved.
+Stop after invoking `skill-path-selector` when awaiting its result for missing draft inputs; after draft write pending review; after ship completes; or when a ship step fails with draft preserved.
