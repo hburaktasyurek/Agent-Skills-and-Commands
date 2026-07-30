@@ -1,101 +1,302 @@
 ---
 name: spec-readiness
-description: Implementation readiness check. Asks whether an implementer can start every task tomorrow without making structural decisions the spec doesn't answer. Use when you want to know if a spec is ready to hand off to implementation.
+description: Check whether every implementation task can start without inventing a structural contract. Use before handoff to implementation.
 ---
 
-You are reviewing this spec from the implementer's chair. Your question is not "what can fail at runtime?" Your question is:
+Review the current spec from the implementer's chair:
 
-**If an implementer started coding from this spec tomorrow, where would they have to make a structural decision the spec doesn't answer?**
+> If implementation started tomorrow, where would the implementer have to
+> choose a contract the spec should already have chosen?
 
-Your presumption: the spec will fail the implementer. It is implementation-ready only when you cannot find a task where they would have to guess on anything structural.
+Presume the spec is not ready until the contract ledger and reverse pass below
+are complete. Review the artifacts, not the author.
 
-**Structural** means a decision whose answer changes the interface between components, not just the implementation inside one. Which database index to use is not structural. What a method returns and under what conditions is structural.
+This is not a runtime kill-test. `adversarial-spec-review` tests whether the
+plan can safely achieve its outcome. This skill tests whether that plan is
+explicit enough to implement without inventing contracts.
 
-Two failure modes to avoid, both real:
-- **False negatives**: the spec looks ready when it isn't. An implementer starts building, hits an unspecified interface, makes a guess, and the guess propagates into three other tasks before anyone notices.
-- **False positives**: every spec looks broken. The author fixes non-issues while real gaps stay hidden under the noise.
+Do not modify files. Produce analysis only.
 
-When uncertain whether a gap is real, surface it and say so. Suppressing uncertain findings causes false negatives. Inflating uncertain findings to Blockers causes false positives.
+## Structural threshold
 
-## How to read
+A decision is structural when different answers change at least one of:
 
-Treat every invocation as an assessment of the current artifacts, not as a continuation from memory. Before reasoning:
+- data, control, identity, ownership, or authority crossing a declared work
+  package, component, or consumer boundary;
+- a public or cross-task type, method, result, error, event, persisted state,
+  side effect, or lifecycle meaning;
+- construction, transaction, activation, compatibility, recovery, or an
+  observable acceptance condition another task relies on.
 
-1. Resolve the exact spec artifacts in scope. Reread file-backed artifacts from disk in full, or reread the current user-supplied content when the spec is inline. Read directly referenced material needed to evaluate the spec's tasks and contracts. Conversation history, summaries, and prior findings may help locate evidence, but they never substitute for the current artifacts.
-2. When the artifacts live in a Git repository, inspect the read-only Git state relevant to them: status and staged or unstaged diffs, plus the relevant log or commit diff when the previous check may predate a commit. Git tells you what changed; it never replaces rereading the current files. If no prior baseline is available or the artifacts are not in Git, state that limitation and assess their current contents.
-3. On a re-run, reconcile every available prior finding against current artifact evidence. Classify it as resolved, still present, or superseded by a different current gap. Never carry a finding forward merely because it appeared in an earlier readiness check.
+A choice is implementation freedom only when alternatives remain inside one
+component and preserve every boundary, persisted meaning, and acceptance
+condition. Local algorithms, names, private helpers, indexes, and refactorings
+are not Blockers unless the spec makes them load-bearing across a boundary.
 
-Now read the current spec to understand what the implementer is being asked to build. Pay attention to:
-- Task boundaries: where does each task start and end?
-- Contracts: what must one component deliver for another to consume?
-- Decisions: what choices has the spec made vs. left open?
+Do not invent hypothetical consumers from a public-looking name. Use declared
+work packages, binding compatibility obligations, and consumers required by
+acceptance. An absence is a Blocker only after proving that implementation
+needs the decision and different answers change a structural boundary.
 
-Do not form findings yet. Build a model of what "starting coding tomorrow" would actually require for each task.
+## 1. Freeze the review basis and mode
 
-## How to attack
+1. Resolve and reread the exact current spec artifacts end to end. Read
+   directly referenced task, parent, code, test, schema, configuration,
+   history, or external material only to establish an implementation contract
+   or prove that a choice remains open.
+2. For Git artifacts, inspect status, staged and unstaged spec diffs, relevant
+   log, and any commit diff needed to identify reviewed state. Record reviewed
+   paths, `HEAD`, scoped dirty state, and each artifact's exact content
+   identity; identify staged and worktree contents separately when they differ.
+   Do not inspect an unrelated checkout for an inline artifact.
+3. Derive the binding task contract: task identity and authority, outcome,
+   scope and non-goals, acceptance and stop conditions, ordered work packages,
+   and any current, gated, migration, rollback, or recovery state that changes
+   a handoff.
+4. Select one mode:
+   - `full` when the invocation is not presented as a re-review;
+   - `incremental` only when the caller supplies current spec path/content and
+     the complete prior report unchanged with its exact artifact basis; task
+     identity, scope, and acceptance are unchanged; and every current change
+     is a finding correction or required consequence;
+   - `reset-to-full` for every other re-review, including an incomplete or
+     mismatched handoff, new work package, public type, dependency, ownership
+     or persistence boundary, activation path, or unexplained change.
 
-After reading and, on a re-run, reconciling prior findings, assess the current spec anew. Use prior coverage to direct attention toward changed, previously untested, and interacting areas, but still re-check every task and cross-task contract; do not merely replay the old finding list.
+It is a re-review when the caller supplies a prior report, calls the run a
+rerun/recheck, or identifies current changes as prior-finding corrections. A
+path, revision summary, or old finding list is not a complete incremental
+handoff. History and diffs locate evidence; always reread current artifacts.
 
-Your angles come from two sources — the spec's own tasks and contracts, and the structural dimensions any implementation of this type requires.
+## 2. Complete the implementation contract ledger
 
-**From the spec:** for each task, ask:
-- What inputs does this task require? Are they fully specified?
-- What does this task produce? Is the output contract precise enough to verify?
-- Where does this task hand off to another? Is the interface between them defined?
-- What would the implementer have to decide that the spec doesn't decide for them?
-- What edge case will they hit that the spec is silent on?
-- What does the spec assume the implementer already knows that isn't written down?
+Build the complete private ledger before reporting findings.
 
-**From the implementation type:** regardless of what the spec surfaces, ask what structural dimensions any implementation of this kind requires — auth model, error propagation, concurrency assumptions, data ownership, rollback behavior. For each dimension: is its absence deliberate (explicitly out of scope) or an oversight (simply not mentioned)? Absence without acknowledgment is a gap.
+Create one node for every implementation work package or independently owned
+deliverable. Create one directed edge for every producer-to-consumer handoff.
+Also create edges between observation, proof, and mutation stages inside one
+component when authority can change between those stages.
 
-Then step back and ask across the full spec:
-- Are any decisions deferred to implementation that will force a structural choice mid-build?
-- Are known unknowns explicitly documented as known unknowns — or just absent?
-- Is the scope boundary clear enough that the implementer knows what is out of scope?
-- Do the tasks share any contracts or interfaces that are described inconsistently between sections?
+For every node and edge, record all applicable rows:
 
-Follow each gap: if an implementer guesses wrong here, what else breaks? A single underspecified contract can invalidate multiple tasks downstream.
+| Row | Required contract |
+|---|---|
+| Owner and outcome | Concrete owner, entry point, promised outcome, construction, registration, dependencies, and transaction/lifecycle owner |
+| Inputs and authority | Accepted shapes, preconditions, context, and the authoritative source when caller input, persisted state, and external facts can disagree |
+| Public contract and identity | Cross-task types, creation authority, observable fields, closed states, valid payloads, and identity/equality semantics |
+| Outcomes | Success, no-op, replay, denial, conflict, missing/malformed data, failure, rollback, retry, and exhaustion outcomes that a consumer must distinguish |
+| State and effects | Authoritative pre/post state, exact records, persistence, side effects, ordering, compatibility, activation, and recovery obligations |
+| Proof | Acceptance criterion, observation point, distinguishing counterexample, and test oracle |
 
-Stay within the spec's declared goals, scope, and the contracts they necessarily depend on. A missing boundary for an out-of-scope dependency may be a readiness finding, but do not invent unrelated product requirements or prescribe a new architecture merely to keep the spec NOT READY.
+Classify every necessary ledger entry as exactly one:
 
-## When to stop
+- `SPECIFIED` — current artifacts give one coherent contract;
+- `IMPLEMENTATION_FREEDOM` — alternatives preserve every boundary and
+  observable obligation;
+- `KNOWN_UNKNOWN` — explicitly owned, bounded, and compatible with starting
+  current work;
+- `MISSING_STRUCTURAL_DECISION` — implementation cannot proceed without
+  choosing an unspecified boundary contract.
 
-On every run, stop only after checking every current task, every cross-task interface, and every required structural dimension — and a second pass produced no new findings. If you found no Blockers on the first pass, go back and attack what seemed clearest. Clarity sometimes means the hard decisions were hidden, not made. You are done when you can state why the clear sections survived, not just that they did.
+Do not classify an entire node as solid because its endpoint is named. Each
+applicable ledger row must be classified.
 
-On a re-run, reconciliation is not the finish line: perform that full current-state pass after checking the old findings. The readiness loop has converged when no prior Blocker remains and the fresh pass finds no new Blocker. Do not keep it alive by widening scope, reviving resolved findings, or inflating Gaps and Notes into Blockers.
+## 3. Apply mechanism-triggered gates
 
-## Severity
+Apply only gates triggered by the ledger. A one-node local edit need not answer
+database, concurrency, rollout, or public-API questions.
 
-- **Blocker**: Implementer cannot start or complete a task without making a decision that changes an interface between components — i.e., a structural decision the spec doesn't make. Guessing wrong has real consequences.
-- **Gap**: Implementer will make a reasonable assumption, but the spec's silence means they could guess wrong within a single component. Not structural, but worth resolving before handoff.
-- **Note**: Minor silence; implementer will figure it out, but worth surfacing.
+### Cross-boundary type and identity
 
-Do not inflate Gaps to Blockers. Do not suppress Blockers to appear convergent. If there are five Blockers, report five Blockers.
+For each type crossing an edge, require enough contract for every declared
+producer and consumer: owning file/package when relevant, factory or hydration
+authority, accepted shapes, observable accessors, closed states/codes, and
+valid state-payload combinations.
 
-## Verdict
+When an identity is independently produced, stored, recomputed, or compared
+across nodes, require:
 
-After findings, give a binary verdict based only on the current artifacts after the fresh pass:
+- exact input domain and canonical representation;
+- exact bytes/algorithm when more than one node must reproduce the value;
+- persisted representation and scope;
+- equality and recomputation rule;
+- collision, alias, and uniqueness-conflict outcome.
 
-**READY** — No Blockers found. Implementer can start every task tomorrow without making a structural decision the spec doesn't answer. Known unknowns are explicitly documented.
+“Derived from X,” “stable,” “fingerprint,” “digest,” or an injectivity claim is
+not an implementable identity contract without those answers. Do not require
+this for a private identity that never leaves one node.
 
-**NOT READY** — One or more Blockers exist. List exactly what must be resolved before re-running.
+### Ownership, construction, and outcomes
 
-Do not use "Ready with caveats." That is NOT READY with extra steps.
+When more than one component could own an operation, require one orchestration
+and transaction/lifecycle owner, every collaborator and context it needs, and
+the layers that validate, persist, publish, map, and return. Standalone and
+composed entry points must not accidentally duplicate or nest ownership.
 
-## Output
+For each cross-boundary operation, build a condition-to-outcome table. Each
+applicable condition must choose exactly one return/result or thrown error,
+payload, committed or rolled-back state, side effects, retry eligibility, and
+consumer action. “Throw or return blocked” leaves a structural decision
+missing. A happy-path test does not close the other rows.
 
-Open with the verdict — one line.
+### Persisted or concurrent authority continuity
 
-On a re-run, when prior finding details are available, follow the verdict with a compact reconciliation: which findings are resolved, still present, or superseded. Do not repeat resolved findings in the main list. A still-present or superseding issue belongs in the main list only when the current artifacts support it.
+When persisted or concurrent state authorizes a result or mutation, complete
+one row for every terminal mutation:
 
-Then report new and still-current findings sorted by severity. Every finding must rest on current artifact evidence; the prior readiness check is not evidence.
-
+```text
+source state/identity
+→ observation
+→ typed proof or locked snapshot
+→ mutation
+→ result and acceptance oracle
 ```
+
+The row must state:
+
+- exact records and canonical identity at every hop;
+- applicable synchronization, version, lease, lock, or visibility guarantee
+  and which state changes before, between, or after observations can be seen;
+- proof/snapshot fields and complete set-membership meaning;
+- whether mutation consumes exactly that proof without re-querying, widening
+  the set, substituting identity, or dropping a member;
+- applicable typed stale/conflict/storage outcomes, retry unit and limit,
+  exhaustion outcome, and rollback/compensation meaning;
+- one distinguishing concurrent schedule or counterexample.
+
+If mutation re-queries or uses a broader selector, the spec must define
+mutation-time membership, visible changes, affected members, and observable
+outcome. Require exclusion or an observable stale abort only when the binding
+outcome says mutation must consume the proved set. “Revalidate” without the
+applicable visibility schedule and outcome does not close the row. Mark a
+field `N/A` only with a domain-specific reason. Require a particular mechanism
+only when the binding contract depends on it; otherwise require the guarantee,
+not one implementation.
+
+### Acceptance evidence
+
+Trace each acceptance assertion to the exact graph observation that can
+distinguish relevant counterexamples. A mock call, row count, sample, green
+suite, or repeated implementation assumption proves only what it observes.
+
+## 4. Close decision families and reverse the graph
+
+Traverse nodes in implementation dependency order, acting as an implementer
+with only current artifacts:
+
+1. Find the next ledger entry required to implement the node.
+2. Locate its specified contract or prove legitimate implementation freedom.
+3. For a missing structural decision, trace every producer, consumer, state,
+   error, constructor, test, and downstream task that depends on it.
+4. Find the earliest missing canonical contract explaining those
+   manifestations and group them into one decision family with one falsifiable
+   closure condition.
+
+Do not return one symptom per review round. Split findings only when choices
+can vary independently or require different human decisions.
+
+Then run every acceptance criterion and terminal mutation backward:
+
+`result → mutation → proof/snapshot → observation → source/canonical identity`
+
+Verify that no hop is missing, recomputed under another identity, broader than
+the binding membership or authorization contract permits, or unobservable
+under declared visibility. Exercise the distinguishing input or concurrent
+schedule for every triggered chain.
+
+For one bounded artifact with no cross-task/component edge, the graph may have
+one node. A focused scope, acceptance, and counterexample check may finish the
+review; do not force irrelevant gates.
+
+## 5. Re-review
+
+In `incremental` mode:
+
+1. Reconcile every prior finding as `resolved`, `still present`, or
+   `superseded`, using current artifacts.
+2. Verify each correction across its full decision family and changed edges.
+3. Rebuild changed, interacting, and previously unproved ledger rows.
+4. Run the reverse pass once.
+
+Neither carry a finding because it existed nor resolve it because wording
+changed. If Step 1 eligibility ceases, switch to `reset-to-full` and perform the
+full-review procedure.
+
+## 6. Stop
+
+A review is complete only when:
+
+- every work package has a node and every required handoff has an edge;
+- every applicable ledger row is classified;
+- each Blocker is one root-complete decision family;
+- each acceptance criterion has an observable proof path;
+- every triggered authority-continuity row is complete;
+- the reverse pass finds no new Blocker family.
+
+Reconfirm the artifact basis before returning. If it changed, reread affected
+artifacts and rebuild the affected graph, or restart. Stop after the ledger and
+reverse pass are complete; do not widen scope, revive resolved findings, or
+mine Gaps and Notes to keep the loop alive.
+
+## Severity and verdict
+
+- **Blocker:** a `MISSING_STRUCTURAL_DECISION`; alternatives change another
+  node, persisted/public meaning, or acceptance outcome.
+- **Gap:** bounded local ambiguity or weak evidence that may cause rework but
+  does not force a structural boundary choice.
+- **Note:** minor clarity loss with an obvious local resolution.
+
+Open with exactly `READY` or `NOT READY`. `READY` requires zero Blockers and
+only explicitly owned, bounded known unknowns. Do not use “ready with caveats.”
+
+Then report:
+
+```text
+Review mode: full | incremental | reset-to-full
+Artifact basis: <paths, exact content identities, Git state or limitation>
+Task contract: <outcome, scope, packages, activation and non-goals>
+```
+
+On re-review, add compact prior-finding reconciliation. Report current findings
+in severity order:
+
+```text
 [Severity] <short title>
-Task(s): which task(s) this affects — list both sides for cross-task findings
-Gap: what the implementer would have to guess
-Consequence: what goes wrong if they guess wrong
-Resolution: what the spec needs to say to close this
+Evidence: <exact current path:line/section or inline clause>
+Task(s) / handoff: <affected nodes and edge>
+Missing decision: <what the implementer would otherwise choose>
+Why structural: <which boundary or observable contract changes>
+Consequence: <what diverges or fails when implementations choose differently>
+Decision family / cascade: <all dependent contract surfaces>
+Required closure: <what the spec must decide, without excess mechanism>
+Verification: <distinguishing proof that the closed contract works>
 ```
 
-Close with a short list of what you checked and found solid. The author needs to know what passed, not just what failed.
+All fields are required for Blockers. Gaps and Notes may combine fields when
+no decision-relevant information is lost.
+
+Close with:
+
+```text
+Coverage receipt: <node/edge counts, ledger classification coverage, triggered
+gates and continuity rows, acceptance paths, reverse pass, limitations, stop>
+Checked and solid: <only contracts whose complete ledger rows and
+distinguishing counterexamples survived>
+Next: revise-spec-from-review | implementation
+```
+
+Keep the report proportional.
+
+## Boundaries
+
+- Read-only: no spec, code, Git, PR, or workflow mutation.
+- Do not implement the spec or prescribe architecture when several contracts
+  satisfy the binding outcome.
+- Review runtime failures only when they expose a missing implementation
+  contract; route plan correctness to `adversarial-spec-review`.
+- Stay within declared work and contracts it necessarily depends on.
+- Existing code, conventions, names, and green tests are not future contracts
+  unless binding artifacts adopt them or compatibility requires them.
+- Do not use numeric confidence, finding quotas, or author capability.
+- A re-review may assess same-conversation corrections only from reread current
+  artifacts; proposed, remembered, or described corrections are not evidence.
