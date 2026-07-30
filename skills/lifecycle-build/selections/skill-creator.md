@@ -3,6 +3,10 @@
 Written **before** any `skills/skill-creator/SKILL.md` existed.
 No method name appeared in the selection request.
 
+Historical mapping: this package continues as `skill-draft-ship`. The old
+package name is retained only in this creation record; no live
+`skills/skill-creator/` package or alias remains.
+
 ## Eight-field input
 
 ```yaml

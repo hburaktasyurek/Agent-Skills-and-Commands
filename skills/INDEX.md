@@ -57,7 +57,8 @@ Building and tuning the system itself.
 - [skill-router](skill-router/SKILL.md) — Decision Matrix: recommend exactly one catalog skill for a job, or none/blocked.
 - [skill-composition](skill-composition/SKILL.md) — Procedural: check one skill's invoke/forbid/require edges against the catalog.
 - [skill-path-selector](skill-path-selector/SKILL.md) — Decision Matrix: choose methodology / decompose / procedural / blocked from the skill checklist (via skill-brief when incomplete).
-- [skill-creator](skill-creator/SKILL.md) — Procedural harness: draft under `.skill-proposals/` or ship after purpose_pass.
+- [skill-design-loop](skill-design-loop/SKILL.md) — Explicit procedural orchestrator: repository preflight, bounded intake, path selection, and one proposal draft; stop before review or ship.
+- [skill-draft-ship](skill-draft-ship/SKILL.md) — Explicit procedural harness: draft from a complete selected path or ship after purpose and composition gates.
 - [skill-review](skill-review/SKILL.md) — SMART Goals: purpose_pass / purpose_fail on a draft path only.
 - [revise-skill-from-review](revise-skill-from-review/SKILL.md) — PDCA: closed-list draft edits after purpose_fail.
 - [prompt-creator](prompt-creator/SKILL.md) — Interview-driven Claude prompt builder grounded in Anthropic's best practices.

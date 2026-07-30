@@ -23,28 +23,52 @@ const s1 = checkCompositionRules({
 });
 check("S1 skill-path-selector → composition_ok", s1.verdict === "composition_ok", s1.verdict);
 
-// S2 — skill-creator → composition_ok
+// S2 — skill-draft-ship → composition_ok
 const s2 = checkCompositionRules({
-  subject_name: "skill-creator",
-  invokes: ["methodology-skill-creator", "loop-orchestrator"],
-  forbids: ["skill-path-selector", "skill-review"],
+  subject_name: "skill-draft-ship",
+  invokes: ["methodology-skill-creator"],
+  forbids: [
+    "skill-brief",
+    "skill-path-selector",
+    "methodology-selector",
+    "skill-review",
+    "skill-composition",
+    "loop-orchestrator",
+  ],
   requires: [],
   catalog,
 });
-check("S2 skill-creator → composition_ok", s2.verdict === "composition_ok", s2.verdict);
+check("S2 skill-draft-ship → composition_ok", s2.verdict === "composition_ok", s2.verdict);
 
-// S3 — missing input → blocked
+// S3 — skill-design-loop → composition_ok
 const s3 = checkCompositionRules({
+  subject_name: "skill-design-loop",
+  invokes: ["skill-brief", "skill-path-selector", "skill-draft-ship"],
+  forbids: ["loop-orchestrator", "skill-review", "skill-composition"],
+  requires: [
+    "skill-brief",
+    "grill-me",
+    "skill-path-selector",
+    "methodology-selector",
+    "skill-draft-ship",
+    "methodology-skill-creator",
+  ],
+  catalog,
+});
+check("S3 skill-design-loop → composition_ok", s3.verdict === "composition_ok", s3.verdict);
+
+// S4 — missing input → blocked
+const s4 = checkCompositionRules({
   subject_name: "",
   invokes: [],
   forbids: [],
   requires: [],
   catalog,
 });
-check("S3 missing subject → blocked", s3.verdict === "blocked", s3.verdict);
+check("S4 missing subject → blocked", s4.verdict === "blocked", s4.verdict);
 
-// S4 — bad fixture → composition_fail (rule 1)
-const s4 = checkCompositionRules({
+// S5 — bad fixture → composition_fail (rule 1)
+const s5 = checkCompositionRules({
   subject_name: "bad-fixture",
   invokes: ["not-a-real-skill-xyz"],
   forbids: [],
@@ -52,9 +76,9 @@ const s4 = checkCompositionRules({
   catalog,
 });
 check(
-  "S4 non-catalog invoke → composition_fail rule 1",
-  s4.verdict === "composition_fail" && s4.findings[0].rule === 1,
-  `${s4.verdict}; ${s4.findings[0].id} rule ${s4.findings[0].rule}`,
+  "S5 non-catalog invoke → composition_fail rule 1",
+  s5.verdict === "composition_fail" && s5.findings[0].rule === 1,
+  `${s5.verdict}; ${s5.findings[0].id} rule ${s5.findings[0].rule}`,
 );
 
 // Extra: invoke ∩ forbid → fail rule 2

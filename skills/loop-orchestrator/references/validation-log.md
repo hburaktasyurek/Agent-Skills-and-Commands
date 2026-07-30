@@ -14,7 +14,7 @@ The system consists of five small, interoperable components:
 
 1. methodology-selector
 2. methodology-skill-creator (renders methodology SKILL.md only; outer
-   draft/ship harness is `skill-creator`)
+   draft/ship harness is `skill-draft-ship`)
 3. one universal goal-engineering renderer
 4. loop-readiness-score
 5. a thin loop-orchestrator
@@ -160,7 +160,7 @@ score.
 
 ## Rejected shortcuts
 
-- Absorbing `skill-creator` draft/ship/purpose gates into methodology-skill-creator or loop-orchestrator.
+- Absorbing `skill-draft-ship` draft/ship/purpose gates into methodology-skill-creator or loop-orchestrator.
 - Treating a passing slice, infrastructure, fixtures, or partial matrix as
   completion.
 - One monolithic skill or duplicated canonical methodology data.

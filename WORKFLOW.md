@@ -102,7 +102,8 @@ the repository or Git for additional evidence within its own responsibility.
 | `skill-router` | Required `job` text; optional `exclude` skill-name list |
 | `skill-composition` | Exactly one of `target`, `proposal_path`, or `fixture_path` |
 | `skill-path-selector` | Completed selector checklist (via `skill-brief` when incomplete) |
-| `skill-creator` | Selector path for draft mode, or purpose_pass draft path + explicit human ship + composition_ok or human composition skip |
+| `skill-design-loop` | Explicitly supplied skill-design intent or partial/complete checklist; orchestrates through draft and stops |
+| `skill-draft-ship` | Complete checklist + selected path for draft mode, or purpose_pass draft path + explicit human ship + composition_ok or human composition skip |
 | `skill-review` | `.skill-proposals/<skill_name>/` plus checklist purpose fields |
 | `revise-skill-from-review` | Draft path plus complete purpose_fail remedies |
 
@@ -114,7 +115,7 @@ When unsure which **existing** catalog skill fits the current job, optionally
 run `skill-router` for a single recommendation (`skill` | `none` | `blocked`).
 It does not replace WORKFLOW session transitions or propose skill chains.
 
-Before shipping a skill, `skill-creator` ship mode requires a
+Before shipping a skill, `skill-draft-ship` ship mode requires a
 `composition_ok` verdict from `skill-composition` on the current draft (or an
 explicit human composition skip with reason). Composition is an artifact
 prerequisite of ship, not a substitute for `skill-review` purpose judgment.
@@ -201,32 +202,42 @@ Prefer methodology-bound skills. **Never author a new skill's SKILL.md before
 method-name bias in the request). Drafts live under gitignored
 `.skill-proposals/`; canonical packages live under `skills/` only after ship.
 
-1. Run `skill-path-selector`. If the checklist is missing or incomplete, it
-   invokes `skill-brief` first. `skill-brief` owns intake and may use
-   `grill-me` under brief bounds (field-scoped, one question at a time, default
-   max 8); it does not call open-ended grill-me as the loop entry.
-2. `skill-brief` returns the selector checklist (no invented fields): purpose,
+1. Explicitly invoke `skill-design-loop` with a skill idea or checklist. It
+   resolves the active repository and reads sibling contracts only from that
+   repository's `skills/`; global installations are activation copies, never
+   source or fallback.
+2. In the same task, `skill-design-loop` applies `skill-brief` when the
+   checklist is incomplete. `skill-brief` owns intake and may use `grill-me`
+   under brief bounds (field-scoped, one question at a time, default max 8).
+3. Intake returns the selector checklist without invented fields: purpose,
    audience, when_to_use, when_not, success_signal, boundaries, context,
-   output_format, skill_name, skill_summary; optional invocation — or
-   `blocked` with missing fields.
-3. `skill-path-selector` → `methodology` | `decompose` | `procedural` |
-   `blocked` (it may invoke `methodology-selector` on the methodology branch).
-4. On `decompose` or `blocked`, stop. On `methodology` or `procedural`,
-   continue.
-5. `skill-creator` **draft** writes only `.skill-proposals/<skill_name>/`.
-6. Separate session: `skill-review` on that draft path.
-7. On `purpose_fail`, `revise-skill-from-review` then re-run `skill-review`.
-8. On `purpose_pass`, human **ship** → `skill-creator` ship mode requires
+   output_format, skill_name, skill_summary; optional invocation; and
+   `replace: none | proposal | shipped | both`.
+4. The orchestrator applies `skill-path-selector` →
+   `methodology` | `decompose` | `procedural` | `blocked`. Child normal stops
+   return to the orchestrator; human-input stops remain in the current stage.
+5. On `decompose` or `blocked`, stop without writing. On `methodology` or
+   `procedural`, invoke `skill-draft-ship` draft mode with the complete
+   checklist and selected path. Methodology rendering goes directly through
+   `methodology-skill-creator`, never `loop-orchestrator`.
+6. `skill-draft-ship` **draft** writes only
+   `.skill-proposals/<skill_name>/`; any replacement requires target-specific
+   human authority. `skill-design-loop` stops with the typed draft handoff.
+7. Separate session: `skill-review` on that draft path.
+8. On `purpose_fail`, `revise-skill-from-review` then re-run `skill-review`.
+9. On `purpose_pass`, human **ship** → `skill-draft-ship` ship mode requires
    `composition_ok` from `skill-composition` on the current draft (or an
    explicit human composition skip with reason) → copy → INDEX/README →
-   delete draft last. Install/global remains human-owned.
-9. After ship, behavior complaints use `tune-skill`, not `skill-review`.
+   delete draft last. Replacing an existing shipped package requires a fresh
+   explicit `ship_replace: true` approval in that ship attempt.
+10. Install/global remains human-owned. After ship, behavior complaints use
+    `tune-skill`, not `skill-review`.
 
 Checklist → eight-field map: purpose→task; audience→audience; context→context;
 output_format→output_format; success_signal→validation check + evidence;
 boundaries→stop_conditions with `human_approval_required: true` and
 `approval_actions` including `ship skill to skills/`; skill_name /
-skill_summary / invocation stay creator inputs.
+skill_summary / invocation / replace stay draft inputs.
 
 #### Lifecycle package selections (purpose-first)
 
@@ -240,7 +251,8 @@ Recorded under `skills/lifecycle-build/selections/` before each SKILL.md:
 | `skill-path-selector` | `decision-matrix` | Path choice among options with criteria |
 | `skill-review` | `smart-goals` | Draft judged as measurable finishability |
 | `revise-skill-from-review` | `pdca` | Bounded change inside review/revise cycles |
-| `skill-creator` | `none` (procedural harness) | Persist/ship file gates only |
+| `skill-design-loop` | `none` (procedural orchestrator) | Explicit preflight/intake/path/draft routing |
+| `skill-draft-ship` | `none` (procedural harness) | Renamed continuation of the historical `skill-creator`; persist/ship gates only |
 
 ## Tool and model policy
 

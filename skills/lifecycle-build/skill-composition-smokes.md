@@ -1,4 +1,4 @@
-# skill-composition smokes (S1–S4)
+# skill-composition smokes
 
 Catalog for edge targets: `skills/INDEX.md` ∩ `skills/*/SKILL.md`.
 Manner-only constraints (e.g. bare grill-me) are not forbids.
@@ -23,29 +23,59 @@ requires: []
 **verdict:** `composition_ok`
 **result:** pass
 
-## S2 — skill-creator → composition_ok
+## S2 — skill-draft-ship → composition_ok
 
-**input:** `target: skill-creator`
+**input:** `target: skill-draft-ship`
 
 **extracted (observed):**
 
 ```yaml
-subject: skills/skill-creator/SKILL.md
+subject: skills/skill-draft-ship/SKILL.md
 invokes:
   - methodology-skill-creator
-  - loop-orchestrator
 forbids:
+  - skill-brief
   - skill-path-selector
+  - methodology-selector
   - skill-review
+  - skill-composition
+  - loop-orchestrator
 requires: []
-# notes: "Require skill-path-selector path" is an artifact prerequisite, not
-# requires:skill-path-selector; "Stop for skill-review" is a handoff, not invoke.
 ```
 
 **verdict:** `composition_ok`
 **result:** pass
 
-## S3 — missing input → blocked
+## S3 — skill-design-loop → composition_ok
+
+**input:** `target: skill-design-loop`
+
+**extracted (observed):**
+
+```yaml
+subject: skills/skill-design-loop/SKILL.md
+invokes:
+  - skill-brief
+  - skill-path-selector
+  - skill-draft-ship
+forbids:
+  - loop-orchestrator
+  - skill-review
+  - skill-composition
+requires:
+  - skill-brief
+  - grill-me
+  - skill-path-selector
+  - methodology-selector
+  - skill-draft-ship
+  - methodology-skill-creator
+# notes: grill-me is a nested skill-brief capability, not a direct invoke.
+```
+
+**verdict:** `composition_ok`
+**result:** pass
+
+## S4 — missing input → blocked
 
 **input:** (empty)
 
@@ -57,7 +87,7 @@ missing:
 
 **result:** pass
 
-## S4 — bad fixture → composition_fail
+## S5 — bad fixture → composition_fail
 
 **input:** `fixture_path: skills/lifecycle-build/fixtures/bad-composition/SKILL.md`
 

@@ -51,6 +51,17 @@ The `npx skills` format has no transitive dependency declaration, so selecting
 only a dependent skill is intentionally unsupported. Each dependent skill
 checks this installation precondition before its scripts are used.
 
+## Skill Design Dependencies
+
+`skill-design-loop` and `skill-draft-ship` are explicit-only entry points.
+They resolve the active repository as source of truth and never fall back to
+globally installed sibling content.
+
+| Skill | Required repository siblings |
+|---|---|
+| `skill-design-loop` | Always: `skill-brief`, `skill-path-selector`, `methodology-selector`, `skill-draft-ship`; intake gaps: `grill-me`; methodology path: `methodology-skill-creator` |
+| `skill-draft-ship` | Methodology draft only: `methodology-skill-creator`; ship consumes, but does not invoke, `skill-review` and `skill-composition` evidence |
+
 ## Skills
 
 Invokable via `/skill-name` in Claude Code, or installed into other agents via `npx skills`. See [skills/INDEX.md](skills/INDEX.md) for a grouped index.
@@ -76,7 +87,8 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [skill-router](skills/skill-router/SKILL.md) | Decision Matrix: recommend exactly one catalog skill for a job, or none/blocked. |
 | [skill-composition](skills/skill-composition/SKILL.md) | Procedural: check one skill's invoke/forbid/require edges against the catalog. |
 | [skill-path-selector](skills/skill-path-selector/SKILL.md) | Decision Matrix: choose methodology / decompose / procedural / blocked from the skill checklist (via skill-brief when incomplete). |
-| [skill-creator](skills/skill-creator/SKILL.md) | Procedural harness: draft under `.skill-proposals/` or ship after purpose_pass. |
+| [skill-design-loop](skills/skill-design-loop/SKILL.md) | Explicitly orchestrate repository skill intake, path selection, and one proposal draft; stop before review or ship. |
+| [skill-draft-ship](skills/skill-draft-ship/SKILL.md) | Explicitly draft from a complete selected path or ship after purpose and composition gates. |
 | [skill-review](skills/skill-review/SKILL.md) | SMART Goals: purpose_pass / purpose_fail on a draft path only. |
 | [revise-skill-from-review](skills/revise-skill-from-review/SKILL.md) | PDCA: closed-list draft edits after purpose_fail. |
 | [tune-skill](skills/tune-skill/SKILL.md) | Tactical, complaint-driven edit to an existing shipped skill: diagnose root cause, smallest change, cold-read review. |
@@ -90,6 +102,17 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 ## Manage Installed Skills
 
 Skills follow the [open agent skills](https://github.com/vercel-labs/skills) format. Works with Claude Code, Codex, Cursor, and other supported agents.
+
+To migrate from the former personal `skill-creator` package without leaving a
+name collision with a host-provided skill:
+
+```bash
+npx skills@latest remove skill-creator -g -y
+npx skills@latest add hburaktasyurek/Agent-Skills-and-Commands -g --all
+npx skills@latest list -g
+```
+
+Global migration is human-owned. Repository agents do not run these commands.
 
 ```bash
 # List global skills
@@ -125,5 +148,5 @@ Body shape and length vary by purpose. Methodology-generated skills follow a dis
 ├── WORKFLOW.md           # stable multi-session working method
 ├── skills/               # invokable skills (see skills/INDEX.md)
 │   └── lifecycle-build/  # support fixtures and smokes (no root SKILL.md)
-└── .skill-proposals/     # gitignored drafts from skill-creator
+└── .skill-proposals/     # gitignored drafts from skill-draft-ship
 ```

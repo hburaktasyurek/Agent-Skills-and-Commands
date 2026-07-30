@@ -21,9 +21,9 @@ If your idea is bigger than a small fix, fork is almost always the better path.
 ## Adding a skill to your fork
 
 Follow the Skill design loop in [WORKFLOW.md](WORKFLOW.md):
-`skill-path-selector` → (if needed) `skill-brief` (bounded `grill-me` for
-missing checklist fields) → path → `skill-creator` draft under
-`.skill-proposals/` → separate `skill-review` → optional
+explicit `skill-design-loop` → repository preflight → (if needed)
+`skill-brief` with bounded `grill-me` → `skill-path-selector` →
+`skill-draft-ship` draft under `.skill-proposals/` → separate `skill-review` → optional
 `revise-skill-from-review` → human **ship** into `skills/`. Prefer a
 methodology-bound skill; if the idea is not reducible to one method, decompose.
 After ship, use `tune-skill` for behavior complaints.

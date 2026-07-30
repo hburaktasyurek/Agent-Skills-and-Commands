@@ -13,7 +13,19 @@ Produce the result for Agents in the skill-design loop and humans reviewing the 
 
 ## Operating instructions
 
-Repo skill-design loop: skill-path-selector calls skill-brief (not bare grill-me); skill-brief uses grill-me as a tool for its own gaps; then skill-creator drafts only after a path. Required checklist fields match skill-path-selector: purpose, audience, when_to_use, when_not, success_signal, boundaries, context, output_format, skill_name, skill_summary; optional invocation and replace. Map 5W2H coverage onto those checklist fields (what/why→purpose+skill_name+skill_summary+output_format; who→audience; where→context; when→when_to_use+when_not; how→boundaries and how grill-me is scoped; how much→question budget and effort/risk in success_signal or blocked notes).
+Repo skill-design loop: skill-design-loop applies skill-brief for intake (not
+bare grill-me); skill-brief uses grill-me as a tool for its own gaps; then
+skill-path-selector chooses a path and skill-draft-ship drafts only from the
+complete handoff. Required checklist fields match skill-path-selector: purpose,
+audience, when_to_use, when_not, success_signal, boundaries, context,
+output_format, skill_name, skill_summary; optional invocation. Replacement
+permission is `replace: none | proposal | shipped | both`, defaults to `none`,
+and may only preserve explicit human authority naming the skill and target
+kind. Map 5W2H coverage onto those checklist fields
+(what/why→purpose+skill_name+skill_summary+output_format; who→audience;
+where→context; when→when_to_use+when_not; how→boundaries and how grill-me is
+scoped; how much→question budget and effort/risk in success_signal or blocked
+notes).
 
 ## Required deliverable
 
@@ -93,7 +105,7 @@ Human approval is required before: ship skill to skills/.
 - Apply only 5W2H; do not blend another methodology.
 - Do not select a create path (methodology | decompose | procedural | blocked).
 - Do not write `.skill-proposals/` or `skills/` SKILL.md files.
-- Do not run methodology-selector, skill-creator, skill-review, or ship.
+- Do not run methodology-selector, skill-draft-ship, skill-review, or ship.
 - Do not run unbounded grill-me; brief owns field scope, one-at-a-time questions, default max 8 decision questions, and stop.
 - Do not invent checklist values to force completeness; mark unknown and block instead.
 - Do not change the task contract to make validation easier.
