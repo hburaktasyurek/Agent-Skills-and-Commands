@@ -129,6 +129,38 @@ Use claim-matching authority:
 - History, comments, names, conventions, and analogous code are supporting
   evidence unless a binding contract adopts them.
 
+Apply these proof gates only when the plan contains the triggering mechanism:
+
+- **Acquire/release symmetry:** For every task-owned reserve, claim, open,
+  publish, or ownership acquisition, trace every release, undo, cleanup,
+  terminal, retry, and recovery path. Prove who may release, which disposition
+  permits it, which exact records it affects, whether it shares the required
+  transaction and lock order, and what repeated or partial execution does.
+  Success, unknown, or still-owned work must not become releasable merely
+  because a cleanup path exists.
+- **Database-enforced invariant:** When correctness depends on a table,
+  transaction, key, index, or constraint, verify that readiness proves every
+  load-bearing part of the physical schema rather than only table presence or
+  an allowlist entry. Check only applicable properties, such as engine and
+  transaction capability, table identity, primary and unique keys, columns,
+  types, nullability, defaults, collation, and key order.
+- **Atomicity identity:** When multiple participants are claimed to share one
+  local database transaction, prove they use the same concrete transaction
+  context and owner and resolve the intended physical resources; wrappers,
+  connections, prefixes, or table mappings must not silently escape that unit.
+  A nested operation is outside the unit only when it owns a separate
+  transaction. When the plan instead claims distributed atomicity, verify its
+  coordinator, participant enlistment, commit/rollback protocol, and recovery
+  identity rather than demanding one connection.
+- **Structured-data boundary:** When decoded JSON, maps, payloads, or external
+  response facts control authority, identity, or publication, distinguish
+  missing, null, empty, object/map, list, scalar, malformed, and conflicting
+  values wherever those states have different consequences. Prove provenance,
+  applicable fail-closed behavior, and consequence-changing shapes with
+  counterexamples; a truthy or successfully decoded value is not enough.
+  Require canonical re-encoding and sibling preservation only when task-owned
+  code re-encodes or partially updates the structured value.
+
 ## 4. Attack consequence paths and close root families
 
 Attack the highest-consequence path first, then every remaining applicable
