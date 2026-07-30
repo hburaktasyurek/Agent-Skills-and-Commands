@@ -55,24 +55,33 @@ or a check with material external side effects merely to strengthen a review.
   identifiers before reading for findings. If no current PR boundary can be
   established, return `INCOMPLETE`.
 - Recover the task definition without treating PR-authored agreement as
-  independent proof. Use this authority order:
+  independent proof. Separate task-intent authority from baseline and
+  compatibility evidence. Use this task-intent authority order:
   1. an approved spec, linked issue, accepted plan, or commissioning
      conversation that exists independently of the current diff;
-  2. pre-existing system contracts and observed behavior;
-  3. the PR description for its declared intent;
-  4. when the description is absent, the PR title, branch name, and commit
+  2. when no independent task source exists, the PR description for its
+     declared intent;
+  3. when the description is absent, the PR title, branch name, and commit
      messages only for the minimum declared intent they jointly support;
-  5. docs, tests, comments, and implementation added or changed by this PR.
-  Lower sources may clarify intent but cannot silently override higher ones.
-  When no higher task source exists, the PR description may define the
-  requested outcome. Sparse metadata may establish a narrower minimum outcome,
-  but must not be expanded into unstated acceptance criteria. Neither source
-  proves its claims about existing system, external, or safety behavior.
-  Artifacts changed together in the PR remain correlated claims even when they
-  agree. If authoritative sources conflict, or a material correctness claim
-  depends only on circular PR-authored corroboration and cannot be checked
-  against the declared outcome or observed system, return `INCOMPLETE` and
-  name the unresolved claim.
+  4. docs, tests, comments, and implementation added or changed by this PR.
+  Lower task-intent sources may clarify intent but cannot silently override
+  higher ones. Sparse metadata may establish a narrower minimum outcome, but
+  must not be expanded into unstated acceptance criteria. Pre-existing system
+  contracts and observed behavior establish baseline and compatibility
+  evidence; they do not by themselves define the requested outcome or override
+  declared task intent. A PR description may declare a requested contract
+  change, but it and other PR-authored artifacts remain claims rather than
+  proof of existing-system, external-consumer, correctness, or safety
+  behavior. Artifacts changed together in the PR remain correlated claims even
+  when they agree. A difference between declared task intent and a pre-existing
+  contract is not by itself a source conflict or reason for `INCOMPLETE`;
+  trace the affected consumers and compatibility consequences. When a material
+  compatibility conclusion depends on external consumers that cannot be
+  identified or checked, record the unknown as required evidence and return
+  `INCOMPLETE`. If controlling task-intent sources conflict, or a material
+  correctness claim depends only on circular PR-authored corroboration and
+  cannot be checked against the declared outcome, baseline, or compatibility
+  evidence, return `INCOMPLETE` and name the unresolved claim.
 - On re-review, require the complete prior report and the exact head revision
   it reviewed when they are not already in the current conversation or
   artifacts. A summary or unbound report cannot support incremental reuse. If
@@ -447,8 +456,11 @@ of these behavior checks:
 | --- | --- |
 | Tiny manifest diff removes the sole dependency required before every live service instance can start; merging triggers an automatic rolling rollout that replaces the full fleet, every replacement fails startup, no alternate serving path or automated rollback exists, and recovery requires rebuilding and redeploying the image | Review mode `full`, overall risk `critical`, result `FAIL`, exact P0 evidence and complete coverage; compact report profile is allowed and no filler finding appears. |
 | Large database-support PR has no current production caller or flag, but is the approved persistence path for a separately reviewed later release; it claims concurrency-safe ownership over shared financial reservation rows, and if that invariant is wrong concurrent execution can silently duplicate ownership across accounts and require manual repair, while material real-database/concurrency evidence to decide the invariant is omitted | Activation is `dormant/support-only`, immediate production harm is not claimed, overall risk is `high`, result is `INCOMPLETE`, missing checks appear as required evidence, and the report terminates with named unexamined items. |
-| Passing tests encode the implementation's false premise | The tests are rejected as an independent oracle; the violated external or pre-existing invariant controls the finding or required-evidence decision. |
-| Fix-only revision has exact ancestry, unchanged task, and no new surface | `incremental`; every prior finding is reconciled and only evidence proven unchanged is reused. |
+| Passing PR-authored tests encode the implementation's false premise about an independent requirement or a pre-existing contract's compatibility consequences | The tests are rejected as an independent oracle; the controlling independent requirement or evidenced compatibility consequence controls the finding or required-evidence decision. A superseded baseline alone does not redefine task intent. |
+| No independent task source exists; the PR description explicitly declares replacing a pre-existing contract, and affected consumers and compatibility consequences are independently established | The PR description defines the requested outcome; the old contract remains baseline and compatibility evidence, but its difference alone does not cause `INCOMPLETE`. |
+| The same declared contract change depends on material external consumers that cannot be identified or checked, while PR-authored docs and tests merely assert compatibility | `INCOMPLETE`; the unknown consumers and exact evidence needed to close compatibility are named, and correlated PR-authored claims do not close the gap. |
+| Fix-only revision has a complete prior report bound to its exact reviewed head; the current PR boundary is stable; ancestry and the complete bounded delta are provable; task and PR purpose are unchanged; prior coverage is adequate for every affected area; and no new impact surface or material invariant appears | `incremental`; every prior finding is reconciled and only evidence proven unchanged is reused. |
+| A revision is described as fix-only, but the complete bound prior report or head is unavailable, ancestry or the complete delta is not safely comparable and bounded, the base, task, or purpose changed materially, prior coverage is inadequate for an affected area, a new impact surface appears, or a material invariant is added or reshaped | `reset-to-full`; no prior coverage is reused. |
 | Later revision adds a new state or authorization surface | `reset-to-full`; the new surface receives complete discovery before a result. |
 | PR head changes during review | Restart against the new head or return `INCOMPLETE`; never emit a result bound to the stale head. |
 

@@ -69,13 +69,15 @@ Do not silently choose the missing product decision.
 
 ## 2. Calibrate by consequence
 
-Infer one posture from evidence. It controls attack depth, not finding
-priority:
+Infer one posture from evidence about the worst credible task-connected path's
+consequence, reach, reversibility, recovery cost, detectability, and activation
+conditions. It controls attack depth, not finding priority. Financial,
+authentication, privacy, data, migration, availability, and other domain names
+are signals to inspect those dimensions, never automatic posture assignments:
 
-- **critical** — a credible path can move or duplicate money; corrupt, expose,
-  or irreversibly lose material data; break authentication, authorization,
-  identity, privacy, or security boundaries; strand an irreversible
-  migration/protocol cutover; or cause a broad unrecoverable outage;
+- **critical** — a concrete activation path can cause severe, widespread, or
+  difficult-to-reverse financial, authentication, authorization, identity,
+  privacy, security, data, migration, availability, or operational harm;
 - **high** — a credible path can create materially wrong cross-component
   state, contract failure, or substantial operational/recovery cost, but the
   harm is bounded and recoverable;
