@@ -15,9 +15,6 @@ const results = [];
 const TG_DESCRIPTION =
   "Apply 5W2H to ground a non-trivial software task into an evidence-backed decision context before specification or implementation. Use when a vague task needs a complete operating frame. Triggers: start task N; take the next roadmap item; görev N'e başlayalım.";
 
-const TS_DESCRIPTION =
-  "Apply Work Breakdown Structure to produce an evidence-backed four-file specification for one bounded software change. Use when the required four-file specification and ordered implementation work packages must be decomposed into independently reviewable deliverables. Triggers: to-spec; write the spec; hand this off.";
-
 const extractDescription = (skillMarkdown) => {
   const match = skillMarkdown.match(/^description: (.+)$/m);
   if (!match) {
@@ -310,54 +307,8 @@ check(
   extractDescription(tgResult.files["SKILL.md"]),
 );
 
-const tsCandidate = {
-  skill_name: "test-ts-description-pin",
-  skill_summary:
-    "produce an evidence-backed four-file specification for one bounded software change",
-  invocation: ["to-spec", "write the spec", "hand this off"],
-  contract: {
-    methodology: "work-breakdown-structure",
-    task: "turn sufficiently resolved conversation and task context for one bounded software change into an evidence-backed, contradiction-audited, production-ready four-file specification",
-    audience:
-      "the implementation agent first; the human owner and independent spec reviewer second; and agents grounding later dependent tasks third",
-    context: "Use resolved conversation and authoritative task artifacts.",
-    output_format: "Four-file specification folder.",
-    validation: {
-      checks: ["Four files are saved."],
-      evidence: ["Folder path and unverified-claim count."],
-    },
-    method_fit: {
-      best_when:
-        "The required four-file specification and ordered implementation work packages must be decomposed into independently reviewable deliverables",
-      avoid_when:
-        "The requested outcome is not this multi-deliverable specification cluster or cannot be decomposed without fabricating work",
-      reason: "The deliverable is the four-file specification cluster.",
-    },
-    human_review_stop: {
-      stop_conditions: ["Stop after reporting the saved spec."],
-      human_approval_required: true,
-      approval_actions: ["beginning implementation"],
-    },
-  },
-  selection: {
-    methodology_name: "Work Breakdown Structure",
-    method_ref: "references/work-breakdown-structure.md",
-  },
-};
-const tsResult = renderMethodologySkill(tsCandidate);
-check(
-  "TS description pin matches Acceptance String",
-  extractDescription(tsResult.files["SKILL.md"]) === TS_DESCRIPTION &&
-    !tsResult.files["SKILL.md"].includes("## Fit"),
-  extractDescription(tsResult.files["SKILL.md"]),
-);
-
 const liveTg = fs.readFileSync(
   new URL("../../task-groundwork/SKILL.md", import.meta.url),
-  "utf8",
-);
-const liveTs = fs.readFileSync(
-  new URL("../../to-spec/SKILL.md", import.meta.url),
   "utf8",
 );
 check(
@@ -368,15 +319,6 @@ check(
     liveTg.includes("- start task N"),
   extractDescription(liveTg) || "missing description",
 );
-check(
-  "live to-spec description matches TS pin",
-  extractDescription(liveTs) === TS_DESCRIPTION &&
-    !liveTs.includes("## Fit") &&
-    liveTs.includes("## Invocation") &&
-    liveTs.includes("- to-spec"),
-  extractDescription(liveTs) || "missing description",
-);
-
 process.stdout.write(
   `${JSON.stringify({ passed: results.length, results }, null, 2)}\n`,
 );

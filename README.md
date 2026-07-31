@@ -72,8 +72,8 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [grill-me](skills/grill-me/SKILL.md) | Stress-test a plan, decision, or idea through a one-question-at-a-time interview. |
 | [adversarial-spec-review](skills/adversarial-spec-review/SKILL.md) | Red-team review that tries to kill a plan; P0–P3 findings with verdict. |
 | [spec-readiness](skills/spec-readiness/SKILL.md) | Final gate: can an implementer start every task tomorrow? |
-| [to-spec](skills/to-spec/SKILL.md) | Apply Work Breakdown Structure to produce an evidence-backed four-file specification for one bounded software change. |
-| [revise-spec-from-review](skills/revise-spec-from-review/SKILL.md) | Reconcile only supplied spec-review findings: verify the finding and remedy separately, edit confirmed in-scope issues, and push back on the rest. |
+| [to-spec](skills/to-spec/SKILL.md) | Produce a consequence-calibrated four-file implementation spec with complete reachable contracts and proportional depth. |
+| [revise-spec-from-review](skills/revise-spec-from-review/SKILL.md) | Reconcile supplied spec-review findings without introducing contradictions or silently choosing missing product behavior. |
 | [senior-implementer](skills/senior-implementer/SKILL.md) | Implement a spec or brief end-to-end, and apply complete review findings as bounded fixes. Trust the spec, stop when it breaks, ship complete. |
 | [tdd](skills/tdd/SKILL.md) | Red-green-refactor TDD loop, with reference docs on tests, mocking, refactoring, deep modules, interface design. |
 | [triage-issue](skills/triage-issue/SKILL.md) | Investigate a bug, find root cause, file a GitHub issue with a TDD-based fix plan. |
