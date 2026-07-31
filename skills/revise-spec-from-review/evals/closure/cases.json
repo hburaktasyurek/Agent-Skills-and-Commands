@@ -29,6 +29,16 @@
         "No choice-dependent matrix, taxonomy, recommendation, or acceptance edit is made.",
         "The decision request explains observable options, consequences, one recommendation, and asks exactly one question."
       ]
+    },
+    {
+      "id": "mixed-safe-edit-and-decision",
+      "input": "mixed-safe-edit-and-decision/input",
+      "checks": [
+        "The independently determined DefiniteFailureSignal correction is applied and audited before the response asks for a decision.",
+        "The unresolved AmbiguousExpirySignal surfaces receive no choice-dependent edit.",
+        "The response reports the completed F1 correction before F2, explains F2's observable options and consequences, recommends one option, and asks exactly one question.",
+        "No unrelated spec behavior changes."
+      ]
     }
   ]
 }

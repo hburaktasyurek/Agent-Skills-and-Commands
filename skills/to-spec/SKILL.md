@@ -70,7 +70,8 @@ Record privately:
 - required outcome and affected observer;
 - in-scope and out-of-scope behavior;
 - accepted decisions and remaining material decisions;
-- exact spec root and a clear timestamped slug.
+- exact spec root—`agent-os/specs` by default, or the approved alternative—and
+  a clear timestamped slug.
 
 If a material decision is missing, do not save a partial cluster. Explain the
 real scenario, why the choice changes observable behavior, two or three options
@@ -107,7 +108,10 @@ apply an effect.
 
 ### 4. Draft exactly four files
 
-Create one folder at `agent-os/specs/YYYY-MM-DD-HHMM-<slug>/` containing exactly:
+Create one folder at
+`<recorded-spec-root>/YYYY-MM-DD-HHMM-<slug>/`, where the recorded root defaults
+to `agent-os/specs` only when no alternative was approved. The folder contains
+exactly:
 
 - `shape.md`: what this builds, verified key interfaces, data/control flow,
   canonical decisions and invariants, and product-focused out of scope;

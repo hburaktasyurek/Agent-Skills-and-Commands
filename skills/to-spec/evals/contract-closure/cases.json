@@ -19,6 +19,15 @@
         "The four-file spec stays proportional to the local presentation-only change, using one implementation task and no more than 800 words for this fixture.",
         "No payment, persistence, concurrency, recovery, authority, or unrelated contract matrix is invented."
       ]
+    },
+    {
+      "id": "approved-alternate-root",
+      "input": "approved-alternate-root/input",
+      "checks": [
+        "Exactly four spec files are created below docs/specifications using a timestamped task slug.",
+        "No agent-os/specs directory or duplicate spec cluster is created.",
+        "The focused spec remains proportional and preserves the approved output-root decision."
+      ]
     }
   ]
 }

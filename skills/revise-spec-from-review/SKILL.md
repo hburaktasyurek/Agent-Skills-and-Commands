@@ -118,9 +118,10 @@ closure.
 Simple local facts need only a direct dependent-reference trace. Do not force a
 matrix where inputs cannot vary independently or behavior does not change.
 
-### 3. Ask usable decision questions
+### 3. Prepare usable decision questions
 
-For `DECISION_REQUIRED`, explain before using internal labels:
+For each `DECISION_REQUIRED`, prepare an explanation before using internal
+labels:
 
 - the real scenario and why it can occur;
 - why a choice is necessary now;
@@ -130,8 +131,11 @@ For `DECISION_REQUIRED`, explain before using internal labels:
 - exactly one plain-language question.
 
 Do not present only names such as “throw / unknown / definite.” Do not make the
-choice-dependent edit while waiting. Ask only the earliest unresolved decision
-in dependency order; preserve later items for the next continuation.
+choice-dependent edit while waiting. Keep the earliest unresolved decision in
+dependency order ready for the response and preserve later items for the next
+continuation. A pending decision does not postpone independent
+`CONFIRMED → EDIT` findings: apply and audit those first while leaving every
+choice-dependent surface unchanged.
 
 ### 4. Apply the semantic closure cone
 
@@ -190,7 +194,11 @@ Before reporting, confirm:
 - no implementation, Git mutation, PR action, workflow change, or independent
   re-review occurred.
 
-Then stop. The next owner reruns the failed review in a separate session.
+Report the completed independent corrections before the earliest prepared
+decision question. Ask exactly that one question and stop; do not start a
+second decision or edit its dependent surfaces in the same continuation. If no
+decision remains, stop after the applicable report. The next owner reruns the
+failed review in a separate session.
 
 ## Response contract
 
