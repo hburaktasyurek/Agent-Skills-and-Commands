@@ -78,7 +78,8 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [tdd](skills/tdd/SKILL.md) | Red-green-refactor TDD loop, with reference docs on tests, mocking, refactoring, deep modules, interface design. |
 | [triage-issue](skills/triage-issue/SKILL.md) | Investigate a bug, find root cause, file a GitHub issue with a TDD-based fix plan. |
 | [commit-work](skills/commit-work/SKILL.md) | Stage intended changes, split coherent Conventional Commits, and verify; push only when explicitly asked. |
-| [adversarial-diff-review](skills/adversarial-diff-review/SKILL.md) | Hostile shipping/merge gate: kill-test a branch/PR diff against the task definition; P0–P3 findings with file:line evidence and a coverage declaration. |
+| [risk-calibrated-pr-review](skills/risk-calibrated-pr-review/SKILL.md) | Review a current PR with zero assumed correctness: establish complete task and consequence scope, scale attack depth to evidenced impact, and bind PASS, FAIL, or INCOMPLETE to an exact PR revision. |
+| [adversarial-diff-review](skills/adversarial-diff-review/SKILL.md) | Hostile kill-test for an explicitly requested branch/worktree/PR diff, especially before a PR exists; the canonical opened-PR merge gate is risk-calibrated-pr-review. |
 | [review-implementation](skills/review-implementation/SKILL.md) | Before-PR named-spec compliance: checklist + known-pitfall sweep (tenancy, auth, migrations, payments); Ready-for-PR verdict (not the hostile merge gate). |
 | [pr-branch](skills/pr-branch/SKILL.md) | Write a two-block PR description (non-technical summary + technical detail), open the PR. |
 | [session-handoff](skills/session-handoff/SKILL.md) | Optional controlled resume packet for a fresh window when mid-work context must survive; not a mandatory end-of-goal step. |
