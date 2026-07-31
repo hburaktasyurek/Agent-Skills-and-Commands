@@ -1,0 +1,11 @@
+NOT READY
+
+[Blocker] DefiniteFailureSignal on auxiliary.create has no selected result
+
+The classifier accepts both operation families, but the spec does not choose
+whether this cross-pair throws, remains unknown for recovery, or resolves the
+auxiliary operation as definite. The alternatives change the public result and
+recovery behavior.
+
+Required closure: obtain one product decision and propagate it through the
+taxonomy, outcome valid states, caller recommendation, and tests.

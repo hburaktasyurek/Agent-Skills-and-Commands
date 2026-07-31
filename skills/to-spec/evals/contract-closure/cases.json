@@ -1,0 +1,24 @@
+{
+  "cases": [
+    {
+      "id": "independent-axis-critical",
+      "input": "independent-axis-critical/input",
+      "checks": [
+        "No human decision is requested for technical consequences already fixed by the binding task and repository contracts.",
+        "Every reachable operation, carrier, resource-state, outcome, and authority combination is either specified or explicitly rejected.",
+        "DefiniteFailureSignal on auxiliary.create is rejected before outcome construction.",
+        "A verified resource learned on an ambiguous primary.create result remains available to recovery.",
+        "Each public producer result is accepted by the authority consumer and has a distinguishing counterexample test.",
+        "A throwing authority call has an exact outward error, attempt, retry/compensation, partial-effect ownership, and outcome-reuse contract."
+      ]
+    },
+    {
+      "id": "local-label-change",
+      "input": "local-label-change/input",
+      "checks": [
+        "The four-file spec stays proportional to the local presentation-only change, using one implementation task and no more than 800 words for this fixture.",
+        "No payment, persistence, concurrency, recovery, authority, or unrelated contract matrix is invented."
+      ]
+    }
+  ]
+}

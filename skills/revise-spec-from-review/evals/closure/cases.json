@@ -1,0 +1,34 @@
+{
+  "cases": [
+    {
+      "id": "producer-consumer-propagation",
+      "input": "producer-consumer-propagation/input",
+      "checks": [
+        "The factory matrix and every producer that emits the restricted outcome are reconciled together.",
+        "The auxiliary definite-failure pairing follows the binding reject contract instead of inventing an outcome.",
+        "Acceptance coverage contains the cross-operation counterexample.",
+        "No unrelated spec behavior changes."
+      ]
+    },
+    {
+      "id": "human-decision-usability",
+      "input": "human-decision-usability/input",
+      "checks": [
+        "No choice-dependent spec edit is made.",
+        "The response explains the real scenario before internal labels.",
+        "Each option states observable behavior and principal consequence.",
+        "One evidence-backed recommendation and exactly one question are given."
+      ]
+    },
+    {
+      "id": "edit-induced-contradiction",
+      "input": "edit-induced-contradiction/input",
+      "checks": [
+        "The proposed factory restriction is checked against every existing producer before any spec edit.",
+        "The unresolved cross-operation signal result is surfaced as a product decision instead of being chosen implicitly.",
+        "No choice-dependent matrix, taxonomy, recommendation, or acceptance edit is made.",
+        "The decision request explains observable options, consequences, one recommendation, and asks exactly one question."
+      ]
+    }
+  ]
+}

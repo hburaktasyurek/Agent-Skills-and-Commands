@@ -1,0 +1,14 @@
+NOT READY
+
+[Blocker] Outcome factories have no canonical valid-state matrix
+
+Evidence: `shape.md` describes factory results in prose, leaving operation,
+resource nullability, and recommended authority action combinations implicit.
+
+Required closure: add one canonical matrix in which definite-debit outcomes
+accept debit operations, resolved-profile outcomes accept `profile.create`
+with a nonnull profile resource, and unknown outcomes keep the operation
+unresolved. Align factory acceptance tests with the matrix.
+
+Verification: table-driven factory tests cover every documented row and reject
+operation/resource combinations outside it.
