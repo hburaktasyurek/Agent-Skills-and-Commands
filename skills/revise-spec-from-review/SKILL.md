@@ -16,6 +16,9 @@ that explains it. The reviewer's proposed remedy is a clue, not authority.
 Close one root at a time. Repair the root and every affected path back outward
 until the reported failure is no longer reachable, related branches remain
 coherent, and the repair has not created another reachable failure.
+When the root is a decision over a finite state space, replace accumulating
+exceptions with one ordered, exhaustive partition; make every affected
+statement agree with or defer to that authoritative definition.
 Consequences of the same root are in scope; unrelated trees are not.
 
 Do not guess past missing evidence, an unmade decision, or an authority
