@@ -15,9 +15,9 @@
       "input": "human-decision-usability/input",
       "checks": [
         "No choice-dependent spec edit is made.",
-        "The response explains the real scenario before internal labels.",
-        "Each option states observable behavior and principal consequence.",
-        "One evidence-backed recommendation and exactly one question are given."
+        "The unresolved operation/signal pairing remains explicit as requiring a product decision.",
+        "Its taxonomy, outcome, caller, and test surfaces remain unchanged until that decision is supplied.",
+        "No unrelated spec behavior changes."
       ]
     },
     {
@@ -27,17 +27,27 @@
         "The proposed factory restriction is checked against every existing producer before any spec edit.",
         "The unresolved cross-operation signal result is surfaced as a product decision instead of being chosen implicitly.",
         "No choice-dependent matrix, taxonomy, recommendation, or acceptance edit is made.",
-        "The decision request explains observable options, consequences, one recommendation, and asks exactly one question."
+        "No unrelated spec behavior changes."
       ]
     },
     {
       "id": "mixed-safe-edit-and-decision",
       "input": "mixed-safe-edit-and-decision/input",
       "checks": [
-        "The independently determined DefiniteFailureSignal correction is applied and audited before the response asks for a decision.",
+        "The independently determined DefiniteFailureSignal correction is applied and audited.",
         "The unresolved AmbiguousExpirySignal surfaces receive no choice-dependent edit.",
-        "The response reports the completed F1 correction before F2, explains F2's observable options and consequences, recommends one option, and asks exactly one question.",
+        "The blocked F2 root does not prevent the independent F1 root from being completed.",
         "No unrelated spec behavior changes."
+      ]
+    },
+    {
+      "id": "local-only-dependency-entry",
+      "input": "local-only-dependency-entry/input",
+      "checks": [
+        "A control-flow-only gate reorder is rejected as root-incomplete while eager service construction or production wiring still requires the unavailable provider dependency.",
+        "Pre-HTTP local abandon and already-terminal local release remain constructible and invocable when the provider dependency is unavailable, without provider acquisition or provider work.",
+        "Provider-dependent retry still fails closed before mutation when its required dependency cannot be acquired.",
+        "The revision specifies observable construction and branch-entry behavior without mandating a resolver, factory, service split, or other architecture, and makes no unrelated change."
       ]
     }
   ]
