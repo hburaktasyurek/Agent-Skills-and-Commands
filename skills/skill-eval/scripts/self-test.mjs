@@ -18,7 +18,7 @@ import {
   parseCursor,
   parseOpenCode,
 } from "./harness-adapters.mjs";
-import { protectedSkillSourceAccess, runHarnessEval } from "./run-harness-eval.mjs";
+import { protectedSkillSourceAccess, runHarnessEval, withoutExplicitInvocation } from "./run-harness-eval.mjs";
 import { validateEvalDefinition, validateTriggerDefinition } from "./validate-eval-definition.mjs";
 
 const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -97,6 +97,8 @@ assert.equal(
   protectedSkillSourceAccess("read /tmp/repo/skills/fixture-skill/SKILL.md", "/tmp/workspace", "/tmp/repo/skills/fixture-skill", null),
   "/tmp/repo/skills/fixture-skill",
 );
+assert.equal(withoutExplicitInvocation("Use $fixture-skill to do the task.", "fixture-skill"), "do the task.");
+assert.equal(withoutExplicitInvocation("Invoke /fixture-skill for this task.", "fixture-skill"), "this task.");
 
 const minimalSummary = {
   schema_version: 2,
@@ -222,6 +224,8 @@ console.log(JSON.stringify({type:"turn.completed",usage:{input_tokens:80,cached_
         executable: fakeCodex,
       });
       assert.equal(telemetry.result, "completed");
+      assert.equal(telemetry.prompt.control_invocation_removed, configuration === "baseline");
+      assert.equal(telemetry.prompt.execution_sha256 === telemetry.prompt.sha256, configuration === "subject");
       pairTelemetry[configuration] = telemetry;
       durations[configuration] += telemetry.run.duration_ms;
       usages[configuration].push(telemetry.usage);

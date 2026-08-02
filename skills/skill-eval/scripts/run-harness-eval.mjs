@@ -195,26 +195,25 @@ export function protectedSkillSourceAccess(raw, workspace, subjectPath, skillPat
     .find((candidate) => raw.includes(candidate)) ?? null;
 }
 
-function withoutExplicitInvocation(prompt, name) {
+export function withoutExplicitInvocation(prompt, name) {
   const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   return prompt
-    .replace(new RegExp(`\\buse\\s+\\/?${escaped}\\s+to\\s+`, "gi"), "")
-    .replace(new RegExp(`\\binvoke\\s+\\/?${escaped}\\s+(?:for|to)\\s+`, "gi"), "")
-    .replace(new RegExp(`\\/?${escaped}`, "gi"), "the implementation workflow");
+    .replace(new RegExp(`\\buse\\s+(?:\\$|\\/)?${escaped}\\s+to\\s+`, "gi"), "")
+    .replace(new RegExp(`\\binvoke\\s+(?:\\$|\\/)?${escaped}\\s+(?:for|to)\\s+`, "gi"), "")
+    .replace(new RegExp(`(?:\\$|\\/)?${escaped}`, "gi"), "the implementation workflow");
 }
 
 function prepareProjection(adapter, workspace, skillPath, originalPrompt, name) {
-  if (!skillPath && adapter.projection === "prompt_context") {
+  if (!skillPath) {
     return {
       prompt: `No skill package is provided for this control run. Do not search for or load any skill package, and use only files inside the workspace.\n\n${withoutExplicitInvocation(originalPrompt, name)}`,
       cleanup: () => {},
-      mode: "prompt_context_control",
+      mode: adapter.projection === "prompt_context" ? "prompt_context_control" : "native_control",
       path: null,
       excluded: [],
       invocationRemoved: true,
     };
   }
-  if (!skillPath) return { prompt: originalPrompt, cleanup: () => {}, mode: "none", path: null, excluded: [], invocationRemoved: false };
   const copyRuntimePackage = (destination) => fs.cpSync(skillPath, destination, {
     recursive: true,
     errorOnExist: true,
