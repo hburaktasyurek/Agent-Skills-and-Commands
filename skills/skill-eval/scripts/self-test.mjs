@@ -36,12 +36,11 @@ assert.deepEqual(listAdapters().map((item) => item.id), ["codex", "claude-code",
 const codexArgs = getAdapter("codex").buildArgs({
   permission: "read-only",
   workspace: "/tmp/workspace",
-  skillFile: "/tmp/subject/SKILL.md",
-  disabledSkillFiles: ["/tmp/global/SKILL.md"],
+  disabledSkillPaths: ["/tmp/global"],
 });
-assert.equal(codexArgs.some((item) => item.includes('path = "/tmp/subject/SKILL.md", enabled = true')), true);
-assert.equal(codexArgs.some((item) => item.includes('path = "/tmp/global/SKILL.md", enabled = false')), true);
+assert.equal(codexArgs.some((item) => item.includes('path = "/tmp/global", enabled = false')), true);
 assert.equal(getAdapter("codex").canDisableNamesakes, true);
+assert.equal(getAdapter("codex").skillDirectory, ".agents/skills");
 assert.equal(getAdapter("claude-code").buildArgs({ permission: "read-only" }).includes("plan"), true);
 assert.equal(getAdapter("cursor").buildArgs({ permission: "read-only", prompt: "x" }).includes("--force"), false);
 assert.equal(getAdapter("cursor").buildArgs({ permission: "workspace-write", prompt: "x" }).includes("--force"), true);

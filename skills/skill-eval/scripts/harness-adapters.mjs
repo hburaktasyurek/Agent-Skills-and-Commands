@@ -167,14 +167,11 @@ const adapters = {
     projection: "native",
     canDisableNamesakes: true,
     safePermissions: new Set(["read-only", "workspace-write"]),
-    skillDirectory: null,
-    buildArgs({ model, workspace, permission, skillFile, disabledSkillFiles = [] }) {
+    skillDirectory: ".agents/skills",
+    buildArgs({ model, workspace, permission, disabledSkillPaths = [] }) {
       const args = ["exec", "--ephemeral", "--json", "--ignore-user-config", "--ignore-rules", "-C", workspace, "--sandbox", permission, "--config", 'web_search="disabled"'];
       if (model) args.push("--model", model);
-      const skillConfig = [
-        ...(skillFile ? [{ path: skillFile, enabled: true }] : []),
-        ...disabledSkillFiles.map((file) => ({ path: file, enabled: false })),
-      ];
+      const skillConfig = disabledSkillPaths.map((skillPath) => ({ path: skillPath, enabled: false }));
       if (skillConfig.length) {
         const entries = skillConfig
           .map((item) => `{ path = ${JSON.stringify(item.path)}, enabled = ${item.enabled} }`)

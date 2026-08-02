@@ -257,7 +257,7 @@ export async function runHarnessEval(options) {
     permission,
     prompt: projection.prompt,
     skillFile: skillPath ? path.join(skillPath, "SKILL.md") : null,
-    disabledSkillFiles: competing.map((candidate) => path.join(candidate, "SKILL.md")),
+    disabledSkillPaths: competing,
     traceDir: traceReal,
   };
   const args = adapter.buildArgs(commandInput);
@@ -334,7 +334,7 @@ export async function runHarnessEval(options) {
       after_sha256: skillAfter,
       unchanged: skillBefore === skillAfter,
       projection_path: projection.path,
-      disabled_namesakes: competing.map((candidate) => path.join(candidate, "SKILL.md")),
+      disabled_namesakes: competing,
     },
     prompt: { sha256: sha256(prompt) },
     input_snapshot_sha256: sha256(JSON.stringify({ files: before, git: gitBefore })),
