@@ -1,0 +1,22 @@
+{
+  "skill_name": "to-spec",
+  "activation_mode": "explicit_only",
+  "queries": [
+    {"id":"positive-train-01","split":"train","query":"Use $to-spec to turn this grounded task into an implementation handoff.","should_trigger":true,"paired_with":"negative-train-01"},
+    {"id":"negative-train-01","split":"train","query":"Turn this grounded task into an implementation handoff.","should_trigger":false,"paired_with":"positive-train-01"},
+    {"id":"positive-train-02","split":"train","query":"Run /to-spec for task.md and the current repository evidence.","should_trigger":true,"paired_with":"negative-train-02"},
+    {"id":"negative-train-02","split":"train","query":"Write a spec for task.md and the current repository evidence.","should_trigger":false,"paired_with":"positive-train-02"},
+    {"id":"positive-train-03","split":"train","query":"$to-spec ile bu isi dort dosyali spece cevir.","should_trigger":true,"paired_with":"negative-train-03"},
+    {"id":"negative-train-03","split":"train","query":"Bu isi dort dosyali spece cevir.","should_trigger":false,"paired_with":"positive-train-03"},
+    {"id":"positive-train-04","split":"train","query":"Invoke $to-spec for this bounded contract-bearing change.","should_trigger":true,"paired_with":"negative-train-04"},
+    {"id":"negative-train-04","split":"train","query":"Specify this bounded contract-bearing change.","should_trigger":false,"paired_with":"positive-train-04"},
+    {"id":"positive-validation-01","split":"validation","query":"Use /to-spec and save the implementation spec under the approved root.","should_trigger":true,"paired_with":"negative-validation-01"},
+    {"id":"negative-validation-01","split":"validation","query":"Save the implementation spec under the approved root.","should_trigger":false,"paired_with":"positive-validation-01"},
+    {"id":"positive-validation-02","split":"validation","query":"Run $to-spec without implementing the task.","should_trigger":true,"paired_with":"negative-validation-02"},
+    {"id":"negative-validation-02","split":"validation","query":"Prepare the plan without implementing the task.","should_trigger":false,"paired_with":"positive-validation-02"},
+    {"id":"positive-validation-03","split":"validation","query":"$to-spec ile local degisiklik icin orantili handoff yaz.","should_trigger":true,"paired_with":"negative-validation-03"},
+    {"id":"negative-validation-03","split":"validation","query":"Local degisiklik icin orantili handoff yaz.","should_trigger":false,"paired_with":"positive-validation-03"},
+    {"id":"positive-validation-04","split":"validation","query":"Invoke /to-spec and close the reachable contract rows.","should_trigger":true,"paired_with":"negative-validation-04"},
+    {"id":"negative-validation-04","split":"validation","query":"Close the reachable contract rows in the spec.","should_trigger":false,"paired_with":"positive-validation-04"}
+  ]
+}

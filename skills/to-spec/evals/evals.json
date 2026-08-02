@@ -1,0 +1,78 @@
+{
+  "skill_name": "to-spec",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use $to-spec to turn evals/contract-closure/independent-axis-critical/input/task.md and its supplied code and tests into the normal implementation spec. Work only in this disposable workspace, do not implement the task, and return the saved spec path plus the required concise handoff.",
+      "expected_output": "A four-file spec under agent-os/specs closes every reachable operation, carrier, resource-state, outcome, authority, and downstream-failure contract without asking the human to decide consequences already fixed by the task and repository evidence.",
+      "files": [
+        "evals/contract-closure/independent-axis-critical/input/task.md",
+        "evals/contract-closure/independent-axis-critical/input/composer.json",
+        "evals/contract-closure/independent-axis-critical/input/phpunit.xml",
+        "evals/contract-closure/independent-axis-critical/input/src/OperationAuthority.php",
+        "evals/contract-closure/independent-axis-critical/input/src/OperationIdentity.php",
+        "evals/contract-closure/independent-axis-critical/input/src/ProviderContract.php",
+        "evals/contract-closure/independent-axis-critical/input/tests/OperationAuthorityContractTest.php"
+      ],
+      "assertions": [
+        "No human decision is requested for technical consequences already fixed by the binding task and repository contracts.",
+        "Every reachable operation, carrier, resource-state, outcome, and authority combination is either specified or explicitly rejected.",
+        "DefiniteFailureSignal on auxiliary.create is rejected before outcome construction.",
+        "A verified resource learned on an ambiguous primary.create result remains available to recovery.",
+        "Each public producer result is accepted by the authority consumer and has a distinguishing counterexample test.",
+        "A throwing authority call has an exact outward error, attempt, retry/compensation, partial-effect ownership, and outcome-reuse contract."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "project_artifact",
+        "source_evidence": {
+          "path": "evals/contract-closure/independent-axis-critical/input/task.md",
+          "sha256": "6391c490891e9146b73ecaf4283f3879695a9b0e8ecddaff0b4cfd82d95d0986",
+          "origin": {"type":"git_blob","locator":"contract-closure fixture at baseline commit 1052c66","captured_at":"2026-08-02"}
+        }
+      }
+    },
+    {
+      "id": 2,
+      "prompt": "Use $to-spec to turn evals/contract-closure/approved-alternate-root/input/task.md and its supplied code and test into the requested implementation spec. Work only in this disposable workspace, preserve the explicitly approved output root, do not implement the task, and return the saved spec path plus the required concise handoff.",
+      "expected_output": "Exactly four proportional spec files are created under docs/specifications in one timestamped task folder, with no duplicate agent-os/specs cluster and no implementation change.",
+      "files": [
+        "evals/contract-closure/approved-alternate-root/input/task.md",
+        "evals/contract-closure/approved-alternate-root/input/src/SettingsButton.php",
+        "evals/contract-closure/approved-alternate-root/input/tests/SettingsButtonTest.php"
+      ],
+      "assertions": [
+        "Exactly four spec files are created below docs/specifications using a timestamped task slug.",
+        "No agent-os/specs directory or duplicate spec cluster is created.",
+        "The focused spec remains proportional and preserves the approved output-root decision.",
+        "The supplied implementation and test files remain unchanged."
+      ],
+      "metadata": {
+        "case_type": "edge",
+        "source": "project_artifact",
+        "source_evidence": {
+          "path": "evals/contract-closure/approved-alternate-root/input/task.md",
+          "sha256": "ffb055a50c5d2ddea1389093582a42b69ef71698962b22f44a2caeb179e43e92",
+          "origin": {"type":"git_blob","locator":"contract-closure fixture at baseline commit 1052c66","captured_at":"2026-08-02"}
+        }
+      }
+    },
+    {
+      "id": 3,
+      "prompt": "Use $to-spec to turn evals/contract-closure/local-label-change/input/task.md and its supplied code and test into the normal implementation spec. Work only in this disposable workspace, do not implement the task, and return the saved spec path plus the required concise handoff.",
+      "expected_output": "Exactly four short spec files describe only the local label replacement, use one implementation task, stay below 800 aggregate words, and invent no unrelated high-consequence contracts.",
+      "files": [
+        "evals/contract-closure/local-label-change/input/task.md",
+        "evals/contract-closure/local-label-change/input/src/SettingsButton.php",
+        "evals/contract-closure/local-label-change/input/tests/SettingsButtonTest.php"
+      ],
+      "assertions": [
+        "Exactly four spec files are created under agent-os/specs in one timestamped task folder.",
+        "The four-file spec uses one implementation task and no more than 800 aggregate words.",
+        "No payment, persistence, concurrency, recovery, authority, or unrelated contract matrix is invented.",
+        "The supplied implementation and test files remain unchanged."
+      ],
+      "metadata": {"case_type":"scope_preservation","source":"synthetic"}
+    }
+  ]
+}
