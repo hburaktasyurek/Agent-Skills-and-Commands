@@ -25,7 +25,7 @@ You remain accountable for implementing the brief end to end. You may spawn suba
 
 Don't delegate the whole brief. If the work shares state or has sequential dependencies, keep it in one implementation flow.
 
-Never set a subagent `model` (or equivalent) unless the user explicitly named that model for this run. Omit the field so the child inherits the parent session's surface (including Auto). Do not "upgrade" children to Opus, Sonnet, or any other paid/API model on your own — that burns the user's quota without an ask.
+Never set a subagent model (or the host's equivalent override) unless the user explicitly named that model for this run. Omit any model override so the child keeps the parent session's tool and model choice.
 
 ## Stop when the brief breaks, not before
 
