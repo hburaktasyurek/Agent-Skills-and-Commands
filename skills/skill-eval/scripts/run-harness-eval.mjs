@@ -196,17 +196,26 @@ export function protectedSkillSourceAccess(raw, workspace, subjectPath, skillPat
     .find((candidate) => raw.includes(candidate)) ?? null;
 }
 
-function prepareProjection(adapter, workspace, skillPath, originalPrompt) {
+function withoutExplicitInvocation(prompt, name) {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return prompt
+    .replace(new RegExp(`\\buse\\s+\\/?${escaped}\\s+to\\s+`, "gi"), "")
+    .replace(new RegExp(`\\binvoke\\s+\\/?${escaped}\\s+(?:for|to)\\s+`, "gi"), "")
+    .replace(new RegExp(`\\/?${escaped}`, "gi"), "the implementation workflow");
+}
+
+function prepareProjection(adapter, workspace, skillPath, originalPrompt, name) {
   if (!skillPath && adapter.projection === "prompt_context") {
     return {
-      prompt: `No skill package is provided for this control run. Do not search for or load any skill package, and use only files inside the workspace.\n\n${originalPrompt}`,
+      prompt: `No skill package is provided for this control run. Do not search for or load any skill package, and use only files inside the workspace.\n\n${withoutExplicitInvocation(originalPrompt, name)}`,
       cleanup: () => {},
       mode: "prompt_context_control",
       path: null,
       excluded: [],
+      invocationRemoved: true,
     };
   }
-  if (!skillPath) return { prompt: originalPrompt, cleanup: () => {}, mode: "none", path: null, excluded: [] };
+  if (!skillPath) return { prompt: originalPrompt, cleanup: () => {}, mode: "none", path: null, excluded: [], invocationRemoved: false };
   const copyRuntimePackage = (destination) => fs.cpSync(skillPath, destination, {
     recursive: true,
     errorOnExist: true,
@@ -222,10 +231,11 @@ function prepareProjection(adapter, workspace, skillPath, originalPrompt) {
       mode: "prompt_context",
       path: destination,
       excluded: ["evals"],
+      invocationRemoved: false,
     };
   }
   if (!adapter.skillDirectory) {
-    return { prompt: originalPrompt, cleanup: () => {}, mode: "native", path: path.join(skillPath, "SKILL.md"), excluded: [] };
+    return { prompt: originalPrompt, cleanup: () => {}, mode: "native", path: path.join(skillPath, "SKILL.md"), excluded: [], invocationRemoved: false };
   }
   const destination = path.join(workspace, adapter.skillDirectory, skillName(skillPath));
   if (fs.existsSync(destination)) throw new Error(`Skill projection already exists: ${destination}`);
@@ -237,6 +247,7 @@ function prepareProjection(adapter, workspace, skillPath, originalPrompt) {
     mode: "native",
     path: destination,
     excluded: ["evals"],
+    invocationRemoved: false,
   };
 }
 
@@ -284,7 +295,7 @@ export async function runHarnessEval(options) {
   const skillBefore = skillPath ? hashSkillPackage(skillPath).content_sha256 : null;
   const before = snapshot(workspace);
   const gitBefore = gitIdentity(workspace);
-  const projection = prepareProjection(adapter, workspace, skillPath, prompt);
+  const projection = prepareProjection(adapter, workspace, skillPath, prompt, skillName(subjectPath));
   const executable = resolveExecutable(options.executable ?? adapter.executable);
   const commandInput = {
     model: options.model,
@@ -374,7 +385,11 @@ export async function runHarnessEval(options) {
       runtime_projection_excluded: projection.excluded,
       disabled_namesakes: competing,
     },
-    prompt: { sha256: sha256(prompt) },
+    prompt: {
+      sha256: sha256(prompt),
+      execution_sha256: sha256(projection.prompt),
+      control_invocation_removed: projection.invocationRemoved,
+    },
     isolation: { protected_source_access: Boolean(protectedAccess) },
     input_snapshot_sha256: sha256(JSON.stringify({ files: before, git: gitBefore })),
     fixture_sha256: caseIdentity.fixture_sha256,
