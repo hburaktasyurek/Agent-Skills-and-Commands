@@ -166,7 +166,12 @@ try {
   const subjectHash = hashSkillPackage(subject).content_sha256;
   const fakeCodex = path.join(root, "fake-codex.mjs");
   fs.writeFileSync(fakeCodex, `#!/usr/bin/env node
+import fs from "node:fs";
+import path from "node:path";
 if (process.argv.includes("--version")) { console.log("fake-codex 1.0"); process.exit(0); }
+const workspaceIndex = process.argv.indexOf("-C");
+const workspace = workspaceIndex === -1 ? null : process.argv[workspaceIndex + 1];
+if (workspace && fs.existsSync(path.join(workspace, ".agents/skills/fixture-skill/evals"))) process.exit(9);
 console.log(JSON.stringify({type:"thread.started",thread_id:"fixture"}));
 console.log(JSON.stringify({type:"turn.started"}));
 console.log(JSON.stringify({type:"item.completed",item:{type:"agent_message",text:"fixture output"}}));

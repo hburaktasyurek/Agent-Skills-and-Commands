@@ -14,6 +14,11 @@ For each case:
 5. Keep each trace outside its executor workspace so the run cannot read its
    own grading evidence or the paired output.
 
+Project only runtime skill material into the executor. Exclude the package's
+`evals/` directory so prompts, expected outputs, assertions, and hidden graders
+cannot leak into the run. Telemetry records this exclusion and the verifier
+rejects older projections that do not prove it.
+
 Example:
 
 ```sh

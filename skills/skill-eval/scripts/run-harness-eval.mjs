@@ -178,30 +178,37 @@ function installedNamesakes(adapterId, workspace, name, enabledSkillPath) {
 }
 
 function prepareProjection(adapter, workspace, skillPath, originalPrompt) {
-  if (!skillPath) return { prompt: originalPrompt, cleanup: () => {}, mode: "none", path: null };
+  if (!skillPath) return { prompt: originalPrompt, cleanup: () => {}, mode: "none", path: null, excluded: [] };
+  const copyRuntimePackage = (destination) => fs.cpSync(skillPath, destination, {
+    recursive: true,
+    errorOnExist: true,
+    filter: (source) => path.relative(skillPath, source).split(path.sep)[0] !== "evals",
+  });
   if (adapter.projection === "prompt_context") {
     const destination = path.join(workspace, ".skill-eval", "subject");
     fs.mkdirSync(path.dirname(destination), { recursive: true });
-    fs.cpSync(skillPath, destination, { recursive: true, errorOnExist: true });
+    copyRuntimePackage(destination);
     return {
       prompt: `Apply the skill package at ${destination} to the following task.\n\n${originalPrompt}`,
       cleanup: () => fs.rmSync(path.join(workspace, ".skill-eval"), { recursive: true, force: true }),
       mode: "prompt_context",
       path: destination,
+      excluded: ["evals"],
     };
   }
   if (!adapter.skillDirectory) {
-    return { prompt: originalPrompt, cleanup: () => {}, mode: "native", path: path.join(skillPath, "SKILL.md") };
+    return { prompt: originalPrompt, cleanup: () => {}, mode: "native", path: path.join(skillPath, "SKILL.md"), excluded: [] };
   }
   const destination = path.join(workspace, adapter.skillDirectory, skillName(skillPath));
   if (fs.existsSync(destination)) throw new Error(`Skill projection already exists: ${destination}`);
   fs.mkdirSync(path.dirname(destination), { recursive: true });
-  fs.cpSync(skillPath, destination, { recursive: true, errorOnExist: true });
+  copyRuntimePackage(destination);
   return {
     prompt: originalPrompt,
     cleanup: () => fs.rmSync(destination, { recursive: true, force: true }),
     mode: "native",
     path: destination,
+    excluded: ["evals"],
   };
 }
 
@@ -334,6 +341,7 @@ export async function runHarnessEval(options) {
       after_sha256: skillAfter,
       unchanged: skillBefore === skillAfter,
       projection_path: projection.path,
+      runtime_projection_excluded: projection.excluded,
       disabled_namesakes: competing,
     },
     prompt: { sha256: sha256(prompt) },

@@ -194,6 +194,10 @@ export function validateEvidence(summary, resolve, expectedCases = []) {
     if (telemetry?.skill?.before_sha256 !== expectedSkill || telemetry?.skill?.after_sha256 !== expectedSkill) {
       throw new Error("Run used the wrong skill package.");
     }
+    const expectedProjectionExclusions = expectedSkill ? ["evals"] : [];
+    if (JSON.stringify(telemetry?.skill?.runtime_projection_excluded) !== JSON.stringify(expectedProjectionExclusions)) {
+      throw new Error("Runtime skill projection did not exclude eval answer material.");
+    }
     const key = String(record.case_id);
     const pair = byCase.get(key) ?? {};
     if (pair[record.configuration]) throw new Error("Duplicate case configuration.");
