@@ -84,12 +84,6 @@ export function computeEvalVerdict(summary, {
       return terminal("INCONCLUSIVE", [`case:${candidate.id} has an ungraded assertion`]);
     }
   }
-  if (summary?.trigger?.required === true) {
-    if (summary.trigger.verdict === "NOT_RUN") return terminal("INCONCLUSIVE", ["required trigger evaluation was not run"]);
-    if (!triggerEvidenceValidated) return terminal("INCONCLUSIVE", ["native trigger evidence is not implemented by this MVP verifier"]);
-    if (summary.trigger.verdict === "FAIL") failed.push("trigger");
-    if (!new Set(["PASS", "FAIL"]).has(summary.trigger.verdict)) return terminal("INCONCLUSIVE", ["invalid trigger verdict"]);
-  }
   if (!Number.isInteger(summary?.comparison?.regressions) || summary.comparison.regressions < 0) {
     return terminal("INCONCLUSIVE", ["comparison.regressions"]);
   }
@@ -103,6 +97,13 @@ export function computeEvalVerdict(summary, {
   const qualityLift = grades.some((grade) => grade.subject_score > grade.baseline_score);
   const qualityRegression = grades.some((grade) => grade.subject_score < grade.baseline_score);
   if (qualityRegression) return terminal("FAIL", ["artifact quality regression"]);
+
+  if (summary?.trigger?.required === true) {
+    if (summary.trigger.verdict === "NOT_RUN") return terminal("INCONCLUSIVE", ["required trigger evaluation was not run"]);
+    if (!triggerEvidenceValidated) return terminal("INCONCLUSIVE", ["native trigger evidence is not implemented by this MVP verifier"]);
+    if (summary.trigger.verdict === "FAIL") return terminal("FAIL", ["trigger"]);
+    if (summary.trigger.verdict !== "PASS") return terminal("INCONCLUSIVE", ["invalid trigger verdict"]);
+  }
 
   const baselineUsage = summary?.comparison?.baseline?.usage;
   const subjectUsage = summary?.comparison?.subject?.usage;

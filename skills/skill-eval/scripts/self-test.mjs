@@ -137,6 +137,12 @@ assert.equal(computeEvalVerdict(missing, { expectedSubjectHash: "a".repeat(64), 
 const triggerMissing = structuredClone(minimalSummary);
 triggerMissing.trigger = { required: true, verdict: "NOT_RUN" };
 assert.equal(computeEvalVerdict(triggerMissing, { expectedSubjectHash: "a".repeat(64), evidenceValidated: true }).verdict, "INCONCLUSIVE");
+const triggerMissingWithFailedAssertion = structuredClone(triggerMissing);
+triggerMissingWithFailedAssertion.cases.results[0].assertions[0].passed = false;
+assert.equal(computeEvalVerdict(triggerMissingWithFailedAssertion, { expectedSubjectHash: "a".repeat(64), evidenceValidated: true }).verdict, "FAIL");
+const triggerMissingWithRegression = structuredClone(triggerMissing);
+triggerMissingWithRegression.cases.results[0].grade.subject_score = 2;
+assert.equal(computeEvalVerdict(triggerMissingWithRegression, { expectedSubjectHash: "a".repeat(64), evidenceValidated: true }).verdict, "FAIL");
 
 const runsRoot = path.join(repositoryRoot, ".skill-proposals", ".eval-runs");
 fs.mkdirSync(runsRoot, { recursive: true });
