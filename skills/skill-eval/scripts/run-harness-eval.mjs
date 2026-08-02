@@ -242,7 +242,9 @@ export async function runHarnessEval(options) {
     throw new Error("Enabled skill and executor paths must be disjoint.");
   }
   const competing = installedNamesakes(adapter.id, workspace, skillName(subjectPath), skillPath);
-  if (competing.length) throw new Error(`Installed namesake could contaminate the baseline: ${competing.join(", ")}`);
+  if (competing.length && !adapter.canDisableNamesakes) {
+    throw new Error(`Installed namesake could contaminate the baseline: ${competing.join(", ")}`);
+  }
   const subjectBefore = hashSkillPackage(subjectPath).content_sha256;
   const skillBefore = skillPath ? hashSkillPackage(skillPath).content_sha256 : null;
   const before = snapshot(workspace);
@@ -255,6 +257,7 @@ export async function runHarnessEval(options) {
     permission,
     prompt: projection.prompt,
     skillFile: skillPath ? path.join(skillPath, "SKILL.md") : null,
+    disabledSkillFiles: competing.map((candidate) => path.join(candidate, "SKILL.md")),
     traceDir: traceReal,
   };
   const args = adapter.buildArgs(commandInput);
@@ -325,7 +328,14 @@ export async function runHarnessEval(options) {
       exit_code: processResult.exitCode,
     },
     subject: { path: subjectPath, before_sha256: subjectBefore, after_sha256: subjectAfter, unchanged: subjectBefore === subjectAfter },
-    skill: { path: skillPath, before_sha256: skillBefore, after_sha256: skillAfter, unchanged: skillBefore === skillAfter, projection_path: projection.path },
+    skill: {
+      path: skillPath,
+      before_sha256: skillBefore,
+      after_sha256: skillAfter,
+      unchanged: skillBefore === skillAfter,
+      projection_path: projection.path,
+      disabled_namesakes: competing.map((candidate) => path.join(candidate, "SKILL.md")),
+    },
     prompt: { sha256: sha256(prompt) },
     input_snapshot_sha256: sha256(JSON.stringify({ files: before, git: gitBefore })),
     fixture_sha256: caseIdentity.fixture_sha256,

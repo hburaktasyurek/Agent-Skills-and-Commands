@@ -165,12 +165,22 @@ const adapters = {
     executable: "codex",
     parser: parseCodex,
     projection: "native",
+    canDisableNamesakes: true,
     safePermissions: new Set(["read-only", "workspace-write"]),
     skillDirectory: null,
-    buildArgs({ model, workspace, permission, skillFile }) {
+    buildArgs({ model, workspace, permission, skillFile, disabledSkillFiles = [] }) {
       const args = ["exec", "--ephemeral", "--json", "--ignore-user-config", "--ignore-rules", "-C", workspace, "--sandbox", permission, "--config", 'web_search="disabled"'];
       if (model) args.push("--model", model);
-      if (skillFile) args.push("--config", `skills.config=[{ path = ${JSON.stringify(skillFile)}, enabled = true }]`);
+      const skillConfig = [
+        ...(skillFile ? [{ path: skillFile, enabled: true }] : []),
+        ...disabledSkillFiles.map((file) => ({ path: file, enabled: false })),
+      ];
+      if (skillConfig.length) {
+        const entries = skillConfig
+          .map((item) => `{ path = ${JSON.stringify(item.path)}, enabled = ${item.enabled} }`)
+          .join(", ");
+        args.push("--config", `skills.config=[${entries}]`);
+      }
       args.push("-");
       return args;
     },
@@ -254,6 +264,7 @@ export function listAdapters() {
     id,
     executable: adapter.executable,
     projection: adapter.projection,
+    can_disable_namesakes: Boolean(adapter.canDisableNamesakes),
     safe_permissions: [...adapter.safePermissions],
   }));
 }

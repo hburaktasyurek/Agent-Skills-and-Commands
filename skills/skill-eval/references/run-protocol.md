@@ -43,6 +43,8 @@ that every installed CLI/version has passed a live conformance test. A real run
 that does not match its parser or permission contract stays `INCONCLUSIVE`.
 The runner also stops when a common global/project skill directory already
 contains the same skill name, because that would contaminate the baseline.
+The Codex adapter can instead disable those exact paths for the isolated run
+through `skills.config`; other adapters still stop when a namesake is present.
 
 This MVP permits `workspace-write` through the Codex and Cursor sandboxed
 adapters. Claude Code, OpenCode, and Cline adapters are read-only because the

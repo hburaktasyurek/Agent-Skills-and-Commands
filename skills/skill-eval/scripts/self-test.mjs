@@ -33,6 +33,15 @@ assert.equal(validateEvalDefinition(definition, { phase: "verify", baseDir: skil
 assert.equal(validateTriggerDefinition(triggers).valid, true);
 
 assert.deepEqual(listAdapters().map((item) => item.id), ["codex", "claude-code", "cursor", "opencode", "cline"]);
+const codexArgs = getAdapter("codex").buildArgs({
+  permission: "read-only",
+  workspace: "/tmp/workspace",
+  skillFile: "/tmp/subject/SKILL.md",
+  disabledSkillFiles: ["/tmp/global/SKILL.md"],
+});
+assert.equal(codexArgs.some((item) => item.includes('path = "/tmp/subject/SKILL.md", enabled = true')), true);
+assert.equal(codexArgs.some((item) => item.includes('path = "/tmp/global/SKILL.md", enabled = false')), true);
+assert.equal(getAdapter("codex").canDisableNamesakes, true);
 assert.equal(getAdapter("claude-code").buildArgs({ permission: "read-only" }).includes("plan"), true);
 assert.equal(getAdapter("cursor").buildArgs({ permission: "read-only", prompt: "x" }).includes("--force"), false);
 assert.equal(getAdapter("cursor").buildArgs({ permission: "workspace-write", prompt: "x" }).includes("--force"), true);
