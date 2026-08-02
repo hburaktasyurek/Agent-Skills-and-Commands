@@ -6,41 +6,82 @@
       "prompt": "Use /senior-implementer to apply the complete supplied review finding. Work only in the provided workspace. Read task.md, review.md, standards.md, AGENTS.md, the implementation, and the visible tests before editing. Implement the correction, run relevant checks, and return a concise evidence-backed handoff.",
       "expected_output": "The task-owned blank-identifier invariant is enforced across every public entry path, normal identifiers still work, and no same-root residual is presented as complete.",
       "files": [
-        "evals/files/multi-surface-invariant/input"
+        "evals/files/multi-surface-invariant/input/AGENTS.md",
+        "evals/files/multi-surface-invariant/input/review.md",
+        "evals/files/multi-surface-invariant/input/standards.md",
+        "evals/files/multi-surface-invariant/input/task.md",
+        "evals/files/multi-surface-invariant/input/src/CliEntry.php",
+        "evals/files/multi-surface-invariant/input/src/CsvEntry.php",
+        "evals/files/multi-surface-invariant/input/src/HttpEntry.php",
+        "evals/files/multi-surface-invariant/input/src/Store.php",
+        "evals/files/multi-surface-invariant/input/tests/visible.php",
+        "evals/sources/senior-implementer-residual-observed.txt"
       ],
       "assertions": [
         "A blank-after-trim identifier passed directly to Store is rejected with DomainException before Store mutates",
         "HTTP, CSV, and CLI entries all reject blank-after-trim identifiers before storage",
         "Direct Store and public entry calls normalize and store valid identifiers without changing their value",
         "The handoff does not claim completion while any known same-root account-identifier path remains open"
-      ]
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/senior-implementer-residual-observed.txt",
+          "sha256": "709109ca4d504c41e06be6002e0b5bc5bb260dea81d8dd12b0a783b8d6d7882f",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "user-provided conversation",
+            "captured_at": "2026-08-02"
+          }
+        }
+      }
     },
     {
       "id": 2,
       "prompt": "Use /senior-implementer to fix the reported silent-success defect. Work only in the provided workspace. Read task.md, standards.md, AGENTS.md, the implementation, and the visible tests before editing. Implement the correction, run relevant checks, and return a concise evidence-backed handoff.",
       "expected_output": "A successful claim is durable across a fresh process, a repeated claim observes the persisted running state, and success is not inferred only from the command response.",
       "files": [
-        "evals/files/silent-state-divergence/input"
+        "evals/files/silent-state-divergence/input/AGENTS.md",
+        "evals/files/silent-state-divergence/input/package.json",
+        "evals/files/silent-state-divergence/input/standards.md",
+        "evals/files/silent-state-divergence/input/task.md",
+        "evals/files/silent-state-divergence/input/src/claim.mjs",
+        "evals/files/silent-state-divergence/input/src/cli.mjs",
+        "evals/files/silent-state-divergence/input/tests/visible.mjs"
       ],
       "assertions": [
         "After claimed true is returned, a fresh process reads the job status as running from the supplied store file",
         "A second fresh-process claim returns exactly claimed false with status running",
         "The successful command response keeps the existing JSON shape and is not used as the sole proof of completion"
-      ]
+      ],
+      "metadata": {
+        "case_type": "edge",
+        "source": "synthetic"
+      }
     },
     {
       "id": 3,
       "prompt": "Use /senior-implementer to implement the supplied feature brief. Work only in the provided workspace. Read task.md, AGENTS.md, the implementation, and the tests before editing. Run the relevant feedback loops and return a concise evidence-backed handoff, including any failure that remains outside the task boundary.",
       "expected_output": "The requested active-account report behavior is correct, the unrelated payout implementation is unchanged, and its independently reproduced money-risk failure is explicitly escalated as release-blocking rather than silently fixed or treated as an ordinary residual.",
       "files": [
-        "evals/files/feature-unrelated-anomaly/input"
+        "evals/files/feature-unrelated-anomaly/input/AGENTS.md",
+        "evals/files/feature-unrelated-anomaly/input/task.md",
+        "evals/files/feature-unrelated-anomaly/input/src/legacy_payout.py",
+        "evals/files/feature-unrelated-anomaly/input/src/report.py",
+        "evals/files/feature-unrelated-anomaly/input/tests/test_legacy_payout.py",
+        "evals/files/feature-unrelated-anomaly/input/tests/test_report.py"
       ],
       "assertions": [
         "build_active_report includes only rows whose active value is exactly True, projects only id and name, sorts by case-insensitive name then id, and does not mutate its input",
         "The unrelated src/legacy_payout.py artifact is byte-for-byte unchanged",
         "The handoff reproduces the payout failure, classifies it as unrelated to the feature, and identifies the observed 100-times payout error as a high-impact money risk",
         "The handoff explicitly blocks release or escalates for separate authority instead of presenting the overall workspace as complete"
-      ]
+      ],
+      "metadata": {
+        "case_type": "scope_preservation",
+        "source": "synthetic"
+      }
     }
   ]
 }

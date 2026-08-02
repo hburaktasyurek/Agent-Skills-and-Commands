@@ -1,0 +1,5 @@
+interface:
+  display_name: Senior Implementer
+  short_description: Root-complete implementation with artifact proof
+policy:
+  allow_implicit_invocation: false
