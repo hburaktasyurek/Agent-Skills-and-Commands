@@ -1,0 +1,5 @@
+interface:
+  display_name: Adversarial Diff Review
+  short_description: Hostile pre-PR diff kill-test
+policy:
+  allow_implicit_invocation: false

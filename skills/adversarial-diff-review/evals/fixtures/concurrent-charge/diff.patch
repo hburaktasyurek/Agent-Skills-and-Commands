@@ -1,0 +1,38 @@
+diff --git a/payment.js b/payment.js
+new file mode 100644
+--- /dev/null
++++ b/payment.js
+@@ -0,0 +1,14 @@
++const seen = new Set();
++
++async function claim(key, charge) {
++  if (seen.has(key)) {
++    return { duplicate: true };
++  }
++
++  const result = await charge();
++  seen.add(key);
++  return { duplicate: false, result };
++}
++
++module.exports = { claim };
+diff --git a/payment.test.js b/payment.test.js
+new file mode 100644
+--- /dev/null
++++ b/payment.test.js
+@@ -0,0 +1,16 @@
++const assert = require("node:assert/strict");
++const test = require("node:test");
++const { claim } = require("./payment");
++
++test("repeated key charges once", async () => {
++  let calls = 0;
++  const charge = async () => ++calls;
++
++  const first = await claim("order-7", charge);
++  const second = await claim("order-7", charge);
++
++  assert.equal(first.duplicate, false);
++  assert.equal(second.duplicate, true);
++  assert.equal(calls, 1);
++});

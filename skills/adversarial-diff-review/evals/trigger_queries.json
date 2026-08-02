@@ -1,0 +1,22 @@
+{
+  "skill_name": "adversarial-diff-review",
+  "activation_mode": "explicit_only",
+  "queries": [
+    {"id":"positive-train-01","split":"train","query":"Use $adversarial-diff-review on the current branch before I open a PR.","should_trigger":true,"paired_with":"negative-train-01"},
+    {"id":"negative-train-01","split":"train","query":"Review the current branch before I open a PR.","should_trigger":false,"paired_with":"positive-train-01"},
+    {"id":"positive-train-02","split":"train","query":"Run /adversarial-diff-review against task.md and this worktree diff.","should_trigger":true,"paired_with":"negative-train-02"},
+    {"id":"negative-train-02","split":"train","query":"Compare task.md with this worktree diff.","should_trigger":false,"paired_with":"positive-train-02"},
+    {"id":"positive-train-03","split":"train","query":"$adversarial-diff-review ile PR acmadan once hostile review yap.","should_trigger":true,"paired_with":"negative-train-03"},
+    {"id":"negative-train-03","split":"train","query":"PR acmadan once hostile review yap.","should_trigger":false,"paired_with":"positive-train-03"},
+    {"id":"positive-train-04","split":"train","query":"Invoke $adversarial-diff-review for this explicit patch boundary.","should_trigger":true,"paired_with":"negative-train-04"},
+    {"id":"negative-train-04","split":"train","query":"Inspect this explicit patch boundary.","should_trigger":false,"paired_with":"positive-train-04"},
+    {"id":"positive-validation-01","split":"validation","query":"Use /adversarial-diff-review to kill-test the uncommitted implementation.","should_trigger":true,"paired_with":"negative-validation-01"},
+    {"id":"negative-validation-01","split":"validation","query":"Kill-test the uncommitted implementation.","should_trigger":false,"paired_with":"positive-validation-01"},
+    {"id":"positive-validation-02","split":"validation","query":"Run $adversarial-diff-review on HEAD versus its merge base.","should_trigger":true,"paired_with":"negative-validation-02"},
+    {"id":"negative-validation-02","split":"validation","query":"Review HEAD versus its merge base.","should_trigger":false,"paired_with":"positive-validation-02"},
+    {"id":"positive-validation-03","split":"validation","query":"$adversarial-diff-review ile onceki bulgulari current diff uzerinde tekrar kontrol et.","should_trigger":true,"paired_with":"negative-validation-03"},
+    {"id":"negative-validation-03","split":"validation","query":"Onceki bulgulari current diff uzerinde tekrar kontrol et.","should_trigger":false,"paired_with":"positive-validation-03"},
+    {"id":"positive-validation-04","split":"validation","query":"Invoke /adversarial-diff-review and report P0-P3 evidence only.","should_trigger":true,"paired_with":"negative-validation-04"},
+    {"id":"negative-validation-04","split":"validation","query":"Report P0-P3 evidence for this diff.","should_trigger":false,"paired_with":"positive-validation-04"}
+  ]
+}

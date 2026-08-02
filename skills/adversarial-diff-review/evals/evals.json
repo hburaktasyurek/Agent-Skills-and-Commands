@@ -1,0 +1,79 @@
+{
+  "skill_name": "adversarial-diff-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use $adversarial-diff-review. Review the exact pre-PR task, diff, current code context, and test record under evals/fixtures/fleet-startup/. Return only the evidence-backed hostile review; do not modify files.\n",
+      "expected_output": "A P0 finding traces the one-line manifest removal to process-start import failure across the rolling fleet, rejects the green unit record as insufficient, and reports complete coverage of the supplied boundary without inventing unrelated defects.",
+      "files": [
+        "evals/fixtures/fleet-startup/task.md",
+        "evals/fixtures/fleet-startup/diff.patch",
+        "evals/fixtures/fleet-startup/package.json",
+        "evals/fixtures/fleet-startup/service.js",
+        "evals/fixtures/fleet-startup/test-record.txt",
+        "evals/fixtures/fleet-startup/prompt.txt",
+        "evals/sources/fleet-startup-origin.md"
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "project_artifact",
+        "source_evidence": {
+          "path": "evals/sources/fleet-startup-origin.md",
+          "sha256": "901b026b9dde6591b7f0c1fa861697f9a3a8660706b6a14fc3238cff3396bbe2",
+          "origin": {
+            "type": "git_blob",
+            "locator": "skills/risk-calibrated-pr-review/evals/sources/original-validation-cases.md at baseline commit db10f9e",
+            "captured_at": "2026-08-02"
+          }
+        }
+      },
+      "assertions": [
+        "The review reports a P0 rather than pricing the defect by diff size.",
+        "The mechanism connects removal of critical-runtime from package.json to service.js requiring it before startup.",
+        "The cascade covers failed rolling replacements across the fleet and the rebuild/redeploy recovery path.",
+        "The green unit-test record is not treated as startup or deployment evidence."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Use $adversarial-diff-review. Review the exact pre-PR task, diff, implementation, and test record under evals/fixtures/concurrent-charge/. Return only the evidence-backed hostile review; do not modify files.\n",
+      "expected_output": "The review does not award survival: it identifies the check-then-act race that lets two concurrent calls charge the same key, prices the central idempotency failure at P0, and follows the consequence beyond the green serial test.",
+      "files": [
+        "evals/fixtures/concurrent-charge/task.md",
+        "evals/fixtures/concurrent-charge/diff.patch",
+        "evals/fixtures/concurrent-charge/payment.js",
+        "evals/fixtures/concurrent-charge/payment.test.js",
+        "evals/fixtures/concurrent-charge/test-record.txt",
+        "evals/fixtures/concurrent-charge/prompt.txt"
+      ],
+      "metadata": {"case_type":"edge","source":"synthetic"},
+      "assertions": [
+        "The review reports a current P0 because the central idempotency purpose is not delivered.",
+        "The mechanism identifies that both concurrent calls can pass seen.has before either call records the key.",
+        "The cascade includes two executions of charge and a duplicate financial charge for one idempotency key.",
+        "The serial green test is rejected as evidence for the required concurrent behavior."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Use $adversarial-diff-review. Review the exact pre-PR task, diff, implementation, callers, and test record under evals/fixtures/clean-port-parser/. Return only the evidence-backed hostile review; do not modify files.\n",
+      "expected_output": "With complete coverage and no P0/P1/P2 defect, the review says the implementation survived, names the executed checks and blast-radius sweep, and does not invent style or out-of-scope findings.",
+      "files": [
+        "evals/fixtures/clean-port-parser/task.md",
+        "evals/fixtures/clean-port-parser/diff.patch",
+        "evals/fixtures/clean-port-parser/parse-port.js",
+        "evals/fixtures/clean-port-parser/parse-port.test.js",
+        "evals/fixtures/clean-port-parser/start.js",
+        "evals/fixtures/clean-port-parser/test-record.txt",
+        "evals/fixtures/clean-port-parser/prompt.txt"
+      ],
+      "metadata": {"case_type":"scope_preservation","source":"synthetic"},
+      "assertions": [
+        "The review reports that the implementation survived with complete coverage and no blocking finding.",
+        "It checks the declared decimal-only range contract, boundary cases, and the supplied caller.",
+        "It distinguishes the green executable tests from mere claims and states what was swept outside the diff.",
+        "It does not invent style complaints, deployment requirements, persistence concerns, or Ready-for-PR."
+      ]
+    }
+  ]
+}

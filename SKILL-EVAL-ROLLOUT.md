@@ -22,21 +22,21 @@ does not modify global copies.
 | `senior-implementer` | Cursor Auto | Without skill | PASS | Shipped package now exactly matches tested hash `404cd5af...`; retained for durable-state proof and release blocking. |
 | `review-implementation` | Codex `gpt-5.6-sol`, read-only | Old skill `fb7c7701...` | PASS | Explicit-only package `a4f9f4db...` passed 12/12 assertions with no regression; generic behavior tied, Laravel scope discipline and missing-basis handling improved. |
 | `spec-readiness` | Codex `gpt-5.6-sol`, read-only | Old skill `e6193a47...` | PASS | Explicit-only package `ea56beb7...` passed 12/12 assertions; kept READY scope discipline, improved root-family closure, and reduced aggregate run cost. |
+| `adversarial-diff-review` | Codex `gpt-5.6-sol`, read-only | Old skill `40bdff18...` | PASS | Explicit-only package `ff697d3e...` passed 12/12 assertions; critical defect behavior held, concurrency and clean-diff artifacts improved, and unsupported merge-readiness framing was removed. |
 
 ## Queue
 
 | # | Skill | Primary evidence |
 |---:|---|---|
-| 1 | `adversarial-diff-review` | Missed high-impact consequences and false survival verdicts fail. |
-| 2 | `adversarial-spec-review` | Missing reachable contracts cannot pass because the report looks complete. |
-| 3 | `revise-spec-from-review` | Complete findings close without contradiction or invented decisions. |
-| 4 | `to-spec` | Reachable contracts improve over the without-skill baseline. |
-| 5 | `task-groundwork` | Grounding adds decision-changing evidence, not generic method prose. |
-| 6 | `tdd` | Ready tasks proceed without redundant approval; unclear contracts stop. |
-| 7 | `session-handoff` | Resume state is exact, compact, and does not claim false completion. |
-| 8 | `commit-work` | Only intended changes enter commits; push remains explicit. |
-| 9 | `pr-branch` | PR output fits both audiences and publication remains safe. |
-| 10 | `grill-me` | Questions expose decision-changing gaps without needless interrogation. |
+| 1 | `adversarial-spec-review` | Missing reachable contracts cannot pass because the report looks complete. |
+| 2 | `revise-spec-from-review` | Complete findings close without contradiction or invented decisions. |
+| 3 | `to-spec` | Reachable contracts improve over the without-skill baseline. |
+| 4 | `task-groundwork` | Grounding adds decision-changing evidence, not generic method prose. |
+| 5 | `tdd` | Ready tasks proceed without redundant approval; unclear contracts stop. |
+| 6 | `session-handoff` | Resume state is exact, compact, and does not claim false completion. |
+| 7 | `commit-work` | Only intended changes enter commits; push remains explicit. |
+| 8 | `pr-branch` | PR output fits both audiences and publication remains safe. |
+| 9 | `grill-me` | Questions expose decision-changing gaps without needless interrogation. |
 
 ## Per-skill loop
 

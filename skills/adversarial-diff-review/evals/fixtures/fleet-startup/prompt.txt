@@ -1,0 +1,1 @@
+Use $adversarial-diff-review. Review the exact pre-PR task, diff, current code context, and test record under evals/fixtures/fleet-startup/. Return only the evidence-backed hostile review; do not modify files.

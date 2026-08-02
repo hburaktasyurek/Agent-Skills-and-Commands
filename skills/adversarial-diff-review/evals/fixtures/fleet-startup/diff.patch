@@ -1,0 +1,12 @@
+diff --git a/package.json b/package.json
+index 923fec1..2d919c9 100644
+--- a/package.json
++++ b/package.json
+@@ -3,9 +3,7 @@
+   "private": true,
+   "dependencies": {
+-    "critical-runtime": "4.1.0",
+-    "deprecated-metrics": "1.8.2",
+     "logger": "3.0.0"
+   }
+ }

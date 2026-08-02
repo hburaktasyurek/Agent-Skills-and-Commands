@@ -78,7 +78,7 @@ Cascade: what else breaks as a result (required for P0/P1)
 Resolution: what would fix it — describe, do not implement
 ```
 
-If coverage is partial, say the review is incomplete; do not recommend merge and do not award Ready-for-PR. If nothing rises above P2 and coverage is complete, say the implementation survived the hostile merge gate and is not blocked for human-owned merge — and show, in a few lines, what you attacked and how it held: what you executed, what you swept outside the diff, which unhappy paths you tried. Do not pad with P3 findings. Ready-for-PR is owned exclusively by `review-implementation`; this skill must never award it.
+If coverage is partial, say the review is incomplete; do not recommend merge and do not award Ready-for-PR. If nothing rises above P2 and coverage is complete, say the implementation survived the hostile merge gate — and show, in a few lines, what you attacked and how it held: what you executed, what you swept outside the diff, which unhappy paths you tried. Do not pad with P3 findings. Ready-for-PR is owned exclusively by `review-implementation`; this skill must never award it.
 
 ## Coverage
 
