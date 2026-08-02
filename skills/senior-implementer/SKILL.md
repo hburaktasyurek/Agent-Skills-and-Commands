@@ -25,6 +25,8 @@ You remain accountable for implementing the brief end to end. You may spawn suba
 
 Don't delegate the whole brief. If the work shares state or has sequential dependencies, keep it in one implementation flow.
 
+Never set a subagent `model` (or equivalent) unless the user explicitly named that model for this run. Omit the field so the child inherits the parent session's surface (including Auto). Do not "upgrade" children to Opus, Sonnet, or any other paid/API model on your own — that burns the user's quota without an ask.
+
 ## Stop when the brief breaks, not before
 
 You may discover during implementation that the brief is wrong — it contradicts the code, leaves a structural decision ambiguous, or asks you to do something unsafe (destructive operation on shared state, change that would silently break callers, etc.). When this happens, don't guess. The cost of a guess that propagates through three more files dwarfs the cost of one round-trip with the user. Stop, say what you found and where, propose the call you'd make if forced to decide, and ask. Then wait — don't half-implement while waiting.
