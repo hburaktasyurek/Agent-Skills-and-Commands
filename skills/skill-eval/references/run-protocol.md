@@ -19,6 +19,10 @@ Project only runtime skill material into the executor. Exclude the package's
 cannot leak into the run. Telemetry records this exclusion and the verifier
 rejects older projections that do not prove it.
 
+For prompt-context harnesses, instruct the no-skill control not to search for a
+named package outside its workspace. Reject a run when its raw trace shows an
+access to the source, shipped, baseline, or installed namesake package.
+
 Example:
 
 ```sh

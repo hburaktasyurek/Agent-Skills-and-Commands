@@ -177,7 +177,35 @@ function installedNamesakes(adapterId, workspace, name, enabledSkillPath) {
     .filter((candidate) => candidate !== enabledReal);
 }
 
+export function protectedSkillSourceAccess(raw, workspace, subjectPath, skillPath, namesakes = []) {
+  const name = fs.existsSync(path.join(subjectPath, "SKILL.md")) ? skillName(subjectPath) : path.basename(subjectPath);
+  let repositoryRoot = null;
+  try {
+    repositoryRoot = fs.realpathSync(execFileSync("git", ["-C", subjectPath, "rev-parse", "--show-toplevel"], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    }).trim());
+  } catch {}
+  const candidates = new Set([subjectPath, skillPath, ...namesakes].filter(Boolean).map((candidate) => path.resolve(candidate)));
+  if (repositoryRoot) {
+    candidates.add(path.join(repositoryRoot, "skills", name));
+    candidates.add(path.join(repositoryRoot, ".skill-proposals", name));
+  }
+  return [...candidates]
+    .filter((candidate) => !inside(workspace, candidate))
+    .find((candidate) => raw.includes(candidate)) ?? null;
+}
+
 function prepareProjection(adapter, workspace, skillPath, originalPrompt) {
+  if (!skillPath && adapter.projection === "prompt_context") {
+    return {
+      prompt: `No skill package is provided for this control run. Do not search for or load any skill package, and use only files inside the workspace.\n\n${originalPrompt}`,
+      cleanup: () => {},
+      mode: "prompt_context_control",
+      path: null,
+      excluded: [],
+    };
+  }
   if (!skillPath) return { prompt: originalPrompt, cleanup: () => {}, mode: "none", path: null, excluded: [] };
   const copyRuntimePackage = (destination) => fs.cpSync(skillPath, destination, {
     recursive: true,
@@ -289,6 +317,8 @@ export async function runHarnessEval(options) {
   const processCompleted = processResult.exitCode === 0 && !processResult.signal && !processResult.timedOut && !processResult.limitExceeded;
   const parsed = adapter.parser(processResult.stdout, { processCompleted });
   const reasons = [...parsed.errors];
+  const protectedAccess = protectedSkillSourceAccess(processResult.stdout, workspace, subjectPath, skillPath, competing);
+  if (protectedAccess) reasons.push("executor accessed protected skill source outside the workspace");
   if (processResult.exitCode !== 0) reasons.push(`executor exit code: ${processResult.exitCode}`);
   if (processResult.signal) reasons.push(`executor signal: ${processResult.signal}`);
   if (processResult.timedOut) reasons.push("executor timed out");
@@ -345,6 +375,7 @@ export async function runHarnessEval(options) {
       disabled_namesakes: competing,
     },
     prompt: { sha256: sha256(prompt) },
+    isolation: { protected_source_access: Boolean(protectedAccess) },
     input_snapshot_sha256: sha256(JSON.stringify({ files: before, git: gitBefore })),
     fixture_sha256: caseIdentity.fixture_sha256,
     stream: { sha256: sha256(processResult.stdout), event_count: parsed.event_count },

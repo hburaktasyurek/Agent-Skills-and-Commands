@@ -198,6 +198,9 @@ export function validateEvidence(summary, resolve, expectedCases = []) {
     if (JSON.stringify(telemetry?.skill?.runtime_projection_excluded) !== JSON.stringify(expectedProjectionExclusions)) {
       throw new Error("Runtime skill projection did not exclude eval answer material.");
     }
+    if (["cursor", "cline"].includes(telemetry?.adapter?.id) && telemetry?.isolation?.protected_source_access !== false) {
+      throw new Error("Prompt-context run did not prove source-package isolation.");
+    }
     const key = String(record.case_id);
     const pair = byCase.get(key) ?? {};
     if (pair[record.configuration]) throw new Error("Duplicate case configuration.");

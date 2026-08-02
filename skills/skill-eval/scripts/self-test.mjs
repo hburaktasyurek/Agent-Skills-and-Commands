@@ -18,7 +18,7 @@ import {
   parseCursor,
   parseOpenCode,
 } from "./harness-adapters.mjs";
-import { runHarnessEval } from "./run-harness-eval.mjs";
+import { protectedSkillSourceAccess, runHarnessEval } from "./run-harness-eval.mjs";
 import { validateEvalDefinition, validateTriggerDefinition } from "./validate-eval-definition.mjs";
 
 const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -92,6 +92,11 @@ assert.equal(parseOpenCode(JSON.stringify({ type: "text", part: { text: "progres
 assert.equal(parseCline(JSON.stringify({ type: "say", text: "progress", partial: false })).valid, false);
 assert.equal(parseOpenCode(JSON.stringify({ type: "error", error: "failed" }), { processCompleted: true }).valid, false);
 assert.equal(parseCline(JSON.stringify({ type: "ask", ask: "error", text: "failed" }), { processCompleted: true }).valid, false);
+assert.equal(protectedSkillSourceAccess("clean", "/tmp/workspace", "/tmp/repo/skills/fixture-skill", null), null);
+assert.equal(
+  protectedSkillSourceAccess("read /tmp/repo/skills/fixture-skill/SKILL.md", "/tmp/workspace", "/tmp/repo/skills/fixture-skill", null),
+  "/tmp/repo/skills/fixture-skill",
+);
 
 const minimalSummary = {
   schema_version: 2,
