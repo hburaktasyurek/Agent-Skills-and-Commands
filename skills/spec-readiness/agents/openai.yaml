@@ -1,0 +1,5 @@
+interface:
+  display_name: Spec Readiness
+  short_description: Structural contract gate before implementation
+policy:
+  allow_implicit_invocation: false

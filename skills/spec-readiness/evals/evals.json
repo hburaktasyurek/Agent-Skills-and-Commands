@@ -1,0 +1,56 @@
+{
+  "skill_name": "spec-readiness",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use $spec-readiness. Review evals/fixtures/provider-recovery.md as the complete current implementation spec. Return the implementation-readiness verdict and evidence-backed report only; do not modify files.",
+      "expected_output": "NOT READY with one root-complete Blocker showing that production construction still requires the unavailable provider dependency before local-only branches can be reached; closure specifies the observable guarantee without choosing an architecture.",
+      "files": ["evals/fixtures/provider-recovery.md", "evals/sources/local-only-dependency-review.txt"],
+      "metadata": {
+        "case_type": "primary",
+        "source": "project_artifact",
+        "source_evidence": {
+          "path": "evals/sources/local-only-dependency-review.txt",
+          "sha256": "9250872ab41ad8d5868a79328c1be7132aa084a13be069d8da94817466cca39c",
+          "origin": {
+            "type": "git_blob",
+            "locator": "skills/revise-spec-from-review/evals/closure/local-only-dependency-entry/input/review.txt at baseline commit 3d14b6e",
+            "captured_at": "2026-08-02"
+          }
+        }
+      },
+      "assertions": [
+        "The verdict opens with NOT READY.",
+        "One Blocker traces production construction of ProviderTransport to the unreachability of both local-only actions during provider outage.",
+        "The Blocker groups construction, dependency acquisition, production entry, local actions, provider retry, and their acceptance proof into one decision family.",
+        "Required closure states the observable reachability and fail-closed guarantees without prescribing a resolver, factory, or service architecture."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Use $spec-readiness. Review evals/fixtures/shared-identity.md as the complete current implementation spec. Return the implementation-readiness verdict and evidence-backed report only; do not modify files.",
+      "expected_output": "NOT READY with a root-complete cross-package identity Blocker covering canonicalization, reproducible bytes/algorithm, storage/equality, collision or alias handling, conflict outcome, and a distinguishing producer-consumer proof.",
+      "files": ["evals/fixtures/shared-identity.md"],
+      "metadata": {"case_type":"edge","source":"synthetic"},
+      "assertions": [
+        "The verdict opens with NOT READY.",
+        "The importer-to-reconciler fingerprint is classified as a cross-package structural identity contract rather than local implementation freedom.",
+        "One decision family covers canonical input, reproducible algorithm or bytes, persisted representation, equality, collision or alias behavior, and unique-conflict outcome.",
+        "Verification requires a distinguishing producer-consumer counterexample beyond the identical lowercase happy path."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Use $spec-readiness. Review evals/fixtures/local-formatter.md as the complete current implementation spec. Return the implementation-readiness verdict and evidence-backed report only; do not modify files.",
+      "expected_output": "READY with zero Blockers; the private algorithm choice is implementation freedom and irrelevant database, concurrency, rollout, framework, and external-service gates are not imposed.",
+      "files": ["evals/fixtures/local-formatter.md"],
+      "metadata": {"case_type":"scope_preservation","source":"synthetic"},
+      "assertions": [
+        "The verdict opens with READY and contains zero Blockers.",
+        "Concatenation versus array/filter/join is recognized as implementation freedom.",
+        "The supplied input, output, empty-state, ordering, whitespace, and non-mutation contracts are traced as sufficient for the only consumer.",
+        "No database, concurrency, rollout, framework, external-service, or invented public-API requirement is imposed."
+      ]
+    }
+  ]
+}

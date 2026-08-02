@@ -1,0 +1,22 @@
+{
+  "skill_name": "spec-readiness",
+  "activation_mode": "explicit_only",
+  "queries": [
+    {"id":"positive-train-01","split":"train","query":"Use $spec-readiness to decide whether specs/recovery.md is implementable.","should_trigger":true,"paired_with":"negative-train-01"},
+    {"id":"negative-train-01","split":"train","query":"Decide whether specs/recovery.md is implementable.","should_trigger":false,"paired_with":"positive-train-01"},
+    {"id":"positive-train-02","split":"train","query":"Run /spec-readiness before handing this plan to engineering.","should_trigger":true,"paired_with":"negative-train-02"},
+    {"id":"negative-train-02","split":"train","query":"Check this plan before handing it to engineering.","should_trigger":false,"paired_with":"positive-train-02"},
+    {"id":"positive-train-03","split":"train","query":"$spec-readiness ile implementer hangi kontrati uydurmak zorunda kalir bul.","should_trigger":true,"paired_with":"negative-train-03"},
+    {"id":"negative-train-03","split":"train","query":"Implementer hangi kontrati uydurmak zorunda kalir bul.","should_trigger":false,"paired_with":"positive-train-03"},
+    {"id":"positive-train-04","split":"train","query":"Invoke $spec-readiness for a READY or NOT READY structural-contract gate.","should_trigger":true,"paired_with":"negative-train-04"},
+    {"id":"negative-train-04","split":"train","query":"Give me a READY or NOT READY structural-contract gate.","should_trigger":false,"paired_with":"positive-train-04"},
+    {"id":"positive-validation-01","split":"validation","query":"Use /spec-readiness on task.md before implementation starts.","should_trigger":true,"paired_with":"negative-validation-01"},
+    {"id":"negative-validation-01","split":"validation","query":"Review task.md before implementation starts.","should_trigger":false,"paired_with":"positive-validation-01"},
+    {"id":"positive-validation-02","split":"validation","query":"Run $spec-readiness and find missing cross-task decisions.","should_trigger":true,"paired_with":"negative-validation-02"},
+    {"id":"negative-validation-02","split":"validation","query":"Find missing cross-task decisions in this spec.","should_trigger":false,"paired_with":"positive-validation-02"},
+    {"id":"positive-validation-03","split":"validation","query":"$spec-readiness ile bu spesifikasyon implementation handoff icin hazir mi bak.","should_trigger":true,"paired_with":"negative-validation-03"},
+    {"id":"negative-validation-03","split":"validation","query":"Bu spesifikasyon implementation handoff icin hazir mi bak.","should_trigger":false,"paired_with":"positive-validation-03"},
+    {"id":"positive-validation-04","split":"validation","query":"Invoke /spec-readiness for the revised spec and complete prior report.","should_trigger":true,"paired_with":"negative-validation-04"},
+    {"id":"negative-validation-04","split":"validation","query":"Re-review the revised spec and complete prior report.","should_trigger":false,"paired_with":"positive-validation-04"}
+  ]
+}
