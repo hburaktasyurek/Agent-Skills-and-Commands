@@ -22,8 +22,9 @@ rejects older projections that do not prove it.
 For prompt-context harnesses, instruct the no-skill control not to search for a
 named package outside its workspace and remove only the explicit invocation
 phrase from the control's execution prompt. Preserve the task text and its
-recorded hash. Run paired arms sequentially. Reject a run when its raw trace
-shows an access to the source, shipped, baseline, or installed namesake package.
+recorded hash. Direct the treatment to the projected copy only. Run paired arms
+sequentially. Reject a run when its raw trace shows an access to the source,
+shipped, baseline, or installed namesake package.
 
 Example:
 

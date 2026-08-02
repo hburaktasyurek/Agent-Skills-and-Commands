@@ -226,7 +226,7 @@ function prepareProjection(adapter, workspace, skillPath, originalPrompt, name) 
     fs.mkdirSync(path.dirname(destination), { recursive: true });
     copyRuntimePackage(destination);
     return {
-      prompt: `Apply the skill package at ${destination} to the following task.\n\n${originalPrompt}`,
+      prompt: `Apply only the skill package at ${destination} to the following task. Do not search for or load another copy of the skill, and use only files inside the workspace.\n\n${originalPrompt}`,
       cleanup: () => fs.rmSync(path.join(workspace, ".skill-eval"), { recursive: true, force: true }),
       mode: "prompt_context",
       path: destination,
