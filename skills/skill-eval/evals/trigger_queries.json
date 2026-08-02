@@ -10,7 +10,7 @@
     {"id":"positive-train-06","paired_with":"negative-train-06","split":"train","query":"Please use /skill-eval on these synthetic fixtures without touching production.","should_trigger":true},
     {"id":"positive-validation-01","paired_with":"negative-validation-01","split":"validation","query":"$skill-eval compare the current package hash to the exact baseline and grade the outputs.","should_trigger":true},
     {"id":"positive-validation-02","paired_with":"negative-validation-02","split":"validation","query":"Use skill-eval explicitly for a clean-context old-versus-new skill run.","should_trigger":true},
-    {"id":"positive-validation-03","paired_with":"negative-validation-03","split":"validation","query":"/skill-eval bu draft icin ship kapisi kaniti uret.","should_trigger":true},
+    {"id":"positive-validation-03","paired_with":"negative-validation-03","split":"validation","query":"/skill-eval bu degisiklik icin kabul kaniti uret.","should_trigger":true},
     {"id":"positive-validation-04","paired_with":"negative-validation-04","split":"validation","query":"Invoke $skill-eval to check whether these assertions distinguish the real artifact.","should_trigger":true},
 
     {"id":"negative-train-01","paired_with":"positive-train-01","split":"train","query":"Compare this proposal with the shipped version.","should_trigger":false},
@@ -21,7 +21,7 @@
     {"id":"negative-train-06","paired_with":"positive-train-06","split":"train","query":"Evaluate these synthetic fixtures without touching production.","should_trigger":false},
     {"id":"negative-validation-01","paired_with":"positive-validation-01","split":"validation","query":"Compare the current package hash to the exact baseline and grade the outputs.","should_trigger":false},
     {"id":"negative-validation-02","paired_with":"positive-validation-02","split":"validation","query":"Run a clean-context old-versus-new skill comparison.","should_trigger":false},
-    {"id":"negative-validation-03","paired_with":"positive-validation-03","split":"validation","query":"Bu draft icin ship kapisi kaniti uret.","should_trigger":false},
+    {"id":"negative-validation-03","paired_with":"positive-validation-03","split":"validation","query":"Bu degisiklik icin kabul kaniti uret.","should_trigger":false},
     {"id":"negative-validation-04","paired_with":"positive-validation-04","split":"validation","query":"Check whether these assertions distinguish the real artifact.","should_trigger":false}
   ]
 }

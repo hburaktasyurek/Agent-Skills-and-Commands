@@ -1,6 +1,6 @@
 ---
 name: skill-eval
-description: "Use only when explicitly asked to evaluate one repository skill or proposal against its exact old-skill or no-skill baseline. Run the same realistic cases on one named harness and model, judge produced artifacts, and return a current-package PASS, FAIL, NO_LIFT, or INCONCLUSIVE verdict. Do not edit or ship the target skill or exercise live consequential systems."
+description: "Use only when explicitly asked to evaluate one repository skill package against its exact old-skill or no-skill baseline. Run the same realistic cases on one named harness and model, judge produced artifacts, and return a current-package PASS, FAIL, NO_LIFT, or INCONCLUSIVE verdict. Do not edit or accept the target package or exercise live consequential systems."
 disable-model-invocation: true
 ---
 
@@ -13,7 +13,7 @@ headings, claimed procedure, or a report that merely looks complete.
 
 Require:
 
-- exactly one `target: <INDEX name>` or `proposal_path: <path>`;
+- exactly one `target: <INDEX name>` or `subject_path: <path>`;
 - `phase: calibrate | verify`;
 - one `surface` with `adapter: codex | claude-code | cursor | opencode | cline`
   and an exact model name;
@@ -26,11 +26,11 @@ evaluation.
 ## Safety
 
 Keep the subject read-only. Run file-changing tasks only in disposable copies
-below `.skill-proposals/.eval-runs/`. Mock consequential boundaries such as
+below `.skill-eval-runs/`. Mock consequential boundaries such as
 push, PR/issue creation, payments, migrations, or production services. If a
 safe fixture is unavailable, return `INCONCLUSIVE`.
 
-Do not edit the subject, ship, commit, push, install globally, or contact live
+Do not edit the subject, commit, push, install globally, or contact live
 external systems.
 
 ## Run
@@ -81,10 +81,11 @@ explicit prompt context rather than native skill loading.
 - `INCONCLUSIVE`: baseline, current hash, safe execution, required trigger, run
   trace, assertion evidence, or grade evidence is missing or inconsistent.
 
-`FAIL`, `NO_LIFT`, and `INCONCLUSIVE` block ship.
+`FAIL`, `NO_LIFT`, and `INCONCLUSIVE` do not justify accepting or
+committing the revision.
 
 ## Stop
 
 Return one calibration artifact or one terminal verdict and stop. Evaluation
-does not authorize fixing, reviewing composition, shipping, or accepting the
-result on the human's behalf.
+does not authorize fixing, committing, or accepting the result on the human's
+behalf.

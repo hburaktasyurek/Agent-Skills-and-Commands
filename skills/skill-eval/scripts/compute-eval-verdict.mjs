@@ -117,11 +117,11 @@ export function computeEvalVerdict(summary, {
 }
 
 function artifactResolver(repositoryRoot, workspace) {
-  const allowedRoot = path.join(repositoryRoot, ".skill-proposals", ".eval-runs");
+  const allowedRoot = path.join(repositoryRoot, ".skill-eval-runs");
   const workspaceReal = fs.realpathSync(workspace);
   const allowedReal = fs.realpathSync(allowedRoot);
   const relative = path.relative(allowedReal, workspaceReal);
-  if (relative.startsWith("..") || path.isAbsolute(relative)) throw new Error("Evidence workspace is outside .skill-proposals/.eval-runs.");
+  if (relative.startsWith("..") || path.isAbsolute(relative)) throw new Error("Evidence workspace is outside .skill-eval-runs.");
   return (reference, label) => {
     if (!reference || !nonEmpty(reference.path) || !shaPattern.test(reference.sha256 ?? "") || path.isAbsolute(reference.path)) {
       throw new Error(`${label} reference is malformed.`);

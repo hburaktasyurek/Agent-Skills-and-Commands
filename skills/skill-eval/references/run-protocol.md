@@ -31,11 +31,11 @@ Example:
 ```sh
 node skills/skill-eval/scripts/run-harness-eval.mjs \
   --adapter claude-code \
-  --subject-path .skill-proposals/example \
-  --skill-path .skill-proposals/example \
-  --workspace .skill-proposals/.eval-runs/R1/1/subject/workspace \
-  --trace-dir .skill-proposals/.eval-runs/R1/1/subject/trace \
-  --prompt-file .skill-proposals/.eval-runs/R1/1/subject/workspace/prompt.txt \
+  --subject-path skills/example \
+  --skill-path skills/example \
+  --workspace .skill-eval-runs/R1/1/subject/workspace \
+  --trace-dir .skill-eval-runs/R1/1/subject/trace \
+  --prompt-file .skill-eval-runs/R1/1/subject/workspace/prompt.txt \
   --case-id 1 \
   --run-id R1-1-subject \
   --configuration subject \

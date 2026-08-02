@@ -6,7 +6,7 @@ The verifier accepts one JSON result for one exact adapter and model:
 schema_version: 2
 subject:
   name: example
-  path: .skill-proposals/example
+  path: skills/example
   content_sha256: <current package hash>
 baseline:
   mode: old_skill | without_skill
@@ -39,7 +39,7 @@ comparison:
     duration_ms: 900
     usage: {status: unavailable}
 evidence:
-  workspace: .skill-proposals/.eval-runs/R1
+  workspace: .skill-eval-runs/R1
   runs:
     - case_id: primary
       configuration: baseline
@@ -72,8 +72,8 @@ Run:
 
 ```sh
 node skills/skill-eval/scripts/compute-eval-verdict.mjs result.json \
-  --subject-path .skill-proposals/example \
-  --baseline-path .skill-proposals/.eval-runs/baselines/<hash>
+  --subject-path skills/example \
+  --baseline-path .skill-eval-runs/baselines/<hash>
 ```
 
 Omit `--baseline-path` for `without_skill`. An old baseline must be the same
@@ -84,5 +84,5 @@ harness/permission equality, checks artifact-bound assertion and grade JSON,
 recomputes usage aggregates, and derives the terminal verdict.
 
 Hashes here prevent accidental stale or changed evidence. They are not keys,
-signatures, or proof that a particular person approved the result. Human ship
-approval remains a separate lifecycle gate.
+signatures, or proof that a particular person approved the result. Human
+acceptance and commit remain separate decisions.

@@ -2,7 +2,7 @@
   "schema_version": 2,
   "subject": {
     "name": "fixture-skill",
-    "path": ".skill-proposals/fixture-skill",
+    "path": "skills/fixture-skill",
     "content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   },
   "baseline": {"mode": "without_skill"},
@@ -22,5 +22,5 @@
     "baseline": {"duration_ms": 1000, "usage": {"status": "unavailable"}},
     "subject": {"duration_ms": 900, "usage": {"status": "unavailable"}}
   },
-  "evidence": {"workspace": ".skill-proposals/.eval-runs/missing", "runs": []}
+  "evidence": {"workspace": ".skill-eval-runs/missing", "runs": []}
 }

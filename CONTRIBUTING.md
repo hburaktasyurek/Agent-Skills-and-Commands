@@ -1,38 +1,29 @@
 # Contributing
 
-This repo is a personal toolkit. It is shared publicly because the contents may be useful to others, not because it is a community-maintained project.
-
-**Fork freely.** That is the recommended way to use it.
+This repository is a personal toolkit shared publicly for reuse. Forking it is
+the recommended way to adapt it.
 
 ## Bug reports and suggestions
 
-GitHub issues are open and welcome. There is **no response SLA** — this is a side project and replies happen when they happen. Don't wait on a response if you have a fix; just fork.
+GitHub issues are welcome, but there is no response SLA.
 
 ## Pull requests
 
-PRs are not actively solicited. If you open one:
+- Keep one concern per PR.
+- For more than a typo, open an issue first to check fit.
+- Do not expect a fast review or merge.
 
-- Keep it scoped to a single concern.
-- Don't expect a fast review or a merge.
-- For anything beyond a typo, open an issue first to check whether the change fits the direction of the repo.
+## Adding or changing a skill in your fork
 
-If your idea is bigger than a small fix, fork is almost always the better path.
-
-## Adding a skill to your fork
-
-Follow the Skill design loop in [WORKFLOW.md](WORKFLOW.md):
-explicit `skill-design-loop` → repository preflight → (if needed)
-`skill-brief` with bounded `grill-me` → `skill-path-selector` →
-`skill-draft-ship` draft under `.skill-proposals/` → separate `skill-review` → optional
-`revise-skill-from-review` → human **ship** into `skills/`. Prefer a
-methodology-bound skill; if the idea is not reducible to one method, decompose.
-After ship, use `tune-skill` for behavior complaints.
-
-The functional minimum remains in the [Skill Anatomy](README.md#skill-anatomy)
-section of the README: a `skills/<name>/SKILL.md` with `name` and `description`
-in the frontmatter. When adding a skill, also list it in
-[skills/INDEX.md](skills/INDEX.md) under the section that fits.
+1. Use your host's `skill-creator` with concrete usage examples.
+2. Create or edit `skills/<name>/`; include only runtime-relevant files.
+3. Run the creator's structural validation.
+4. For substantial behavior, compare the package with an exact Git or
+   without-skill baseline using [skill-eval](skills/skill-eval/SKILL.md).
+5. Review produced artifacts, not only headings or claimed procedure.
+6. Update [skills/INDEX.md](skills/INDEX.md) and [README.md](README.md).
+7. Commit the coherent change. Global installation is separate.
 
 ## Licensing
 
-This repo is MIT licensed (see [LICENSE](LICENSE)).
+This repository is MIT licensed; see [LICENSE](LICENSE).

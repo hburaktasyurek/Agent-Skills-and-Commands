@@ -18,5 +18,8 @@ Thumbs.db
 # Logs
 *.log
 
-# Local skill-design drafts (ship copies into skills/)
+# Isolated local skill-evaluation workspaces and traces
+.skill-eval-runs/
+
+# Preserved legacy proposals and evaluation evidence
 .skill-proposals/

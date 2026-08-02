@@ -149,7 +149,7 @@ const triggerMissingWithRegression = structuredClone(triggerMissing);
 triggerMissingWithRegression.cases.results[0].grade.subject_score = 2;
 assert.equal(computeEvalVerdict(triggerMissingWithRegression, { expectedSubjectHash: "a".repeat(64), evidenceValidated: true }).verdict, "FAIL");
 
-const runsRoot = path.join(repositoryRoot, ".skill-proposals", ".eval-runs");
+const runsRoot = path.join(repositoryRoot, ".skill-eval-runs");
 fs.mkdirSync(runsRoot, { recursive: true });
 const root = fs.mkdtempSync(path.join(runsRoot, "skill-eval-self-test-"));
 try {

@@ -189,7 +189,6 @@ export function protectedSkillSourceAccess(raw, workspace, subjectPath, skillPat
   const candidates = new Set([subjectPath, skillPath, ...namesakes].filter(Boolean).map((candidate) => path.resolve(candidate)));
   if (repositoryRoot) {
     candidates.add(path.join(repositoryRoot, "skills", name));
-    candidates.add(path.join(repositoryRoot, ".skill-proposals", name));
   }
   return [...candidates]
     .filter((candidate) => !inside(workspace, candidate))
@@ -262,11 +261,11 @@ export async function runHarnessEval(options) {
   const workspace = fs.realpathSync(path.resolve(options.workspace));
   const traceDir = path.resolve(options.traceDir);
   const repositoryRoot = fs.realpathSync(execFileSync("git", ["-C", subjectPath, "rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim());
-  const allowedRoot = path.join(repositoryRoot, ".skill-proposals", ".eval-runs");
+  const allowedRoot = path.join(repositoryRoot, ".skill-eval-runs");
   fs.mkdirSync(allowedRoot, { recursive: true });
   const allowedReal = fs.realpathSync(allowedRoot);
   if (!inside(allowedReal, workspace) || !inside(allowedReal, traceDir)) {
-    throw new Error("Workspace and trace must be below .skill-proposals/.eval-runs.");
+    throw new Error("Workspace and trace must be below .skill-eval-runs.");
   }
   if (overlaps(subjectPath, workspace) || overlaps(subjectPath, traceDir)) {
     throw new Error("Subject and executor paths must be disjoint.");
@@ -274,7 +273,7 @@ export async function runHarnessEval(options) {
   if (fs.existsSync(traceDir) && fs.readdirSync(traceDir).length) throw new Error("Trace directory must be empty.");
   fs.mkdirSync(traceDir, { recursive: true });
   const traceReal = fs.realpathSync(traceDir);
-  if (!inside(allowedReal, traceReal)) throw new Error("Trace real path escapes .skill-proposals/.eval-runs.");
+  if (!inside(allowedReal, traceReal)) throw new Error("Trace real path escapes .skill-eval-runs.");
   const relativeTrace = path.relative(workspace, traceReal);
   if (!relativeTrace.startsWith("..") && !path.isAbsolute(relativeTrace)) {
     throw new Error("Trace directory must be outside the executor workspace.");

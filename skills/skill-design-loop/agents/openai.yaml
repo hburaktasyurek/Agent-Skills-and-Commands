@@ -1,6 +1,0 @@
-interface:
-  display_name: "Skill Design Loop"
-  short_description: "Design and draft one repository skill"
-  default_prompt: "Use $skill-design-loop to take this skill idea through intake, path selection, and draft creation; stop for separate review."
-policy:
-  allow_implicit_invocation: false

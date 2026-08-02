@@ -1,6 +1,0 @@
-interface:
-  display_name: "Skill Draft & Ship"
-  short_description: "Draft or ship a selected repository skill"
-  default_prompt: "Use $skill-draft-ship with a completed checklist and selected path to create a proposal, or with explicit ship evidence to publish it."
-policy:
-  allow_implicit_invocation: false
