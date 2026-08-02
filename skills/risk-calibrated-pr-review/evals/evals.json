@@ -1,0 +1,69 @@
+{
+  "skill_name": "risk-calibrated-pr-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use $risk-calibrated-pr-review. Review disposable PR #42 in this repository. PR_CONTEXT.md is the frozen local PR-host snapshot with exact base/head identifiers; evals/fixtures/case-1.md is the commissioning artifact. Return the revision-bound merge-gate report.",
+      "expected_output": "A full review classifies overall risk as critical and returns FAIL with exact P0 evidence and complete consequence coverage; the small diff does not lower risk and no filler finding is added.",
+      "files": ["evals/fixtures/case-1.md", "evals/sources/original-validation-cases.md"],
+      "metadata": {
+        "case_type": "primary",
+        "source": "project_artifact",
+        "source_evidence": {
+          "path": "evals/sources/original-validation-cases.md",
+          "sha256": "aeffd24b3ce807b4296a9f19b59ed844e05c37ccb2c41e5389c3649e2aef2803",
+          "origin": {
+            "type": "git_blob",
+            "locator": "risk-calibrated-pr-review/SKILL.md at baseline commit 2b8647e",
+            "captured_at": "2026-08-02"
+          }
+        }
+      },
+      "assertions": [
+        "Review mode is full and overall risk is critical.",
+        "The terminal result is FAIL with a concrete P0 finding.",
+        "The finding traces fleet rollout, total startup failure, and recovery consequences.",
+        "Diff size does not reduce attack depth and no filler finding appears."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Use $risk-calibrated-pr-review. Review disposable PR #43 in this repository. PR_CONTEXT.md is the frozen local PR-host snapshot with exact base/head identifiers; evals/fixtures/case-2.md is the approved task artifact. Return the revision-bound merge-gate report.",
+      "expected_output": "The report marks activation dormant/support-only, immediate production harm unproven, overall risk high, and returns INCOMPLETE with the missing database/concurrency evidence and named unexamined items.",
+      "files": ["evals/fixtures/case-2.md"],
+      "metadata": {"case_type":"edge","source":"synthetic"},
+      "assertions": [
+        "Activation is dormant/support-only rather than live production impact.",
+        "Overall risk remains high because the future financial invariant is material.",
+        "The terminal result is INCOMPLETE, not PASS or an invented defect.",
+        "Missing real-database and concurrency proof is listed as required evidence."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Use $risk-calibrated-pr-review. Re-review disposable PR #44 in this repository after fixes. PR_CONTEXT.md contains the exact base, prior, and current heads; PRIOR_REVIEW.md is the complete prior report; evals/fixtures/case-3.md is the approved task artifact.",
+      "expected_output": "The review uses incremental mode, reconciles every prior finding, reuses only evidence proven unchanged, and does not restart an unrelated full review.",
+      "files": ["evals/fixtures/case-3.md"],
+      "metadata": {"case_type":"scope_preservation","source":"synthetic"},
+      "assertions": [
+        "Review mode is incremental.",
+        "Every prior finding is reconciled against the bounded delta.",
+        "Only evidence proven unchanged is reused.",
+        "No unrelated resolved family is reopened."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Use $risk-calibrated-pr-review. Re-review disposable PR #45 in this repository after a claimed fix-only revision. PR_CONTEXT.md contains the exact heads; PRIOR_REVIEW.md is the prior report; evals/fixtures/case-4.md is the approved task artifact.",
+      "expected_output": "The review resets to full, performs fresh discovery for the new authorization and ownership surface, and reuses no inadequate prior coverage.",
+      "files": ["evals/fixtures/case-4.md"],
+      "metadata": {"case_type":"edge","source":"synthetic"},
+      "assertions": [
+        "Review mode is reset-to-full.",
+        "The new authorization and ownership surfaces receive fresh discovery.",
+        "Inadequate prior coverage is not reused.",
+        "The fix-only label does not control the review mode."
+      ]
+    }
+  ]
+}

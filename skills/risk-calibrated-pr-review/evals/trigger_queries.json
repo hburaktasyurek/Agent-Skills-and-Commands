@@ -1,0 +1,26 @@
+{
+  "skill_name": "risk-calibrated-pr-review",
+  "activation_mode": "implicit",
+  "queries": [
+    {"id":"positive-train-01","split":"train","query":"Review PR 84 as the hostile merge gate and tell me whether it can safely merge.","should_trigger":true,"paired_with":"negative-train-01"},
+    {"id":"negative-train-01","split":"train","query":"Review this implementation against the named spec before I open a PR.","should_trigger":false,"paired_with":"positive-train-01"},
+    {"id":"positive-train-02","split":"train","query":"Run a risk-calibrated review of this opened pull request at its current head.","should_trigger":true,"paired_with":"negative-train-02"},
+    {"id":"negative-train-02","split":"train","query":"Kill-test this uncommitted working-tree diff.","should_trigger":false,"paired_with":"positive-train-02"},
+    {"id":"positive-train-03","split":"train","query":"Bu PR icin consequence-calibrated PASS FAIL veya INCOMPLETE ver.","should_trigger":true,"paired_with":"negative-train-03"},
+    {"id":"negative-train-03","split":"train","query":"Write an implementation specification for the new retry flow.","should_trigger":false,"paired_with":"positive-train-03"},
+    {"id":"positive-train-04","split":"train","query":"Re-review the fixes on PR 12 against the complete prior report and exact old head.","should_trigger":true,"paired_with":"negative-train-04"},
+    {"id":"negative-train-04","split":"train","query":"Fix all findings in this PR review report.","should_trigger":false,"paired_with":"positive-train-04"},
+    {"id":"positive-train-05","split":"train","query":"Check the current GitHub PR with zero assumed correctness before merge.","should_trigger":true,"paired_with":"negative-train-05"},
+    {"id":"negative-train-05","split":"train","query":"Summarize the PR for managers and open it on GitHub.","should_trigger":false,"paired_with":"positive-train-05"},
+    {"id":"positive-train-06","split":"train","query":"Perform the opened-PR shipping gate, including dormant support-only consequences.","should_trigger":true,"paired_with":"negative-train-06"},
+    {"id":"negative-train-06","split":"train","query":"Check whether this spec is implementation-ready.","should_trigger":false,"paired_with":"positive-train-06"},
+    {"id":"positive-validation-01","split":"validation","query":"Is PR 151 actually ready to merge? Use the risk-calibrated PR gate.","should_trigger":true,"paired_with":"negative-validation-01"},
+    {"id":"negative-validation-01","split":"validation","query":"Explain what changed in pull request 42 without reviewing correctness.","should_trigger":false,"paired_with":"positive-validation-01"},
+    {"id":"positive-validation-02","split":"validation","query":"Hostile review this pull request and bind the verdict to the exact revision.","should_trigger":true,"paired_with":"negative-validation-02"},
+    {"id":"negative-validation-02","split":"validation","query":"Run the CI tests for my branch and fix failures.","should_trigger":false,"paired_with":"positive-validation-02"},
+    {"id":"positive-validation-03","split":"validation","query":"RCPR ile bu PR'daki residual P1 merge'i engelliyor mu kontrol et.","should_trigger":true,"paired_with":"negative-validation-03"},
+    {"id":"negative-validation-03","split":"validation","query":"Review this architecture plan before anyone writes code.","should_trigger":false,"paired_with":"positive-validation-03"},
+    {"id":"positive-validation-04","split":"validation","query":"Review the new PR head after fixes; reuse evidence only if incremental eligibility still holds.","should_trigger":true,"paired_with":"negative-validation-04"},
+    {"id":"negative-validation-04","split":"validation","query":"Commit the current changes and push the feature branch.","should_trigger":false,"paired_with":"positive-validation-04"}
+  ]
+}
