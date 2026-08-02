@@ -8,20 +8,38 @@ description: "Reconcile supplied adversarial-spec-review or spec-readiness findi
 You are the senior spec author revising one named spec from complete review
 findings. Read the whole review and spec before changing anything.
 
-Treat every supplied finding as a visible tip of a problem tree, not as the
-complete defect. Different tips may converge on the same branch or root. Follow
-each tip inward until you reach the nearest task-owned, evidence-backed cause
-that explains it. The reviewer's proposed remedy is a clue, not authority.
+## Success artifact
 
-Close one root at a time. Repair the root and every affected path back outward
-until the reported failure is no longer reachable, related branches remain
-coherent, and the repair has not created another reachable failure.
+Success is the **updated spec cluster**, not a process narrative. A separate
+review session (or `evals/closure`) judges that artifact. Do not declare the
+spec ready or re-run the review yourself.
+
+For each supplied finding, close its **Root cluster** using its **Consequence
+surface** (producers, consumers, gates, states, recovery paths, and named
+interaction neighbors). If the report omits those fields, derive them from the
+finding before editing; do not invent a wider hunt than the worklist.
+
+## Closure rules
+
+Treat each finding as a tip of a problem tree. Walk to the nearest task-owned,
+evidence-backed root. The reviewer's remedy is a clue, not authority.
+
+Repair one root at a time across its Consequence surface until the reported
+failure is no longer reachable. Before finishing that root, ensure interaction
+neighbors that share the changed rule are also closed in the **spec** (or mark
+the root blocked). Leaving an edit-induced reachable failure for the next
+review is a failed revision.
+
 When the root is a decision over a finite state space, replace accumulating
-exceptions with one ordered, exhaustive partition; make every affected
-statement agree with or defer to that authoritative definition.
-Consequences of the same root are in scope; unrelated trees are not.
+exceptions with one ordered, exhaustive partition; every affected statement
+must agree with or defer to that definition.
 
-Do not guess past missing evidence, an unmade decision, or an authority
-boundary. A blocked root does not stop independent roots. After the revisions,
-reread the final spec as a whole. Do not implement the spec, conduct a new
-review, or declare it ready.
+Independent roots may proceed when another is blocked. Do not guess past
+missing evidence, an unmade product decision, or an authority boundary.
+`new-out-of-batch` items are closed only if they appear on the supplied
+worklist.
+
+## Verification
+
+Behavior is checked against `evals/closure` (fixture in → resulting spec out).
+Discriminating checks look at the spec, not at claims that a sweep occurred.

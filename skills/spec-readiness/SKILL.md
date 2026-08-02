@@ -210,17 +210,25 @@ review; do not force irrelevant gates.
 
 ## 5. Re-review
 
-In `incremental` mode:
+In `incremental` mode, judge the **current spec**. The report must show:
 
-1. Reconcile every prior finding as `resolved`, `still present`, or
-   `superseded`, using current artifacts.
-2. Verify each correction across its full decision family and changed edges.
-3. Rebuild changed, interacting, and previously unproved ledger rows.
-4. Run the reverse pass once.
+1. Every prior finding `resolved` | `still present` | `superseded` with
+   current-spec evidence (wording-only ≠ resolved).
+2. Rebuild of prior decision families, revision-touched edges, and interaction
+   neighbors at full structural depth for those rows.
+3. One reverse pass on that set, plus one bounded residual check on controlling
+   acceptance paths and the highest-consequence in-scope handoff.
+4. Against an existing ordered exhaustive partition: empty rows,
+   contradictions, and missing consequence rows — not a redesigned equivalent.
+5. Any structural Blocker outside prior families/`new-out-of-batch` included in
+   this `NOT READY` result once. Do not drop Blockers to force `READY` or
+   reopen resolved families for re-litigation.
 
-Neither carry a finding because it existed nor resolve it because wording
-changed. If Step 1 eligibility ceases, switch to `reset-to-full` and perform the
-full-review procedure.
+`READY` requires **zero** Blockers (including residual and `new-out-of-batch`).
+Gaps and Notes may remain.
+
+Reset to `full` when incremental eligibility fails. Do not reset to `full`
+merely because a repair left an interaction-neighbor Blocker — keep it.
 
 ## 6. Stop
 
@@ -267,19 +275,23 @@ Task(s) / handoff: <affected nodes and edge>
 Missing decision: <what the implementer would otherwise choose>
 Why structural: <which boundary or observable contract changes>
 Consequence: <what diverges or fails when implementations choose differently>
-Decision family / cascade: <all dependent contract surfaces>
+Decision family / cascade: <all dependent contract surfaces; interaction
+  neighbors in scope for revise>
 Required closure: <what the spec must decide, without excess mechanism>
 Verification: <distinguishing proof that the closed contract works>
 ```
 
 All fields are required for Blockers. Gaps and Notes may combine fields when
-no decision-relevant information is lost.
+no decision-relevant information is lost. On re-review, mark `new-out-of-batch`
+when that class applies.
 
 Close with:
 
 ```text
-Coverage receipt: <node/edge counts, ledger classification coverage, triggered
-gates and continuity rows, acceptance paths, reverse pass, limitations, stop>
+Coverage receipt: <node/edge counts, prior-family reconciliation, interaction-
+neighbor checks, bounded residual check, ledger classification coverage,
+triggered gates and continuity rows, acceptance paths, reverse pass,
+new-out-of-batch if any, limitations, stop>
 Checked and solid: <only contracts whose complete ledger rows and
 distinguishing counterexamples survived>
 Next: revise-spec-from-review | implementation
