@@ -1,0 +1,20 @@
+{
+  "review_id": "revise-closure-2026-08-02",
+  "reviewer": "session-agent-cold-grade",
+  "procedure": "Copy local-only-dependency-entry input fixture to an isolated worktree, apply revise-spec-from-review, grade the resulting spec files against cases.json. Other closure cases not re-run this session.",
+  "decision_checkpoint_before_expectations": true,
+  "cases": [
+    {
+      "id": "local-only-dependency-entry",
+      "result_artifact": "runs/2026-08-02/local-only-dependency-entry/",
+      "checks": [
+        {"check": "A control-flow-only gate reorder is rejected as root-incomplete while eager service construction or production wiring still requires the unavailable provider dependency.", "passed": true, "evidence": "plan.md rejects reorder-only while eager build remains; shape requires provider-free local entry"},
+        {"check": "Pre-HTTP local abandon and already-terminal local release remain constructible and invocable when the provider dependency is unavailable, without provider acquisition or provider work.", "passed": true, "evidence": "shape.md: constructible/invocable abandon_before_http and release_after_terminal with zero provider acquisition/I/O"},
+        {"check": "Provider-dependent retry still fails closed before mutation when its required dependency cannot be acquired.", "passed": true, "evidence": "shape.md retry branch fails closed before durable mutation"},
+        {"check": "The revision specifies observable construction and branch-entry behavior without mandating a resolver, factory, service split, or other architecture, and makes no unrelated change.", "passed": true, "evidence": "Architecture left as implementation freedom in shape/plan"}
+      ],
+      "passed": true
+    }
+  ],
+  "summary": {"passed": 1, "total": 1, "failed_ids": [], "not_run": ["producer-consumer-propagation", "human-decision-usability", "edit-induced-contradiction", "mixed-safe-edit-and-decision"]}
+}

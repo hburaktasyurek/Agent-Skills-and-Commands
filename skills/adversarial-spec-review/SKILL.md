@@ -184,6 +184,9 @@ For each suspected failure:
 Group manifestations that share one root and closure condition. Split paths
 that can fail independently or require different proof. Do not return one
 symptom per review round when the current evidence exposes the family now.
+When writing each P0/P1, record a stable Root cluster id and the Consequence
+surface `revise-spec-from-review` must close, including interaction neighbors
+already visible in the current artifacts.
 
 Challenge especially confident clauses, apparently clean boundaries, and
 tests that mirror the plan. Verify unhappy paths and invalid assumptions; do
@@ -212,23 +215,35 @@ review basis matches the prior artifacts, the task contract and activation
 boundary are unchanged, and every current spec change is explainable as a
 prior-finding correction or its required consequence.
 
-In incremental mode:
+Shared unit with `revise-spec-from-review`: each finding's **Root cluster** +
+**Consequence surface**. Judge the **current spec**, not the reviser's process
+claims.
 
-1. Classify every prior finding as `resolved`, `still present`, or
-   `superseded`, using current evidence.
-2. Verify each correction across its full recorded root and consequence
-   surface.
-3. Attack changed, interacting, and previously unproved surfaces.
-4. Run one fresh challenge pass over the highest-consequence current claims.
-5. Stop when no prior P0/P1 remains and the fresh pass finds no new P0/P1.
+In incremental mode, the **report artifact** must show:
 
-Reset to `full` and report `reset-to-full` when the prior report or basis is
-missing, task identity/scope/acceptance/activation changed, a new architecture
-or integration boundary appeared, unexplained spec changes exist, or a fix
-creates a new root family outside the prior coverage.
+1. Every prior P0/P1 classified `resolved` | `still present` | `superseded`
+   with current-spec evidence (wording-only change ≠ resolved).
+2. Checks of recorded Consequence surfaces and interaction neighbors that
+   share the changed rule, at the posture's required depth.
+3. One bounded residual challenge: controlling outcome, acceptance/stop
+   conditions, and the worst credible task-connected consequence path still in
+   scope — not a full-ledger restart and not new product scope.
+4. Every credible residual P0/P1 labeled incomplete closure or
+   `new-out-of-batch`, and included in this FAIL batch. Do not drop, downgrade,
+   or defer them to obtain PASS. Do not reopen already `resolved` families to
+   re-litigate them.
+5. Verdict `PASS` only if steps 1–4 yield **zero** current P0/P1; otherwise
+   `FAIL`. P2/P3 may remain on PASS.
 
-Never carry a finding forward because it existed previously. Never call a
-finding resolved because the wording changed.
+Reset to `full` when the prior report/basis is missing, task
+identity/scope/acceptance/activation changed, a new architecture or
+integration boundary appeared that prior coverage could not own, or
+unexplained spec changes exist. Do not reset to `full` merely because a repair
+left an interaction-neighbor defect — stay incremental and keep the P0/P1.
+
+When the spec already states an ordered exhaustive partition, attack empty
+rows, contradictions, and missing consequence rows against that partition; do
+not replace it with a differently shaped equivalent.
 
 ## Priority
 
@@ -251,8 +266,9 @@ or lower severity to make the report look proportional.
 
 Open with exactly one verdict:
 
-- `FAIL` when any current P0/P1 exists, including a load-bearing premise whose
-  missing proof can credibly hide that severity;
+- `FAIL` when any current P0/P1 exists, including edit-induced incomplete
+  closure, bounded-residual hits, `new-out-of-batch` items, and load-bearing
+  premises whose missing proof can credibly hide that severity;
 - `PASS` when the calibrated review completed and no P0/P1 remains. P2/P3 may
   remain; the next gate is `spec-readiness`.
 
@@ -276,24 +292,34 @@ Evidence: <current spec location plus claim-matching source evidence>
 Obligation: <what must hold>
 Mechanism: <how the current plan fails or leaves it materially unproved>
 Consequence: <activated downstream harm and recoverability>
-Root cluster: <root and other manifestations covered>
+Root cluster: <stable id + root and other manifestations covered>
+Consequence surface: <producers, consumers, gates, states, recovery paths
+  revise must close; interaction neighbors in scope>
 Required closure: <falsifiable outcome, not an unnecessary implementation>
 Verification: <evidence that would prove closure>
 ```
 
 For P0/P1, every field is required. For P2/P3, combine fields when doing so
-loses no decision-relevant information.
+loses no decision-relevant information. On re-review, say `new-out-of-batch`
+in the title or Root cluster when that class applies.
 
 Close with:
 
 ```text
-Coverage receipt: <applicable consequence surfaces checked; material evidence
-gaps; final-challenge result; why review stopped>
+Coverage receipt: <prior-family reconciliation; neighbor checks; residual
+path + result; material evidence gaps; new-out-of-batch if any; why stopped>
 Next: revise-spec-from-review | spec-readiness
 ```
 
 Keep low- and standard-consequence reports compact. If nothing rises above
 P2, do not pad with P3 findings.
+
+## Verification
+
+Judge this skill by the **report artifact** (verdict + findings + evidence),
+not by claimed reading order. Fixture expectations live under `evals/` and
+encode real session failure modes (wording-only "fixes", residual P1 dropped
+for PASS, missing Consequence surface).
 
 ## Boundaries
 

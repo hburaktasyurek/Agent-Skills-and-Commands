@@ -1,0 +1,34 @@
+{
+  "cases": [
+    {
+      "id": "wording-only-neighbor-still-open",
+      "input": "wording-only-neighbor-still-open/input",
+      "checks": [
+        "Verdict is FAIL (not PASS).",
+        "Prior root R1 is not classified resolved solely because gate prose was reworded.",
+        "A current P0/P1 remains for the still-reachable local-only null-account abandon path that shares the account-gate rule.",
+        "The finding names that neighbor on the Consequence surface or as incomplete closure of R1.",
+        "Report does not reopen unrelated resolved families or invent out-of-scope product requirements."
+      ]
+    },
+    {
+      "id": "residual-p1-forbids-pass",
+      "input": "residual-p1-forbids-pass/input",
+      "checks": [
+        "Verdict is FAIL (not PASS).",
+        "Prior R1 account-gate closure is classified resolved with current-spec evidence.",
+        "A P0/P1 from the bounded residual (or new-out-of-batch) remains for post-deadline confirm retry still allowed in the spec.",
+        "That residual finding is included in the FAIL batch and is not dropped or severity-downgraded to obtain PASS."
+      ]
+    },
+    {
+      "id": "p0-requires-consequence-surface",
+      "input": "p0-requires-consequence-surface/input",
+      "checks": [
+        "Verdict is FAIL with at least one P0 or P1.",
+        "Every P0/P1 includes a non-empty Consequence surface naming concrete producers, consumers, gates, or recovery paths (not only generic phrases such as all paths or as above).",
+        "Every P0/P1 includes Root cluster and Required closure fields."
+      ]
+    }
+  ]
+}

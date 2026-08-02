@@ -140,13 +140,23 @@ It may also be run independently on any draft or catalog skill.
 3. Give the resulting spec cluster path to `adversarial-spec-review`.
 4. On failure, return the spec and complete review findings to the design
    session. Use `revise-spec-from-review`, then rerun
-   `adversarial-spec-review`. Do not mandate a full `task-groundwork` re-run
-   unless the findings invalidate the grounded frame (task identity, scope, or
-   acceptance); if they do, re-ground then continue.
+   `adversarial-spec-review` in **incremental** mode against that same report.
+   Shared closure unit: Root cluster + Consequence surface on the **findings
+   report**; revise is judged by the **updated spec**; re-review judges that
+   spec (not process claims). `PASS` / `READY` still require zero P0/P1 or
+   Blockers, including residual and `new-out-of-batch` hits listed once without
+   reopening resolved families. Verify the pair with package evals
+   (`adversarial-spec-review/evals/incremental-closure`,
+   `revise-spec-from-review/evals/closure`) drawn from real session failures —
+   not by trusting instruction-following prose. Do not mandate a full
+   `task-groundwork` re-run unless the findings invalidate the grounded frame
+   (task identity, scope, or acceptance); if they do, re-ground then continue.
 5. On pass, run `spec-readiness` with the spec cluster path.
 6. On readiness failure, return the spec and readiness findings to the design
-   session. Use `revise-spec-from-review`, then rerun `spec-readiness`. Same
-   re-ground rule as step 4.
+   session. Use `revise-spec-from-review`, then rerun `spec-readiness`
+   incrementally under the same artifact rules (prior families + neighbors;
+   no partition reinvention; zero Blockers for `READY`). Same re-ground rule
+   as step 4.
 7. Only a passing spec review and passing readiness result permit handoff to
    implementation.
 
@@ -357,10 +367,13 @@ When an issue warrants investigation:
    drafts — do not overload `tune-skill` for unshipped proposals.
 7. Require human review before changing the repository source of truth.
 
-`revise-spec-from-review` is an example of this evolution: it was introduced
-because review findings were not being converted into reliable spec revisions.
-It is still an early-use skill and should be evaluated from real sessions
-rather than assumed complete.
+`revise-spec-from-review` is paired with `adversarial-spec-review` /
+`spec-readiness` through artifact handoff (findings report → updated spec →
+re-review of that spec). Improve the pair with eval-driven checks on fixtures
+taken from real session failures — grade produced artifacts, not claimed
+steps. Package evals:
+`skills/adversarial-spec-review/evals/incremental-closure`,
+`skills/revise-spec-from-review/evals/closure`.
 
 ## Boundaries
 
