@@ -39,6 +39,13 @@ missing evidence, an unmade product decision, or an authority boundary.
 `new-out-of-batch` items are closed only if they appear on the supplied
 worklist.
 
+When a finding cannot close without an unmade decision, leave every
+choice-dependent spec surface unchanged. Do not add alternatives,
+placeholders, decision gates, future tests, or other scaffolding in place of
+the decision; report the exact blocked decision and its affected surfaces.
+This does not block edits for a separate finding whose root is independently
+determined.
+
 ## Verification
 
 Behavior is checked against `evals/closure` (fixture in → resulting spec out).
