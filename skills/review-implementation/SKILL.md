@@ -1,88 +1,76 @@
 ---
 name: review-implementation
-description: "Named-spec compliance audit after implement and before PR: checklist plus known-pitfall sweep; Ready-for-PR report. Use when a feature was built against a named spec—not the opened-PR shipping/merge gate (use risk-calibrated-pr-review). Triggers: review-implementation."
+description: "Review an implemented change against a named specification before opening a PR. Use when the user asks for spec-compliance, implementation-vs-spec, acceptance-criteria, or pre-PR implementation review. Produce an evidence-backed Ready for PR decision without editing project files. Do not use for an opened-PR merge gate."
 ---
 
-Your job is to find every deviation, omission, and risk between the spec and the implementation before it becomes a fix commit.
+# Review Implementation
 
-Do not modify project files. The only file you may write is the learned-context memory file described in BOOTSTRAP.
+Audit the implementation against its named specification. Find concrete gaps;
+do not reward a report merely for looking complete.
 
-## Scope the review
+## Boundaries
 
-- **With an argument** (`/review-implementation <spec-path-or-PR>`): treat the argument as the spec and/or the changed files to audit.
-- **Without an argument**: identify the most recently implemented spec in this conversation (or on the current branch) and audit against it.
+- Read only. Do not modify project files, memory files, or review inputs.
+- Require an identifiable specification and implementation surface: an explicit
+  path/reference, conversation artifact, or unambiguous current-branch change.
+  If either side cannot be resolved, report what is missing and stop.
+- Use repository instructions and architecture documents as evidence. Do not
+  assume a framework, tenancy model, payment provider, or project convention.
+- This is a pre-PR spec-compliance review. Use the opened-PR merge-gate skill
+  when the task is to decide whether an existing pull request can merge.
 
-Read the spec (or acceptance criteria from context) and the implementation (files or git diff). Understand existing patterns before flagging anything — the codebase already has conventions; your job is to check compliance with them, not to rewrite them.
+## Review
 
-Before reviewing, also skim `agent-os/product/tech-stack.md` and any architecture/policy files in `agent-os/product/` if they exist — these capture project-wide conventions (multi-tenancy rules, compliance requirements, stack specifics). Also read `.claude/agent-memory/review-implementation/learned-context.md` for project-specific pitfalls; if missing, run the BOOTSTRAP protocol below.
+1. Identify the exact spec and implementation basis. Record paths or revision
+   bounds so the result can be reproduced.
+2. Turn every normative requirement and acceptance criterion into a checklist.
+   Trace each item to implementation and tests as `met`, `not met`, or
+   `insufficient evidence`.
+3. Follow changed behavior through reachable entry points, state changes,
+   integrations, failure paths, and user-visible outcomes. Check repository
+   conventions only where they affect the named requirements or their safe
+   operation.
+4. Detect the stack from repository evidence such as manifests, imports,
+   configuration, code, and project policies. When that evidence establishes a
+   relevant framework or risk surface, read
+   [references/conditional-checks.md](references/conditional-checks.md) and
+   apply only the matching checks.
+5. Inspect tests for the required behavior and material failure paths. A green
+   suite is evidence only for what its assertions actually exercise.
+6. Reconcile the checklist. Do not return Ready while a requirement is unmet,
+   a material consequence is unexamined, or required evidence is missing.
 
-Your bar: every finding must include (a) concrete evidence (file, line, or diff reference), (b) the mechanism of failure — WHY this is a problem, not just that it is, (c) a suggested fix or clarifying question.
+Every finding must include:
 
-Do not speculate. If uncertain about a section, say "this area lacks sufficient information to evaluate" rather than invent concerns. False positives waste the user's time and erode trust in this review.
+- concrete file, line, diff, test, or missing-artifact evidence;
+- the failure mechanism and consequence;
+- the smallest adequate correction or the exact evidence needed.
 
-## Review Protocol
+Do not invent defects. If the available artifacts cannot establish a claim,
+label it `insufficient evidence`.
 
-### Phase 1: Spec Completeness Check
-1. List every requirement/task from the spec as a checklist
-2. For each item, verify it exists in the implementation with the correct behavior
-3. Flag: missing features, partial implementations, deviations from spec'd behavior
-4. Check if the spec's task order was followed (out-of-order implementation causes structural inconsistencies)
+## Output
 
-### Phase 2: Architecture & Integration
-1. **Registration points:** Are new providers, middleware, routes, policies registered correctly?
-2. **Data isolation:** Any multi-tenancy or data scoping concerns?
-3. **Settings & Config:** If using a settings system, verify classes, migrations, and defaults
-4. **Consistency:** Same business logic must not be duplicated with different implementations across layers
-
-### Phase 3: Known Pitfall Detection
-
-Check each explicitly:
-
-1. **N+1 Queries:** Every query that touches relations must use eager loading. Check list/index pages and loops.
-2. **Nullable Type Mismatches:** If a DB column is nullable, the model cast, API resource, and frontend type must all handle null.
-3. **Transaction Safety:** Multi-record operations must be wrapped in transactions. File uploads need cleanup on failure.
-4. **Security — Sensitive Data Exposure:** API keys, passwords, tokens must NEVER appear in API responses or logs unmasked.
-5. **Existing Test Breakage:** If implementation changes models, routes, policies, or schema — flag which tests need updates.
-6. **Authorization:** Policy registered + class exists; controllers call `authorize()` or `Gate::allows`; route middleware present; FormRequest `authorize()` returns correctly; Policy enforces tenant-scoped resource access (a Policy that only checks ownership but not tenant boundary is a silent cross-tenant leak).
-7. **Migration Safety:** Foreign key exists on `tenant_id` (or equivalent scope column); `nullable()` usage is correct (tenant scope columns must not be nullable); `down()` reverses cleanly; column drops do not lose data silently; indexes added for tenant-scoped query patterns.
-8. **Payment Integration Safety** (currently iyzico-specific, may generalize later): Idempotency via `conversationId` or equivalent; webhook signature verification; retry/deduplication logic; transaction rollback on payment failure; no KVKK-sensitive fields (card data, identity numbers) leaking into logs.
-
-### Phase 4: Code Quality
-1. **Type safety:** Return types, parameter types, property types declared appropriately
-2. **Naming conventions:** Framework/language conventions followed consistently
-3. **Missing edge cases:** Empty states, permission checks, rate limiting, file size limits, concurrent access
-
-## Output Format
-
-```
+```markdown
 ## Spec Compliance Report
 
-### ✅ Implemented Correctly
-- [List of spec items confirmed correct]
+### Review basis
+- Specification: ...
+- Implementation: ...
 
-### ❌ Missing or Incorrect
-- **[Item]**: [What's missing/wrong] → [What should be done]
+### Requirement trace
+- [met | not met | insufficient evidence] Requirement -> evidence
 
-### ⚠️ Risks & Concerns
-- **[Risk category]**: [Finding] → [Recommendation]
+### Findings
+- [P0-P3] Finding -> mechanism/consequence -> correction or required evidence
 
-### 🔍 Tests to Update
-- [List of existing tests likely broken by changes]
+### Tests
+- Proven coverage and missing material cases
 
-### Overall Status
-**Ready for PR:** Yes / No (with conditions)
+### Overall status
+**Ready for PR:** Yes | No | INCOMPLETE
 ```
 
-## BOOTSTRAP
-
-On first invocation, Read the `.claude/agent-memory/review-implementation/learned-context.md` file.
-
-- **If the file exists:** Treat its contents as project-specific context and proceed with the task.
-- **If the file is missing or empty:**
-  1. Try to extract context from the project — scan in this order: `agent-os/product/*.md` (especially tech-stack.md), `CLAUDE.md`, `README.md`, `composer.json` / `package.json`, and the `tests/` directory structure if it exists.
-  2. Extract what's relevant to review-implementation: tech stack and key libraries, architecture patterns (multi-tenancy trait, settings system), project-specific common mistakes (e.g., forgetting `withoutTenancy()`, i18n language mixing), user-facing string language.
-  3. For critical information you cannot infer, make the most defensible assumption and mark it with `⚠️ Assumption:`. Prefer proceeding over stalling; ask the user only if a wrong assumption would invalidate the entire review.
-  4. Write your findings + assumptions + an "Open Questions" list to `.claude/agent-memory/review-implementation/learned-context.md` (plain markdown, no template). Never write credentials / tokens / passwords.
-  5. Proceed with the task. At the end of your report, briefly list the task-affecting assumptions under an `Assumptions used` heading so the user can correct them on the next invocation.
-
-On subsequent runs, read from the memory file. If the user corrects an assumption or says "refresh the context", update / delete the file; the bootstrap runs again.
+Use `No` for a demonstrated defect or unmet requirement. Use `INCOMPLETE` when
+the named spec, implementation basis, or decision-critical evidence is absent.
+If there are no findings, say so; do not add filler.

@@ -1,0 +1,5 @@
+interface:
+  display_name: Review Implementation
+  short_description: Named-spec compliance review before PR
+policy:
+  allow_implicit_invocation: false

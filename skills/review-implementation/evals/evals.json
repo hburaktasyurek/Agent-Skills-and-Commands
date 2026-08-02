@@ -1,0 +1,56 @@
+{
+  "skill_name": "review-implementation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use $review-implementation. Review the implementation described in evals/fixtures/generic-cli.md against its named specification. Return only the evidence-backed pre-PR compliance report; do not modify any files.",
+      "expected_output": "The report finds the demonstrated generic CLI contract defects, binds them to the supplied artifacts, and does not introduce Laravel, tenancy, payment-provider, or project-memory requirements.",
+      "files": ["evals/fixtures/generic-cli.md", "evals/sources/repo-audit-observation.md"],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/repo-audit-observation.md",
+          "sha256": "1dcec968faf652883f6ddf9e21cadfed2961919ee30680d2d8d140cffa4d2fad",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "repository audit and user-approved rollout plan; old package at baseline commit ebcb974",
+            "captured_at": "2026-08-02"
+          }
+        }
+      },
+      "assertions": [
+        "The report identifies boolean coercion as violating the exact-true filtering requirement.",
+        "The report identifies case-sensitive sorting as violating the case-insensitive ordering requirement.",
+        "Every defect includes supplied artifact evidence and a failure mechanism.",
+        "The report does not impose Laravel, tenancy, payment-provider, or project-memory requirements."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Use $review-implementation. Review the Laravel implementation described in evals/fixtures/laravel-tenant.md against its named specification. Return only the evidence-backed pre-PR compliance report; do not modify any files.",
+      "expected_output": "Repository evidence activates the relevant framework and tenant checks; the report finds the missing tenant boundary and authorization, without turning unrelated conditional checks into filler findings.",
+      "files": ["evals/fixtures/laravel-tenant.md"],
+      "metadata": {"case_type":"edge","source":"synthetic"},
+      "assertions": [
+        "The report uses the supplied Laravel and tenancy evidence rather than assuming the stack.",
+        "The unscoped order lookup is identified as a cross-tenant exposure mechanism.",
+        "The absent authorization enforcement is identified against the named specification.",
+        "The report does not invent payment, migration, or unrelated framework defects."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Use $review-implementation. Handle the review request in evals/fixtures/missing-basis.md. Return only the pre-PR compliance result; do not modify any files.",
+      "expected_output": "The skill stops with INCOMPLETE because no named specification or identifiable implementation basis exists, and it does not invent a checklist or defects.",
+      "files": ["evals/fixtures/missing-basis.md"],
+      "metadata": {"case_type":"scope_preservation","source":"synthetic"},
+      "assertions": [
+        "Overall status is INCOMPLETE.",
+        "The missing specification and implementation basis are named explicitly.",
+        "No implementation defect, framework rule, or fabricated requirement is asserted.",
+        "No file write or project-memory bootstrap is proposed."
+      ]
+    }
+  ]
+}

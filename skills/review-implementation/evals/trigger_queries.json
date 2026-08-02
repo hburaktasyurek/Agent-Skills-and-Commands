@@ -1,0 +1,26 @@
+{
+  "skill_name": "review-implementation",
+  "activation_mode": "explicit_only",
+  "queries": [
+    {"id":"positive-train-01","split":"train","query":"Use $review-implementation to review specs/export.md before I open a PR.","should_trigger":true,"paired_with":"negative-train-01"},
+    {"id":"negative-train-01","split":"train","query":"Review specs/export.md before I open a PR.","should_trigger":false,"paired_with":"positive-train-01"},
+    {"id":"positive-train-02","split":"train","query":"Run $review-implementation on this branch and the named acceptance criteria.","should_trigger":true,"paired_with":"negative-train-02"},
+    {"id":"negative-train-02","split":"train","query":"Check this branch against the named acceptance criteria.","should_trigger":false,"paired_with":"positive-train-02"},
+    {"id":"positive-train-03","split":"train","query":"Use /review-implementation for a compliance audit of task.md.","should_trigger":true,"paired_with":"negative-train-03"},
+    {"id":"negative-train-03","split":"train","query":"Run a compliance audit of task.md.","should_trigger":false,"paired_with":"positive-train-03"},
+    {"id":"positive-train-04","split":"train","query":"$review-implementation ile kodun specs/billing-retry.md ile uyumunu incele.","should_trigger":true,"paired_with":"negative-train-04"},
+    {"id":"negative-train-04","split":"train","query":"Kodun specs/billing-retry.md ile uyumunu incele.","should_trigger":false,"paired_with":"positive-train-04"},
+    {"id":"positive-train-05","split":"train","query":"Invoke $review-implementation for the named feature brief and current implementation.","should_trigger":true,"paired_with":"negative-train-05"},
+    {"id":"negative-train-05","split":"train","query":"Trace the named feature brief to the current implementation.","should_trigger":false,"paired_with":"positive-train-05"},
+    {"id":"positive-validation-01","split":"validation","query":"Use $review-implementation on specs/import-v2.md and decide Ready for PR.","should_trigger":true,"paired_with":"negative-validation-01"},
+    {"id":"negative-validation-01","split":"validation","query":"Check specs/import-v2.md and decide Ready for PR.","should_trigger":false,"paired_with":"positive-validation-01"},
+    {"id":"positive-validation-02","split":"validation","query":"Run /review-implementation against the supplied acceptance criteria without editing files.","should_trigger":true,"paired_with":"negative-validation-02"},
+    {"id":"negative-validation-02","split":"validation","query":"Review the supplied acceptance criteria without editing files.","should_trigger":false,"paired_with":"positive-validation-02"},
+    {"id":"positive-validation-03","split":"validation","query":"$review-implementation ile named spec ve gerceklesen degisikligi karsilastir.","should_trigger":true,"paired_with":"negative-validation-03"},
+    {"id":"negative-validation-03","split":"validation","query":"Named spec ve gerceklesen degisikligi karsilastir.","should_trigger":false,"paired_with":"positive-validation-03"},
+    {"id":"positive-validation-04","split":"validation","query":"Use $review-implementation to verify every requirement in task.md before PR.","should_trigger":true,"paired_with":"negative-validation-04"},
+    {"id":"negative-validation-04","split":"validation","query":"Verify every requirement in task.md before PR.","should_trigger":false,"paired_with":"positive-validation-04"},
+    {"id":"positive-validation-05","split":"validation","query":"Invoke /review-implementation for specs/account-export.md and the current branch.","should_trigger":true,"paired_with":"negative-validation-05"},
+    {"id":"negative-validation-05","split":"validation","query":"Review specs/account-export.md and the current branch.","should_trigger":false,"paired_with":"positive-validation-05"}
+  ]
+}
