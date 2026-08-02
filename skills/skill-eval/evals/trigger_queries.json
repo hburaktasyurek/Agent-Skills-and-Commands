@@ -1,0 +1,27 @@
+{
+  "skill_name": "skill-eval",
+  "activation_mode": "explicit_only",
+  "queries": [
+    {"id":"positive-train-01","paired_with":"negative-train-01","split":"train","query":"Use $skill-eval to compare this proposal with the shipped version.","should_trigger":true},
+    {"id":"positive-train-02","paired_with":"negative-train-02","split":"train","query":"Run /skill-eval in verify mode against this draft and its old-skill baseline.","should_trigger":true},
+    {"id":"positive-train-03","paired_with":"negative-train-03","split":"train","query":"skill-eval ile bu skill gercekten fayda ekliyor mu olc.","should_trigger":true},
+    {"id":"positive-train-04","paired_with":"negative-train-04","split":"train","query":"Use skill-eval to calibrate artifact assertions for this proposal.","should_trigger":true},
+    {"id":"positive-train-05","paired_with":"negative-train-05","split":"train","query":"Invoke $skill-eval and return PASS, FAIL, NO_LIFT, or INCONCLUSIVE with evidence.","should_trigger":true},
+    {"id":"positive-train-06","paired_with":"negative-train-06","split":"train","query":"Please use /skill-eval on these synthetic fixtures without touching production.","should_trigger":true},
+    {"id":"positive-validation-01","paired_with":"negative-validation-01","split":"validation","query":"$skill-eval compare the current package hash to the exact baseline and grade the outputs.","should_trigger":true},
+    {"id":"positive-validation-02","paired_with":"negative-validation-02","split":"validation","query":"Use skill-eval explicitly for a clean-context old-versus-new skill run.","should_trigger":true},
+    {"id":"positive-validation-03","paired_with":"negative-validation-03","split":"validation","query":"/skill-eval bu draft icin ship kapisi kaniti uret.","should_trigger":true},
+    {"id":"positive-validation-04","paired_with":"negative-validation-04","split":"validation","query":"Invoke $skill-eval to check whether these assertions distinguish the real artifact.","should_trigger":true},
+
+    {"id":"negative-train-01","paired_with":"positive-train-01","split":"train","query":"Compare this proposal with the shipped version.","should_trigger":false},
+    {"id":"negative-train-02","paired_with":"positive-train-02","split":"train","query":"Run verification against this draft and its old-skill baseline.","should_trigger":false},
+    {"id":"negative-train-03","paired_with":"positive-train-03","split":"train","query":"Bu skill gercekten fayda ekliyor mu olc.","should_trigger":false},
+    {"id":"negative-train-04","paired_with":"positive-train-04","split":"train","query":"Calibrate artifact assertions for this proposal.","should_trigger":false},
+    {"id":"negative-train-05","paired_with":"positive-train-05","split":"train","query":"Return PASS, FAIL, NO_LIFT, or INCONCLUSIVE with evidence.","should_trigger":false},
+    {"id":"negative-train-06","paired_with":"positive-train-06","split":"train","query":"Evaluate these synthetic fixtures without touching production.","should_trigger":false},
+    {"id":"negative-validation-01","paired_with":"positive-validation-01","split":"validation","query":"Compare the current package hash to the exact baseline and grade the outputs.","should_trigger":false},
+    {"id":"negative-validation-02","paired_with":"positive-validation-02","split":"validation","query":"Run a clean-context old-versus-new skill comparison.","should_trigger":false},
+    {"id":"negative-validation-03","paired_with":"positive-validation-03","split":"validation","query":"Bu draft icin ship kapisi kaniti uret.","should_trigger":false},
+    {"id":"negative-validation-04","paired_with":"positive-validation-04","split":"validation","query":"Check whether these assertions distinguish the real artifact.","should_trigger":false}
+  ]
+}

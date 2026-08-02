@@ -44,6 +44,10 @@ output_format: ...
 skill_name: ...
 skill_summary: ...
 invocation: [] # optional
+evaluation_examples:
+  - prompt: ...
+    expected_output: ...
+    source: synthetic | project_artifact | observed_failure
 replace: none | proposal | shipped | both
 ```
 
@@ -60,7 +64,7 @@ replacement authority.
    Never use globally installed Codex, Cursor, Claude, or `.agents` content as
    source or fallback.
 4. Always require `skill-brief`, `skill-path-selector`,
-   `methodology-selector`, and `skill-draft-ship`. Require `grill-me` only when
+   `methodology-selector`, `skill-eval`, and `skill-draft-ship`. Require `grill-me` only when
    intake gaps need questions. Require `methodology-skill-creator` only after a
    methodology verdict.
 5. If repository discovery or a current-stage dependency fails, write nothing
@@ -100,6 +104,8 @@ Enter intake even when the supplied checklist looks complete.
 
 - If every required field is present, validate and preserve it without asking
   a question.
+- Treat fewer than two valid `evaluation_examples` as an intake gap. Preserve
+  supplied real examples; never replace them with easier synthetic cases.
 - Otherwise apply repository `skill-brief`. It may use repository `grill-me`
   only for missing fields, one question at a time, with a default maximum of
   eight decision questions.
@@ -167,6 +173,10 @@ checklist:
   skill_name: ...
   skill_summary: ...
   invocation: []
+  evaluation_examples:
+    - prompt: ...
+      expected_output: ...
+      source: synthetic | project_artifact | observed_failure
   replace: none | proposal | shipped | both
 path:
   verdict: methodology | procedural
@@ -174,6 +184,7 @@ path:
   contract: ... # methodology only; omit for procedural
 draft:
   path: <repo_root>/.skill-proposals/<skill_name>
+  content_sha256: <current package hash>
   replaced_proposal: true | false
 next:
   skill: skill-review
@@ -237,8 +248,13 @@ node skills/skill-design-loop/scripts/self-test.mjs
 ```
 
 The self-test validates fixture coverage, route and collision expectations,
-stage traces, output variants, explicit-only metadata, repository-only source
-rules, and the pending or completed runtime-results schema.
+stage traces, eval-definition handoff, output variants, explicit-only metadata,
+repository-only source rules, and the pending or completed runtime-results
+schema.
+
+A `draft_created` result is invalid unless the package contains validated
+`evals/evals.json` and `evals/trigger_queries.json` definitions without run
+results and the returned hash matches the package.
 
 ## Boundaries
 

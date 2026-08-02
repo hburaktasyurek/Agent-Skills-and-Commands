@@ -1,6 +1,6 @@
 ---
 name: skill-brief
-description: "Apply 5W2H to fill the skill-path-selector checklist from skill-design intent, using bounded grill-me only for missing fields. Use when a vague task needs a complete operating frame. Triggers: skill-brief; skill design brief; grill to checklist."
+description: "Use this skill to turn a vague repository skill idea into the complete skill-path-selector checklist, including concrete evaluation examples, with bounded grill-me questions only for facts repository evidence cannot supply. Triggers: skill-brief; skill design brief; grill to checklist."
 ---
 
 # skill-brief
@@ -18,14 +18,18 @@ bare grill-me); skill-brief uses grill-me as a tool for its own gaps; then
 skill-path-selector chooses a path and skill-draft-ship drafts only from the
 complete handoff. Required checklist fields match skill-path-selector: purpose,
 audience, when_to_use, when_not, success_signal, boundaries, context,
-output_format, skill_name, skill_summary; optional invocation. Replacement
+output_format, skill_name, skill_summary, and `evaluation_examples`; optional
+invocation. `evaluation_examples` contains at least two realistic prompt and
+expected-output pairs, each marked `synthetic`, `project_artifact`, or
+`observed_failure`. Do not invent an expected result when the purpose and
+available artifacts cannot support one; block on the missing fact. Replacement
 permission is `replace: none | proposal | shipped | both`, defaults to `none`,
 and may only preserve explicit human authority naming the skill and target
 kind. Map 5W2H coverage onto those checklist fields
 (what/why→purpose+skill_name+skill_summary+output_format; who→audience;
 where→context; when→when_to_use+when_not; how→boundaries and how grill-me is
 scoped; how much→question budget and effort/risk in success_signal or blocked
-notes).
+notes; real examples and corrections→evaluation_examples).
 
 ## Required deliverable
 
@@ -84,7 +88,7 @@ without guessing.
 
 ## Execution checks
 
-- Every required checklist field is present with a non-invented value or the run is blocked with an explicit missing_fields list
+- Every required checklist field is present with a non-invented value, including at least two evaluation_examples, or the run is blocked with an explicit missing_fields list
 - grill-me was invoked only for missing fields, one question at a time, within the question budget, and stopped when complete or blocked
 
 ## Evidence to return

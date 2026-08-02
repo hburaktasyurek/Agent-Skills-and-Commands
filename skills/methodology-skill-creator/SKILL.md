@@ -73,14 +73,13 @@ suffix in description; the full list renders under `## Invocation`.
    `character_count` is evidence for review, not a 4,000-character gate.
    Keep the skill focused, but allow it to exceed 4,000 characters when the
    task contract and canonical method content require that space.
-5. Confirm the target directory still does not exist immediately before any
-   authorized write.
-6. Return the proposed file and evidence. Write it only when the caller asked
-   for repository changes and the target is inside the current repository.
+5. Return the proposed file and evidence to `skill-draft-ship`. The renderer
+   and this skill never write a proposal or canonical `skills/` destination;
+   only the lifecycle harness may persist the validated proposal.
 
 ## Boundaries
 
-- Do not absorb `skill-draft-ship` draft/ship/purpose gates; this skill only renders methodology SKILL.md content.
+- Do not absorb or bypass `skill-draft-ship` draft/ship/purpose/eval gates; this skill only renders methodology SKILL.md content and never writes `skills/`.
 - Do not select a methodology or merge multiple methods.
 - Do not invent method principles outside the canonical reference.
 - Do not generate itself.

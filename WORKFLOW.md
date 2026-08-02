@@ -101,14 +101,15 @@ the repository or Git for additional evidence within its own responsibility.
 | `pr-branch` | No explicit input; inspect the current branch, commits, and Git diff |
 | `risk-calibrated-pr-review` | Current PR number or URL; on eligible incremental re-review, the complete prior report and its exact reviewed head |
 | `adversarial-diff-review` | Explicit branch or working-tree diff boundary when hostile review is needed before a PR exists; not chained with the canonical PR gate |
-| `skill-brief` | Skill-design intent or incomplete checklist; may use bounded grill-me |
+| `skill-brief` | Skill-design intent or incomplete checklist; includes at least two evaluation examples and may use bounded grill-me |
 | `skill-router` | Required `job` text; optional `exclude` skill-name list |
 | `skill-composition` | Exactly one of `target`, `proposal_path`, or `fixture_path` |
 | `skill-path-selector` | Completed selector checklist (via `skill-brief` when incomplete) |
 | `skill-design-loop` | Explicitly supplied skill-design intent or partial/complete checklist; orchestrates through draft and stops |
-| `skill-draft-ship` | Complete checklist + selected path for draft mode, or purpose_pass draft path + explicit human ship + composition_ok or human composition skip |
-| `skill-review` | `.skill-proposals/<skill_name>/` plus checklist purpose fields |
-| `revise-skill-from-review` | Draft path plus complete purpose_fail remedies |
+| `skill-eval` | Exactly one target or proposal path, calibrate or verify phase, one adapter/model surface, eval definition, and an exact resolvable baseline |
+| `skill-draft-ship` | Complete checklist + selected path for draft mode, or same-hash purpose_pass + skill_eval_pass + composition_ok + explicit human ship |
+| `skill-review` | `.skill-proposals/<skill_name>/` plus checklist purpose fields; returns exact package hash |
+| `revise-skill-from-review` | Draft path plus complete purpose_fail or skill_eval_fail remedies |
 
 Do not replace these artifact references with a summary from memory. A review
 failure is handed back as its complete output, and a spec-consuming skill
@@ -118,11 +119,12 @@ When unsure which **existing** catalog skill fits the current job, optionally
 run `skill-router` for a single recommendation (`skill` | `none` | `blocked`).
 It does not replace WORKFLOW session transitions or propose skill chains.
 
-Before shipping a skill, `skill-draft-ship` ship mode requires a
-`composition_ok` verdict from `skill-composition` on the current draft (or an
-explicit human composition skip with reason). Composition is an artifact
-prerequisite of ship, not a substitute for `skill-review` purpose judgment.
-It may also be run independently on any draft or catalog skill.
+Before shipping a skill, `skill-draft-ship` requires `purpose_pass`,
+`skill_eval_pass`, and `composition_ok` bound to the same current package hash.
+Composition may be skipped only when the checker itself returned `blocked` for
+a technical reason and the human names the skill, reason, and blocked evidence;
+`composition_fail` cannot be skipped. These artifacts are independent gates,
+not substitutes for one another.
 
 ## Exact transitions
 
@@ -235,8 +237,9 @@ method-name bias in the request). Drafts live under gitignored
    under brief bounds (field-scoped, one question at a time, default max 8).
 3. Intake returns the selector checklist without invented fields: purpose,
    audience, when_to_use, when_not, success_signal, boundaries, context,
-   output_format, skill_name, skill_summary; optional invocation; and
-   `replace: none | proposal | shipped | both`.
+   output_format, skill_name, skill_summary; at least two concrete
+   `evaluation_examples` with prompt, expected output, and source; optional
+   invocation; and `replace: none | proposal | shipped | both`.
 4. The orchestrator applies `skill-path-selector` →
    `methodology` | `decompose` | `procedural` | `blocked`. Child normal stops
    return to the orchestrator; human-input stops remain in the current stage.
@@ -245,23 +248,35 @@ method-name bias in the request). Drafts live under gitignored
    checklist and selected path. Methodology rendering goes directly through
    `methodology-skill-creator`, never `loop-orchestrator`.
 6. `skill-draft-ship` **draft** writes only
-   `.skill-proposals/<skill_name>/`; any replacement requires target-specific
-   human authority. `skill-design-loop` stops with the typed draft handoff.
-7. Separate session: `skill-review` on that draft path.
+   `.skill-proposals/<skill_name>/`, including `evals/evals.json` and
+   `evals/trigger_queries.json` without run results; any replacement requires
+   target-specific human authority. `skill-design-loop` stops with the typed
+   draft handoff and package hash.
+7. Separate session: `skill-review` on that draft path. It returns static
+   purpose evidence bound to the exact package hash, not behavioral proof.
 8. On `purpose_fail`, `revise-skill-from-review` then re-run `skill-review`.
-9. On `purpose_pass`, human **ship** → `skill-draft-ship` ship mode requires
-   `composition_ok` from `skill-composition` on the current draft (or an
-   explicit human composition skip with reason) → copy → INDEX/README →
-   delete draft last. Replacing an existing shipped package requires a fresh
-   explicit `ship_replace: true` approval in that ship attempt.
-10. Install/global remains human-owned. After ship, behavior complaints use
+9. On `purpose_pass`, run `skill-eval` calibration against the exact old-skill
+   or no-skill baseline on one named adapter and model. A human or separate
+   reviewer approves the discriminating assertions; `revise-skill-from-review`
+   records that exact set in the proposal. Then re-run `skill-review` because
+   the package hash changed. Calibration may be skipped only when a tested
+   deterministic contract already supplies the checks and evidence.
+10. Run `skill-eval` verify from clean contexts. On `skill_eval_fail`, use
+    `revise-skill-from-review`, then re-run purpose review and evaluation. Stop
+    on `NO_LIFT` or `INCONCLUSIVE`; neither permits ship.
+11. On same-hash `purpose_pass` and `skill_eval_pass`, run
+    `skill-composition`. Human **ship** then invokes `skill-draft-ship` ship
+    mode with all three same-hash artifacts → copy → INDEX/README → delete
+    draft last. Replacing an existing shipped package requires a fresh explicit
+    `ship_replace: true` approval in that ship attempt.
+12. Install/global remains human-owned. After ship, behavior complaints use
     `tune-skill`, not `skill-review`.
 
 Checklist → eight-field map: purpose→task; audience→audience; context→context;
 output_format→output_format; success_signal→validation check + evidence;
 boundaries→stop_conditions with `human_approval_required: true` and
-`approval_actions` including `ship skill to skills/`; skill_name /
-skill_summary / invocation / replace stay draft inputs.
+`approval_actions` including `ship skill to skills/`; evaluation_examples /
+skill_name / skill_summary / invocation / replace stay draft inputs.
 
 #### Lifecycle package selections (purpose-first)
 
@@ -276,6 +291,7 @@ Recorded under `skills/lifecycle-build/selections/` before each SKILL.md:
 | `skill-review` | `smart-goals` | Draft judged as measurable finishability |
 | `revise-skill-from-review` | `pdca` | Bounded change inside review/revise cycles |
 | `skill-design-loop` | `none` (procedural orchestrator) | Explicit preflight/intake/path/draft routing |
+| `skill-eval` | `none` (procedural gate) | Exact-baseline isolated artifact evaluation; no editing or ship |
 | `skill-draft-ship` | `none` (procedural harness) | Renamed continuation of the historical `skill-creator`; persist/ship gates only |
 
 ## Tool and model policy

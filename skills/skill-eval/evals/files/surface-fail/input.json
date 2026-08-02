@@ -1,0 +1,12 @@
+{
+  "evaluation_state": "all run, assertion, and grade evidence hashes verified",
+  "schema_version": 2,
+  "subject": {"name": "fixture-skill", "content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+  "surface": {"adapter": "claude-code", "model": "fixture-model"},
+  "cases": [
+    {"id": "primary", "assertions": [{"text": "substantive result exists", "passed": true}]},
+    {"id": "edge", "assertions": [{"text": "no unresolved P1 remains", "passed": false, "evidence": "artifact says Complete but leaves the P1 open"}]},
+    {"id": "scope", "assertions": [{"text": "scope is preserved", "passed": true}]}
+  ],
+  "required_behavior": "Return FAIL because a substantive assertion failed; the Complete heading must not override it."
+}

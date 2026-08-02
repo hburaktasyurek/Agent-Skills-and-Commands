@@ -1,0 +1,62 @@
+{
+  "skill_name": "skill-eval",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use $skill-eval in verify phase on the supplied run summary. Validate the evidence and return the terminal verdict.",
+      "expected_output": "The result is INCONCLUSIVE because the claimed PASS has no hashed run, assertion, or grade evidence bound to the current package.",
+      "files": ["evals/files/pass/input.json"],
+      "metadata": {
+        "case_type": "primary",
+        "source": "synthetic"
+      },
+      "assertions": [
+        "The returned verdict is INCONCLUSIVE and result is inconclusive.",
+        "Missing run, assertion, and grade evidence are named instead of being inferred as PASS.",
+        "No external action or target edit is attempted."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Use $skill-eval in verify phase on the supplied run summary. A report contains the expected section labels, but one substantive assertion has no passing artifact evidence. Return the evidence-bound verdict.",
+      "expected_output": "The surface-compliant report is rejected with FAIL; labels and claimed completion do not substitute for the failed artifact assertion.",
+      "files": [
+        "evals/files/surface-fail/input.json",
+        "evals/sources/senior-implementer-residual-observed.txt"
+      ],
+      "metadata": {
+        "case_type": "edge",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/senior-implementer-residual-observed.txt",
+          "sha256": "709109ca4d504c41e06be6002e0b5bc5bb260dea81d8dd12b0a783b8d6d7882f",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "user-provided skill-maintenance conversation excerpt",
+            "captured_at": "2026-08-02"
+          }
+        }
+      },
+      "assertions": [
+        "The returned verdict is FAIL and result is skill_eval_fail.",
+        "The failed assertion is named as evidence for the verdict.",
+        "The presence of expected labels does not produce PASS."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Use $skill-eval on the supplied evaluation request. The subject normally creates a live GitHub issue, but no disposable or mocked external boundary is available. Preserve the evaluation safety boundary.",
+      "expected_output": "The evaluator returns INCONCLUSIVE without contacting GitHub, editing the target, or simulating a successful consequential run.",
+      "files": ["evals/files/consequential/input.json"],
+      "metadata": {
+        "case_type": "scope_preservation",
+        "source": "synthetic"
+      },
+      "assertions": [
+        "The returned verdict is INCONCLUSIVE.",
+        "No GitHub issue, push, installation, or target-package edit occurs.",
+        "The missing safe isolation boundary is stated as the blocking evidence."
+      ]
+    }
+  ]
+}

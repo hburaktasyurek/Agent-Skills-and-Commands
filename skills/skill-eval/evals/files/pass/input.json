@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "subject": {
+    "name": "fixture-skill",
+    "path": ".skill-proposals/fixture-skill",
+    "content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "baseline": {"mode": "without_skill"},
+  "surface": {"adapter": "codex", "model": "fixture-model"},
+  "cases": {
+    "total": 3,
+    "results": [
+      {"id": "primary", "assertions": [{"text": "artifact is complete", "passed": true}], "grade": {"baseline_score": 3, "subject_score": 4}},
+      {"id": "edge", "assertions": [{"text": "edge is handled", "passed": true}], "grade": {"baseline_score": 3, "subject_score": 3}},
+      {"id": "scope", "assertions": [{"text": "scope is preserved", "passed": true}], "grade": {"baseline_score": 3, "subject_score": 3}}
+    ]
+  },
+  "trigger": {"required": false, "verdict": "NOT_RUN"},
+  "comparison": {
+    "regressions": 0,
+    "discriminating_lift": true,
+    "baseline": {"duration_ms": 1000, "usage": {"status": "unavailable"}},
+    "subject": {"duration_ms": 900, "usage": {"status": "unavailable"}}
+  },
+  "evidence": {"workspace": ".skill-proposals/.eval-runs/missing", "runs": []}
+}

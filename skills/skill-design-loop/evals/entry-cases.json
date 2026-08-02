@@ -1,6 +1,6 @@
 {
   "skill_name": "skill-design-loop",
-  "contract_version": 1,
+  "contract_version": 2,
   "cases": [
     {
       "id": "complete-procedural-drafts-without-questions",
@@ -262,6 +262,25 @@
         "mode": "draft",
         "repo_valid": true,
         "checklist_complete": false,
+        "evaluation_examples": 2,
+        "path": "procedural",
+        "collision": "none",
+        "replace": "none"
+      },
+      "expected": {
+        "result": "blocked",
+        "code": "invalid_input",
+        "write_targets": [],
+        "delete_targets": []
+      }
+    },
+    {
+      "id": "direct-draft-missing-evaluation-examples-blocks",
+      "input": {
+        "mode": "draft",
+        "repo_valid": true,
+        "checklist_complete": true,
+        "evaluation_examples": 1,
         "path": "procedural",
         "collision": "none",
         "replace": "none"
@@ -279,6 +298,7 @@
         "mode": "draft",
         "repo_valid": true,
         "checklist_complete": true,
+        "evaluation_examples": 2,
         "path": null,
         "collision": "none",
         "replace": "none"
@@ -297,7 +317,12 @@
         "repo_valid": true,
         "explicit_ship": false,
         "purpose_pass": true,
+        "current_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "purpose_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "eval_verdict": "PASS",
+        "eval_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "composition": "composition_ok",
+        "composition_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "destination_exists": false,
         "ship_replace": false
       },
@@ -315,7 +340,85 @@
         "repo_valid": true,
         "explicit_ship": true,
         "purpose_pass": false,
+        "current_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "purpose_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "eval_verdict": "PASS",
+        "eval_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "composition": "composition_ok",
+        "composition_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "destination_exists": false,
+        "ship_replace": false
+      },
+      "expected": {
+        "result": "blocked",
+        "code": "ship_gate_failed",
+        "write_targets": [],
+        "delete_targets": []
+      }
+    },
+    {
+      "id": "ship-missing-skill-eval-pass-blocks",
+      "input": {
+        "mode": "ship",
+        "repo_valid": true,
+        "explicit_ship": true,
+        "purpose_pass": true,
+        "current_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "purpose_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "eval_verdict": "INCONCLUSIVE",
+        "eval_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "composition": "composition_ok",
+        "composition_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "destination_exists": false,
+        "ship_replace": false
+      },
+      "expected": {
+        "result": "blocked",
+        "code": "ship_gate_failed",
+        "write_targets": [],
+        "delete_targets": []
+      }
+    },
+    {
+      "id": "ship-declared-pass-without-evidence-blocks",
+      "input": {
+        "mode": "ship",
+        "repo_valid": true,
+        "explicit_ship": true,
+        "purpose_pass": true,
+        "current_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "purpose_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "eval_verdict": "PASS",
+        "eval_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "eval_evidence_verified": false,
+        "eval_verifier_recomputed": false,
+        "composition": "composition_ok",
+        "composition_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "destination_exists": false,
+        "ship_replace": false
+      },
+      "expected": {
+        "result": "blocked",
+        "code": "ship_gate_failed",
+        "write_targets": [],
+        "delete_targets": []
+      }
+    },
+    {
+      "id": "ship-stale-evidence-hash-blocks",
+      "input": {
+        "mode": "ship",
+        "repo_valid": true,
+        "explicit_ship": true,
+        "purpose_pass": true,
+        "current_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "purpose_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "eval_verdict": "PASS",
+        "eval_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "eval_evidence_verified": true,
+        "eval_verifier_recomputed": true,
+        "composition": "composition_ok",
+        "composition_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "destination_exists": false,
         "ship_replace": false
       },
@@ -333,7 +436,12 @@
         "repo_valid": true,
         "explicit_ship": true,
         "purpose_pass": true,
+        "current_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "purpose_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "eval_verdict": "PASS",
+        "eval_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "composition": "missing",
+        "composition_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "destination_exists": false,
         "ship_replace": false
       },
@@ -351,7 +459,12 @@
         "repo_valid": true,
         "explicit_ship": true,
         "purpose_pass": true,
+        "current_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "purpose_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "eval_verdict": "PASS",
+        "eval_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "composition": "composition_ok",
+        "composition_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "destination_exists": true,
         "ship_replace": false
       },
@@ -369,7 +482,14 @@
         "repo_valid": true,
         "explicit_ship": true,
         "purpose_pass": true,
+        "current_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "purpose_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "eval_verdict": "PASS",
+        "eval_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "eval_evidence_verified": true,
+        "eval_verifier_recomputed": true,
         "composition": "composition_ok",
+        "composition_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "destination_exists": false,
         "ship_replace": false
       },

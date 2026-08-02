@@ -1,23 +1,34 @@
 ---
 name: revise-skill-from-review
-description: "Apply PDCA to apply closed purpose-fail remedies to a skill draft. Use when a workflow should improve through repeated measured cycles. Triggers: revise-skill-from-review; revise skill draft."
+description: "Use this skill to apply one closed purpose_fail or skill_eval_fail remedy list, or record one independently approved calibration assertion set, in an unshipped repository skill proposal; then return it for fresh hash-bound purpose review and behavioral evaluation. Triggers: revise-skill-from-review; revise skill draft."
 ---
 
 # revise-skill-from-review
 
 ## Objective
 
-Apply PDCA (`pdca`) to this job: apply a closed purpose_fail remedy list to a skill draft under .skill-proposals only; verify each gap; make the smallest in-scope edits; leave re-review to a separate session; do not invent findings or ship.
+Apply PDCA (`pdca`) to this job: apply one closed `purpose_fail` or
+`skill_eval_fail` remedy list, or one independently approved
+`calibration_complete` assertion set, to a skill draft under `.skill-proposals` only;
+verify each gap; make the smallest in-scope edits; leave purpose review and
+behavioral re-evaluation to separate sessions; do not invent findings or ship.
 
 Produce the result for Agents in the skill-design authoring session and humans.
 
 ## Operating instructions
 
-Plan: lock draft path and closed remedies. Do: edit only .skill-proposals/<skill_name>/. Check: reconcile each remedy ID. Act: hand to separate skill-review; do not claim re-review passed. Never edit skills/, INDEX, README; never commit/push/install. Do not expand purpose beyond checklist.
+Plan: lock draft path, current package hash, verdict kind, and closed remedies
+or approved assertion set. A calibration update may only copy the exact
+approved assertions into `evals/evals.json`; it may not change behavior,
+prompts, fixtures, expected outputs, or approval evidence.
+Do: edit only `.skill-proposals/<skill_name>/`. Check: reconcile each remedy ID
+and compute the new package hash. Act: hand to separate `skill-review`, then
+`skill-eval`; do not claim either passed. Never edit skills/, INDEX, README;
+never commit/push/install. Do not expand purpose beyond checklist.
 
 ## Required deliverable
 
-Per-remedy reconciliation summary and updated draft files when confirmed.
+Per-remedy reconciliation summary, old/new package hashes, and updated draft files when confirmed.
 
 ## When to use
 

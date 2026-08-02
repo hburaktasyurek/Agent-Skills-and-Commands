@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 
 const skillDir = new URL("../", import.meta.url);
 const repoSkillsDir = new URL("../../", import.meta.url);
@@ -32,6 +34,58 @@ const check = (name, condition, evidence) => {
   results.push({ name, passed: true, evidence });
 };
 
+function simulateShipRollback(
+  destinationExisted,
+  { failurePoint = "documentation", corruptRollback = false } = {},
+) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "skill-ship-rollback-"));
+  try {
+    const skillsDir = path.join(root, "skills");
+    const destination = path.join(skillsDir, "fixture");
+    const backup = path.join(root, "backup");
+    fs.mkdirSync(skillsDir, { recursive: true });
+    fs.mkdirSync(backup, { recursive: true });
+    fs.writeFileSync(path.join(root, "INDEX.md"), "index-before\n");
+    fs.writeFileSync(path.join(root, "README.md"), "readme-before\n");
+    fs.copyFileSync(path.join(root, "INDEX.md"), path.join(backup, "INDEX.md"));
+    fs.copyFileSync(path.join(root, "README.md"), path.join(backup, "README.md"));
+    if (destinationExisted) {
+      fs.mkdirSync(destination);
+      fs.writeFileSync(path.join(destination, "old.txt"), "old\n");
+      fs.renameSync(destination, path.join(backup, "destination"));
+    }
+    fs.mkdirSync(destination);
+    fs.writeFileSync(path.join(destination, "new.txt"), "new\n");
+    if (failurePoint === "documentation") {
+      fs.writeFileSync(path.join(root, "INDEX.md"), "index-partial\n");
+      fs.writeFileSync(path.join(root, "README.md"), "readme-partial\n");
+    }
+
+    fs.rmSync(destination, { recursive: true });
+    if (destinationExisted) fs.renameSync(path.join(backup, "destination"), destination);
+    fs.copyFileSync(path.join(backup, "INDEX.md"), path.join(root, "INDEX.md"));
+    if (!corruptRollback) {
+      fs.copyFileSync(path.join(backup, "README.md"), path.join(root, "README.md"));
+    }
+
+    const docsRestored =
+      fs.readFileSync(path.join(root, "INDEX.md"), "utf8") === "index-before\n" &&
+      fs.readFileSync(path.join(root, "README.md"), "utf8") === "readme-before\n";
+    const destinationRestored = destinationExisted
+      ? fs.existsSync(path.join(destination, "old.txt")) &&
+        !fs.existsSync(path.join(destination, "new.txt"))
+      : !fs.existsSync(destination);
+    const restored = docsRestored && destinationRestored;
+    return {
+      restored,
+      resultCode: restored ? "ship_gate_failed" : "rollback_failed",
+      residualState: restored ? [] : ["README.md differs from pre-ship snapshot"],
+    };
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+}
+
 const replacements = new Set(["none", "proposal", "shipped", "both"]);
 const paths = new Set(["procedural", "methodology", "decompose", "blocked"]);
 const terminalResults = new Set(["draft_created", "decompose", "blocked"]);
@@ -51,9 +105,13 @@ const requiredCases = new Set([
 ]);
 const requiredDraftShipCases = new Set([
   "direct-draft-missing-checklist-blocks",
+  "direct-draft-missing-evaluation-examples-blocks",
   "direct-draft-missing-path-blocks",
   "ship-missing-human-command-blocks",
   "ship-missing-purpose-pass-blocks",
+  "ship-missing-skill-eval-pass-blocks",
+  "ship-declared-pass-without-evidence-blocks",
+  "ship-stale-evidence-hash-blocks",
   "ship-missing-composition-blocks",
   "ship-existing-target-needs-fresh-replace",
   "ship-all-gates-pass",
@@ -139,6 +197,7 @@ function deriveDraftShipOutcome(input) {
   if (input.mode === "draft") {
     if (
       !input.checklist_complete ||
+      input.evaluation_examples < 2 ||
       !["methodology", "procedural"].includes(input.path)
     ) {
       return { result: "blocked", code: "invalid_input" };
@@ -149,13 +208,22 @@ function deriveDraftShipOutcome(input) {
     return { result: "draft_created", code: null };
   }
   if (input.mode === "ship") {
-    const compositionReady = ["composition_ok", "composition_skip"].includes(
-      input.composition,
-    );
+    const compositionReady =
+      input.composition === "composition_ok" ||
+      (input.composition === "composition_skip" && input.composition_blocked);
+    const sameHash =
+      typeof input.current_hash === "string" &&
+      input.purpose_hash === input.current_hash &&
+      input.eval_hash === input.current_hash &&
+      input.composition_hash === input.current_hash;
     if (
       !input.explicit_ship ||
       !input.purpose_pass ||
+      input.eval_verdict !== "PASS" ||
+      input.eval_evidence_verified !== true ||
+      input.eval_verifier_recomputed !== true ||
       !compositionReady ||
+      !sameHash ||
       (input.destination_exists && !input.ship_replace)
     ) {
       return { result: "blocked", code: "ship_gate_failed" };
@@ -168,7 +236,7 @@ function deriveDraftShipOutcome(input) {
 check(
   "fixture package identity",
   fixtures.skill_name === "skill-design-loop" &&
-    fixtures.contract_version === 1,
+    fixtures.contract_version === 2,
   `${fixtures.skill_name}@${fixtures.contract_version}`,
 );
 check(
@@ -282,6 +350,9 @@ const requiredSkillClauses = [
   "result: decompose",
   "result: blocked",
   "replace: none | proposal | shipped | both",
+  "evaluation_examples",
+  "evals/evals.json",
+  "content_sha256",
   "Stop after one `draft_created`, `decompose`, or `blocked` result.",
 ];
 check(
@@ -312,8 +383,55 @@ check(
     draftShipText.includes("Do not select a path") &&
     draftShipText.includes("ship_replace: true") &&
     draftShipText.includes("composition_ok") &&
-    draftShipText.includes("purpose_pass"),
+    draftShipText.includes("purpose_pass") &&
+    draftShipText.includes("skill_eval_pass") &&
+    draftShipText.includes("content_sha256"),
   "skill-draft-ship contract",
+);
+check(
+  "draft-ship requires exact destination replacement and rehash",
+  draftShipText.includes("never overlay-copy") &&
+    draftShipText.includes(".ship-staging/") &&
+    draftShipText.includes(".ship-backups/") &&
+    draftShipText.includes("hash the destination") &&
+    draftShipText.includes("restore the prior"),
+  "staged exact-copy ship contract",
+);
+check(
+  "first-time ship rollback restores absent destination and documents",
+  simulateShipRollback(false).restored,
+  "failure-injected first-time rollback",
+);
+check(
+  "replacement ship rollback restores old destination and documents",
+  simulateShipRollback(true).restored,
+  "failure-injected replacement rollback",
+);
+check(
+  "first-time destination mismatch uses unified rollback",
+  simulateShipRollback(false, { failurePoint: "destination_hash" }).restored,
+  "failure-injected first-time destination mismatch",
+);
+check(
+  "replacement destination mismatch uses unified rollback",
+  simulateShipRollback(true, { failurePoint: "destination_hash" }).restored,
+  "failure-injected replacement destination mismatch",
+);
+check(
+  "first-time rollback failure is typed with residual state",
+  (() => {
+    const result = simulateShipRollback(false, { corruptRollback: true });
+    return result.resultCode === "rollback_failed" && result.residualState.length > 0;
+  })(),
+  "failure-injected first-time rollback failure",
+);
+check(
+  "replacement rollback failure is typed with residual state",
+  (() => {
+    const result = simulateShipRollback(true, { corruptRollback: true });
+    return result.resultCode === "rollback_failed" && result.residualState.length > 0;
+  })(),
+  "failure-injected replacement rollback failure",
 );
 check(
   "draft-ship is explicit-only with exact Codex metadata",

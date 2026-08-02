@@ -17,7 +17,9 @@ If the skill-design checklist is missing or incomplete, invoke `skill-brief`
 first (it may use `grill-me` under brief-owned bounds). Do not call bare
 `grill-me` from this skill. Require checklist fields: purpose, audience,
 when_to_use, when_not, success_signal, boundaries, context, output_format,
-skill_name, skill_summary; optional invocation. Normalize replacement
+skill_name, skill_summary, and at least two `evaluation_examples`; optional
+invocation. Preserve each example's prompt, expected output, and source without
+using it to bias methodology selection. Normalize replacement
 permission to `replace: none | proposal | shipped | both`, defaulting to
 `none`; never infer authority. Hard gates: missing field or a proposal/shipped
 collision not covered by that exact permission → blocked. `proposal` covers

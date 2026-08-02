@@ -1,6 +1,6 @@
 ---
 name: skill-review
-description: "Apply SMART Goals to judge whether a skill draft achieves its stated purpose. Use when a goal must become measurable enough for an agent or person to finish. Triggers: skill-review; purpose review draft."
+description: "Use this skill to perform the static purpose and boundary review of one repository skill proposal before behavioral evaluation. Return a package-hash-bound purpose_pass or purpose_fail; do not treat this review as proof that the skill works. Triggers: skill-review; purpose review draft."
 ---
 
 # skill-review
@@ -13,11 +13,20 @@ Produce the result for Agents in a separate review session and humans deciding w
 
 ## Operating instructions
 
-Accept only paths under .skill-proposals/<skill_name>/. Reject skills/ paths; post-ship complaints use tune-skill. Require checklist purpose, success_signal, boundaries, when_not. Answer four purpose questions yes/no with draft quotes: (1) pursues checklist purpose only; (2) success_signal reviewer-checkable in Validation; (3) concrete forbid from boundaries/when_not; (4) executing agent is not sole approver of purpose success. All yes → purpose_pass; any no → purpose_fail with closed remedies F1.. for revise-skill-from-review.
+Accept only paths under .skill-proposals/<skill_name>/. Reject skills/ paths;
+post-ship complaints use tune-skill. Compute the complete package hash with
+repository `skill-eval/scripts/hash-skill-package.mjs` before judging. Require
+checklist purpose, success_signal, boundaries, when_not. Answer four purpose
+questions yes/no with draft quotes: (1) pursues checklist purpose only; (2)
+success_signal reviewer-checkable in Validation; (3) concrete forbid from
+boundaries/when_not; (4) executing agent is not sole approver of purpose
+success. All yes → purpose_pass; any no → purpose_fail with closed remedies
+F1.. for revise-skill-from-review. This is static contract evidence only;
+never claim behavioral success.
 
 ## Required deliverable
 
-YAML verdict with draft_path, per-question evidence, and remedies on fail.
+YAML verdict with draft_path, `content_sha256`, per-question evidence, and remedies on fail.
 
 ## When to use
 
@@ -76,7 +85,7 @@ validation cannot be satisfied without guessing.
 
 ## Evidence to return
 
-- purpose_pass or purpose_fail with closed remedy list on fail
+- purpose_pass or purpose_fail, exact package hash, and closed remedy list on fail
 
 ## Human review and stop
 

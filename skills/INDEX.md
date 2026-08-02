@@ -59,8 +59,9 @@ Building and tuning the system itself.
 - [skill-composition](skill-composition/SKILL.md) — Procedural: check one skill's invoke/forbid/require edges against the catalog.
 - [skill-path-selector](skill-path-selector/SKILL.md) — Decision Matrix: choose methodology / decompose / procedural / blocked from the skill checklist (via skill-brief when incomplete).
 - [skill-design-loop](skill-design-loop/SKILL.md) — Explicit procedural orchestrator: repository preflight, bounded intake, path selection, and one proposal draft; stop before review or ship.
-- [skill-draft-ship](skill-draft-ship/SKILL.md) — Explicit procedural harness: draft from a complete selected path or ship after purpose and composition gates.
-- [skill-review](skill-review/SKILL.md) — SMART Goals: purpose_pass / purpose_fail on a draft path only.
-- [revise-skill-from-review](revise-skill-from-review/SKILL.md) — PDCA: closed-list draft edits after purpose_fail.
+- [skill-eval](skill-eval/SKILL.md) — Harness-neutral artifact gate: compare one skill with an exact baseline and return hash-bound PASS / FAIL / NO_LIFT / INCONCLUSIVE.
+- [skill-draft-ship](skill-draft-ship/SKILL.md) — Explicit procedural harness: draft eval-ready proposals or ship after hash-bound purpose, evaluation, and composition gates.
+- [skill-review](skill-review/SKILL.md) — SMART Goals: static, hash-bound purpose_pass / purpose_fail on a draft path only.
+- [revise-skill-from-review](revise-skill-from-review/SKILL.md) — PDCA: closed-list draft edits after purpose_fail or skill_eval_fail.
 - [prompt-creator](prompt-creator/SKILL.md) — Interview-driven Claude prompt builder grounded in Anthropic's best practices.
 - [tune-skill](tune-skill/SKILL.md) — Tactical, complaint-driven edit to an existing shipped skill: diagnose root cause, smallest change, cold-read review.

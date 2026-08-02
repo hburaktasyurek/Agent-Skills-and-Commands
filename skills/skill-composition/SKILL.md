@@ -45,11 +45,16 @@ Any break → `composition_fail` with closed findings (id, rule, quote, remedy h
 
 If all extracted edges pass → `composition_ok` (include the extracted edge lists as evidence).
 
+Before returning a verdict for a proposal or catalog package, compute its exact
+package hash with repository `skill-eval/scripts/hash-skill-package.mjs`.
+
 ## Required deliverable
 
 YAML with:
 
 - `subject` — the resolved `SKILL.md` path (for `target`: `skills/<name>/SKILL.md`; otherwise the supplied `proposal_path` or `fixture_path`)
+- `content_sha256` — exact current package hash for target/proposal; omit only
+  for a lifecycle fixture that is not a complete package
 - `verdict`
 - extracted `invokes` / `forbids` / `requires`
 - `findings` on fail
@@ -77,7 +82,7 @@ YAML with:
 ## Validation
 
 - Checks: Primary verdict is exactly one of composition_ok, composition_fail, blocked; no repository files edited by this skill
-- Evidence: Returned YAML including `subject` when a path was resolved; for fail, each finding cites a quote and rule number
+- Evidence: Returned YAML including `subject` and package hash when resolved; for fail, each finding cites a quote and rule number
 - Rules engine self-test: `node skills/skill-composition/scripts/self-test.mjs` covers consistency rules 1–3 on pre-extracted edge fixtures; rule 4 (checker edits nothing) is agent-enforced, not machine-checked; extraction from SKILL.md prose remains agent-judged
 
 ## Boundaries

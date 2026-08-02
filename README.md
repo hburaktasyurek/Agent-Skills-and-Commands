@@ -53,14 +53,15 @@ checks this installation precondition before its scripts are used.
 
 ## Skill Design Dependencies
 
-`skill-design-loop` and `skill-draft-ship` are explicit-only entry points.
+`skill-design-loop`, `skill-eval`, and `skill-draft-ship` are explicit-only entry points.
 They resolve the active repository as source of truth and never fall back to
 globally installed sibling content.
 
 | Skill | Required repository siblings |
 |---|---|
-| `skill-design-loop` | Always: `skill-brief`, `skill-path-selector`, `methodology-selector`, `skill-draft-ship`; intake gaps: `grill-me`; methodology path: `methodology-skill-creator` |
-| `skill-draft-ship` | Methodology draft only: `methodology-skill-creator`; ship consumes, but does not invoke, `skill-review` and `skill-composition` evidence |
+| `skill-design-loop` | Always: `skill-brief`, `skill-path-selector`, `methodology-selector`, `skill-eval`, `skill-draft-ship`; intake gaps: `grill-me`; methodology path: `methodology-skill-creator` |
+| `skill-eval` | Harness-neutral runner plus Codex, Claude Code, Cursor, OpenCode, and Cline adapters; consumes the evaluated package's eval definitions and approved assertion evidence |
+| `skill-draft-ship` | Always: `skill-eval` deterministic validators; methodology draft: `methodology-skill-creator`; ship revalidates same-hash `skill-eval` run/artifact evidence and consumes matching `skill-review` and `skill-composition` evidence |
 
 ## Skills
 
@@ -89,9 +90,10 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [skill-composition](skills/skill-composition/SKILL.md) | Procedural: check one skill's invoke/forbid/require edges against the catalog. |
 | [skill-path-selector](skills/skill-path-selector/SKILL.md) | Decision Matrix: choose methodology / decompose / procedural / blocked from the skill checklist (via skill-brief when incomplete). |
 | [skill-design-loop](skills/skill-design-loop/SKILL.md) | Explicitly orchestrate repository skill intake, path selection, and one proposal draft; stop before review or ship. |
-| [skill-draft-ship](skills/skill-draft-ship/SKILL.md) | Explicitly draft from a complete selected path or ship after purpose and composition gates. |
-| [skill-review](skills/skill-review/SKILL.md) | SMART Goals: purpose_pass / purpose_fail on a draft path only. |
-| [revise-skill-from-review](skills/revise-skill-from-review/SKILL.md) | PDCA: closed-list draft edits after purpose_fail. |
+| [skill-eval](skills/skill-eval/SKILL.md) | Compare one skill with an exact baseline on a named harness/model and return a hash-bound artifact verdict. |
+| [skill-draft-ship](skills/skill-draft-ship/SKILL.md) | Explicitly draft eval-ready proposals or ship after hash-bound purpose, evaluation, and composition gates. |
+| [skill-review](skills/skill-review/SKILL.md) | SMART Goals: static, hash-bound purpose_pass / purpose_fail on a draft path only. |
+| [revise-skill-from-review](skills/revise-skill-from-review/SKILL.md) | PDCA: closed-list draft edits after purpose_fail or skill_eval_fail. |
 | [tune-skill](skills/tune-skill/SKILL.md) | Tactical, complaint-driven edit to an existing shipped skill: diagnose root cause, smallest change, cold-read review. |
 | [methodology-selector](skills/methodology-selector/SKILL.md) | Select one of twelve canonical methodologies, or none, using positive fit, negative-fit veto, and stage precedence. |
 | [goal-engineering](skills/goal-engineering/SKILL.md) | Render the canonical eight-field contract plus controls into a goal; report the exact count and enforce a universal 4,000-character ceiling. |

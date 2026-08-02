@@ -5,6 +5,7 @@ Purpose-first construction records for the skill-design loop packages.
 - [plan-adversarial-review.md](plan-adversarial-review.md) — plan review with P1 resolutions (plan file frozen)
 - [selections/](selections/) — `methodology-selector` outputs **before** each SKILL.md
 - [selections/skill-design-loop.md](selections/skill-design-loop.md) — procedural selection recorded before the explicit orchestrator was authored
+- [selections/skill-eval.md](selections/skill-eval.md) — one-time procedural bootstrap record for the artifact evaluation gate
 - [purpose-review-bootstrap.md](purpose-review-bootstrap.md) — temporary purpose_pass checklist before `skill-review` shipped
 - [skill-router-smokes.md](skill-router-smokes.md) — fixed S1–S5 primary-verdict smokes for `skill-router`
 - [skill-composition-smokes.md](skill-composition-smokes.md) — fixed composition smokes including `skill-design-loop` and `skill-draft-ship`; deterministic rules engine: `node skills/skill-composition/scripts/self-test.mjs`

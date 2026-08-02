@@ -1,0 +1,6 @@
+interface:
+  display_name: "Skill Eval"
+  short_description: "Evaluate skills against a bound baseline"
+  default_prompt: "Use $skill-eval to evaluate this skill against its exact baseline with isolated artifact evidence."
+policy:
+  allow_implicit_invocation: false
