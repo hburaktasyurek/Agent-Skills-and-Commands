@@ -1,0 +1,125 @@
+{
+  "skill_name": "senior-implementer",
+  "queries": [
+    {
+      "id": "positive-train-01",
+      "split": "train",
+      "query": "Use /senior-implementer to build the approved account export brief end to end.",
+      "should_trigger": true
+    },
+    {
+      "id": "positive-train-02",
+      "split": "train",
+      "query": "Senior implementer ile bu failing payment retry davranisini kokten duzelt.",
+      "should_trigger": true
+    },
+    {
+      "id": "positive-train-03",
+      "split": "train",
+      "query": "Use senior-implementer on this direct engineering task; there is no named spec, the chat brief is authoritative.",
+      "should_trigger": true
+    },
+    {
+      "id": "positive-train-04",
+      "split": "train",
+      "query": "Apply the complete PR review findings with /senior-implementer and leave no task-related residual.",
+      "should_trigger": true
+    },
+    {
+      "id": "positive-train-05",
+      "split": "train",
+      "query": "Use senior implementer to diagnose why the job reports success without durable state and fix the task-owned cause.",
+      "should_trigger": true
+    },
+    {
+      "id": "positive-train-06",
+      "split": "train",
+      "query": "/senior-implementer implement agent-os/specs/customer-import completely, test it, and hand it back for review.",
+      "should_trigger": true
+    },
+    {
+      "id": "positive-validation-01",
+      "split": "validation",
+      "query": "Use senior-implementer: add the requested CLI feature and verify the actual artifact, not just the happy-path output.",
+      "should_trigger": true
+    },
+    {
+      "id": "positive-validation-02",
+      "split": "validation",
+      "query": "senior implementer ile review raporundaki P1'i tum ilgili akis boyunca kapat",
+      "should_trigger": true
+    },
+    {
+      "id": "positive-validation-03",
+      "split": "validation",
+      "query": "Invoke /senior-implementer for this bug: the stored result diverges from the API response.",
+      "should_trigger": true
+    },
+    {
+      "id": "positive-validation-04",
+      "split": "validation",
+      "query": "Please use senior-implementer to execute this conversation-only implementation brief without opening a PR.",
+      "should_trigger": true
+    },
+    {
+      "id": "negative-train-01",
+      "split": "train",
+      "query": "Implement this small helper function.",
+      "should_trigger": false
+    },
+    {
+      "id": "negative-train-02",
+      "split": "train",
+      "query": "Fix the failing unit test in src/parser.ts.",
+      "should_trigger": false
+    },
+    {
+      "id": "negative-train-03",
+      "split": "train",
+      "query": "Review pull request 42 and tell me whether it is safe to merge.",
+      "should_trigger": false
+    },
+    {
+      "id": "negative-train-04",
+      "split": "train",
+      "query": "Write an implementation spec for the new reconciliation flow.",
+      "should_trigger": false
+    },
+    {
+      "id": "negative-train-05",
+      "split": "train",
+      "query": "Triage this production bug and open a GitHub issue with a fix plan.",
+      "should_trigger": false
+    },
+    {
+      "id": "negative-train-06",
+      "split": "train",
+      "query": "Commit the current changes and push the branch.",
+      "should_trigger": false
+    },
+    {
+      "id": "negative-validation-01",
+      "split": "validation",
+      "query": "Build the dashboard from this brief.",
+      "should_trigger": false
+    },
+    {
+      "id": "negative-validation-02",
+      "split": "validation",
+      "query": "Can you explain why this endpoint sometimes returns an error? Do not change anything.",
+      "should_trigger": false
+    },
+    {
+      "id": "negative-validation-03",
+      "split": "validation",
+      "query": "Run an adversarial review of this diff and return P0-P3 findings.",
+      "should_trigger": false
+    },
+    {
+      "id": "negative-validation-04",
+      "split": "validation",
+      "query": "Update the roadmap wording; this is documentation-only and no implementation agent is requested.",
+      "should_trigger": false
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "skill_name": "senior-implementer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use /senior-implementer to apply the complete supplied review finding. Work only in the provided workspace. Read task.md, review.md, standards.md, AGENTS.md, the implementation, and the visible tests before editing. Implement the correction, run relevant checks, and return a concise evidence-backed handoff.",
+      "expected_output": "The task-owned blank-identifier invariant is enforced across every public entry path, normal identifiers still work, and no same-root residual is presented as complete.",
+      "files": [
+        "evals/files/multi-surface-invariant/input"
+      ],
+      "assertions": [
+        "A blank-after-trim identifier passed directly to Store is rejected with DomainException before Store mutates",
+        "HTTP, CSV, and CLI entries all reject blank-after-trim identifiers before storage",
+        "Direct Store and public entry calls normalize and store valid identifiers without changing their value",
+        "The handoff does not claim completion while any known same-root account-identifier path remains open"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Use /senior-implementer to fix the reported silent-success defect. Work only in the provided workspace. Read task.md, standards.md, AGENTS.md, the implementation, and the visible tests before editing. Implement the correction, run relevant checks, and return a concise evidence-backed handoff.",
+      "expected_output": "A successful claim is durable across a fresh process, a repeated claim observes the persisted running state, and success is not inferred only from the command response.",
+      "files": [
+        "evals/files/silent-state-divergence/input"
+      ],
+      "assertions": [
+        "After claimed true is returned, a fresh process reads the job status as running from the supplied store file",
+        "A second fresh-process claim returns exactly claimed false with status running",
+        "The successful command response keeps the existing JSON shape and is not used as the sole proof of completion"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Use /senior-implementer to implement the supplied feature brief. Work only in the provided workspace. Read task.md, AGENTS.md, the implementation, and the tests before editing. Run the relevant feedback loops and return a concise evidence-backed handoff, including any failure that remains outside the task boundary.",
+      "expected_output": "The requested active-account report behavior is correct, the unrelated payout implementation is unchanged, and its independently reproduced money-risk failure is explicitly escalated as release-blocking rather than silently fixed or treated as an ordinary residual.",
+      "files": [
+        "evals/files/feature-unrelated-anomaly/input"
+      ],
+      "assertions": [
+        "build_active_report includes only rows whose active value is exactly True, projects only id and name, sorts by case-insensitive name then id, and does not mutate its input",
+        "The unrelated src/legacy_payout.py artifact is byte-for-byte unchanged",
+        "The handoff reproduces the payout failure, classifies it as unrelated to the feature, and identifies the observed 100-times payout error as a high-impact money risk",
+        "The handoff explicitly blocks release or escalates for separate authority instead of presenting the overall workspace as complete"
+      ]
+    }
+  ]
+}

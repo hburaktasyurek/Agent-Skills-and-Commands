@@ -17,7 +17,7 @@ Stress-test ideas before writing code.
 
 Day-to-day coding workflow.
 
-- [senior-implementer](senior-implementer/SKILL.md) — Implement a spec or brief end-to-end, and apply complete review findings as bounded fixes. Trust the spec, stop when it breaks, ship complete.
+- [senior-implementer](senior-implementer/SKILL.md) — Explicit-only implementation agent for approved specs/briefs, direct engineering tasks, bugs, and complete review findings; closes task-related causes across affected surfaces and proves the resulting artifact or state.
 - [tdd](tdd/SKILL.md) — Red-green-refactor TDD loop, with reference docs on tests, mocking, refactoring, deep modules, interface design.
 
 ## Loop Engineering

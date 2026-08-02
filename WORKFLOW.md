@@ -48,7 +48,7 @@ REVIEW SESSION (compliance)
 review-implementation
 (skip when no approved spec cluster path was handed to implementation)
       ├─ FAIL → senior-implementer
-      │          complete findings → bounded fixes
+      │          complete findings → root-complete corrections
       │                ↓
       │          review-implementation again
       └─ Ready-for-PR: Yes
@@ -60,7 +60,7 @@ REVIEW SESSION (hostile)
 risk-calibrated-pr-review
 (opened PR required; result bound to exact base/head)
       ├─ FAIL → senior-implementer
-      │          complete findings → bounded fixes
+      │          complete findings → root-complete corrections
       │          invalidate Ready-for-PR if impl changed
       │          → review-implementation again when named spec
       │          → risk-calibrated-pr-review again
@@ -78,7 +78,7 @@ or during groundwork; it is not a required node on this path.
 |---|---|---|
 | Design | Grounding the task, resolving decisions, writing the spec, applying verified spec-review corrections | Implementation, PR creation, merge |
 | Review | Spec compliance (`review-implementation`), hostile spec review (`adversarial-spec-review`), risk-calibrated PR review (`risk-calibrated-pr-review`), readiness judgment, evidence-backed verdict | Quietly rewriting the reviewed artifact or approving its own fixes or merge |
-| Implementation | `senior-implementer`: implementing the approved spec/brief and applying bounded corrections from complete compliance or diff-review findings | Redesigning the spec, opening the PR, merging |
+| Implementation | `senior-implementer`: implementing an approved spec/brief or direct engineering task, diagnosing task-related discrepancies, and closing complete review findings across their necessary consequence surfaces | Redesigning binding product decisions, expanding into unrelated work, opening the PR, merging |
 | Commit / PR | Staging intentional changes, creating commits, writing the PR description, opening the PR | Implementation changes, independent review, merge |
 | Human | Choosing tools/models, approving scope changes, deciding commit/push/install/merge | Delegating irreversible authority merely because a score or review passed |
 
@@ -95,7 +95,7 @@ the repository or Git for additional evidence within its own responsibility.
 | `adversarial-spec-review` | Spec cluster path |
 | `revise-spec-from-review` | Complete output from the failed `adversarial-spec-review` or `spec-readiness` run |
 | `spec-readiness` | Spec cluster path |
-| `senior-implementer` | Approved spec/brief path when present; for post-review correction, also the **complete** findings output from `review-implementation` or `risk-calibrated-pr-review` (not a paraphrase)—stop and ask if findings are missing or only summarized |
+| `senior-implementer` | Approved spec/brief path when present, otherwise the direct session engineering task; for post-review correction, also the **complete** findings output from `review-implementation` or `risk-calibrated-pr-review` (not a paraphrase)—stop and ask if findings are missing or only summarized |
 | `review-implementation` | Approved spec cluster path (named-spec compliance; optional changed-files/PR argument as the skill allows) |
 | `commit-work` | No explicit input; inspect the current Git worktree and diff |
 | `pr-branch` | No explicit input; inspect the current branch, commits, and Git diff |
@@ -168,17 +168,19 @@ It may also be run independently on any draft or catalog skill.
      chat bullets without that path are not a named spec. Use
      `senior-implementer` with that path. Do not open the PR inside the
      implementation session.
-   - **No named spec** (docs-only, skill-kit prose, conversation-only work):
-     Implement without requiring `senior-implementer` or a spec cluster path.
-     Skip compliance (`review-implementation`). Do not open the PR inside the
+   - **No named spec** (direct engineering task, bug, docs-only, skill-kit
+     prose, conversation-only work): The direct session task is authority. If
+     `senior-implementer` is explicitly invoked, use it without manufacturing a
+     spec path; otherwise implementation does not require the skill. Skip
+     compliance (`review-implementation`). Do not open the PR inside the
      implementation work either.
 2. **Compliance (named spec only):** Skip this step when there is no named
    spec. Otherwise, in a separate review session, run
    `review-implementation` against the approved spec cluster path. On
    compliance FAIL, return the **complete** findings to `senior-implementer`
-   (with the spec/brief path) for bounded fixes as a closed worklist, then
-   rerun `review-implementation`. Do not open the PR while compliance is
-   failed or not yet run when a named spec exists.
+   (with the spec/brief path) for root-complete corrections within that closed
+   worklist, then rerun `review-implementation`. Do not open the PR while
+   compliance is failed or not yet run when a named spec exists.
 3. Start a separate commit/PR session when Ready-for-PR is Yes (or when there
    is no named spec). Invoke `commit-work`, then `pr-branch` as needed.
 4. **Hostile PR gate:** In a separate review session, run
@@ -190,9 +192,10 @@ It may also be run independently on any draft or catalog skill.
    chained with or substituted for the canonical PR gate.
 5. On `FAIL`, return the **complete** findings to
    `senior-implementer` (spec/brief path when present, else session task
-   authority) for bounded corrections. Any implementation change after a Yes
-   Ready-for-PR **invalidates** that Yes until `review-implementation` is
-   re-run and returns Yes again (named-spec path only); then rerun
+   authority) for root-complete corrections within that closed worklist. Any
+   implementation change after a Yes Ready-for-PR **invalidates** that Yes
+   until `review-implementation` is re-run and returns Yes again (named-spec
+   path only); then rerun
    `risk-calibrated-pr-review` against the updated PR.
 6. On `INCOMPLETE`, gather the report's named required evidence or resolve its
    task/PR boundary. Do not translate missing proof into an implementation

@@ -74,7 +74,7 @@ Invokable via `/skill-name` in Claude Code, or installed into other agents via `
 | [spec-readiness](skills/spec-readiness/SKILL.md) | Final gate: can an implementer start every task tomorrow? |
 | [to-spec](skills/to-spec/SKILL.md) | Produce a consequence-calibrated four-file implementation spec with complete reachable contracts and proportional depth. |
 | [revise-spec-from-review](skills/revise-spec-from-review/SKILL.md) | Reconcile supplied spec-review findings without introducing contradictions or silently choosing missing product behavior. |
-| [senior-implementer](skills/senior-implementer/SKILL.md) | Implement a spec or brief end-to-end, and apply complete review findings as bounded fixes. Trust the spec, stop when it breaks, ship complete. |
+| [senior-implementer](skills/senior-implementer/SKILL.md) | Explicit-only implementation agent for approved specs/briefs, direct engineering tasks, bugs, and complete review findings; closes task-related causes across affected surfaces and proves the resulting artifact or state. |
 | [tdd](skills/tdd/SKILL.md) | Red-green-refactor TDD loop, with reference docs on tests, mocking, refactoring, deep modules, interface design. |
 | [triage-issue](skills/triage-issue/SKILL.md) | Investigate a bug, find root cause, file a GitHub issue with a TDD-based fix plan. |
 | [commit-work](skills/commit-work/SKILL.md) | Stage intended changes, split coherent Conventional Commits, and verify; push only when explicitly asked. |
