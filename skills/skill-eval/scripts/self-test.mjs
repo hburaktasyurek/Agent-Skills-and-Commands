@@ -31,6 +31,11 @@ const definition = JSON.parse(fs.readFileSync(path.join(skillRoot, "evals/evals.
 const triggers = JSON.parse(fs.readFileSync(path.join(skillRoot, "evals/trigger_queries.json"), "utf8"));
 assert.equal(validateEvalDefinition(definition, { phase: "verify", baseDir: skillRoot }).valid, true);
 assert.equal(validateTriggerDefinition(triggers).valid, true);
+const leakingDefinition = structuredClone(definition);
+leakingDefinition.evals[1].files.push(leakingDefinition.evals[1].metadata.source_evidence.path);
+const leakingValidation = validateEvalDefinition(leakingDefinition, { phase: "verify", baseDir: skillRoot });
+assert.equal(leakingValidation.valid, false);
+assert.match(leakingValidation.errors.join(" "), /must not be an executor input/);
 
 assert.deepEqual(listAdapters().map((item) => item.id), ["codex", "claude-code", "cursor", "opencode", "cline"]);
 const codexArgs = getAdapter("codex").buildArgs({
@@ -166,7 +171,7 @@ try {
     skill_name: "fixture-skill",
     evals: [
       { id: "primary", prompt: "fixture prompt primary", expected_output: "primary output", files: [], metadata: { case_type: "primary", source: "synthetic" }, assertions: ["primary passes"] },
-      { id: "edge", prompt: "fixture prompt edge", expected_output: "edge output", files: ["evals/observed.txt"], metadata: { case_type: "edge", source: "observed_failure", source_evidence: { path: "evals/observed.txt", sha256: sha256(fs.readFileSync(observedFile)), origin: { type: "observed_failure_record", locator: "self-test fixture", captured_at: "2026-08-02" } } }, assertions: ["edge passes"] },
+      { id: "edge", prompt: "fixture prompt edge", expected_output: "edge output", files: [], metadata: { case_type: "edge", source: "observed_failure", source_evidence: { path: "evals/observed.txt", sha256: sha256(fs.readFileSync(observedFile)), origin: { type: "observed_failure_record", locator: "self-test fixture", captured_at: "2026-08-02" } } }, assertions: ["edge passes"] },
       { id: "scope", prompt: "fixture prompt scope", expected_output: "scope output", files: [], metadata: { case_type: "scope_preservation", source: "synthetic" }, assertions: ["scope passes"] },
     ],
   });
@@ -204,11 +209,6 @@ console.log(JSON.stringify({type:"turn.completed",usage:{input_tokens:80,cached_
       fs.mkdirSync(workspace, { recursive: true });
       const promptFile = path.join(workspace, "prompt.txt");
       fs.writeFileSync(promptFile, `fixture prompt ${id}`);
-      if (id === "edge") {
-        const fixtureCopy = path.join(workspace, "evals/observed.txt");
-        fs.mkdirSync(path.dirname(fixtureCopy), { recursive: true });
-        fs.copyFileSync(observedFile, fixtureCopy);
-      }
       const telemetry = await runHarnessEval({
         adapter: "codex",
         subjectPath: subject,

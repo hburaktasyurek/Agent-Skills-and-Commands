@@ -14,8 +14,7 @@
         "evals/files/multi-surface-invariant/input/src/CsvEntry.php",
         "evals/files/multi-surface-invariant/input/src/HttpEntry.php",
         "evals/files/multi-surface-invariant/input/src/Store.php",
-        "evals/files/multi-surface-invariant/input/tests/visible.php",
-        "evals/sources/senior-implementer-residual-observed.txt"
+        "evals/files/multi-surface-invariant/input/tests/visible.php"
       ],
       "assertions": [
         "A blank-after-trim identifier passed directly to Store is rejected with DomainException before Store mutates",

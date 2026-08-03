@@ -84,10 +84,9 @@ export function validateEvalDefinition(definition, { phase = "calibrate", baseDi
           relativeSource.startsWith("..") ||
           path.isAbsolute(relativeSource) ||
           !fs.existsSync(absoluteSource) ||
-          !fs.statSync(absoluteSource).isFile() ||
-          !candidate.files.includes(sourcePath)
+          !fs.statSync(absoluteSource).isFile()
         ) {
-          errors.push(`${prefix}.metadata.source_evidence must name a replayed package-local case file and SHA-256.`);
+          errors.push(`${prefix}.metadata.source_evidence must name a package-local provenance file and SHA-256.`);
         } else {
           const observedHash = crypto
             .createHash("sha256")
@@ -96,6 +95,9 @@ export function validateEvalDefinition(definition, { phase = "calibrate", baseDi
           if (observedHash !== sourceHash) {
             errors.push(`${prefix}.metadata.source_evidence hash mismatch.`);
           }
+        }
+        if (candidate.files?.includes(sourcePath)) {
+          errors.push(`${prefix}.metadata.source_evidence must not be an executor input in files.`);
         }
         const allowedOriginTypes = metadata.source === "project_artifact"
           ? new Set(["external_attachment", "git_blob"])

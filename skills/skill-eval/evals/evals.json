@@ -21,8 +21,7 @@
       "prompt": "Use $skill-eval in verify phase on the supplied run summary. A report contains the expected section labels, but one substantive assertion has no passing artifact evidence. Return the evidence-bound verdict.",
       "expected_output": "The surface-compliant report is rejected with FAIL; labels and claimed completion do not substitute for the failed artifact assertion.",
       "files": [
-        "evals/files/surface-fail/input.json",
-        "evals/sources/senior-implementer-residual-observed.txt"
+        "evals/files/surface-fail/input.json"
       ],
       "metadata": {
         "case_type": "edge",

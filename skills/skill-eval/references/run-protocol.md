@@ -19,6 +19,11 @@ Project only runtime skill material into the executor. Exclude the package's
 cannot leak into the run. Telemetry records this exclusion and the verifier
 rejects older projections that do not prove it.
 
+Keep provenance under `metadata.source_evidence`; never copy that provenance
+file into the case's executor `files`. A replay fixture may be derived from the
+record, but the record itself can disclose the observed failure or intended
+diagnosis.
+
 For every no-skill control, instruct the executor not to search for a named
 package outside its workspace and remove only the explicit invocation phrase
 from the control's execution prompt. Preserve the task text and its recorded
