@@ -42,10 +42,10 @@ Red flags:
 - Asserting on call counts/order
 - Test breaks when refactoring without behavior change
 - Test name describes HOW not WHAT
-- Verifying through external means instead of interface
+- Verifying incidental storage or call details that are not part of the contract
 
 ```typescript
-// BAD: Bypasses interface to verify
+// BAD for this contract: bypasses a sufficient public retrieval interface
 test("createUser saves to database", async () => {
   await createUser({ name: "Alice" });
   const row = await db.query("SELECT * FROM users WHERE name = ?", ["Alice"]);
@@ -59,3 +59,8 @@ test("createUser makes user retrievable", async () => {
   expect(retrieved.name).toBe("Alice");
 });
 ```
+
+Direct state evidence is appropriate when durable state is itself the contract.
+For persistence, idempotency, queue, concurrency, and recovery behavior, use a
+fresh process or independent connection and a post-commit read when that is
+what distinguishes a real guarantee from a merely successful response.

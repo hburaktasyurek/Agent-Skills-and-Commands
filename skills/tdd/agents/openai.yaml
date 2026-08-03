@@ -1,0 +1,6 @@
+interface:
+  display_name: "TDD"
+  short_description: "Implement approved behavior test-first"
+  default_prompt: "Use $tdd to implement this approved task through focused red-green-refactor cycles."
+policy:
+  allow_implicit_invocation: false

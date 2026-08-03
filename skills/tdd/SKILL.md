@@ -1,17 +1,27 @@
 ---
 name: tdd
-description: Test-driven development with red-green-refactor loop. Use when user wants to build features or fix bugs using TDD, mentions "red-green-refactor", wants integration tests, or asks for test-first development.
+description: Use only when the user explicitly names tdd or an upstream task explicitly invokes it to implement a feature or bug fix test-first. Execute vertical red-green-refactor cycles against the repository's real contract; proceed without redundant approval when an authoritative brief is ready, and stop before writes only when a material behavior, scope, interface, or authority decision remains unresolved.
 ---
 
 # Test-Driven Development
 
 ## Philosophy
 
-**Core principle**: Tests should verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't.
+**Core principle**: Tests should verify observable behavior through the most
+stable contract boundary available, not incidental implementation details.
+Code can change entirely; tests should not fail unless behavior changes.
 
 **Good tests** are integration-style: they exercise real code paths through public APIs. They describe _what_ the system does, not _how_ it does it. A good test reads like a specification - "user can checkout with valid cart" tells you exactly what capability exists. These tests survive refactors because they don't care about internal structure.
 
-**Bad tests** are coupled to implementation. They mock internal collaborators, test private methods, or verify through external means (like querying a database directly instead of using the interface). The warning sign: your test breaks when you refactor, but behavior hasn't changed. If you rename an internal function and tests fail, those tests were testing implementation, not behavior.
+**Bad tests** are coupled to implementation. They mock internal collaborators,
+test private methods, or assert incidental call order. The warning sign: the
+test breaks when behavior-preserving internals are renamed or rearranged.
+
+Public responses are not always sufficient evidence. Persistence,
+idempotency, concurrency, queue, and recovery contracts may require a fresh
+process, independent connection, post-commit read, or durable-state assertion.
+Use that evidence when it is part of the observable contract; do not substitute
+a green response or mock interaction for the real invariant.
 
 See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking guidelines.
 
@@ -44,26 +54,53 @@ RIGHT (vertical):
   ...
 ```
 
+## Contract gate
+
+Read repository instructions and the authoritative task, brief, spec, or review
+findings before editing. Inspect enough implementation and tests to determine
+whether the contract is ready.
+
+- If behavior, scope, public interface, acceptance, and authority are already
+  fixed, treat that as approval and begin the first RED cycle. Do not ask the
+  user to reconfirm the plan or repeat decisions already present in artifacts.
+- Resolve technical details from repository evidence when they do not change
+  product behavior or scope.
+- If artifacts conflict or a material behavior, scope, interface, priority, or
+  authority decision remains, make no repository write. Report the evidence
+  conflict and ask one specific blocking question.
+- Do not turn missing ceremony—a ticket, roadmap, or separate test plan—into a
+  blocker when the direct request is authoritative and complete.
+
+List the smallest ordered behavior set needed for causal closure, including
+failure modes and boundaries. Keep this as execution guidance; do not pause for
+approval unless the contract gate found a genuine human decision.
+
 ## Workflow
 
-### 1. Planning
+### 1. First RED
 
-Before writing any code:
+For a feature, choose the thinnest end-to-end behavior in the approved
+contract. For a bug, first reproduce the reported failure at the boundary that
+proves the bug.
 
-- [ ] Confirm with user what interface changes are needed
-- [ ] Confirm with user which behaviors to test (prioritize)
-- [ ] Identify opportunities for [deep modules](deep-modules.md) (small interface, deep implementation)
-- [ ] Design interfaces for [testability](interface-design.md)
-- [ ] List the behaviors to test — success paths _and_ failure modes — not implementation steps
-- [ ] Get user approval on the plan
+Write one focused test and run it. RED is valid only when it fails for the
+expected missing or incorrect behavior. A syntax error, broken fixture,
+unavailable dependency, or unrelated pre-existing failure is not useful RED;
+repair the test setup or report the external blocker without changing product
+code.
 
-Ask: "What should the public interface look like? Which behaviors are most important to test?"
+**You can't test everything — but "critical behavior" includes how the system
+fails, not just the happy path.** Prioritize from the authoritative contract and
+repository risk evidence. Treat error handling, invalid input, boundary
+conditions, and failure modes as first-class behaviors. Ask the user only when
+the contract gate found a genuine unresolved decision. Skip trivial
+permutations, not distinct unhappy paths.
 
-**You can't test everything — but "critical behavior" includes how the system fails, not just the happy path.** Confirm with the user exactly which behaviors matter most, and treat error handling, invalid input, boundary conditions, and failure modes as first-class behaviors alongside the success path — that's where real-world bugs live. What you skip is _trivial permutations_ (every variation of an already-covered valid input), not the unhappy paths.
+### 2. GREEN
 
-### 2. Tracer Bullet
-
-Write ONE test that confirms ONE thing about the system:
+Implement the smallest root-correct change that makes the focused behavior
+pass without violating the known contract. “Minimal” does not mean patch only
+the reported line while the same causal path remains open.
 
 ```
 RED:   Write test for first behavior → test fails
@@ -71,6 +108,8 @@ GREEN: Write minimal code to pass → test passes
 ```
 
 This is your tracer bullet - proves the path works end-to-end.
+
+Run the focused test and confirm GREEN before continuing.
 
 ### 3. Incremental Loop
 
@@ -87,6 +126,9 @@ Rules:
 - Only enough code to pass current test
 - Don't anticipate future tests
 - Keep tests focused on observable behavior
+- Add the next test from evidence learned in the previous cycle
+- Cover the task-owned success, failure, boundary, and same-root regression
+  surface before claiming completion
 
 ### 4. Refactor
 
@@ -100,12 +142,17 @@ After all tests pass, look for [refactor candidates](refactoring.md):
 
 **Never refactor while RED.** Get to GREEN first.
 
+After the focused cycles are green, run the relevant broader suite. Separate
+unrelated pre-existing failures from regressions introduced by the task; do not
+silently fix or hide unrelated failures.
+
 ## Checklist Per Cycle
 
 ```
 [ ] Test describes behavior, not implementation
-[ ] Test uses public interface only
+[ ] Test uses the stable observable boundary
 [ ] Test would survive internal refactor
+[ ] RED failed for the expected reason
 [ ] Code is minimal for this test
 [ ] No speculative features added
 ```

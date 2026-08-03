@@ -16,7 +16,7 @@ does not modify global copies.
 
 | Skill | Harness | Baseline | Result | Decision |
 |---|---|---|---|---|
-| `skill-eval` | Deterministic fixtures | Bootstrap fixtures | PASS | Infrastructure retained; no-skill controls isolate namesakes, and provenance records are now forbidden from leaking into executor inputs, with deterministic self-test coverage. |
+| `skill-eval` | Deterministic fixtures | Bootstrap fixtures | PASS | Infrastructure retained; provenance records cannot leak into executor inputs, Cursor on macOS denies exact source, baseline, and namesake package reads at the OS boundary, and unsupported namesake isolation stops before execution. |
 | `risk-calibrated-pr-review` proposal | Codex read-only | Shipped `3db1fb01...` | FAIL | Proposal rejected; shipped remains last-known-better, not certified sufficient. |
 | `risk-calibrated-pr-review` shipped runtime | Prior Codex artifact run + current byte identity | Exact shipped baseline | INCONCLUSIVE | Four behavior cases passed on the byte-identical runtime; current package now carries the validated definitions, but implicit trigger trace is still NOT_RUN. |
 | `senior-implementer` | Cursor Auto | Old skill `b11383bb...` | PASS | Package `7364c55b...` passed 11/11 assertions with no regression; blind grades improved root closure 4→5, durable-state proof 4→5, and money-risk release blocking 3→5. |
@@ -27,16 +27,16 @@ does not modify global copies.
 | `revise-spec-from-review` | Codex `gpt-5.6-sol`, disposable workspace | Old skill `b956803c...` | PASS | Explicit-only package `b6e60c6a...` passed 12/12 assertions; retained both root-closure cases and improved the unmade-decision case from 2/5 to 5/5 by leaving choice-dependent spec surfaces unchanged. |
 | `to-spec` | Codex `gpt-5.6-sol`, disposable workspace | Without skill | PASS | Explicit-only package `7c4041ba...` passed 14/14 assertions; improved critical closure from 4/5 to 5/5 and kept focused specs to one implementation task without changing supplied code. |
 | `task-groundwork` | Cursor Auto, read-only | Old skill `716c196c...` | PASS | Explicit-only package `b2cdb1e5...` passed 11/11 assertions with no regression; blind grades improved roadmap closure, direct-request scope, and narrow-task negative fit from 4/5 to 5/5. |
+| `tdd` | Cursor Auto, disposable workspace | Old skill `678f1789...` | PASS | Explicit-only package `8ba01d4e...` passed 11/11 assertions with no regression; blind grading improved contract-correct non-string handling from 3/5 to 5/5 and tied the contract-stop and durable-state cases at 5/5. |
 
 ## Queue
 
 | # | Skill | Primary evidence |
 |---:|---|---|
-| 1 | `tdd` | Ready tasks proceed without redundant approval; unclear contracts stop. |
-| 2 | `session-handoff` | Resume state is exact, compact, and does not claim false completion. |
-| 3 | `commit-work` | Only intended changes enter commits; push remains explicit. |
-| 4 | `pr-branch` | PR output fits both audiences and publication remains safe. |
-| 5 | `grill-me` | Questions expose decision-changing gaps without needless interrogation. |
+| 1 | `session-handoff` | Resume state is exact, compact, and does not claim false completion. |
+| 2 | `commit-work` | Only intended changes enter commits; push remains explicit. |
+| 3 | `pr-branch` | PR output fits both audiences and publication remains safe. |
+| 4 | `grill-me` | Questions expose decision-changing gaps without needless interrogation. |
 
 ## Per-skill loop
 
