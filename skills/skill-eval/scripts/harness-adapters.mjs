@@ -117,10 +117,15 @@ export function parseCursor(raw) {
   if (result.is_error === true || result.subtype === "error" || events.some((event) => event.type === "error")) {
     errors.push("run reports an error");
   }
+  const plan = events
+    .filter((event) => event.type === "tool_call" && event.subtype === "completed")
+    .map((event) => event.tool_call?.createPlanToolCall?.args?.plan)
+    .filter((value) => typeof value === "string" && value.trim())
+    .at(-1);
   return parsedResult(
     events,
     errors,
-    typeof result.result === "string" ? result.result : textParts(result.result).at(-1),
+    plan ?? (typeof result.result === "string" ? result.result : textParts(result.result).at(-1)),
     { status: "unavailable" },
     result.session_id ?? events.find((event) => event.type === "system")?.session_id ?? null,
   );
@@ -204,10 +209,12 @@ const adapters = {
     projection: "prompt_context",
     safePermissions: new Set(["read-only", "workspace-write"]),
     skillDirectory: null,
-    buildArgs({ model, permission, prompt }) {
-      const args = ["-p", "--output-format", "stream-json", "--sandbox", "enabled"];
+    buildArgs({ model, workspace, permission, prompt }) {
+      const args = ["-p", "--output-format", "stream-json", "--sandbox", "enabled", "--trust"];
+      if (workspace) args.push("--workspace", workspace);
       if (model) args.push("--model", model);
       if (permission === "workspace-write") args.push("--force");
+      else args.push("--mode", "plan");
       args.push(prompt);
       return args;
     },

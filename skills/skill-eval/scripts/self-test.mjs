@@ -48,6 +48,9 @@ assert.equal(getAdapter("codex").canDisableNamesakes, true);
 assert.equal(getAdapter("codex").skillDirectory, ".agents/skills");
 assert.equal(getAdapter("claude-code").buildArgs({ permission: "read-only" }).includes("plan"), true);
 assert.equal(getAdapter("cursor").buildArgs({ permission: "read-only", prompt: "x" }).includes("--force"), false);
+assert.equal(getAdapter("cursor").buildArgs({ permission: "read-only", prompt: "x" }).includes("plan"), true);
+assert.equal(getAdapter("cursor").buildArgs({ permission: "read-only", prompt: "x" }).includes("--trust"), true);
+assert.equal(getAdapter("cursor").buildArgs({ workspace: "/tmp/workspace", permission: "read-only", prompt: "x" }).includes("/tmp/workspace"), true);
 assert.equal(getAdapter("cursor").buildArgs({ permission: "workspace-write", prompt: "x" }).includes("--force"), true);
 assert.equal(getAdapter("cursor").buildArgs({ permission: "workspace-write", prompt: "x" }).includes("--sandbox"), true);
 assert.equal(getAdapter("cursor").safePermissions.has("workspace-write"), true);
@@ -76,6 +79,13 @@ const cursor = parseCursor([
 ].join("\n"));
 assert.equal(cursor.valid, true);
 assert.equal(cursor.usage.status, "unavailable");
+const cursorPlan = parseCursor([
+  JSON.stringify({ type: "system", subtype: "init", session_id: "u2" }),
+  JSON.stringify({ type: "tool_call", subtype: "completed", tool_call: { createPlanToolCall: { args: { plan: "grounded plan" }, result: { success: {} } } } }),
+  JSON.stringify({ type: "result", subtype: "success", is_error: false, result: "progress message", session_id: "u2" }),
+].join("\n"));
+assert.equal(cursorPlan.valid, true);
+assert.equal(cursorPlan.final_message, "grounded plan");
 
 const opencode = parseOpenCode([
   JSON.stringify({ type: "text", part: { text: "working" } }),
