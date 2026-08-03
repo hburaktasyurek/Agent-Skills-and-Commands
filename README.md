@@ -50,9 +50,10 @@ skill-creator
 → commit-work
 ```
 
-Keep a revision only when produced artifacts improve without regression.
-`FAIL`, `NO_LIFT`, or `INCONCLUSIVE` is not evidence that a change is
-ready to commit.
+Keep a behavior revision only when produced artifacts improve without
+regression. `FAIL`, `NO_LIFT`, or `INCONCLUSIVE` is not evidence that the
+behavior is ready. An eval-only provenance or schema correction may be kept
+after deterministic validation, but it does not certify runtime behavior.
 
 ## Manage Installed Skills
 
@@ -60,6 +61,11 @@ ready to commit.
 npx skills@latest list -g
 npx skills@latest update -g
 ```
+
+Run `update -g` interactively when this repository has removed skills and
+approve the deletion prompt. Passing `-y` deliberately skips deletion of
+skills that disappeared upstream. Run `list -g` afterward to verify the
+installed set.
 
 ## Skill Anatomy
 

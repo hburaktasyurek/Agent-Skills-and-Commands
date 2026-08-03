@@ -119,6 +119,11 @@ ship lifecycle.
    claim is justified.
 7. Commit only the accepted package and current eval definition.
 
+An eval-definition-only provenance or schema repair is not behavior lift.
+Validate it deterministically, keep runtime instructions unchanged, and leave
+behavior certification explicitly `INCONCLUSIVE` until clean current-package
+evidence exists.
+
 Global Codex, Claude Code, Cursor, OpenCode, and Cline installations are
 runtime copies. Repository agents do not synchronize them.
 
