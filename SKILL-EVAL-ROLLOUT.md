@@ -29,14 +29,14 @@ does not modify global copies.
 | `task-groundwork` | Cursor Auto, read-only | Old skill `716c196c...` | PASS | Explicit-only package `b2cdb1e5...` passed 11/11 assertions with no regression; blind grades improved roadmap closure, direct-request scope, and narrow-task negative fit from 4/5 to 5/5. |
 | `tdd` | Cursor Auto, disposable workspace | Old skill `678f1789...` | PASS | Explicit-only package `8ba01d4e...` passed 11/11 assertions with no regression; blind grading improved contract-correct non-string handling from 3/5 to 5/5 and tied the contract-stop and durable-state cases at 5/5. |
 | `session-handoff` | Cursor Auto, disposable workspace | Old skill `ffbf2f90...` | PASS | Explicit-only package `892621e6...` passed 11/11 assertions with no regression; blind grades improved exact code resumption 3→5, compact design continuation 4→5, and no-context scope preservation 1→5. |
+| `commit-work` proposal | Codex `gpt-5.6-sol`, disposable Git repositories | Old skill `35384001...` | NO_LIFT | Proposal `3a5057df...` passed 13/13 assertions with no regression, but blind grades tied 5/5 in all three cases while aggregate duration and token use increased; proposal discarded and shipped package `35384001...` remains unchanged. Cursor is not certified for the no-attribution contract because its host injected a prohibited trailer. |
 
 ## Queue
 
 | # | Skill | Primary evidence |
 |---:|---|---|
-| 1 | `commit-work` | Only intended changes enter commits; push remains explicit. |
-| 2 | `pr-branch` | PR output fits both audiences and publication remains safe. |
-| 3 | `grill-me` | Questions expose decision-changing gaps without needless interrogation. |
+| 1 | `pr-branch` | PR output fits both audiences and publication remains safe. |
+| 2 | `grill-me` | Questions expose decision-changing gaps without needless interrogation. |
 
 ## Per-skill loop
 
