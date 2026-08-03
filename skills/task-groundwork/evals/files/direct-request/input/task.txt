@@ -1,0 +1,3 @@
+Ground a fix for tenant-aware user-cache invalidation before specification.
+Today an invalidation for one tenant can affect another tenant's cached user.
+Do not edit the repository.

@@ -1,0 +1,8 @@
+Project artifact replay source:
+
+Commit 5143232 (`fix(task-groundwork): require evidence for technical decisions`)
+required task groundwork to derive purpose from the enclosing phase, verify
+what prior work actually delivered, read future tasks far enough to define the
+scope boundary, and close technical branches with claim-matching repository
+evidence. The roadmap-boundary fixture replays those load-bearing behaviors in
+a smaller disposable repository.

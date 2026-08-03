@@ -1,0 +1,76 @@
+{
+  "skill_name": "task-groundwork",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use task-groundwork to ground roadmap Task 2.2 before specification. Work read-only in the supplied workspace, investigate the task and relevant implementation, and return the decision-ready grounding brief.",
+      "expected_output": "The brief derives the safe-retry visibility purpose, chooses a tenant-scoped read-only API over the persisted latest-attempt query, excludes UI and retry execution owned by later tasks, and cites the evidence that closes those branches.",
+      "files": [
+        "evals/files/roadmap-boundary/input/AGENTS.md",
+        "evals/files/roadmap-boundary/input/roadmap.md",
+        "evals/files/roadmap-boundary/input/src/api.js",
+        "evals/files/roadmap-boundary/input/src/retry.js",
+        "evals/files/roadmap-boundary/input/src/schema.sql"
+      ],
+      "assertions": [
+        "The purpose is derived from the phase goal as support visibility into persisted retry safety without charging or relying on process-local state",
+        "The chosen route is a tenant-scoped read-only API that reuses the persisted latest-attempt path and exposes the state and next_retry_at contract",
+        "Dashboard UI and automatic retry execution remain out of scope with Tasks 2.3 and 2.4 named as their owners",
+        "The brief cites decision-relevant roadmap and implementation evidence, makes no repository write, and leaves no artifact-answerable technical branch as a user question"
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "project_artifact",
+        "source_evidence": {
+          "path": "evals/sources/historical-contract.txt",
+          "sha256": "416371cd67f2a3b37790a3e2a4f4211945d2f836e65b64eeba284b0af0bb8c54",
+          "origin": {
+            "type": "git_blob",
+            "locator": "5143232:skills/task-groundwork/SKILL.md",
+            "captured_at": "2026-08-03"
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "prompt": "Use task-groundwork to ground the direct tenant-cache request before specification. There is no roadmap or ticket. Work read-only in the supplied workspace and return only decision-relevant evidence, resolved routes, scope, and readiness.",
+      "expected_output": "The brief accepts the direct request as authority, identifies the tenant-less key and invalidation signature as the cross-tenant cause, chooses tenant-qualified keys and invalidation using the already available tenant ID, and does not block on missing planning artifacts.",
+      "files": [
+        "evals/files/direct-request/input/AGENTS.md",
+        "evals/files/direct-request/input/task.txt",
+        "evals/files/direct-request/input/src/cache.ts",
+        "evals/files/direct-request/input/src/callers.ts"
+      ],
+      "assertions": [
+        "The direct request is treated as sufficient task authority and the absence of a roadmap or ticket is not reported as a gap",
+        "The brief identifies the tenant-less user cache key and invalidation signature as the cross-tenant collision surface and observes that tenant ID is already available at both callers",
+        "The chosen route includes tenant ID in both cache-key construction and invalidation, accounts for the existing 60-second old-key lifetime, and does not invent a broader cache or migration design unsupported by the artifacts",
+        "The result is ready for specification without a repository write or an artifact-answerable question to the user"
+      ],
+      "metadata": {
+        "case_type": "edge",
+        "source": "synthetic"
+      }
+    },
+    {
+      "id": 3,
+      "prompt": "Use task-groundwork on the supplied task. Work read-only and decide whether groundwork adds decision value before returning the appropriate handoff.",
+      "expected_output": "The skill returns a concise negative-fit handoff instead of a 5W2H report: the single-file symbol rename is already bounded and should proceed directly with reference and behavior verification.",
+      "files": [
+        "evals/files/narrow-negative-fit/input/AGENTS.md",
+        "evals/files/narrow-negative-fit/input/task.txt",
+        "evals/files/narrow-negative-fit/input/src/config.ts"
+      ],
+      "assertions": [
+        "The result explicitly classifies the task as negative fit because no material decision branch remains for groundwork",
+        "The bounded execution scope is only the DEFAULT_TTL to CACHE_TTL rename in src/config.ts with value and behavior preserved",
+        "The handoff recommends direct execution with reference search plus diff, value, and behavior verification and does not emit a generic seven-question inventory"
+      ],
+      "metadata": {
+        "case_type": "scope_preservation",
+        "source": "synthetic"
+      }
+    }
+  ]
+}

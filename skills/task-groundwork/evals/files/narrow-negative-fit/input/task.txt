@@ -1,0 +1,2 @@
+Rename `DEFAULT_TTL` to `CACHE_TTL` only in `src/config.ts`. Preserve the value
+and behavior. Do not modify any other file.

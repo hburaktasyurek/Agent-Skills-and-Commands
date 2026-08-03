@@ -1,102 +1,79 @@
 ---
 name: task-groundwork
-description: "Apply 5W2H to ground a non-trivial software task into an evidence-backed decision context before specification or implementation. Use when a vague task needs a complete operating frame. Triggers: start task N; take the next roadmap item; görev N'e başlayalım."
+description: "Use only when the user explicitly names task-groundwork to ground a vague or non-trivial software task before specification or implementation. Investigate the current repository, relevant roadmap context, history, and real-use constraints; resolve technical branches with evidence, expose only genuine human decisions, and return a concise decision-ready brief. Do not use for a narrow task that is already ready for direct execution."
 ---
 
-# task-groundwork
+# Task Groundwork
 
-## Objective
+Turn an underspecified task into decision-ready context. The value is the
+decision-changing evidence and resolved scope, not a filled methodology form.
 
-Apply 5W2H (`five-w-two-h`) to this job: ground a non-trivial software task into an evidence-backed decision context before specification or implementation
+## Establish fit and authority
 
-Produce the result for agents and humans deciding how to change complex software systems.
+Use the supplied task source as authority. A direct request is sufficient; do
+not require a roadmap, ticket, predecessor, or spec unless the request makes it
+controlling.
 
-## Operating instructions
+If the task is already narrow and its implementation boundary is clear, stop
+with a short negative-fit result: say why groundwork adds no decision value,
+state the bounded execution scope, and name the necessary verification guard.
+The guard should include a reference search plus diff, value, and behavior
+checks where those apply. Do not produce a generic 5W2H inventory.
 
-Input may be any authoritative task description or a direct user request; no particular planning artifact is required. Investigate the current system, relevant history, available plans, and real-use constraints only where they can change task meaning, feasible routes, scope, or acceptance. Match each claim to the source type that can establish it, distinguish fact from inference, and trace transitive effects until more evidence would no longer change the decision. Evaluate implementation routes qualitatively: do not use numeric or aggregate scores, and allow a load-bearing safety, correctness, compatibility, or real-use invariant to outweigh an option's other advantages. Default to read-only inspection and safe non-mutating execution; ask before any write. Other helpers or supplied skill outputs may contribute evidence, but the selected methodology remains the sole method and consequential next actions remain human-owned.
+## Investigate what can change the decision
 
-## Required deliverable
+Read applicable repository instructions first. Then inspect only evidence that
+can change the task's meaning, feasible routes, scope, acceptance, or risk:
 
-Return a concise grounding brief that states the task purpose, decision-relevant system frame, scope, resolved decision tree, chosen route with evidence and caveats, unresolved human decisions or approved deferrals, and readiness for the next stage. Use only headings that improve comprehension; omit empty or process-provenance sections.
+- the task and its enclosing phase or product goal;
+- relevant implementation, tests, configuration, schema, and contracts;
+- prior work that establishes the current state;
+- future tasks or consumers that define the boundary;
+- real-use, compatibility, safety, and operational constraints.
 
-## When to use
+Match claims to evidence and cite files and lines where available. Separate
+verified fact from inference. Do not turn the investigation into an exhaustive
+system inventory; stop when more evidence would not change the decision.
 
-- Use when: a vague task needs a complete operating frame
-- Do not use when: The question is already narrow and only needs execution
-- Why 5W2H: A non-trivial change in a complex software system cannot be grounded safely until the relevant purpose, actors, locations, timing, behavior, effort or risk, failure modes, and real success conditions are complete. The requested artifact is explicitly that operating frame plus an evidence-backed route recommendation; scoring, work-package decomposition, execution, and summary writing are not the dominant need.
+## Resolve the task tree
 
-## Invocation
+Derive the task purpose instead of repeating its title. Identify the material
+branches between the current state and a spec or implementation:
 
-- start task N
-- take the next roadmap item
-- görev N'e başlayalım
+1. Eliminate impossible, unsafe, or out-of-scope routes with evidence.
+2. Resolve technical choices from repository precedent and constraints.
+3. Keep current, future, and explicitly deferred work separate.
+4. Ask the user only when a material product, priority, or authority decision
+   remains after the repository search. Include the search trail with the
+   question; do not ask the user to rediscover repository facts.
 
-## Workflow
+Do not manufacture a decision from hypothetical external state. If the
+artifacts show that superseded state expires within a bounded interval, record
+that consequence and keep migration, dual-read, or rollout machinery out of
+scope unless repository evidence makes compatibility work necessary.
 
-Apply this 5W2H procedure while executing the job:
+Use qualitative engineering judgment. A load-bearing correctness, security,
+compatibility, money, or production invariant can outweigh convenience. Do not
+invent numeric scores.
 
-## Definition
+Never defer a material decision, change task scope, or pull future work forward
+without explicit approval. Default to read-only investigation and safe
+non-mutating checks; ask before any repository write.
 
-Frame a problem by answering what, why, who, where, when, how, and how much.
+## Return the grounding brief
 
-## Principles
+Return the smallest brief that makes the next stage safe. It must make clear:
 
-- Cover the whole situation before choosing a fix.
-- Separate observed facts from assumptions.
-- Make ownership and timing explicit.
-- Surface cost or effort early.
+- the task's derived purpose and controlling source;
+- decision-relevant current-system evidence;
+- in-scope and out-of-scope boundaries, including future ownership;
+- viable routes, evidence-backed eliminations, and the chosen route;
+- assumptions, caveats, and unresolved human decisions;
+- whether the task is ready for specification or direct execution.
 
-## Steps
+Use only headings that improve comprehension and omit empty sections. State why
+investigation stopped. Do not write a briefing file or invoke the next skill.
 
-1. Define what is happening.
-2. Explain why it matters.
-3. Name who is involved.
-4. Clarify where and when it occurs.
-5. Describe how it should be handled.
-6. Estimate how much time, cost, effort, or risk is involved.
-
-## Quality questions
-
-- Are all seven questions answered?
-- Are assumptions marked?
-- Is ownership clear?
-- Is cost or effort visible?
-
-## Stop
-
-Stop when the operating frame is complete. Choose direct execution instead
-when the task was already narrow. Stop and ask for human help if the task does
-not fit 5W2H, required context is missing, or validation cannot be satisfied
-without guessing.
-
-## Execution checks
-
-- The task is identified from the available authoritative description or direct request without requiring a particular planning format.
-- The what, why, who, where, when, how, and how much frame covers every actor, flow, state, timing edge, capability, failure mode, effort or risk, and real success condition that could change the decision, but does not expand into an exhaustive system inventory.
-- Material current-state claims have claim-matching evidence, inferences are labeled, and investigation stops only when more evidence would not change feasible routes, scope, acceptance, or the recommendation.
-- Plausible implementation routes are surfaced, impossible or unsafe routes are eliminated with evidence, and the chosen route uses qualitative senior-engineering judgment rather than numeric or aggregate scoring.
-- Scope, system effects, caveats, unresolved human decisions, and approved deferrals are explicit; no material branch or contradiction is silently hidden.
-- The result is concise and actionable for the next stage, and it does not require a specific source artifact unless the current task itself makes that artifact authoritative.
-
-## Evidence to return
-
-- Cite the task source and the code, tests, configuration, schemas, safe observations, history, plans, contracts, or product evidence actually used, with file and line references where available.
-- Surface the decision-relevant operating frame and the reason further investigation stopped.
-- For each material branch, record viable routes, evidence-backed eliminations, the chosen route, senior-engineering rationale, and caveats.
-
-## Human review and stop
-
-- Stop with negative-fit evidence when the task is already narrow and only needs direct specification or execution. Do not enumerate the seven-question frame after finding negative fit; state only why the method adds no decision value, the bounded direct-execution scope, and any necessary verification guard.
-- Do not treat the absence of a roadmap, ticket, predecessor task, or other planning artifact as missing context or a stop condition. A direct request is sufficient task authority unless it identifies another source as controlling. Do not group an absent planning artifact with missing implementation evidence or attach any recommendation, readiness, verification, or stop consequence to its absence; omit it from evidence-gap lists.
-- Stop when decision-changing evidence is unavailable or contradictory, the operating frame cannot be completed without guessing, or a material product or real-use priority remains unresolved.
-- Stop when the task is already complete, obsolete, materially misframed, or every plausible route remains unsafe.
-- Keep the result blocked when a required write lacks explicit permission.
-
-Human approval is required before: any repository write, deferring a material decision or changing task scope, choosing among product or real-use priorities that available evidence cannot resolve.
-
-## Boundaries
-
-- Apply only 5W2H; do not blend another methodology.
-- Do not change the task contract to make validation easier.
-- Do not perform an approval action without the required human decision.
-- Stop when the task no longer matches the recorded method fit.
+Stop as blocked when evidence is contradictory or unavailable and guessing
+would decide product behavior, authority, safety, or scope. Stop as obsolete or
+misframed when the artifacts prove the requested task should not proceed.

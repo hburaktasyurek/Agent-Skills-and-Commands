@@ -1,0 +1,26 @@
+{
+  "skill_name": "task-groundwork",
+  "activation_mode": "explicit_only",
+  "queries": [
+    {"id":"positive-train-01","split":"train","query":"Use task-groundwork to start roadmap task 2.2 before we write the spec.","should_trigger":true,"paired_with":"negative-train-01"},
+    {"id":"negative-train-01","split":"train","query":"Start roadmap task 2.2 before we write the spec.","should_trigger":false,"paired_with":"positive-train-01"},
+    {"id":"positive-train-02","split":"train","query":"Run task-groundwork on the next roadmap item and determine what it requires from the current repo.","should_trigger":true,"paired_with":"negative-train-02"},
+    {"id":"negative-train-02","split":"train","query":"Take the next roadmap item and determine what it requires from the current repo.","should_trigger":false,"paired_with":"positive-train-02"},
+    {"id":"positive-train-03","split":"train","query":"Task-groundwork ile görev 4'ün kapsamını ve karar dallarını repodan netleştir.","should_trigger":true,"paired_with":"negative-train-03"},
+    {"id":"negative-train-03","split":"train","query":"Görev 4'ün kapsamını ve karar dallarını repodan netleştir.","should_trigger":false,"paired_with":"positive-train-03"},
+    {"id":"positive-train-04","split":"train","query":"Use task-groundwork on this vague cache-isolation task before implementation.","should_trigger":true,"paired_with":"negative-train-04"},
+    {"id":"negative-train-04","split":"train","query":"Ground this vague cache-isolation task before implementation.","should_trigger":false,"paired_with":"positive-train-04"},
+    {"id":"positive-train-05","split":"train","query":"Use task-groundwork before to-spec to resolve this task's technical choices.","should_trigger":true,"paired_with":"negative-train-05"},
+    {"id":"negative-train-05","split":"train","query":"Before to-spec, resolve this task's technical choices.","should_trigger":false,"paired_with":"positive-train-05"},
+    {"id":"positive-validation-01","split":"validation","query":"Use task-groundwork to start the payment retry visibility task and determine the safe route.","should_trigger":true,"paired_with":"negative-validation-01"},
+    {"id":"negative-validation-01","split":"validation","query":"Start the payment retry visibility task and determine the safe route.","should_trigger":false,"paired_with":"positive-validation-01"},
+    {"id":"positive-validation-02","split":"validation","query":"Run task-groundwork on task 7 and ground it against earlier and later roadmap tasks.","should_trigger":true,"paired_with":"negative-validation-02"},
+    {"id":"negative-validation-02","split":"validation","query":"Take task 7 and ground it against earlier and later roadmap tasks.","should_trigger":false,"paired_with":"positive-validation-02"},
+    {"id":"positive-validation-03","split":"validation","query":"Task-groundwork ile bu belirsiz tenant-cache işini spece geçmeden kanıtla netleştir.","should_trigger":true,"paired_with":"negative-validation-03"},
+    {"id":"negative-validation-03","split":"validation","query":"Bu belirsiz tenant-cache işini spece geçmeden kanıtla netleştir.","should_trigger":false,"paired_with":"positive-validation-03"},
+    {"id":"positive-validation-04","split":"validation","query":"Use task-groundwork on this non-trivial direct request even though there is no ticket.","should_trigger":true,"paired_with":"negative-validation-04"},
+    {"id":"negative-validation-04","split":"validation","query":"Ground this non-trivial direct request even though there is no ticket.","should_trigger":false,"paired_with":"positive-validation-04"},
+    {"id":"positive-validation-05","split":"validation","query":"Invoke task-groundwork to establish this vague ticket's real scope from code and downstream consumers.","should_trigger":true,"paired_with":"negative-validation-05"},
+    {"id":"negative-validation-05","split":"validation","query":"Establish this vague ticket's real scope from code and downstream consumers.","should_trigger":false,"paired_with":"positive-validation-05"}
+  ]
+}
