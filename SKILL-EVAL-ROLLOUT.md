@@ -16,10 +16,10 @@ does not modify global copies.
 
 | Skill | Harness | Baseline | Result | Decision |
 |---|---|---|---|---|
-| `skill-eval` | Deterministic fixtures | Bootstrap fixtures | PASS | Infrastructure retained; native no-skill controls now remove explicit invocation and forbid external skill lookup, with deterministic self-test coverage. |
+| `skill-eval` | Deterministic fixtures | Bootstrap fixtures | PASS | Infrastructure retained; no-skill controls isolate namesakes, and provenance records are now forbidden from leaking into executor inputs, with deterministic self-test coverage. |
 | `risk-calibrated-pr-review` proposal | Codex read-only | Shipped `3db1fb01...` | FAIL | Proposal rejected; shipped remains last-known-better, not certified sufficient. |
 | `risk-calibrated-pr-review` shipped runtime | Prior Codex artifact run + current byte identity | Exact shipped baseline | INCONCLUSIVE | Four behavior cases passed on the byte-identical runtime; current package now carries the validated definitions, but implicit trigger trace is still NOT_RUN. |
-| `senior-implementer` | Cursor Auto | Without skill | PASS | Shipped package now exactly matches tested hash `404cd5af...`; retained for durable-state proof and release blocking. |
+| `senior-implementer` | Cursor Auto | Old skill `b11383bb...` | PASS | Package `7364c55b...` passed 11/11 assertions with no regression; blind grades improved root closure 4→5, durable-state proof 4→5, and money-risk release blocking 3→5. |
 | `review-implementation` | Codex `gpt-5.6-sol`, read-only | Old skill `fb7c7701...` | PASS | Explicit-only package `a4f9f4db...` passed 12/12 assertions with no regression; generic behavior tied, Laravel scope discipline and missing-basis handling improved. |
 | `spec-readiness` | Codex `gpt-5.6-sol`, read-only | Old skill `e6193a47...` | PASS | Explicit-only package `ea56beb7...` passed 12/12 assertions; kept READY scope discipline, improved root-family closure, and reduced aggregate run cost. |
 | `adversarial-diff-review` | Codex `gpt-5.6-sol`, read-only | Old skill `40bdff18...` | PASS | Explicit-only package `ff697d3e...` passed 12/12 assertions; critical defect behavior held, concurrency and clean-diff artifacts improved, and unsupported merge-readiness framing was removed. |
