@@ -1,0 +1,67 @@
+{
+  "skill_name": "pr-branch",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use pr-branch in the repository at evals/files/description-only/input to write a PR title and description only against main. Do not open or push anything.",
+      "expected_output": "A complete two-layer PR artifact leads with the verified renewal risk and scale, then gives exact implementation and bounded test evidence; no repository or external state changes.",
+      "files": [
+        "evals/files/description-only/input/.bin/gh",
+        "evals/files/description-only/input/.gitignore",
+        "evals/files/description-only/input/AGENTS.md",
+        "evals/files/description-only/input/README.md",
+        "evals/files/description-only/input/package.json",
+        "evals/files/description-only/input/pr-context.md",
+        "evals/files/description-only/input/src/retry.js",
+        "evals/files/description-only/input/test/retry.test.js"
+      ],
+      "assertions": [
+        "The response provides a complete title and body without asking the user to reconfirm the explicitly supplied main base",
+        "The top layer explains duplicate retry risk, protection of 12,000 monthly renewals, and user or business impact before technical details",
+        "The technical layer names scheduleRetry and the idempotent retry guard, reports the exact focused command as 2 passed and full suite not run, and invents no broader evidence",
+        "No file, Git ref, remote, push, or gh pr create action changes and the response states that nothing was opened or pushed"
+      ],
+      "metadata": {"case_type": "primary", "source": "project_artifact", "source_evidence": {"path": "evals/sources/shipped-pr-contract.txt", "sha256": "847cc912978c75921715249d272c55fd3d20dc3b2148d54b24bf034ab222e0d6", "origin": {"type": "git_blob", "locator": "198528f:skills/pr-branch/SKILL.md", "captured_at": "2026-08-03"}}}
+    },
+    {
+      "id": 2,
+      "prompt": "Use pr-branch in the repository at evals/files/open-pr/input to open the pull request against release/2.x. The base is already decided; do not ask me to confirm it again.",
+      "expected_output": "The branch is non-force pushed to its disposable origin when needed and one mocked PR is created against release/2.x with an outcome-first, evidence-bounded body and verified URL.",
+      "files": [
+        "evals/files/open-pr/input/.bin/gh",
+        "evals/files/open-pr/input/.gitignore",
+        "evals/files/open-pr/input/AGENTS.md",
+        "evals/files/open-pr/input/README.md",
+        "evals/files/open-pr/input/pr-context.md",
+        "evals/files/open-pr/input/src/claim.js",
+        "evals/files/open-pr/input/test/claim.test.js"
+      ],
+      "assertions": [
+        "The agent does not ask for redundant base confirmation and creates exactly one mocked PR with base release/2.x",
+        "The branch is pushed without force, upstream and remote head equal local HEAD, and no unrelated path enters a commit",
+        "The captured PR body leads with duplicate renewal-claim risk and business impact, then names claimRenewal and token fencing",
+        "The body reports the focused 3-test command as passed, states the full suite was not run, and invents no full-suite or production validation",
+        "The response reports the verified mocked PR URL plus exact base and head"
+      ],
+      "metadata": {"case_type": "edge", "source": "project_artifact", "source_evidence": {"path": "evals/sources/shipped-pr-contract.txt", "sha256": "847cc912978c75921715249d272c55fd3d20dc3b2148d54b24bf034ab222e0d6", "origin": {"type": "git_blob", "locator": "198528f:skills/pr-branch/SKILL.md", "captured_at": "2026-08-03"}}}
+    },
+    {
+      "id": 3,
+      "prompt": "Use pr-branch in the repository at evals/files/ambiguous-base/input to open a pull request for the current stacked branch.",
+      "expected_output": "Because main and release/2.x remain materially plausible, the agent asks one specific base question and performs no push or PR creation.",
+      "files": [
+        "evals/files/ambiguous-base/input/.bin/gh",
+        "evals/files/ambiguous-base/input/.gitignore",
+        "evals/files/ambiguous-base/input/AGENTS.md",
+        "evals/files/ambiguous-base/input/README.md",
+        "evals/files/ambiguous-base/input/src/change.js"
+      ],
+      "assertions": [
+        "The response identifies main and release/2.x as the unresolved material base choice and asks one specific question selecting between them",
+        "No push, force push, gh pr create, Git ref, index, or working-tree change occurs",
+        "The response does not fabricate a PR URL, chosen base, test result, or publication success"
+      ],
+      "metadata": {"case_type": "scope_preservation", "source": "synthetic"}
+    }
+  ]
+}

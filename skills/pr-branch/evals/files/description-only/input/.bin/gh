@@ -1,0 +1,4 @@
+#!/bin/sh
+if [ "$1" = "repo" ]; then printf '%s\n' "main"; fi
+if [ "$1" = "auth" ]; then printf '%s\n' "Logged in to github.com as fixture-user"; fi
+exit 0

@@ -1,0 +1,8 @@
+Repository artifact: shipped pr-branch contract before this evaluation.
+
+- PR descriptions have a non-technical block followed by technical detail.
+- Description-only requests must not push or create a PR.
+- PR creation must use the intended base and non-force publication.
+
+Origin: 198528f:skills/pr-branch/SKILL.md
+Captured: 2026-08-03

@@ -30,13 +30,13 @@ does not modify global copies.
 | `tdd` | Cursor Auto, disposable workspace | Old skill `678f1789...` | PASS | Explicit-only package `8ba01d4e...` passed 11/11 assertions with no regression; blind grading improved contract-correct non-string handling from 3/5 to 5/5 and tied the contract-stop and durable-state cases at 5/5. |
 | `session-handoff` | Cursor Auto, disposable workspace | Old skill `ffbf2f90...` | PASS | Explicit-only package `892621e6...` passed 11/11 assertions with no regression; blind grades improved exact code resumption 3→5, compact design continuation 4→5, and no-context scope preservation 1→5. |
 | `commit-work` proposal | Codex `gpt-5.6-sol`, disposable Git repositories | Old skill `35384001...` | NO_LIFT | Proposal `3a5057df...` passed 13/13 assertions with no regression, but blind grades tied 5/5 in all three cases while aggregate duration and token use increased; proposal discarded and shipped package `35384001...` remains unchanged. Cursor is not certified for the no-attribution contract because its host injected a prohibited trailer. |
+| `pr-branch` | Cursor Auto, disposable Git repositories and mocked GitHub | Old skill `4af239b3...` | PASS | Explicit-only package `20ee9333...` passed 12/12 assertions with no regression; blind grades improved grounded description-only output 2→5, safe and verified PR publication 2→5, and ambiguous-base scope preservation 4→5. |
 
 ## Queue
 
 | # | Skill | Primary evidence |
 |---:|---|---|
-| 1 | `pr-branch` | PR output fits both audiences and publication remains safe. |
-| 2 | `grill-me` | Questions expose decision-changing gaps without needless interrogation. |
+| 1 | `grill-me` | Questions expose decision-changing gaps without needless interrogation. |
 
 ## Per-skill loop
 
