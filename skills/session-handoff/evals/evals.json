@@ -1,0 +1,67 @@
+{
+  "skill_name": "session-handoff",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use session-handoff for the active code task in the supplied project repository. Treat session-context.md as the current conversation snapshot, verify live repository state, and create the resume packet inside that project.",
+      "expected_output": "One compact handoff records the exact dirty state, focused test evidence, unfinished restart-replay requirement, and a single next action without falsely calling the task complete.",
+      "files": [
+        "evals/files/code-resume/input/AGENTS.md",
+        "evals/files/code-resume/input/README.md",
+        "evals/files/code-resume/input/package.json",
+        "evals/files/code-resume/input/session-context.md",
+        "evals/files/code-resume/input/src/payment-retry.js",
+        "evals/files/code-resume/input/test/payment-retry.test.js"
+      ],
+      "assertions": [
+        "Exactly one handoff file is created under the supplied project's .handoff directory and no product, test, Git, or external state is modified",
+        "The packet reports the live branch and HEAD plus the actual uncommitted paths instead of copying a claimed repository state from the transcript",
+        "The task remains in progress: focused node --test evidence is distinguished from the not-run full suite, and the required fresh-process restart replay is not called complete",
+        "The packet gives one concrete next action to add and run the restart replay test, preserves the no-Redis constraint and its stated rationale, and omits generic option menus"
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "project_artifact",
+        "source_evidence": {
+          "path": "evals/sources/shipped-handoff-contract.txt",
+          "sha256": "4e6cd860a52afe2d31babd26da6cb7c754393d4aad37080168d86c756b5a8b63",
+          "origin": {
+            "type": "git_blob",
+            "locator": "c666e9a:skills/session-handoff/SKILL.md",
+            "captured_at": "2026-08-03"
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "prompt": "Use session-handoff for the supplied design session. Treat session-context.md as conversation context that will not be available to the next session, verify the clean project state, and create the smallest sufficient resume packet inside the project.",
+      "expected_output": "The handoff preserves the explicit SQLite decision and rationale, the unresolved key-rotation question, and the next design action without inventing Git work or product completion.",
+      "files": [
+        "evals/files/design-resume/input/README.md",
+        "evals/files/design-resume/input/session-context.md"
+      ],
+      "assertions": [
+        "Exactly one handoff file is created and no existing project or Git state changes",
+        "The packet records SQLite selected over Redis because offline CLI operation must not require a service, without inventing additional rationale",
+        "The unresolved encryption-key rotation question and event schema are preserved as continuation context rather than presented as completed decisions",
+        "The next action continues the key-rotation design question directly and the packet stays compact without irrelevant Git-diff detail or a generic options menu"
+      ],
+      "metadata": {"case_type": "edge", "source": "synthetic"}
+    },
+    {
+      "id": 3,
+      "prompt": "Use session-handoff in the supplied clean project. This is a fresh session with no earlier task, decision, blocker, or pending work to transfer.",
+      "expected_output": "The agent creates no handoff artifact, states that no actionable state exists, and does not fabricate a goal or continuation plan.",
+      "files": [
+        "evals/files/no-context/input/README.md"
+      ],
+      "assertions": [
+        "No .handoff directory or handoff file is created and no existing file or Git state changes",
+        "The response states that there is no actionable state to transfer and directs the user to invoke the skill in the original session if context was lost",
+        "The response does not fabricate a goal, completed work, decision, blocker, test result, or next-session option"
+      ],
+      "metadata": {"case_type": "scope_preservation", "source": "synthetic"}
+    }
+  ]
+}

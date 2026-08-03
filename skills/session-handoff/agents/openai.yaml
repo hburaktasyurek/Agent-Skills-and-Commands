@@ -1,0 +1,6 @@
+interface:
+  display_name: "Session Handoff"
+  short_description: "Save exact state for a later session"
+  default_prompt: "Use $session-handoff to create a compact resume packet for the current task."
+policy:
+  allow_implicit_invocation: false

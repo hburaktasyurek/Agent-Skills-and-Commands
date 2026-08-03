@@ -28,15 +28,15 @@ does not modify global copies.
 | `to-spec` | Codex `gpt-5.6-sol`, disposable workspace | Without skill | PASS | Explicit-only package `7c4041ba...` passed 14/14 assertions; improved critical closure from 4/5 to 5/5 and kept focused specs to one implementation task without changing supplied code. |
 | `task-groundwork` | Cursor Auto, read-only | Old skill `716c196c...` | PASS | Explicit-only package `b2cdb1e5...` passed 11/11 assertions with no regression; blind grades improved roadmap closure, direct-request scope, and narrow-task negative fit from 4/5 to 5/5. |
 | `tdd` | Cursor Auto, disposable workspace | Old skill `678f1789...` | PASS | Explicit-only package `8ba01d4e...` passed 11/11 assertions with no regression; blind grading improved contract-correct non-string handling from 3/5 to 5/5 and tied the contract-stop and durable-state cases at 5/5. |
+| `session-handoff` | Cursor Auto, disposable workspace | Old skill `ffbf2f90...` | PASS | Explicit-only package `892621e6...` passed 11/11 assertions with no regression; blind grades improved exact code resumption 3→5, compact design continuation 4→5, and no-context scope preservation 1→5. |
 
 ## Queue
 
 | # | Skill | Primary evidence |
 |---:|---|---|
-| 1 | `session-handoff` | Resume state is exact, compact, and does not claim false completion. |
-| 2 | `commit-work` | Only intended changes enter commits; push remains explicit. |
-| 3 | `pr-branch` | PR output fits both audiences and publication remains safe. |
-| 4 | `grill-me` | Questions expose decision-changing gaps without needless interrogation. |
+| 1 | `commit-work` | Only intended changes enter commits; push remains explicit. |
+| 2 | `pr-branch` | PR output fits both audiences and publication remains safe. |
+| 3 | `grill-me` | Questions expose decision-changing gaps without needless interrogation. |
 
 ## Per-skill loop
 
