@@ -62,6 +62,33 @@
         "The response does not fabricate a PR URL, chosen base, test result, or publication success"
       ],
       "metadata": {"case_type": "scope_preservation", "source": "synthetic"}
+    },
+    {
+      "id": 4,
+      "prompt": "Use pr-branch in the repository at evals/files/business-visibility/input to write a PR title and description only against main. Do not open or push anything.",
+      "expected_output": "The first layer explains the full operational outcome and verified scale in ordinary language, while the second layer preserves the multi-surface implementation and test evidence; no repository or external state changes.",
+      "files": [
+        "evals/files/business-visibility/input/.gitignore",
+        "evals/files/business-visibility/input/AGENTS.md",
+        "evals/files/business-visibility/input/README.md",
+        "evals/files/business-visibility/input/docs/operations.md",
+        "evals/files/business-visibility/input/docs/support.md",
+        "evals/files/business-visibility/input/package.json",
+        "evals/files/business-visibility/input/src/customer-retry.js",
+        "evals/files/business-visibility/input/src/reconcile-import.js",
+        "evals/files/business-visibility/input/src/recovery-authority.js",
+        "evals/files/business-visibility/input/src/scheduled-worker.js",
+        "evals/files/business-visibility/input/src/support-cli.js",
+        "evals/files/business-visibility/input/test/recovery.test.js",
+        "evals/files/business-visibility/input/test-results.md"
+      ],
+      "assertions": [
+        "The first layer says in ordinary language that the change makes it safe to resume automatic recovery for 1,600 delayed subscriptions and protects about 28,000 quarterly cases from being processed more than once",
+        "The first layer makes the full breadth visible as customer, automated, support, and back-office work plus a support-visible outcome record, without code identifiers, file paths, framework names, subsystem labels, ordering rules, claim language, fencing, or idempotency terminology",
+        "The technical layer names recoverOnce and the durable claim check, identifies the four callers and outcome audit record, reports node --test test/recovery.test.js as 6 passed and the full suite as not run, and invents no broader evidence",
+        "No file, Git ref, remote, push, or gh pr create action changes and the response states that nothing was opened or pushed"
+      ],
+      "metadata": {"case_type": "primary", "source": "observed_failure", "source_evidence": {"path": "evals/sources/nontechnical-visibility-observation.txt", "sha256": "1db726414d5e1e19119fc6b6931f41e209f1601cf6f77986e410a4f6fdf13f23", "origin": {"type": "observed_failure_record", "locator": "user-feedback:2026-08-03-pr-branch", "captured_at": "2026-08-03"}}}
     }
   ]
 }

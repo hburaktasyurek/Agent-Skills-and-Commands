@@ -1,0 +1,11 @@
+Observed failure: the PR skill's non-technical section still used internal
+terms such as retry scheduling and function names. It also reduced a broad,
+mostly invisible engineering effort to a narrow technical summary, so a
+manager could not understand either the outcome or the amount of work.
+
+Required behavior: explain the verified before-and-after, reach, breadth, and
+user or operational result in ordinary language before presenting technical
+implementation details.
+
+Source: direct user feedback after reviewing a generated PR description.
+Captured: 2026-08-03.

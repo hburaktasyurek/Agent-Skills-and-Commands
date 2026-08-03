@@ -1,7 +1,7 @@
 interface:
   display_name: "PR Branch"
-  short_description: "Draft or open an evidence-grounded PR"
-  default_prompt: "Use $pr-branch to prepare an outcome-first pull request from the current branch."
+  short_description: "Draft or open a clear evidence-grounded PR"
+  default_prompt: "Use $pr-branch to prepare a plain-language, outcome-first pull request from the current branch."
 
 policy:
   allow_implicit_invocation: false
