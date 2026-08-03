@@ -23,8 +23,8 @@
         "case_type": "primary",
         "source": "project_artifact",
         "source_evidence": {
-          "path": "evals/closure/producer-consumer-propagation/input/task-contract.md",
-          "sha256": "aaa1f6ca4b15d0e8d8db92f8d46dc57b83ef67b659aac2b51237f44447fe3577",
+          "path": "evals/sources/producer-consumer-origin.md",
+          "sha256": "08ebd01d8f4f2073e2ee5f33f0bc32bfd562ad24e9e39a472b813057f67d3501",
           "origin": {
             "type": "git_blob",
             "locator": "closure fixture set at baseline commit df5747f",
@@ -55,8 +55,8 @@
         "case_type": "edge",
         "source": "observed_failure",
         "source_evidence": {
-          "path": "evals/closure/local-only-dependency-entry/input/review.txt",
-          "sha256": "9250872ab41ad8d5868a79328c1be7132aa084a13be069d8da94817466cca39c",
+          "path": "evals/sources/local-only-dependency-observation.md",
+          "sha256": "65d98d50a25badcac24c966bc732d106e78f8038f8ee9c83123e84ca234b257c",
           "origin": {
             "type": "observed_failure_record",
             "locator": "local-only-dependency-entry recovery-spec failure recorded before baseline commit df5747f",
@@ -87,8 +87,8 @@
         "case_type": "scope_preservation",
         "source": "project_artifact",
         "source_evidence": {
-          "path": "evals/closure/human-decision-usability/input/task-contract.md",
-          "sha256": "7513881bf93f8f1a3de11d3de256529f199cafca27f860e2e7d8d55a7b96d341",
+          "path": "evals/sources/human-decision-origin.md",
+          "sha256": "4e7ceda3258bc83cc5d57b9e7b7cd00fe440ac7d5d43ae35e3a7a13ad501058d",
           "origin": {
             "type": "git_blob",
             "locator": "closure fixture set at baseline commit df5747f",

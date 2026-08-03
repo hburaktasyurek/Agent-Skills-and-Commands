@@ -11,8 +11,7 @@
         "evals/fixtures/fleet-startup/package.json",
         "evals/fixtures/fleet-startup/service.js",
         "evals/fixtures/fleet-startup/test-record.txt",
-        "evals/fixtures/fleet-startup/prompt.txt",
-        "evals/sources/fleet-startup-origin.md"
+        "evals/fixtures/fleet-startup/prompt.txt"
       ],
       "metadata": {
         "case_type": "primary",

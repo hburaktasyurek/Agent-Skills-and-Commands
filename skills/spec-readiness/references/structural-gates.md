@@ -23,6 +23,14 @@ Words such as "derived", "stable", "fingerprint", or "digest" do not close a
 cross-node identity contract. Do not require these details for a private
 identity that never leaves one node.
 
+Keep canonical input, reproducible bytes or algorithm, persisted form,
+equality, collision or alias meaning, uniqueness-conflict outcome, affected
+consumers, and distinguishing proof in one identity decision family. Do not
+split uniqueness or its conflict result into another Blocker unless a binding
+artifact gives it an independently variable owner or contract. Do not add
+malformed-input, no-match, storage-failure, or reconciliation requirements
+merely because they are conceivable downstream of the missing identity.
+
 ## Ownership, construction, and outcomes
 
 When multiple components could own an operation, require one orchestration and

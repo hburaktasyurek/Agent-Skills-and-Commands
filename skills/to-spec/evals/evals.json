@@ -26,8 +26,8 @@
         "case_type": "primary",
         "source": "project_artifact",
         "source_evidence": {
-          "path": "evals/contract-closure/independent-axis-critical/input/task.md",
-          "sha256": "6391c490891e9146b73ecaf4283f3879695a9b0e8ecddaff0b4cfd82d95d0986",
+          "path": "evals/sources/independent-axis-origin.md",
+          "sha256": "88d062493d218b619b21c43b62dcde5eb1865f68a6c10faa1a54fc2eef4573cd",
           "origin": {"type":"git_blob","locator":"contract-closure fixture at baseline commit 1052c66","captured_at":"2026-08-02"}
         }
       }
@@ -51,8 +51,8 @@
         "case_type": "edge",
         "source": "project_artifact",
         "source_evidence": {
-          "path": "evals/contract-closure/approved-alternate-root/input/task.md",
-          "sha256": "ffb055a50c5d2ddea1389093582a42b69ef71698962b22f44a2caeb179e43e92",
+          "path": "evals/sources/approved-root-origin.md",
+          "sha256": "d08f1c29f957f4a42e1061bdcb89c5f468c1a2452f06d43fa70c6c0a21b76168",
           "origin": {"type":"git_blob","locator":"contract-closure fixture at baseline commit 1052c66","captured_at":"2026-08-02"}
         }
       }

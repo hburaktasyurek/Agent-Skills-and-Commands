@@ -5,7 +5,7 @@
       "id": 1,
       "prompt": "Use $review-implementation. Review the implementation described in evals/fixtures/generic-cli.md against its named specification. Return only the evidence-backed pre-PR compliance report; do not modify any files.",
       "expected_output": "The report finds the demonstrated generic CLI contract defects, binds them to the supplied artifacts, and does not introduce Laravel, tenancy, payment-provider, or project-memory requirements.",
-      "files": ["evals/fixtures/generic-cli.md", "evals/sources/repo-audit-observation.md"],
+      "files": ["evals/fixtures/generic-cli.md"],
       "metadata": {
         "case_type": "primary",
         "source": "observed_failure",

@@ -5,7 +5,7 @@
       "id": 1,
       "prompt": "Use $risk-calibrated-pr-review. Review disposable PR #42 in this repository. PR_CONTEXT.md is the frozen local PR-host snapshot with exact base/head identifiers; evals/fixtures/case-1.md is the commissioning artifact. Return the revision-bound merge-gate report.",
       "expected_output": "A full review classifies overall risk as critical and returns FAIL with exact P0 evidence and complete consequence coverage; the small diff does not lower risk and no filler finding is added.",
-      "files": ["evals/fixtures/case-1.md", "evals/sources/original-validation-cases.md"],
+      "files": ["evals/fixtures/case-1.md"],
       "metadata": {
         "case_type": "primary",
         "source": "project_artifact",

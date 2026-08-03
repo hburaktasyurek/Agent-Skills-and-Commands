@@ -5,7 +5,7 @@
       "id": 1,
       "prompt": "Use $spec-readiness. Review evals/fixtures/provider-recovery.md as the complete current implementation spec. Return the implementation-readiness verdict and evidence-backed report only; do not modify files.",
       "expected_output": "NOT READY with one root-complete Blocker showing that production construction still requires the unavailable provider dependency before local-only branches can be reached; closure specifies the observable guarantee without choosing an architecture.",
-      "files": ["evals/fixtures/provider-recovery.md", "evals/sources/local-only-dependency-review.txt"],
+      "files": ["evals/fixtures/provider-recovery.md"],
       "metadata": {
         "case_type": "primary",
         "source": "project_artifact",

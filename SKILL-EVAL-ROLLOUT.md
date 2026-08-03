@@ -18,14 +18,14 @@ does not modify global copies.
 |---|---|---|---|---|
 | `skill-eval` | Deterministic fixtures | Bootstrap fixtures | PASS | Infrastructure retained; provenance records cannot leak into executor inputs, Cursor on macOS denies exact source, baseline, and namesake package reads at the OS boundary, and unsupported namesake isolation stops before execution. |
 | `risk-calibrated-pr-review` proposal | Codex read-only | Shipped `3db1fb01...` | FAIL | Proposal rejected; shipped remains last-known-better, not certified sufficient. |
-| `risk-calibrated-pr-review` shipped runtime | Prior Codex artifact run + current byte identity | Exact shipped baseline | INCONCLUSIVE | Four behavior cases passed on the byte-identical runtime; current package now carries the validated definitions, but implicit trigger trace is still NOT_RUN. |
+| `risk-calibrated-pr-review` shipped runtime | Codex read-only | Exact shipped baseline | INCONCLUSIVE | Current package `b24f3e45...` has a valid, provenance-separated eval definition, but no exact-package paired run can prove lift over its byte-identical shipped baseline and the implicit trigger trace is still NOT_RUN. Preserve this limitation; do not claim certification. |
 | `senior-implementer` | Cursor Auto | Old skill `b11383bb...` | PASS | Package `7364c55b...` passed 11/11 assertions with no regression; blind grades improved root closure 4→5, durable-state proof 4→5, and money-risk release blocking 3→5. |
-| `review-implementation` | Codex `gpt-5.6-sol`, read-only | Old skill `fb7c7701...` | PASS | Explicit-only package `a4f9f4db...` passed 12/12 assertions with no regression; generic behavior tied, Laravel scope discipline and missing-basis handling improved. |
-| `spec-readiness` | Codex `gpt-5.6-sol`, read-only | Old skill `e6193a47...` | PASS | Explicit-only package `ea56beb7...` passed 12/12 assertions; kept READY scope discipline, improved root-family closure, and reduced aggregate run cost. |
-| `adversarial-diff-review` | Codex `gpt-5.6-sol`, read-only | Old skill `40bdff18...` | PASS | Explicit-only package `ff697d3e...` passed 12/12 assertions; critical defect behavior held, concurrency and clean-diff artifacts improved, and unsupported merge-readiness framing was removed. |
+| `review-implementation` | Codex `gpt-5.6-sol`, read-only | Old skill `fb7c7701...` | PASS | Provenance-separated package `5ecb367d...` passed 12/12 assertions with no regression; generic and Laravel cases tied at 5/5, and missing-basis handling improved 4→5. |
+| `spec-readiness` | Codex `gpt-5.6-sol`, read-only | Old skill `e6193a47...` | PASS | Provenance-separated package `2191595a...` passed 12/12 assertions with no regression after keeping shared identity and uniqueness conflict in one decision family and forbidding invented activation timing; grades were 5→5, 3→5, and 5→5. |
+| `adversarial-diff-review` | Codex `gpt-5.6-sol`, read-only | Old skill `40bdff18...` | PASS | Provenance-separated package `4d6d17ed...` passed 12/12 assertions with no regression; critical cases tied at 5/5 and clean-diff scope discipline improved 1→5. |
 | `adversarial-spec-review` proposal | Codex `gpt-5.6-sol`, read-only | Old skill `decf8443...` | NO_LIFT | Proposal `75df0df3...` passed 12/12 assertions with no regression, but blind grades tied and aggregate tokens increased; proposal discarded and the shipped package remains unchanged. |
-| `revise-spec-from-review` | Codex `gpt-5.6-sol`, disposable workspace | Old skill `b956803c...` | PASS | Explicit-only package `b6e60c6a...` passed 12/12 assertions; retained both root-closure cases and improved the unmade-decision case from 2/5 to 5/5 by leaving choice-dependent spec surfaces unchanged. |
-| `to-spec` | Codex `gpt-5.6-sol`, disposable workspace | Without skill | PASS | Explicit-only package `7c4041ba...` passed 14/14 assertions; improved critical closure from 4/5 to 5/5 and kept focused specs to one implementation task without changing supplied code. |
+| `revise-spec-from-review` | Codex `gpt-5.6-sol`, disposable workspace | Old skill `b956803c...` | PASS | Provenance-separated package `ee9be115...` passed 12/12 assertions with no regression; two root-closure cases reached 5/5 in two of three clean repeats, and the unmade-decision case remained 2→5 by leaving choice-dependent surfaces unchanged. |
+| `to-spec` | Codex `gpt-5.6-sol`, disposable workspace | Without skill | PASS | Provenance-separated package `5f2de204...` passed 14/14 assertions with no regression; both complex cases tied at 5/5 and the focused one-task spec improved 4→5 without changing supplied code. |
 | `task-groundwork` | Cursor Auto, read-only | Old skill `716c196c...` | PASS | Explicit-only package `b2cdb1e5...` passed 11/11 assertions with no regression; blind grades improved roadmap closure, direct-request scope, and narrow-task negative fit from 4/5 to 5/5. |
 | `tdd` | Cursor Auto, disposable workspace | Old skill `678f1789...` | PASS | Explicit-only package `8ba01d4e...` passed 11/11 assertions with no regression; blind grading improved contract-correct non-string handling from 3/5 to 5/5 and tied the contract-stop and durable-state cases at 5/5. |
 | `session-handoff` | Cursor Auto, disposable workspace | Old skill `ffbf2f90...` | PASS | Explicit-only package `892621e6...` passed 11/11 assertions with no regression; blind grades improved exact code resumption 3→5, compact design continuation 4→5, and no-context scope preservation 1→5. |
@@ -36,7 +36,10 @@ does not modify global copies.
 
 ## Queue
 
-No retained skill remains in the current rollout queue.
+No retained runtime rewrite remains in the current rollout queue.
+`risk-calibrated-pr-review` remains an explicitly preserved `INCONCLUSIVE`
+until a real Codex implicit-trigger trace and a meaningful comparison baseline
+exist; synthetic PASS must not replace that evidence.
 
 ## Per-skill loop
 

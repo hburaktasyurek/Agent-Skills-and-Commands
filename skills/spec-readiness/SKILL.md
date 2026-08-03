@@ -24,6 +24,10 @@ component and preserve every boundary and observable obligation. Private
 algorithms, helper names, local refactors, and hypothetical consumers are not
 Blockers unless the binding artifacts make them load-bearing.
 
+State activation or rollout timing only when a binding artifact defines it.
+Do not infer that activation is immediate merely because a code change would
+be deployed.
+
 ## Review basis
 
 1. Resolve and reread the exact current spec and directly binding artifacts.
