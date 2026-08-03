@@ -1,0 +1,6 @@
+Source: Git blob 129214b:skills/grill-me/SKILL.md
+Captured: 2026-08-03
+
+The shipped skill requires an interactive, one-question-at-a-time stress test,
+environment lookup for facts, recommendations with questions, and no action
+before the user confirms shared understanding.

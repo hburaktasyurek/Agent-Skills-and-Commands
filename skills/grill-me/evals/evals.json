@@ -1,0 +1,54 @@
+{
+  "skill_name": "grill-me",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use grill-me to stress-test the passkey rollout in evals/files/auth-rollout/input. Ask only the first unresolved decision-changing question.",
+      "expected_output": "The response resolves supplied facts, asks one migration-policy question, and gives an evidence-grounded recommendation without reopening settled technical choices.",
+      "files": [
+        "evals/files/auth-rollout/input/AGENTS.md",
+        "evals/files/auth-rollout/input/rollout-plan.md",
+        "evals/files/auth-rollout/input/support-evidence.md"
+      ],
+      "assertions": [
+        "The response asks exactly one question and it concerns password fallback versus immediate passkey-only migration for eligible existing users",
+        "The response explains that the answer changes account-lockout or recovery risk and uses the supplied single-device and support evidence",
+        "The response recommends a staged password fallback until recovery readiness is proven, or an equivalently evidence-grounded reversible rollout",
+        "The response does not ask about the already-decided identity provider, credential storage, SSO boundary, or test requirement and performs no implementation or file change"
+      ],
+      "metadata": {"case_type": "primary", "source": "project_artifact", "source_evidence": {"path": "evals/sources/shipped-grill-contract.txt", "sha256": "cf28302844a6959871a2c1ad0b6abb851bfece404835907bc36ef1278013f832", "origin": {"type": "git_blob", "locator": "129214b:skills/grill-me/SKILL.md", "captured_at": "2026-08-03"}}}
+    },
+    {
+      "id": 2,
+      "prompt": "Use grill-me on the trial-length decision in evals/files/trial-length/input. Ask only the first question.",
+      "expected_output": "The response asks for the unresolved launch objective before choosing a duration and does not fake a 7-day or 30-day recommendation without evidence.",
+      "files": [
+        "evals/files/trial-length/input/AGENTS.md",
+        "evals/files/trial-length/input/decision.md"
+      ],
+      "assertions": [
+        "The response asks exactly one question that forces leadership to choose or prioritize the launch outcome or success metric",
+        "The response explains how acquisition volume, activation quality, paid conversion, or support load could lead to different trial choices",
+        "The response does not recommend 7 or 30 days as fact because the supplied evidence cannot support either choice",
+        "The response does not invent customer data, benchmarks, experiments already run, or additional questions"
+      ],
+      "metadata": {"case_type": "edge", "source": "synthetic"}
+    },
+    {
+      "id": 3,
+      "prompt": "Use grill-me to stress-test the refactor plan in evals/files/resolved-refactor/input. Give the first question, or say if no material decision-changing branch remains.",
+      "expected_output": "The response recognizes that the small reversible refactor has no open material decision, creates no artificial interrogation, and does not act.",
+      "files": [
+        "evals/files/resolved-refactor/input/AGENTS.md",
+        "evals/files/resolved-refactor/input/refactor-plan.md"
+      ],
+      "assertions": [
+        "The response states that no material decision-changing branch remains instead of inventing a question",
+        "The response grounds that conclusion in the preserved behavior, existing helper convention, bounded diff, verification, reversibility, and no-push boundary",
+        "The response does not reopen a resolved technical choice or ask for facts already present in the plan",
+        "No file, Git, implementation, test, commit, push, or external action occurs"
+      ],
+      "metadata": {"case_type": "scope_preservation", "source": "synthetic"}
+    }
+  ]
+}

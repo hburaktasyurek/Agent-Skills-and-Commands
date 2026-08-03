@@ -31,12 +31,11 @@ does not modify global copies.
 | `session-handoff` | Cursor Auto, disposable workspace | Old skill `ffbf2f90...` | PASS | Explicit-only package `892621e6...` passed 11/11 assertions with no regression; blind grades improved exact code resumption 3→5, compact design continuation 4→5, and no-context scope preservation 1→5. |
 | `commit-work` proposal | Codex `gpt-5.6-sol`, disposable Git repositories | Old skill `35384001...` | NO_LIFT | Proposal `3a5057df...` passed 13/13 assertions with no regression, but blind grades tied 5/5 in all three cases while aggregate duration and token use increased; proposal discarded and shipped package `35384001...` remains unchanged. Cursor is not certified for the no-attribution contract because its host injected a prohibited trailer. |
 | `pr-branch` | Cursor Auto, disposable Git repositories and mocked GitHub | Old skill `4af239b3...` | PASS | Explicit-only package `20ee9333...` passed 12/12 assertions with no regression; blind grades improved grounded description-only output 2→5, safe and verified PR publication 2→5, and ambiguous-base scope preservation 4→5. |
+| `grill-me` | Cursor Auto, disposable workspaces | Old skill `e4eee69e...` | PASS | Explicit-only package `c0168955...` passed 12/12 assertions with no regression; blind grades tied evidence-grounded rollout and complete-plan stopping at 5/5, while the no-data business-decision case improved 2→5 by refusing to invent an objective or recommendation. |
 
 ## Queue
 
-| # | Skill | Primary evidence |
-|---:|---|---|
-| 1 | `grill-me` | Questions expose decision-changing gaps without needless interrogation. |
+No retained skill remains in the current rollout queue.
 
 ## Per-skill loop
 

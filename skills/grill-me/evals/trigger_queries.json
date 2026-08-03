@@ -1,0 +1,26 @@
+{
+  "skill_name": "grill-me",
+  "activation_mode": "explicit_only",
+  "queries": [
+    {"id":"positive-train-01","split":"train","query":"Use grill-me to stress-test this rollout decision.","should_trigger":true,"paired_with":"negative-train-01"},
+    {"id":"negative-train-01","split":"train","query":"Stress-test this rollout decision.","should_trigger":false,"paired_with":"positive-train-01"},
+    {"id":"positive-train-02","split":"train","query":"Grill-me ile bu migration planındaki açık kararları sorgula.","should_trigger":true,"paired_with":"negative-train-02"},
+    {"id":"negative-train-02","split":"train","query":"Bu migration planındaki açık kararları sorgula.","should_trigger":false,"paired_with":"positive-train-02"},
+    {"id":"positive-train-03","split":"train","query":"Invoke grill-me and ask me the first decision-changing question.","should_trigger":true,"paired_with":"negative-train-03"},
+    {"id":"negative-train-03","split":"train","query":"Ask me the first decision-changing question.","should_trigger":false,"paired_with":"positive-train-03"},
+    {"id":"positive-train-04","split":"train","query":"Use grill-me on my pricing idea before I commit to it.","should_trigger":true,"paired_with":"negative-train-04"},
+    {"id":"negative-train-04","split":"train","query":"Challenge my pricing idea before I commit to it.","should_trigger":false,"paired_with":"positive-train-04"},
+    {"id":"positive-train-05","split":"train","query":"Run grill-me against this design fork one question at a time.","should_trigger":true,"paired_with":"negative-train-05"},
+    {"id":"negative-train-05","split":"train","query":"Review this design fork one question at a time.","should_trigger":false,"paired_with":"positive-train-05"},
+    {"id":"positive-validation-01","split":"validation","query":"Use grill-me to find what could still change this launch plan.","should_trigger":true,"paired_with":"negative-validation-01"},
+    {"id":"negative-validation-01","split":"validation","query":"Find what could still change this launch plan.","should_trigger":false,"paired_with":"positive-validation-01"},
+    {"id":"positive-validation-02","split":"validation","query":"Grill-me ile beni bu ürün kararı hakkında tek tek sorgula.","should_trigger":true,"paired_with":"negative-validation-02"},
+    {"id":"negative-validation-02","split":"validation","query":"Beni bu ürün kararı hakkında tek tek sorgula.","should_trigger":false,"paired_with":"positive-validation-02"},
+    {"id":"positive-validation-03","split":"validation","query":"Apply grill-me to this refactor plan and stop if no material branch remains.","should_trigger":true,"paired_with":"negative-validation-03"},
+    {"id":"negative-validation-03","split":"validation","query":"Check this refactor plan and stop if no material branch remains.","should_trigger":false,"paired_with":"positive-validation-03"},
+    {"id":"positive-validation-04","split":"validation","query":"Use grill-me before we finalize the account recovery policy.","should_trigger":true,"paired_with":"negative-validation-04"},
+    {"id":"negative-validation-04","split":"validation","query":"Before finalizing, question the account recovery policy.","should_trigger":false,"paired_with":"positive-validation-04"},
+    {"id":"positive-validation-05","split":"validation","query":"Invoke grill-me for a hard look at this go-or-no-go decision.","should_trigger":true,"paired_with":"negative-validation-05"},
+    {"id":"negative-validation-05","split":"validation","query":"Take a hard look at this go-or-no-go decision.","should_trigger":false,"paired_with":"positive-validation-05"}
+  ]
+}
