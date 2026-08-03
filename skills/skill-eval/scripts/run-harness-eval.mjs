@@ -21,6 +21,12 @@ function overlaps(left, right) {
   return inside(left, right) || inside(right, left);
 }
 
+const sandboxLiteral = (value) => `"${value.replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`;
+
+export function darwinDenyProfile(paths) {
+  return `(version 1) (allow default) ${paths.map((candidate) => `(deny file-read* (subpath ${sandboxLiteral(candidate)}))`).join(" ")}`;
+}
+
 function value(args, flag, fallback = null) {
   const index = args.indexOf(flag);
   return index === -1 ? fallback : args[index + 1];
@@ -286,7 +292,16 @@ export async function runHarnessEval(options) {
     throw new Error("Enabled skill and executor paths must be disjoint.");
   }
   const competing = installedNamesakes(adapter.id, workspace, skillName(subjectPath), skillPath);
-  if (competing.length && !adapter.canDisableNamesakes) {
+  const protectedPaths = [...new Set([
+    subjectPath,
+    skillPath,
+    path.join(repositoryRoot, "skills", skillName(subjectPath)),
+    ...competing,
+  ].filter(Boolean).map((candidate) => path.resolve(candidate)))].filter((candidate) => !inside(workspace, candidate));
+  const protectedSandbox = adapter.id === "cursor" && process.platform === "darwin" && fs.existsSync("/usr/bin/sandbox-exec")
+    ? darwinDenyProfile(protectedPaths)
+    : null;
+  if (competing.length && !protectedSandbox) {
     throw new Error(`Installed namesake could contaminate the baseline: ${competing.join(", ")}`);
   }
   const subjectBefore = hashSkillPackage(subjectPath).content_sha256;
@@ -301,6 +316,7 @@ export async function runHarnessEval(options) {
     permission,
     prompt: projection.prompt,
     skillFile: skillPath ? path.join(skillPath, "SKILL.md") : null,
+    enabledSkillPath: projection.path,
     disabledSkillPaths: competing,
     traceDir: traceReal,
   };
@@ -308,7 +324,9 @@ export async function runHarnessEval(options) {
   const startedAt = new Date().toISOString();
   let processResult;
   try {
-    processResult = await runProcess(executable, args, {
+    const launchCommand = protectedSandbox ? "/usr/bin/sandbox-exec" : executable;
+    const launchArgs = protectedSandbox ? ["-p", protectedSandbox, executable, ...args] : args;
+    processResult = await runProcess(launchCommand, launchArgs, {
       cwd: workspace,
       input: adapter.promptOnStdin ? projection.prompt : "",
       timeoutMs: options.timeoutMs ?? 600_000,
@@ -326,7 +344,9 @@ export async function runHarnessEval(options) {
   const processCompleted = processResult.exitCode === 0 && !processResult.signal && !processResult.timedOut && !processResult.limitExceeded;
   const parsed = adapter.parser(processResult.stdout, { processCompleted });
   const reasons = [...parsed.errors];
-  const protectedAccess = protectedSkillSourceAccess(processResult.stdout, workspace, subjectPath, skillPath, competing);
+  const protectedAccess = protectedSandbox
+    ? null
+    : protectedSkillSourceAccess(processResult.stdout, workspace, subjectPath, skillPath, competing);
   if (protectedAccess) reasons.push("executor accessed protected skill source outside the workspace");
   if (processResult.exitCode !== 0) reasons.push(`executor exit code: ${processResult.exitCode}`);
   if (processResult.signal) reasons.push(`executor signal: ${processResult.signal}`);
@@ -358,6 +378,8 @@ export async function runHarnessEval(options) {
       executable: adapter.executable,
       test_override: Boolean(options.executable),
       safety_enforced: true,
+      namesake_isolation: competing.length && protectedSandbox ? "darwin_file_read_deny" : "not_required",
+      protected_package_isolation: protectedSandbox ? "darwin_file_read_deny" : "trace_enforced",
     },
     run: {
       id: options.runId,

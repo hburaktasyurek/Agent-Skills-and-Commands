@@ -61,9 +61,12 @@ that does not match its parser or permission contract stays `INCONCLUSIVE`.
 The runner also stops when a common global/project skill directory already
 contains the same skill name, because that would contaminate the baseline.
 The Codex adapter projects the package into the disposable repo's
-`.agents/skills` directory and can disable other exact namesake paths for the
-isolated run through `skills.config`; other adapters still stop when a
-namesake is present.
+`.agents/skills` directory and explicitly enables that projection. The Cursor
+adapter on macOS denies the executor read access to exact source, baseline, and
+installed namesake package paths at the OS boundary. Codex cannot safely nest
+that boundary with its own sandbox, so an installed namesake stops a Codex run;
+`skills.config` remains defense in depth, not isolation proof. Other adapters
+also stop when a namesake is present.
 
 This MVP permits `workspace-write` through the Codex and Cursor sandboxed
 adapters. Claude Code, OpenCode, and Cline adapters are read-only because the

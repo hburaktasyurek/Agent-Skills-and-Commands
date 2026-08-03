@@ -18,7 +18,7 @@ import {
   parseCursor,
   parseOpenCode,
 } from "./harness-adapters.mjs";
-import { protectedSkillSourceAccess, runHarnessEval, withoutExplicitInvocation } from "./run-harness-eval.mjs";
+import { darwinDenyProfile, protectedSkillSourceAccess, runHarnessEval, withoutExplicitInvocation } from "./run-harness-eval.mjs";
 import { validateEvalDefinition, validateTriggerDefinition } from "./validate-eval-definition.mjs";
 
 const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -41,11 +41,14 @@ assert.deepEqual(listAdapters().map((item) => item.id), ["codex", "claude-code",
 const codexArgs = getAdapter("codex").buildArgs({
   permission: "read-only",
   workspace: "/tmp/workspace",
+  enabledSkillPath: "/tmp/workspace/.agents/skills/example",
   disabledSkillPaths: ["/tmp/global"],
 });
+assert.equal(codexArgs.some((item) => item.includes('path = "/tmp/workspace/.agents/skills/example", enabled = true')), true);
 assert.equal(codexArgs.some((item) => item.includes('path = "/tmp/global", enabled = false')), true);
-assert.equal(getAdapter("codex").canDisableNamesakes, true);
+assert.equal(getAdapter("codex").canDisableNamesakes, false);
 assert.equal(getAdapter("codex").skillDirectory, ".agents/skills");
+assert.match(darwinDenyProfile(['/tmp/a"b']), /\(deny file-read\* \(subpath "\/tmp\/a\\"b"\)\)/);
 assert.equal(getAdapter("claude-code").buildArgs({ permission: "read-only" }).includes("plan"), true);
 assert.equal(getAdapter("cursor").buildArgs({ permission: "read-only", prompt: "x" }).includes("--force"), false);
 assert.equal(getAdapter("cursor").buildArgs({ permission: "read-only", prompt: "x" }).includes("plan"), true);
