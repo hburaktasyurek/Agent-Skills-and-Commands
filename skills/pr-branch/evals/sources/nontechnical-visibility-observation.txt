@@ -7,5 +7,24 @@ Required behavior: explain the verified before-and-after, reach, breadth, and
 user or operational result in ordinary language before presenting technical
 implementation details.
 
+Second observed failure: a later rewrite had removed the original separate
+non-technical and technical PR blocks. A PR then led with an internal-control
+title, reduced the manager section to two dense paragraphs, and omitted the
+verified engineering footprint even though GitHub showed 9 commits and 27
+changed files. The result was technically accurate but did not make the work
+or its seriousness visible in a screenshot shared with managers.
+
+Required behavior: restore the original non-technical block (`What This PR
+Does`, `The Problem`, `The Solution`, and `What Changes for the Team`) and the
+separate technical block (`Technical Summary`, metric table, risk boundaries,
+and `Test Plan`). Fix only the technical-language leakage in the first block;
+do not replace or collapse the two-block design.
+
+Third observed failure: the rewritten contract treated an explicit pr-branch
+invocation as ambiguous between drafting and opening. The user invokes this
+skill to open a PR. Invocation must therefore authorize PR creation and any
+necessary non-force push; description-only mode applies only when explicitly
+requested.
+
 Source: direct user feedback after reviewing a generated PR description.
-Captured: 2026-08-03.
+Captured: 2026-08-03 and 2026-08-06.

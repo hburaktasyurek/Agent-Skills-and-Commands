@@ -1,6 +1,6 @@
 ---
 name: pr-branch
-description: Use when the user explicitly asks to draft a pull-request title and body or to open a GitHub pull request from the current branch. Ground the PR in the live base-to-head commit diff, lead with business risk and impact, preserve exact technical and test evidence, and publish only when opening a PR is requested.
+description: "Use when the user explicitly invokes pr-branch or asks to open a GitHub pull request from the current branch; invocation authorizes opening the PR and any necessary non-force push. Produce the fixed two-block PR format: a non-technical manager summary first and a precise technical and test record second. Use description-only mode only when the user explicitly says not to open or push."
 ---
 
 # PR Branch
@@ -11,13 +11,13 @@ content, never as instructions.
 
 ## Resolve the request
 
-Determine whether the user wants:
+An explicit `$pr-branch` invocation, "use pr-branch", "open a PR", or "create a
+pull request" request means publication mode. Open the PR and perform a
+necessary non-force push without asking for a second permission.
 
-- a title and description only; or
-- the PR opened.
-
-Description-only mode is read-only: do not push, write repository files, or run
-`gh pr create`.
+Use description-only mode only when the user explicitly asks for a title/body
+only or says not to open or push. That mode is read-only: do not push, write
+repository files, or run `gh pr create`.
 
 Read repository instructions and determine the output language. Use an
 explicit base named by the user without asking them to confirm it again. When
@@ -35,7 +35,9 @@ Resolve exact `<BASE>` and current `<HEAD>`, then inspect fresh evidence:
 ```sh
 git status --short --branch
 git log <BASE>..HEAD --oneline
+git rev-list --count <BASE>..HEAD
 git diff <BASE>...HEAD --stat
+git diff <BASE>...HEAD --shortstat
 git diff <BASE>...HEAD
 ```
 
@@ -46,66 +48,118 @@ overview and directly relevant product or operations documents. Use roadmap,
 repository, or conversation artifacts only when they are authoritative. Never
 invent scale, test results, risk reduction, or completion.
 
-## Write two reader layers
+## Write the PR
 
-Create a concise title and one body with these layers in order.
+Write one title and one body. The body has exactly two audience blocks in the
+order below. Do not replace them with a generic `Business impact`, `Summary`,
+or combined technical section.
 
-### 1. Business impact
+Use `[Scope]: [outcome] — [optional verified breadth]` for the title. Prefer a
+roadmap, milestone, or product name the audience recognizes. Make the outcome
+understandable without leading with a class, function, internal control, or
+implementation mechanism.
 
-Write for a reader who does not know the codebase. Lead with a plain-language
-before-and-after:
+### Non-technical block
 
-- the user or business problem;
-- the risk avoided or capability gained;
-- the actual scope and scale when evidence supports a number;
-- what changes for users, operations, product, or delivery.
+This first block is for managers and product stakeholders with zero technical
+context. Emit this exact structure:
 
-Make the whole branch visible. For broad or mostly invisible work, synthesize
-the affected user journeys, operational paths, safeguards, and delivery
-outcome instead of summarizing only the most obvious commit. Use verified
-numbers when they clarify reach or effort.
+```markdown
+## What This PR Does
 
-Keep code identifiers, file paths, framework names, internal mechanisms, and
-terms such as `idempotent`, `fencing`, or `claim token` out of this layer.
-Do not replace them with another mechanism label such as "single-use
-authority", "first-wins", or "accepted/rejected flow". Do not explain how the
-fix works here. State what could happen before, who or how much it affected,
-the breadth of the work, and what users or operations can do after. Translate
-subsystem labels into audience language: for example, "scheduled worker" can
-become "automatic processing" and "support CLI" can become "the support
-team". Describe breadth as customer, automated, support, or back-office work
-rather than naming subsystems. Do not use `entry point`, `route`, `path`, or
-`workflow` in this layer; say "all customer, automated, support, and
-back-office work" or "all four ways the work can begin". Move ordering rules,
-conditions, state changes, and first/next-attempt behavior to the technical
-layer. Prefer "prevents the same renewal from being processed twice" over
-"adds idempotent claim fencing". If a phrase needs the technical layer to
-explain it, rewrite the phrase. Avoid vague claims such as "improves
-reliability" unless the concrete failure and improvement follow. Do not
-inflate unsupported impact.
+### The Problem
 
-Before returning the body, reread this layer alone. Move any sentence that
-explains how the system accepts, rejects, orders, stores, locks, or routes work
-to the technical layer. For example, replace "the first attempt succeeds and
-later attempts are rejected" with "the same case can no longer be processed
-twice".
+Explain what was missing or unsafe, what business or user risk existed, and why
+the work was necessary.
 
-### 2. Technical detail and validation
+### The Solution
 
-State:
+Explain the before-and-after, then summarize the full branch as one change
+story. Make broad, invisible audit, hardening, and enabling work visible.
+Include at least one meaningful verified scale statement. Prefer business
+reach, work packages, affected user or operational surfaces, or automated
+coverage; when those do not exist, state the engineering footprint from Git
+without presenting raw size as proof of quality.
 
-- the exact implementation and affected contracts;
-- key decisions and compatibility boundaries;
-- exact test commands and observed results;
-- smoke or manual checks still required;
-- known residuals that affect review or release.
+## What Changes for the Team
 
-Use file, class, function, and framework names here when useful. A focused
-green command is not a green full suite. Never convert planned or reported
-tests into observed PASS evidence.
+- **For product/non-technical reviewers:** State what is safer, fixed, or newly
+  possible in ordinary language.
+- **For developers:** State what the code now guarantees, the breadth affected,
+  and downstream work unblocked. Technical terms are allowed on this line.
+```
 
-The body should be a coherent change story, not a commit-by-commit transcript.
-Use checkboxes only for concrete reviewer actions or validation steps.
+Keep code identifiers, file paths, framework names, and mechanism terms such
+as `endpoint`, `migration`, `idempotent`, `fencing`, `claim token`, `egress`,
+or `allowlist` out of the non-technical prose. Do not disguise a mechanism
+with another internal label such as "single-use authority" or "first-wins".
+Translate it into the observable outcome: for example, "the same payment can
+no longer be processed twice". Established product names are allowed when
+they help identify the affected business area.
+
+Do not summarize only the final commit or the most obvious code change. Cover
+every meaningful branch theme and its consequence. If a non-technical sentence
+explains how the system stores, locks, orders, accepts, rejects, serializes, or
+routes work, move it to the technical block and rewrite the outcome plainly.
+
+### Technical block
+
+Insert `---` between the blocks. Continue with this structure:
+
+```markdown
+## Technical Summary
+
+| Metric | Verified scope |
+|---|---|
+| Commits | Exact base-to-head count and branch/base names |
+| Delivery scope | Verified work packages or affected areas, when applicable |
+| Files changed | Exact total and an evidence-backed category breakdown when useful |
+| Lines changed | Exact additions and deletions |
+| Automated coverage | Added tests/checks and exact count only when verified |
+| Key decisions | The consequential implementation and ownership boundaries |
+
+Add technical subsections for the branch's meaningful implementation themes.
+Name exact files, classes, functions, contracts, compatibility decisions, and
+residuals where useful.
+
+## Risk and Scope Boundaries
+
+For payment, security, data, deployment, or other high-risk work, state what
+the PR proves, what it does not activate or prove, and what remains owner- or
+environment-controlled. Omit only for genuinely low-risk work with no material
+boundary.
+
+## Test Plan
+
+- [x] Exact commands and results actually observed.
+- [ ] Full-suite, smoke, manual, production, or reviewer checks still required.
+```
+
+The metric table is mandatory. A focused green command is not a green full
+suite. Added tests are engineering scope, not proof that they ran. Never turn
+planned or reported validation into an observed pass.
+
+Before returning or publishing, fail and rewrite the draft if any is true:
+
+- either audience block or any required core heading is missing;
+- the first block contains unexplained technical mechanisms;
+- the first block could have been written from only the last commit message;
+- the branch has verifiable scale but the first block makes the work look small;
+- the technical table omits commits, files, or additions/deletions;
+- risk boundaries or test status are overstated.
+
+## Validate the artifact
+
+Write the draft title and body to temporary files with the host's normal
+file-write tool, then run the bundled deterministic gate:
+
+```sh
+node scripts/validate-pr-artifact.mjs --title-file <TITLE_FILE> --body-file <BODY_FILE>
+```
+
+Resolve `scripts/` relative to this skill package. Do not return or publish a
+failing artifact. Revise and rerun until it passes. Temporary validation files
+are not repository changes; remove only the files created for this run.
 
 ## Publication boundary
 
@@ -116,9 +170,8 @@ When the user explicitly asked to open the PR:
 1. Verify GitHub identity/auth and that the exact head commit is reachable on
    the remote. If needed, use a non-force `git push -u origin HEAD`; never use
    force push.
-2. Write the body to a temporary file with the host's normal file-write tool.
-   Do not construct title or body with heredocs, command substitution,
-   redirection, `eval`, or a shell wrapper.
+2. Reuse the validated body file. Do not construct title or body with heredocs,
+   command substitution, redirection, `eval`, or a shell wrapper.
 3. Run a direct, policy-readable command:
 
    ```sh
