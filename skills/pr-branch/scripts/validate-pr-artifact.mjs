@@ -33,6 +33,18 @@ const NONTECHNICAL_MECHANISMS = [
   /\bclaim token\b/i,
   /\begress\b/i,
   /\ballowlist\b/i,
+  /\bpayload\b/i,
+  /\bproducer\b/i,
+  /\brepository(?:-only)?\b/i,
+  /\bserver-side\b/i,
+  /\bfail-closed\b/i,
+  /\btemporal\b/i,
+  /\bcanonical\b/i,
+  /\bdigest\b/i,
+  /\brelease certificate\b/i,
+  /\bevidence(?:-based)? gate\b/i,
+  /\boperational response\b/i,
+  /\brollout preparation\b/i,
 ];
 
 function countExactLine(lines, expected) {
@@ -53,6 +65,9 @@ export function validateArtifact(title, body) {
   if (/`/.test(title)) errors.push("Title contains a code identifier.");
   if (/\b(egress|allowlist)\b/i.test(title)) {
     errors.push("Title leads with an internal mechanism instead of an audience-visible outcome.");
+  }
+  if (/\b\d+[\s-]*(?:commits?|files?|lines?)\b/i.test(title)) {
+    errors.push("Title uses Git activity as a substitute for audience-visible value.");
   }
 
   let previousIndex = -1;
@@ -99,8 +114,17 @@ export function validateArtifact(title, body) {
 
   const solutionIndex = lines.findIndex((line) => line.trim() === "### The Solution");
   if (solutionIndex !== -1 && teamIndex > solutionIndex) {
-    const solution = lines.slice(solutionIndex + 1, teamIndex).join("\n");
-    if (!/\d/.test(solution)) errors.push("Solution section has no verified scale statement.");
+    const solutionLines = lines.slice(solutionIndex + 1, teamIndex);
+    const bullets = solutionLines.filter((line) => /^\s*-\s+\S/.test(line));
+    if (bullets.length < 3) {
+      errors.push("Solution section needs at least 3 manager-visible outcome bullets.");
+    }
+    const valueBullets = bullets.filter(
+      (line) => !/\b(commits?|files?|lines?|additions?|deletions?)\b/i.test(line),
+    );
+    if (valueBullets.length < 2) {
+      errors.push("Solution section substitutes Git activity for consequence and capability.");
+    }
   }
 
   for (const label of ["Commits", "Files changed", "Lines changed"]) {

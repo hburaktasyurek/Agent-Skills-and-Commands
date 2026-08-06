@@ -67,7 +67,7 @@
     {
       "id": 4,
       "prompt": "Use pr-branch in the repository at evals/files/business-visibility/input to write a PR title and description only against main. Do not open or push anything.",
-      "expected_output": "The restored non-technical block explains the full operational result without technical leakage, and the separate technical block preserves exact Git, implementation, risk, and test evidence without changing repository or external state.",
+      "expected_output": "The restored non-technical block makes the invisible engineering manager-visible through consequence, breadth, protection, operational capability, and enablement without technical leakage; the separate technical block preserves exact Git, implementation, risk, and test evidence without changing state.",
       "files": [
         "evals/files/business-visibility/input/.gitignore",
         "evals/files/business-visibility/input/AGENTS.md",
@@ -84,16 +84,18 @@
         "evals/files/business-visibility/input/test-results.md"
       ],
       "assertions": [
-        "The title leads with the subscription-recovery outcome rather than recoverOnce, claim, fencing, idempotency, or another internal mechanism",
+        "The title leads with the subscription-recovery outcome rather than recoverOnce, claim, fencing, idempotency, commit count, file count, or another internal mechanism or activity metric",
         "The body preserves the separate non-technical and technical blocks with What This PR Does, The Problem, The Solution, What Changes for the Team, a separator, Technical Summary, Risk and Scope Boundaries, and Test Plan",
-        "The management layer says in ordinary language that the change makes it safe to resume automatic recovery for 1,600 delayed subscriptions and protects about 28,000 quarterly cases from being processed more than once",
-        "The management layer makes the full breadth visible as customer, automated, support, and back-office work plus a support-visible outcome record, without code identifiers, file paths, framework names, subsystem labels, ordering rules, claim language, fencing, or idempotency terminology",
+        "The Problem states the concrete duplicate-processing and support-visibility consequences across about 28,000 quarterly cases instead of merely saying reliability or safety improved",
+        "The Solution uses at least 3 plain-language outcome bullets to show protection across customer, automated, support, and back-office work, safe resumption for 1,600 delayed subscriptions, and a support-visible outcome record",
+        "The manager screenshot communicates consequence, business breadth, concrete protection, operational capability, and what work can safely resume without relying on the technical block",
+        "Commit, file, line, and test counts are secondary evidence rather than the main argument for importance, and the non-technical block contains no code identifiers, repository language, mechanism labels, or technical jargon",
         "The Technical Summary includes a metric table reporting 3 commits, 7 files, 69 additions, and 16 deletions, then names recoverOnce and the durable claim check and identifies the four callers and outcome audit record",
         "The Test Plan reports node --test test/recovery.test.js as 6 passed, leaves the full suite not run, and invents no broader evidence",
         "The bundled artifact validator passes the produced title and body; the collapsed Business impact and Technical details format would fail it",
         "No file, Git ref, remote, push, or gh pr create action changes and the response states that nothing was opened or pushed"
       ],
-      "metadata": {"case_type": "primary", "source": "observed_failure", "source_evidence": {"path": "evals/sources/nontechnical-visibility-observation.txt", "sha256": "efe723ffa257f47c18e63474d087240140562c235e507986ee5127e44e3464f0", "origin": {"type": "observed_failure_record", "locator": "user-feedback:2026-08-03-and-2026-08-06-pr-branch", "captured_at": "2026-08-06"}}}
+      "metadata": {"case_type": "primary", "source": "observed_failure", "source_evidence": {"path": "evals/sources/nontechnical-visibility-observation.txt", "sha256": "c459bd00e71a40500f2f431975a340233c7caaf4d23560b62fc086ce653d6427", "origin": {"type": "observed_failure_record", "locator": "user-feedback:2026-08-03-and-2026-08-06-pr-branch", "captured_at": "2026-08-06"}}}
     },
     {
       "id": 5,
@@ -114,7 +116,7 @@
         "The captured title and body pass the bundled validator and preserve the separate non-technical and technical blocks",
         "The response reports the verified mocked PR URL plus exact base and head"
       ],
-      "metadata": {"case_type": "primary", "source": "observed_failure", "source_evidence": {"path": "evals/sources/nontechnical-visibility-observation.txt", "sha256": "efe723ffa257f47c18e63474d087240140562c235e507986ee5127e44e3464f0", "origin": {"type": "observed_failure_record", "locator": "user-feedback:2026-08-03-and-2026-08-06-pr-branch", "captured_at": "2026-08-06"}}}
+      "metadata": {"case_type": "primary", "source": "observed_failure", "source_evidence": {"path": "evals/sources/nontechnical-visibility-observation.txt", "sha256": "c459bd00e71a40500f2f431975a340233c7caaf4d23560b62fc086ce653d6427", "origin": {"type": "observed_failure_record", "locator": "user-feedback:2026-08-03-and-2026-08-06-pr-branch", "captured_at": "2026-08-06"}}}
     }
   ]
 }

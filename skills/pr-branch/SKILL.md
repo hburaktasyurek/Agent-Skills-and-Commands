@@ -1,6 +1,6 @@
 ---
 name: pr-branch
-description: "Use when the user explicitly invokes pr-branch or asks to open a GitHub pull request from the current branch; invocation authorizes opening the PR and any necessary non-force push. Produce the fixed two-block PR format: a non-technical manager summary first and a precise technical and test record second. Use description-only mode only when the user explicitly says not to open or push."
+description: "Use when the user explicitly invokes pr-branch or asks to open a GitHub pull request from the current branch; invocation authorizes opening the PR and any necessary non-force push. Produce the fixed two-block format: first make invisible engineering manager-visible through consequence, business breadth, protection, operational capability, and enablement; then preserve the precise technical and test record. Use description-only mode only when explicitly requested."
 ---
 
 # PR Branch
@@ -54,10 +54,10 @@ Write one title and one body. The body has exactly two audience blocks in the
 order below. Do not replace them with a generic `Business impact`, `Summary`,
 or combined technical section.
 
-Use `[Scope]: [outcome] — [optional verified breadth]` for the title. Prefer a
+Use `[Scope]: [outcome] — [optional business breadth]` for the title. Prefer a
 roadmap, milestone, or product name the audience recognizes. Make the outcome
-understandable without leading with a class, function, internal control, or
-implementation mechanism.
+understandable without leading with a class, function, internal control,
+implementation mechanism, commit count, file count, or line count.
 
 ### Non-technical block
 
@@ -69,33 +69,53 @@ context. Emit this exact structure:
 
 ### The Problem
 
-Explain what was missing or unsafe, what business or user risk existed, and why
-the work was necessary.
+Explain the concrete business consequence, who or what was exposed, how broadly
+the risk could travel, and why the work was necessary. Do not stop at "there
+was a risk" or "reliability improved"; state what could actually go wrong.
 
 ### The Solution
 
-Explain the before-and-after, then summarize the full branch as one change
-story. Make broad, invisible audit, hardening, and enabling work visible.
-Include at least one meaningful verified scale statement. Prefer business
-reach, work packages, affected user or operational surfaces, or automated
-coverage; when those do not exist, state the engineering footprint from Git
-without presenting raw size as proof of quality.
+Open with the control change in ordinary language: what the organization had
+to trust or could not prove before, and what the system now prevents, requires,
+or makes independently checkable.
+
+Then use 3-6 plain-language bullets to expose the invisible engineering. Cover
+the dimensions supported by evidence:
+
+- business breadth: affected customer, staff, automatic, support, or back-office work;
+- concrete protection: the costly failure, abuse, loss, or inconsistency now prevented;
+- depth: the important failure variations, bypasses, or incomplete states covered;
+- operational leverage: what staff can now verify, diagnose, stop, or approve;
+- delivery enablement: what can safely resume or proceed, and what remains blocked.
+
+Each bullet must connect hidden engineering to a visible organizational result.
+Do not merely rename code components. Use Git activity metrics only as secondary
+support after the value story; commit, file, line, and test counts alone never
+make the work visible and never satisfy this block.
 
 ## What Changes for the Team
 
-- **For product/non-technical reviewers:** State what is safer, fixed, or newly
-  possible in ordinary language.
+- **For product/non-technical reviewers:** State the safer decision, restored
+  capability, avoided consequence, or newly possible next step in ordinary language.
 - **For developers:** State what the code now guarantees, the breadth affected,
   and downstream work unblocked. Technical terms are allowed on this line.
 ```
 
 Keep code identifiers, file paths, framework names, and mechanism terms such
 as `endpoint`, `migration`, `idempotent`, `fencing`, `claim token`, `egress`,
-or `allowlist` out of the non-technical prose. Do not disguise a mechanism
-with another internal label such as "single-use authority" or "first-wins".
-Translate it into the observable outcome: for example, "the same payment can
-no longer be processed twice". Established product names are allowed when
-they help identify the affected business area.
+`allowlist`, `payload`, `producer`, `repository-only`, `server-side`, or
+`evidence gate` out of the non-technical prose. Do not disguise a mechanism
+with another internal or corporate label. Translate it into the observable
+outcome: for example, replace "repository evidence cannot establish closure"
+with "code changes alone can no longer be mistaken for proof that the real
+incident is over". Established product names are allowed when they identify
+the affected business area.
+
+Do not claim time, effort, difficulty, or importance directly. Prove the work's
+weight through consequence, breadth, enforced guarantees, hostile or incomplete
+states covered, independent verification, and the business work it safely
+unblocks. A manager should understand why this is materially more consequential
+than a visible cosmetic change even though the result is mostly invisible.
 
 Do not summarize only the final commit or the most obvious code change. Cover
 every meaningful branch theme and its consequence. If a non-technical sentence
@@ -144,9 +164,18 @@ Before returning or publishing, fail and rewrite the draft if any is true:
 - either audience block or any required core heading is missing;
 - the first block contains unexplained technical mechanisms;
 - the first block could have been written from only the last commit message;
-- the branch has verifiable scale but the first block makes the work look small;
+- the first block reports activity but not consequence, protection, operational
+  capability, and downstream enablement;
+- commit, file, line, or test counts are the main argument for importance;
+- the first block makes a broad invisible change look like a narrow code edit;
 - the technical table omits commits, files, or additions/deletions;
 - risk boundaries or test status are overstated.
+
+Read only the title and non-technical block as a screenshot. Rewrite it unless
+a manager with no code context can state: what serious outcome was avoided;
+how broadly the change matters; at least three concrete protections or new
+capabilities; and what decision or future work is now safer. The screenshot
+must communicate value without requiring the technical block.
 
 ## Validate the artifact
 

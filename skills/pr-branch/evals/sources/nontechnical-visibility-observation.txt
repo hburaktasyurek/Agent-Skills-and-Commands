@@ -26,5 +26,19 @@ skill to open a PR. Invocation must therefore authorize PR creation and any
 necessary non-force push; description-only mode applies only when explicitly
 requested.
 
+Fourth observed failure: restoring the two blocks and adding 9 commits, 27
+files, additions, and deletions still did not make the engineering visible to
+management. Those numbers describe activity, not value. A month of invisible
+security and payment work can still look smaller than a cosmetic button change
+unless the non-technical block explains the consequence avoided, business
+breadth protected, guarantees established, failure variations covered,
+operational capability gained, and downstream work safely enabled.
+
+Required behavior: keep Git activity in the technical record or as secondary
+support only. Make the non-technical block independently communicate why the
+work matters and what the organization can now trust, prevent, verify, or do.
+The title and manager screenshot must not depend on commit, file, or line counts
+to signal importance.
+
 Source: direct user feedback after reviewing a generated PR description.
 Captured: 2026-08-03 and 2026-08-06.
