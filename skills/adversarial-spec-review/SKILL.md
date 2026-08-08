@@ -133,6 +133,17 @@ Use claim-matching authority:
 
 Apply these proof gates only when the plan contains the triggering mechanism:
 
+- **Universal or negative property:** When the plan claims `all`, `none`,
+  `never`, `exhaustive`, or equivalent totality, identify whether its proof
+  domain is closed, self-bounded by a task-owned construction boundary, or
+  open-world. A finite list of current files, tokens, syntax forms, sinks, or
+  plan-authored fixtures proves totality only when membership and every
+  task-owned extension point are closed. Otherwise require a bounded result
+  contract or record the material property as unproved; do not prescribe one
+  parser or analysis technology when the outcome admits alternatives. Attack
+  critical/high claims with a carrier or data-flow family independent of the
+  enforcement representation, not merely another spelling inside its model.
+
 - **Acquire/release symmetry:** For every task-owned reserve, claim, open,
   publish, or ownership acquisition, trace every release, undo, cleanup,
   terminal, retry, and recovery path. Prove who may release, which disposition
@@ -171,15 +182,22 @@ ledger surface.
 For each suspected failure:
 
 1. State the obligation that must hold.
-2. Prove the mechanism that violates or leaves it unproved.
-3. Trace the consequence through every task-owned producer, consumer, state,
+2. Prove the visible failure and trace it to the deepest task-owned root cause.
+3. Explain why the current contract, control, or proof mechanism cannot
+   establish the obligation. Do not stop at the latest symptom.
+4. Trace the consequence through every task-owned producer, consumer, state,
    side effect, and recovery boundary it can invalidate.
-4. Walk upstream through verified causal links to the deepest task-owned root.
 5. Search all task-owned manifestations of that root before writing the
    finding.
 6. Derive the smallest falsifiable closure condition. Describe the required
    outcome; prescribe an exact mechanism only when the binding evidence makes
    that mechanism necessary.
+
+The reviewer owns causal diagnosis and the proof contract; the spec reviser
+owns solution design. Do not trade root analysis for a patch, parser, tool,
+algorithm, or file-edit recommendation. When binding authority truly leaves
+only one mechanism, cite that authority and state it as a requirement, not as
+reviewer preference.
 
 Group manifestations that share one root and closure condition. Split paths
 that can fail independently or require different proof. Do not return one
@@ -200,9 +218,12 @@ Before reporting:
 1. Cover every applicable ledger surface at the calibrated depth.
 2. Complete every discovered P0/P1 root family and its consequence sweep.
 3. For `critical` and `high`, re-attack the cleanest and
-   highest-consequence claims from a different angle. For `standard` and
-   `low`, run one focused counterexample check against the controlling scope
-   and acceptance claims; do not broaden into a ceremonial second sweep.
+   highest-consequence claims from a different angle. When the first angle is
+   an inventory, scanner, or syntactic rule, use a distinct carrier, data-flow,
+   construction, or result-level angle rather than another example generated
+   by the same model. For `standard` and `low`, run one focused counterexample
+   check against the controlling scope and acceptance claims; do not broaden
+   into a ceremonial second sweep.
 4. Stop only when that final challenge finds no new P0/P1 root family.
 
 The goal is one complete actionable P0/P1 batch for the current artifacts, not
@@ -290,13 +311,17 @@ Report current findings in priority order:
 [Px] <short title>
 Evidence: <current spec location plus claim-matching source evidence>
 Obligation: <what must hold>
-Mechanism: <how the current plan fails or leaves it materially unproved>
+Root cause: <deepest task-owned cause, not the latest manifestation>
+Incapable mechanism: <why the current contract, control, or proof model cannot
+  establish the obligation>
 Consequence: <activated downstream harm and recoverability>
 Root cluster: <stable id + root and other manifestations covered>
 Consequence surface: <producers, consumers, gates, states, recovery paths
   revise must close; interaction neighbors in scope>
 Required closure: <falsifiable outcome, not an unnecessary implementation>
-Verification: <evidence that would prove closure>
+Proof obligations: <independent evidence and counterexamples that would prove
+  closure>
+Authority impact: spec-revision-required | evidence-required
 ```
 
 For P0/P1, every field is required. For P2/P3, combine fields when doing so

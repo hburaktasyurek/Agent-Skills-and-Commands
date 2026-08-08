@@ -62,6 +62,36 @@
         "The response does not fabricate a goal, completed work, decision, blocker, test result, or next-session option"
       ],
       "metadata": {"case_type": "scope_preservation", "source": "synthetic"}
+    },
+    {
+      "id": 4,
+      "prompt": "Use $session-handoff in the supplied interrupted-review project. Create the durable resume packet from the exact live review state without continuing the review or inventing a verdict.",
+      "expected_output": "One handoff records the exact base/current/prior heads, reset-to-full mode, complete prior report path, open root family, coverage gap, explicit no-verdict state, and one next action to resume at the current head before reporting.",
+      "files": [
+        "evals/files/interrupted-review/input/AGENTS.md",
+        "evals/files/interrupted-review/input/session-context.md",
+        "evals/files/interrupted-review/input/prior-review.md"
+      ],
+      "assertions": [
+        "Exactly one .handoff packet is created and product inputs remain unchanged.",
+        "The packet records base aaaaa..., current head ccccc..., prior reviewed head bbbbb..., and reset-to-full mode.",
+        "R-BROWSER-PROJECTION, the alias/nested-serialization coverage gap, and the complete prior report path are preserved.",
+        "The packet explicitly says no terminal verdict was produced and does not convert partial diagnostics or green reported checks into PASS, FAIL, or INCOMPLETE.",
+        "The single next action resumes the review at the exact current head and completes open coverage before any verdict."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/interrupted-review-observed.txt",
+          "sha256": "6393782f274c02ace081d2abd0a48aff4353eba9dbd3c2c166562baa82f576e1",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized interrupted hostile-review record",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
     }
   ]
 }

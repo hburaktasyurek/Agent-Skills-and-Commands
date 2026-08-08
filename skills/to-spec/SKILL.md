@@ -148,9 +148,14 @@ Before saving, draft all four files and then audit the cluster as one artifact:
    consumer success/failure to state/effect; reverse-trace each acceptance
    oracle to that path.
 3. Every quantified criterion (`every`, `only`, `exactly`) is proved over its
-   full stated set, not representative examples.
+   full stated set, not representative examples. For a load-bearing universal
+   or negative claim, identify whether that set is closed, self-bounded, or
+   open-world under `references/contract-closure.md`; a finite current
+   inventory cannot silently stand in for an open-world proof.
 4. A counterexample changes one material variable and fails for the intended
    reason when exact type, value, state, ownership, or side effect matters.
+   Keep it independent of the enforcement representation when correlated
+   fixtures could repeat the same false premise.
 5. Every implementation task can start without choosing a missing structural
    contract; non-material freedom remains visibly non-canonical.
 6. Scope, interfaces, matrices/tables when used, examples, tests, tasks, and

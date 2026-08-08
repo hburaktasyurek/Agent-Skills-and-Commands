@@ -29,6 +29,37 @@
         "Every P0/P1 includes a non-empty Consequence surface naming concrete producers, consumers, gates, or recovery paths (not only generic phrases such as all paths or as above).",
         "Every P0/P1 includes Root cluster and Required closure fields."
       ]
+    },
+    {
+      "id": "open-world-proof",
+      "input": "open-world-proof/input",
+      "checks": [
+        "Verdict is FAIL with a P1 for the still-reachable browser credential path.",
+        "The finding rejects the finite direct-neighbor inventory as proof of an open-world result property.",
+        "The attack uses a distinct carrier or data-flow family rather than only adding another direct-call spelling.",
+        "The P1 retains one Root cluster and names the producer, browser consumers, and independent result oracle on its Consequence surface.",
+        "The review preserves valid server-only credential use and does not prescribe one parser technology."
+      ]
+    },
+    {
+      "id": "causal-finding-contract",
+      "input": "open-world-proof/input",
+      "checks": [
+        "Verdict is FAIL and the finding reaches the deepest task-owned root rather than stopping at either demonstrated syntax symptom.",
+        "The finding explains why the finite direct-neighbor scanner is an incapable proof mechanism for the open-world browser-output property.",
+        "Required closure is a falsifiable outcome-level contract and does not prescribe an exact parser, tool, algorithm, code patch, or file edit.",
+        "Proof obligations use an independent result-level carrier or data-flow family.",
+        "Authority impact is spec-revision-required."
+      ],
+      "source_evidence": {
+        "path": "sources/causal-review-contract-observed.txt",
+        "sha256": "d23d6024bd02326c9b1b148763d2ee437ee82447b758e2e4b7b992dab0931575",
+        "origin": {
+          "type": "observed_failure_record",
+          "locator": "sanitized user feedback on causal review output",
+          "captured_at": "2026-08-08"
+        }
+      }
     }
   ]
 }

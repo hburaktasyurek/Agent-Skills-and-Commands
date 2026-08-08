@@ -11,7 +11,16 @@ if [ "$1" = "repo" ]; then
   exit 0
 fi
 
+if [ "$1" = "pr" ] && [ "$2" = "list" ] && [ -f .existing-pr ]; then
+  printf '%s\n' '[{"number":42,"url":"https://github.example/acme/payments/pull/42","baseRefName":"release/2.x","headRefName":"feature/retry-fence","title":"Old retry draft"}]'
+  exit 0
+fi
+
 if [ "$1" = "pr" ] && [ "$2" = "create" ]; then
+  if [ -f .existing-pr ]; then
+    printf '%s\n' "duplicate PR creation attempted" > .gh-duplicate-create
+    exit 9
+  fi
   shift 2
   while [ "$#" -gt 0 ]; do
     case "$1" in
@@ -25,8 +34,25 @@ if [ "$1" = "pr" ] && [ "$2" = "create" ]; then
   exit 0
 fi
 
+if [ "$1" = "pr" ] && [ "$2" = "edit" ] && [ -f .existing-pr ]; then
+  shift 2
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --title) shift; printf '%s\n' "$1" > .gh-edited-title ;;
+      --body-file) shift; cp "$1" .gh-edited-body.md ;;
+    esac
+    shift
+  done
+  printf '%s\n' "https://github.example/acme/payments/pull/42"
+  exit 0
+fi
+
 if [ "$1" = "pr" ] && [ "$2" = "view" ]; then
-  printf '%s\n' '{"url":"https://github.example/acme/payments/pull/42","baseRefName":"release/2.x","headRefName":"feature/retry-fence"}'
+  if [ -f .gh-edited-title ] && [ -f .gh-edited-body.md ]; then
+    node -e 'const fs=require("fs"); console.log(JSON.stringify({url:"https://github.example/acme/payments/pull/42",baseRefName:"release/2.x",headRefName:"feature/retry-fence",title:fs.readFileSync(".gh-edited-title","utf8").trim(),body:fs.readFileSync(".gh-edited-body.md","utf8")}))'
+  else
+    printf '%s\n' '{"url":"https://github.example/acme/payments/pull/42","baseRefName":"release/2.x","headRefName":"feature/retry-fence","title":"Old retry draft","body":"This body describes an earlier head and says follow-up remains pending."}'
+  fi
   exit 0
 fi
 

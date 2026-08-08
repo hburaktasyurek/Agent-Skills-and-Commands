@@ -51,6 +51,62 @@
         "No implementation defect, framework rule, or fabricated requirement is asserted.",
         "No file write or project-memory bootstrap is proposed."
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Use $review-implementation. Review the named specification and implementation basis in evals/fixtures/browser-proof-basis.md. Return only the pre-PR compliance result and do not modify files.",
+      "expected_output": "The report records the exact spec hashes, implementation head, and diff fingerprint, returns Ready for PR No for the demonstrated alias serialization leak, rejects scanner-authored green tests as independent proof, and states that any artifact change invalidates the receipt.",
+      "files": [
+        "evals/fixtures/browser-proof-basis.md"
+      ],
+      "assertions": [
+        "The review basis records all four supplied spec hashes, implementation head 1111111, and diff fingerprint diff-aa11.",
+        "Ready for PR is No because browserOptions demonstrably retains service_token through the alias renderer.",
+        "The green scanner suite is not accepted as an independent oracle for the result-level browser invariant.",
+        "The report requires an independently varying result-level carrier or data-flow counterexample.",
+        "The receipt states that any spec or implementation change invalidates the decision."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/browser-boundary-observed.txt",
+          "sha256": "8c6f13920be5e233aea65af74d0fbf6d4f05bf93f74a7ee4d14819e10d1d6aa9",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized multi-round browser-boundary review record",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
+    },
+    {
+      "id": 5,
+      "prompt": "Use $review-implementation. Review the named specification and implementation basis in evals/fixtures/browser-proof-basis.md. Return only the pre-PR compliance result and do not modify files.",
+      "expected_output": "The demonstrated browser leak is reported as a causal contract: deepest task-owned root cause, incapable proof or enforcement mechanism, consequence surface, outcome-level required closure, independent proof obligations, and authority impact. It does not prescribe an exact code patch, parser, tool, or file edit.",
+      "files": [
+        "evals/fixtures/browser-proof-basis.md"
+      ],
+      "assertions": [
+        "The finding names the deepest task-owned root cause rather than stopping at the alias serialization symptom.",
+        "The report explains why the current scanner-correlated proof mechanism cannot establish the browser-output invariant.",
+        "Required closure states the falsifiable allowed browser result while preserving server-only credential use, without prescribing an exact implementation.",
+        "Proof obligations require an independently varying result-level carrier or data-flow counterexample.",
+        "Authority impact is implementation-fixable, and the finding does not recommend exact code, a parser, a tool, or a file edit."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/causal-review-contract-observed.txt",
+          "sha256": "d23d6024bd02326c9b1b148763d2ee437ee82447b758e2e4b7b992dab0931575",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized user feedback on causal review output",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
     }
   ]
 }

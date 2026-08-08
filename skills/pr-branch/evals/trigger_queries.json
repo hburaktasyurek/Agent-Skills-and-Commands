@@ -21,6 +21,8 @@
     {"id":"positive-validation-04","split":"validation","query":"Use /pr-branch and include the exact test evidence.","should_trigger":true,"paired_with":"negative-validation-04"},
     {"id":"negative-validation-04","split":"validation","query":"List the exact test evidence.","should_trigger":false,"paired_with":"positive-validation-04"},
     {"id":"positive-validation-05","split":"validation","query":"Use pr-branch to push and open the approved PR.","should_trigger":true,"paired_with":"negative-validation-05"},
-    {"id":"negative-validation-05","split":"validation","query":"Push the approved branch.","should_trigger":false,"paired_with":"positive-validation-05"}
+    {"id":"negative-validation-05","split":"validation","query":"Push the approved branch.","should_trigger":false,"paired_with":"positive-validation-05"},
+    {"id":"positive-validation-06","split":"validation","query":"Use $pr-branch to refresh and verify the existing pull request after this push.","should_trigger":true,"paired_with":"negative-validation-06"},
+    {"id":"negative-validation-06","split":"validation","query":"Show whether the pull request description is stale.","should_trigger":false,"paired_with":"positive-validation-06"}
   ]
 }

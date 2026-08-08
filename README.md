@@ -33,7 +33,7 @@ See [skills/INDEX.md](skills/INDEX.md) for the grouped index.
 | [adversarial-diff-review](skills/adversarial-diff-review/SKILL.md) | Hostile review of an explicit pre-PR diff boundary. |
 | [risk-calibrated-pr-review](skills/risk-calibrated-pr-review/SKILL.md) | Consequence-calibrated hostile review of an opened PR. |
 | [commit-work](skills/commit-work/SKILL.md) | Stage and commit intended changes; push only when requested. |
-| [pr-branch](skills/pr-branch/SKILL.md) | Write a two-audience PR description and open the PR. |
+| [pr-branch](skills/pr-branch/SKILL.md) | Write a two-audience PR description, then open or refresh the PR. |
 | [session-handoff](skills/session-handoff/SKILL.md) | Preserve exact unresolved state across sessions or harnesses. |
 | [skill-eval](skills/skill-eval/SKILL.md) | Compare one skill with an exact old-skill or no-skill baseline. |
 

@@ -28,6 +28,16 @@
         "No agent-os/specs directory or duplicate spec cluster is created.",
         "The focused spec remains proportional and preserves the approved output-root decision."
       ]
+    },
+    {
+      "id": "browser-proof-domain",
+      "input": "browser-proof-domain/input",
+      "checks": [
+        "The browser-output invariant is not called exhaustive merely because a finite source/sink inventory is green.",
+        "The spec identifies whether its proof domain is closed, self-bounded, or open-world and establishes an owned bounded browser construction boundary.",
+        "Legitimate server-only credential use remains available.",
+        "Acceptance contains a safe browser value and an independent carrier or data-flow counterexample."
+      ]
     }
   ]
 }

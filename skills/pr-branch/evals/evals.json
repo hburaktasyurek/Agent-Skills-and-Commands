@@ -117,6 +117,41 @@
         "The response reports the verified mocked PR URL plus exact base and head"
       ],
       "metadata": {"case_type": "primary", "source": "observed_failure", "source_evidence": {"path": "evals/sources/nontechnical-visibility-observation.txt", "sha256": "c459bd00e71a40500f2f431975a340233c7caaf4d23560b62fc086ce653d6427", "origin": {"type": "observed_failure_record", "locator": "user-feedback:2026-08-03-and-2026-08-06-pr-branch", "captured_at": "2026-08-06"}}}
+    },
+    {
+      "id": 6,
+      "prompt": "Use $pr-branch in the repository at evals/files/open-pr/input against release/2.x.",
+      "expected_output": "The existing mocked PR is discovered, its title and body are regenerated from the current base-to-head evidence, the validated artifact is applied with pr edit, no duplicate PR is created, and URL, base, head, title, and body are verified.",
+      "files": [
+        "evals/files/open-pr/input/.bin/gh",
+        "evals/files/open-pr/input/.existing-pr",
+        "evals/files/open-pr/input/.gitignore",
+        "evals/files/open-pr/input/AGENTS.md",
+        "evals/files/open-pr/input/README.md",
+        "evals/files/open-pr/input/pr-context.md",
+        "evals/files/open-pr/input/src/claim.js",
+        "evals/files/open-pr/input/test/claim.test.js"
+      ],
+      "assertions": [
+        "The existing PR for release/2.x and feature/retry-fence is reused and gh pr create is never called.",
+        "The refreshed title and body are generated from the current base-to-head evidence and pass the bundled artifact validator.",
+        "gh pr edit applies both title and body, then gh pr view verifies URL, base, head, title, and body.",
+        "No duplicate-creation marker appears and the response reports the refreshed mocked PR URL plus exact base and head.",
+        "The stale prior body is not treated as current evidence."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/pr-refresh-observed.txt",
+          "sha256": "f71ff9b75befa5bd13ff6e0aeedcd2c31444a1707971ba14a910efb0dc70bb9a",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized stale-open-PR artifact record",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
     }
   ]
 }

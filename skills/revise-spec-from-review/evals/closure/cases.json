@@ -49,6 +49,16 @@
         "Provider-dependent retry still fails closed before mutation when its required dependency cannot be acquired.",
         "The revision specifies observable construction and branch-entry behavior without mandating a resolver, factory, service split, or other architecture, and makes no unrelated change."
       ]
+    },
+    {
+      "id": "open-world-mechanism",
+      "input": "open-world-mechanism/input",
+      "checks": [
+        "The incapable finite source/sink inventory is not expanded and relabeled exhaustive.",
+        "The browser-visible value set is bounded at construction while legitimate server credential use remains intact.",
+        "Page, callback, nested metadata, and independent result-oracle neighbors are reconciled in the same revision.",
+        "No parser technology or unrelated scope is invented."
+      ]
     }
   ]
 }

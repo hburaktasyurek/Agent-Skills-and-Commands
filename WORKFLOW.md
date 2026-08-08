@@ -19,7 +19,7 @@ task-groundwork
 → senior-implementer
 → review-implementation        # named-spec work only
 → commit-work
-→ pr-branch                    # when a PR is wanted
+→ pr-branch                    # open or refresh when a PR is wanted
 → risk-calibrated-pr-review    # opened PR only
 → human merge decision
 ```
@@ -75,15 +75,34 @@ closure surface. Otherwise reset to full review.
 
 1. For a named spec, give the exact spec cluster to `senior-implementer`.
    For a direct task, the current request is sufficient authority.
-2. Named-spec work must pass `review-implementation` before PR. A correction
-   invalidates the prior Ready-for-PR result.
-3. Use `commit-work`; use `pr-branch` only when a PR is requested.
+2. Named-spec work must pass `review-implementation` before PR. Bind that
+   receipt to the spec-file hashes, implementation HEAD, and staged/unstaged
+   plus relevant-untracked fingerprint. Any basis change invalidates it.
+3. Use `commit-work`; use `pr-branch` only when a PR is requested. After every
+   push to an open PR, invoke `pr-branch` to regenerate, validate, apply, and
+   verify the current title/body before hostile re-review.
 4. Run `risk-calibrated-pr-review` against the exact opened PR revision.
 5. On FAIL, return complete findings to `senior-implementer`; after fixes,
-   rerun named-spec compliance when applicable and then PR review.
+   rerun named-spec compliance when applicable, commit, refresh the open PR,
+   and then rerun PR review.
 6. On INCOMPLETE, gather named evidence. Implementation changes trigger the
    same invalidation and rerun rules.
 7. PASS returns the merge decision to the human; it never merges.
+
+The correction loop is therefore:
+
+```text
+senior-implementer
+→ review-implementation        # named-spec work
+→ commit-work
+→ pr-branch                    # open or refresh
+→ risk-calibrated-pr-review
+```
+
+Spec review, readiness, implementation review, and PR review results are gate
+receipts for exact artifacts, not durable approval of a task name. A changed
+spec cluster, implementation basis, or PR head invalidates only the receipts
+that depend on it and requires those gates to run again.
 
 Incremental PR re-review requires the exact prior report/head, stable base and
 task, provable ancestry and bounded delta, adequate prior coverage, and no new
@@ -141,6 +160,11 @@ Stay in one session while it remains reliable. Use `session-handoff` only
 when exact unresolved state must survive a fresh window, harness switch, or
 pause. Prefer existing durable artifacts when they already contain everything
 needed to resume.
+
+For an interrupted critical review, carry the exact current base/head, prior
+reviewed head and complete report, review mode, open Root families, and
+artifact/invariant coverage gaps. If no terminal report was produced, the
+handoff must say so; partial diagnostics are not a verdict artifact.
 
 ## Boundaries
 

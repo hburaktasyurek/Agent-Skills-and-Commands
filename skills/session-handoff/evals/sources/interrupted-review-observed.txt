@@ -1,0 +1,5 @@
+Observed failure record, sanitized 2026-08-08.
+
+A high-consequence review session ended after partial diagnostics without a
+terminal verdict. A later session needed the exact head, complete prior report,
+open root families, coverage gaps, and one continuation action.

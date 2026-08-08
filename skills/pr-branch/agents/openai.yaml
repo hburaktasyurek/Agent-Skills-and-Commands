@@ -1,7 +1,7 @@
 interface:
   display_name: "PR Branch"
-  short_description: "Open a two-block PR that makes impact visible"
-  default_prompt: "Use $pr-branch to make the branch's invisible business impact visible in the non-technical block, preserve the technical record, then open and verify the pull request."
+  short_description: "Open or refresh a two-block outcome-first PR"
+  default_prompt: "Use $pr-branch to make the branch's invisible business impact visible, preserve the technical record, then open or refresh and verify the pull request."
 
 policy:
   allow_implicit_invocation: false

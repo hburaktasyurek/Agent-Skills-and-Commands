@@ -66,6 +66,28 @@ Use test-first development when behavior can be reproduced or specified as a
 failing test: invoke the `tdd` skill and follow red-green-refactor. For work that
 does not fit TDD, use the repository's nearest deterministic feedback loop.
 
+## Escalate evidence-triggered recurrence
+
+When complete review findings identify a prior Root cluster, Consequence
+surface, or equivalent invariant lineage, reconcile the current manifestation
+to that lineage before editing. Classify it as a same-root residual when the
+same invariant remains reachable, and as a mechanism-level repeat when new
+evidence defeats the same proof or enforcement model after a correction.
+
+Do not use a fixed review-round limit. Escalation is triggered by causal
+evidence, not count. When the mechanism cannot establish the required domain,
+stop adding syntax cases, inventory rows, or local exceptions and replace the
+task-owned mechanism with the smallest provable boundary the authority permits.
+For an approved spec whose binding mechanism is thereby invalidated, do not
+silently redesign it: return `Blocked`, name the incapable mechanism and
+affected Consequence surface, and send the artifact back through spec revision.
+For a direct task with sufficient authority, implement the evidence-backed
+mechanism-level correction within the existing outcome and scope.
+
+When closure narrows the valid-state set, enforce that rule at every named
+construction or ingestion boundary. Removing a field from one serializer does
+not close an alternate entry path that still accepts the prohibited state.
+
 ## Verify the result, not the report
 
 Prove the post-change artifact and state that the contract actually requires.
@@ -77,12 +99,12 @@ response, log line, or self-report is not sufficient when the required artifact
 or state has not been observed.
 
 Before saying done, cross-check every contract item and supplied finding. Any
-known task-related residual blocks completion. Report commands and concrete
-artifact or state evidence, plus separately classified unrelated failures and
-their impact. If a required check could not run, say so and do not imply it
-passed. A credible high-impact unrelated risk does not erase a safely completed
-scoped result, but it blocks any overall ready, release, or production claim
-until explicitly owned.
+known task-related or same-root residual blocks completion. Report commands and
+concrete artifact or state evidence across the recorded Consequence surface,
+plus separately classified unrelated failures and their impact. If a required
+check could not run, say so and do not imply it passed. A credible high-impact
+unrelated risk does not erase a safely completed scoped result, but it blocks
+any overall ready, release, or production claim until explicitly owned.
 
 Choose the handoff state from that evidence:
 

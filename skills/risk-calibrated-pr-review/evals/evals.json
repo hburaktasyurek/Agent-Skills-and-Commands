@@ -64,6 +64,62 @@
         "Inadequate prior coverage is not reused.",
         "The fix-only label does not control the review mode."
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Use $risk-calibrated-pr-review. Re-review disposable PR #46 from the frozen snapshot in evals/fixtures/case-5.md. Return the revision-bound hostile merge-gate report without modifying anything.",
+      "expected_output": "The report returns FAIL at the exact current head, keeps the repeated browser leak under one stable root family, labels it mechanism-level-repeat, distinguishes complete artifact reading from incomplete invariant proof, and does not trust green scanner-authored tests.",
+      "files": [
+        "evals/fixtures/case-5.md"
+      ],
+      "assertions": [
+        "The terminal result is FAIL and the reviewed revision ends at cccccccccccccccccccccccccccccccccccccccc.",
+        "The current alias serialization leak is reconciled under Root family R-BROWSER-PROJECTION rather than emitted as an unrelated new family.",
+        "Recurrence is mechanism-level-repeat and the Consequence surface includes the producer, browser renderers, nested metadata, and result-level oracle.",
+        "Artifact coverage and invariant coverage are reported separately; reading every current file does not make invariant coverage complete.",
+        "Green scanner-authored tests are rejected as independent proof, and no particular parser technology is prescribed."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/browser-boundary-observed.txt",
+          "sha256": "8c6f13920be5e233aea65af74d0fbf6d4f05bf93f74a7ee4d14819e10d1d6aa9",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized multi-round browser-boundary review record",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "prompt": "Use $risk-calibrated-pr-review. Re-review disposable PR #46 from the frozen snapshot in evals/fixtures/case-5.md. Return the revision-bound hostile merge-gate report without modifying anything.",
+      "expected_output": "The repeated browser leak is reported as one causal contract: stable root family plus root cause, incapable mechanism, consequence surface, outcome-level required closure, independent proof obligations, and authority impact. It does not prescribe an exact code patch, parser, tool, or file edit.",
+      "files": [
+        "evals/fixtures/case-5.md"
+      ],
+      "assertions": [
+        "The finding names the deepest task-owned root cause under R-BROWSER-PROJECTION rather than stopping at the current alias symptom.",
+        "The report explains why expanding the source-pattern scanner cannot establish the browser-output invariant.",
+        "Required closure is an outcome-level browser/server invariant, not an allowlist implementation recipe or file edit.",
+        "Proof obligations use a result-level oracle independent of the scanner representation.",
+        "Authority impact is implementation-fixable, and no exact code, parser, tool, algorithm, or file-edit recommendation is given."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/causal-review-contract-observed.txt",
+          "sha256": "d23d6024bd02326c9b1b148763d2ee437ee82447b758e2e4b7b992dab0931575",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized user feedback on causal review output",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
     }
   ]
 }

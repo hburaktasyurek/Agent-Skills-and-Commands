@@ -1,0 +1,13 @@
+<?php
+
+final class TransportConfig
+{
+    public function serverOptions(): array
+    {
+        return [
+            'public_id' => 'pub_example',
+            'client_token' => 'client_example',
+            'service_token' => 'svc_live_example',
+        ];
+    }
+}

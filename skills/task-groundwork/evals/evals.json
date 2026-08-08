@@ -71,6 +71,36 @@
         "case_type": "scope_preservation",
         "source": "synthetic"
       }
+    },
+    {
+      "id": 4,
+      "prompt": "Use $task-groundwork on evals/files/browser-boundary/input/task.md and the supplied PHP sources. Work read-only, determine the real current boundary, and return the normal decision-ready brief without implementing.",
+      "expected_output": "The brief rejects the unsupported server-only premise, traces the reachable page and callback consumers including alias and computed-call carriers, preserves the valid server worker, and makes the unresolved browser boundary explicit without demanding a repository-wide security inventory.",
+      "files": [
+        "evals/files/browser-boundary/input/task.md",
+        "evals/files/browser-boundary/input/src/TransportConfig.php",
+        "evals/files/browser-boundary/input/src/BrowserRoutes.php",
+        "evals/files/browser-boundary/input/src/ServerWorker.php"
+      ],
+      "assertions": [
+        "The brief does not accept serverOptions as server-only merely from its name or intended use.",
+        "The current page alias and computed callback paths are identified as browser-visible consumers of service_token.",
+        "The server worker's legitimate credential use is preserved as a separate in-scope compatibility constraint.",
+        "The result marks the browser boundary unresolved or unsafe and does not replace focused consumer tracing with a generic repository-wide security inventory."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/browser-boundary-observed.txt",
+          "sha256": "8c6f13920be5e233aea65af74d0fbf6d4f05bf93f74a7ee4d14819e10d1d6aa9",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized multi-round browser-boundary review record",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
     }
   ]
 }

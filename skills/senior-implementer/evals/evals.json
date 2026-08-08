@@ -81,6 +81,76 @@
         "case_type": "scope_preservation",
         "source": "synthetic"
       }
+    },
+    {
+      "id": 4,
+      "prompt": "Use /senior-implementer to apply the complete review finding in the supplied disposable workspace. Read task.md, review.md, AGENTS.md, the implementation, and visible tests before editing. Run relevant checks and return the evidence-backed handoff.",
+      "expected_output": "The implementation replaces repeated source-pattern patches with a closed browser projection, preserves the server credential API, rejects credential-shaped certificate metadata, proves the rendered result, and does not claim completion from the correlated visible test alone.",
+      "files": [
+        "evals/files/browser-mechanism-repeat/input/AGENTS.md",
+        "evals/files/browser-mechanism-repeat/input/task.md",
+        "evals/files/browser-mechanism-repeat/input/review.md",
+        "evals/files/browser-mechanism-repeat/input/src/Config.php",
+        "evals/files/browser-mechanism-repeat/input/src/Renderer.php",
+        "evals/files/browser-mechanism-repeat/input/src/Certificate.php",
+        "evals/files/browser-mechanism-repeat/input/tests/visible.php"
+      ],
+      "assertions": [
+        "browserOptions returns exactly public_id and client_token while serverOptions still contains service_token.",
+        "Renderer output never contains svc_live_example and still contains the allowed public values.",
+        "Certificate rejects credential-shaped text embedded within approved_by while accepting release-owner.",
+        "The correction does not add another source-text scanner spelling and the handoff identifies the supplied recurrence as a mechanism-level repeat.",
+        "Completion is supported by result-level evidence across the supplied consequence surface rather than only the visible correlated test."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/browser-boundary-observed.txt",
+          "sha256": "8c6f13920be5e233aea65af74d0fbf6d4f05bf93f74a7ee4d14819e10d1d6aa9",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized multi-round browser-boundary review record",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
+    },
+    {
+      "id": 5,
+      "prompt": "Use /senior-implementer on the supplied named-spec task and complete review. Read AGENTS.md, task.md, approved-spec.md, review.md, the implementation, and visible scanner test before acting. Work only in the disposable workspace and return the evidence-backed workflow handoff.",
+      "expected_output": "The implementation stops without editing because the review proves the approved finite scanner mechanism incapable of establishing the open-world browser-output invariant; it returns Blocked with the root family, consequence surface, and spec-revision route.",
+      "files": [
+        "evals/files/browser-spec-mechanism-repeat/input/AGENTS.md",
+        "evals/files/browser-spec-mechanism-repeat/input/task.md",
+        "evals/files/browser-spec-mechanism-repeat/input/approved-spec.md",
+        "evals/files/browser-spec-mechanism-repeat/input/review.md",
+        "evals/files/browser-spec-mechanism-repeat/input/src/CredentialScanner.php",
+        "evals/files/browser-spec-mechanism-repeat/input/src/Config.php",
+        "evals/files/browser-spec-mechanism-repeat/input/src/Renderer.php",
+        "evals/files/browser-spec-mechanism-repeat/input/src/Certificate.php",
+        "evals/files/browser-spec-mechanism-repeat/input/tests/scanner.php"
+      ],
+      "assertions": [
+        "The handoff state is Blocked and classifies R-BROWSER-PROJECTION as a mechanism-level repeat.",
+        "The finite source scanner is named as incapable of proving the open-world browser-output invariant.",
+        "No implementation or test file is modified and no new scanner pattern is added.",
+        "The handoff preserves the required outcome and names the affected producer, consumer, construction, and proof surfaces.",
+        "The next authorized route is spec revision rather than completion, commit, or PR readiness."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/browser-boundary-observed.txt",
+          "sha256": "8c6f13920be5e233aea65af74d0fbf6d4f05bf93f74a7ee4d14819e10d1d6aa9",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized multi-round browser-boundary review record",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
     }
   ]
 }

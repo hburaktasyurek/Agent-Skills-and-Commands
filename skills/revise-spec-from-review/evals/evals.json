@@ -96,6 +96,39 @@
           }
         }
       }
+    },
+    {
+      "id": 4,
+      "prompt": "Use $revise-spec-from-review to apply the complete review in evals/closure/open-world-mechanism/input/review.txt to the named spec folder. Read the task contract and whole cluster first; modify only that cluster.",
+      "expected_output": "The revised spec replaces the incapable finite-inventory proof with a provably bounded browser construction contract, reconciles current consumers and certificate metadata, preserves server credential use, and adds an independent result-level counterexample without choosing a mandated parser.",
+      "files": [
+        "evals/closure/open-world-mechanism/input/task-contract.md",
+        "evals/closure/open-world-mechanism/input/review.txt",
+        "evals/closure/open-world-mechanism/input/agent-os/specs/fixture/plan.md",
+        "evals/closure/open-world-mechanism/input/agent-os/specs/fixture/shape.md",
+        "evals/closure/open-world-mechanism/input/agent-os/specs/fixture/standards.md",
+        "evals/closure/open-world-mechanism/input/agent-os/specs/fixture/references.md"
+      ],
+      "assertions": [
+        "The revision does not respond by adding more source-text spellings to the claimed exhaustive scanner inventory.",
+        "The browser-visible value set is made provably bounded at a task-owned construction boundary while server workers retain service_token.",
+        "Page, callback, nested certificate metadata, and acceptance-oracle surfaces agree with the changed boundary.",
+        "The acceptance oracle varies a carrier or data-flow path independently of the enforcement mechanism and preserves allowed public values.",
+        "No unrelated spec behavior changes and no particular parser implementation is mandated."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/browser-boundary-observed.txt",
+          "sha256": "8c6f13920be5e233aea65af74d0fbf6d4f05bf93f74a7ee4d14819e10d1d6aa9",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized multi-round browser-boundary review record",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
     }
   ]
 }

@@ -40,6 +40,11 @@ evidence. Only current, independently checked facts can support a result.
 
 Mentorship is optional and normally omitted. Findings must be actionable, but
 the report exists to make the merge safe—not to fill space with teaching prose.
+The reviewer owns causal diagnosis and the proof contract; the implementer or
+spec reviser owns solution design. Do not replace root analysis with an exact
+code, tool, parser, algorithm, or file-edit recommendation unless binding
+authority leaves no alternative. Cite that authority and state a required
+mechanism rather than reviewer preference.
 
 ## Read-only boundary
 
@@ -229,6 +234,19 @@ tier-appropriate material attack angle have been examined. It never means
 "read the entire repository." Review depth varies; honesty about coverage does
 not.
 
+Track two coverage dimensions separately:
+
+- **artifact coverage** — whether the required diff, files, callers,
+  configuration, contracts, and operational evidence were examined;
+- **invariant coverage** — whether the selected evidence can establish the
+  claimed behavior over its actual proof domain.
+
+Complete artifact reading does not make invariant coverage complete. For a
+load-bearing `all`, `none`, `never`, or `exhaustive` claim, determine whether
+the domain is closed, self-bounded by an owned construction boundary, or
+open-world. A finite current inventory or correlated test family cannot close
+an open-world property merely because every listed artifact was read.
+
 Discovery is complete—not exhaustive—only when:
 
 - every changed file and hunk is inventoried as required, supporting,
@@ -305,12 +323,21 @@ First choose the mode:
   insufficient for the affected area, or the changes are too tangled to
   isolate safely.
 
+`reset-to-full` reuses no prior artifact or correctness evidence. Preserve the
+prior report's attack families and root lineage only as hypotheses to challenge
+against the current revision; learned attack taxonomy is not baseline coverage.
+
 For an eligible incremental re-review:
 
 1. Reread the current task sources and PR metadata. Compare the complete delta
    from the prior reviewed head to the current head.
 2. Reconcile every prior finding as `resolved`, `still present`, or
    `superseded`, using current evidence. Do not carry forward old text.
+   Keep manifestations of the same invariant under one stable Root family.
+   Mark `same-root-residual` when the invariant remains reachable and
+   `mechanism-level-repeat` when another correction is defeated within the
+   same proof or enforcement model; recurrence is evidence-triggered, not
+   review-count-triggered.
 3. Verify the actual correction mechanism, the independence of its test
    oracle, and relevant failure paths. A changed line or green test is not
    proof that the failure is closed.
@@ -395,12 +422,20 @@ why it blocks the result; exact evidence or safe check that would close it>
 ### Findings
 
 [Px] <short title>
+Root family: <stable id or first-seen id>
+Root cause: <deepest task-owned cause, not the latest manifestation>
+Consequence surface: <producers, consumers, state/effect, and proof neighbors>
+Recurrence: first-seen | same-root-residual | mechanism-level-repeat
 Evidence: <current file:line, diff hunk, or omission evidence>
-Mechanism: <how the failure activates>
+Incapable mechanism: <why the current implementation, control, or proof model
+  cannot establish the obligation>
 Consequence: <user, business, financial, security, data, or operational result>
 Cascade: <what else breaks; required for P0/P1>
-Resolution: <required correction; describe, do not implement>
-Verification: <evidence that would prove the correction>
+Required closure: <falsifiable outcome-level invariant, not an implementation
+  recipe>
+Proof obligations: <independent evidence and counterexamples that would prove
+  closure>
+Authority impact: implementation-fixable | spec-revision-required | evidence-required
 
 ### Work complete?
 yes | no | unknown — <why>
@@ -415,6 +450,8 @@ Baseline reuse: <areas proven unchanged and reused, or none>
 Attacked: <surfaces and failure paths genuinely examined>
 Executed: <commands, tests, and checks actually run>
 Not examined: <skipped files, unavailable systems, or none>
+Artifact coverage: complete | partial
+Invariant coverage: complete | partial
 Coverage: complete | partial
 ```
 
@@ -422,6 +459,11 @@ If there are no findings, say so plainly; do not create P3 filler.
 For a compact report, retain the header fields and express the same mandatory
 content in short labeled paragraphs. Include prior-head reconciliation when
 re-reviewing and say `Required evidence: none` when none is missing.
+
+Use `implementation-fixable` when current task authority is sufficient and the
+implementation must change, `spec-revision-required` when a binding spec
+mechanism is contradictory or incapable, and `evidence-required` when no
+defect is proven but a decision-critical artifact or proof is absent.
 
 ## Result gates
 
@@ -437,10 +479,11 @@ Apply these gates in order:
    item remains open. Missing proof is a coverage gap, not a defect finding,
    unless supplying that artifact is itself an explicit delivery requirement.
    `INCOMPLETE` is not a soft pass.
-4. Otherwise return **PASS** only when coverage is complete at the declared
-   risk depth, the work is complete, material criticality is resolved, and no
-   current P0/P1 remains. Report any P2/P3 as residual risk for the human
-   decision. Bind `PASS` only to the exact reviewed head revision.
+4. Otherwise return **PASS** only when artifact and invariant coverage are both
+   complete at the declared risk depth, the work is complete, material
+   criticality is resolved, and no current P0/P1 remains. Report any P2/P3 as
+   residual risk for the human decision. Bind `PASS` only to the exact reviewed
+   head revision.
 
 `PASS` means the current implementation survived this hostile merge gate. It
 does not authorize merge, approve the PR on the host, or award Ready-for-PR.

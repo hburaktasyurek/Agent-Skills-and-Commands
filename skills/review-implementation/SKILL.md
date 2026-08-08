@@ -22,7 +22,10 @@ do not reward a report merely for looking complete.
 ## Review
 
 1. Identify the exact spec and implementation basis. Record paths or revision
-   bounds so the result can be reproduced.
+   bounds so the result can be reproduced. For repository work, include content
+   hashes for every named spec file, the implementation `HEAD`, and a
+   fingerprint covering staged and unstaged diffs plus the relevant untracked
+   inventory. Use equivalent immutable identifiers when Git is unavailable.
 2. Turn every normative requirement and acceptance criterion into a checklist.
    Trace each item to implementation and tests as `met`, `not met`, or
    `insufficient evidence`.
@@ -37,14 +40,39 @@ do not reward a report merely for looking complete.
    apply only the matching checks.
 5. Inspect tests for the required behavior and material failure paths. A green
    suite is evidence only for what its assertions actually exercise.
+   For a high- or critical-consequence universal or negative property, require
+   one safe counterexample that varies a material carrier, data-flow path, or
+   result independently of the enforcement representation. A scanner,
+   inventory, or implementation and fixtures authored from the same model are
+   correlated evidence.
 6. Reconcile the checklist. Do not return Ready while a requirement is unmet,
    a material consequence is unexamined, or required evidence is missing.
+
+Bind the decision to the complete recorded basis. Any spec, implementation,
+index, or relevant untracked-artifact change invalidates the receipt; rerun the
+review rather than carrying `Ready for PR` forward.
 
 Every finding must include:
 
 - concrete file, line, diff, test, or missing-artifact evidence;
-- the failure mechanism and consequence;
-- the smallest adequate correction or the exact evidence needed.
+- the obligation and deepest task-owned root cause;
+- why the current implementation, control, or proof mechanism cannot establish
+  that obligation;
+- the consequence surface and falsifiable outcome-level closure condition;
+- independent proof obligations; and
+- authority impact: `implementation-fixable`, `spec-revision-required`, or
+  `evidence-required`.
+
+The reviewer owns causal diagnosis and the proof contract; the implementer
+owns solution design. Do not recommend an exact code shape, tool, parser,
+algorithm, or file edit unless the named specification or other binding
+authority leaves no alternative. In that exceptional case, cite the binding
+clause and report a required mechanism rather than reviewer preference.
+
+Use `implementation-fixable` when the approved contract is sufficient and the
+implementation must change, `spec-revision-required` when a binding spec
+mechanism is contradictory or incapable, and `evidence-required` when no
+defect is proven but decision-critical proof is absent.
 
 Do not invent defects. If the available artifacts cannot establish a claim,
 label it `insufficient evidence`.
@@ -58,11 +86,26 @@ label it `insufficient evidence`.
 - Specification: ...
 - Implementation: ...
 
+### Artifact receipt
+- Spec hashes: ...
+- Implementation HEAD: ...
+- Staged/unstaged/untracked fingerprint: ...
+- Invalidation: any basis change requires re-review
+
 ### Requirement trace
 - [met | not met | insufficient evidence] Requirement -> evidence
 
 ### Findings
-- [P0-P3] Finding -> mechanism/consequence -> correction or required evidence
+
+[P0-P3] Finding
+- Evidence: ...
+- Obligation: ...
+- Root cause: ...
+- Incapable mechanism: ...
+- Consequence surface: ...
+- Required closure: ...
+- Proof obligations: ...
+- Authority impact: implementation-fixable | spec-revision-required | evidence-required
 
 ### Tests
 - Proven coverage and missing material cases

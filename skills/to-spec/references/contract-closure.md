@@ -20,7 +20,36 @@ named by the task or review example. A fact arriving in a normal return, typed
 error, callback, decoded object, replay, or recovery load is a separate carrier
 only when that route is reachable and changes validation or preservation.
 
-## 2. Identify independent axes
+## 2. Classify the proof domain
+
+Before using `all`, `none`, `never`, `exhaustive`, or an equivalent load-bearing
+claim, classify the set the mechanism must cover:
+
+- **closed** — binding authority defines finite, enumerable membership and all
+  task-owned additions pass through an owned registration or construction
+  boundary;
+- **self-bounded** — the upstream world may grow, but the proposed change
+  constructs a restricted result, type, or projection before any governed
+  consumer can observe it;
+- **open-world** — new carriers, aliases, dynamic calls, serialization shapes,
+  integrations, or other reachable forms can expand the set without passing a
+  boundary the plan proves complete.
+
+State why the classification holds and what evidence would falsify it. A
+finite inventory of current files, tokens, call spellings, sinks, or
+mechanism-authored fixtures proves an exhaustive claim only when membership
+and every task-owned extension point are themselves closed. For an open-world
+property, either introduce a bounded task-owned boundary or state the limits
+of the selected analysis and leave uncovered material behavior unproved. Do
+not mandate a parser or other technology when more than one mechanism can
+establish the contract.
+
+Keep the acceptance oracle independent of the enforcement representation: vary
+a material carrier, data-flow path, or result while preserving the governing
+requirement. A mechanism's own inventory repeated as its test is correlated
+evidence, not proof of totality.
+
+## 3. Identify independent axes
 
 Derive axis values from binding evidence. Common axes include operation or
 command, entrypoint/carrier, object family, resource/identity state,
@@ -32,7 +61,7 @@ can change a public result, rejection, state transition, ownership, persisted
 identity, side effect, or oracle. Collapse equivalent rows under one stated
 invariant. Do not create fictional combinations merely to fill a table.
 
-## 3. Close every reachable material row
+## 4. Close every reachable material row
 
 For each row, establish:
 
@@ -56,7 +85,7 @@ Each row must be one of:
 
 Silence is not a fifth state.
 
-## 4. Run closure gates
+## 5. Run closure gates
 
 - **Totality:** every reachable material row has one status.
 - **Constructibility:** every emitted public result satisfies its own factory or
@@ -80,15 +109,18 @@ Silence is not a fifth state.
   consequence—not an invitation to invent a new error policy.
 - **Oracle adequacy:** each high-consequence rule has a positive case and a
   counterexample that changes one material variable.
+- **Proof-domain adequacy:** every load-bearing universal or negative claim has
+  a justified closed or self-bounded domain, or remains explicitly unproved;
+  reading all current artifacts does not close an open-world property.
 
 If a new rule narrows a valid-state set, rebuild every producer and consumer
 that can reach that set before accepting the rule. A producer may not emit a
 state that its factory or consumer rejects.
 
-## 5. Keep a private closure receipt
+## 6. Keep a private closure receipt
 
 Before drafting, record the axes considered, collapsed equivalence rules,
 rejected rows, producer/consumer traces, required state/identity continuity,
-downstream-failure behavior, and acceptance oracles. The receipt is reasoning
-scaffolding, not a required fifth artifact. Put only the canonical contracts
-and useful tables in the four-file cluster.
+downstream-failure behavior, proof-domain classification, and acceptance
+oracles. The receipt is reasoning scaffolding, not a required fifth artifact.
+Put only the canonical contracts and useful tables in the four-file cluster.
