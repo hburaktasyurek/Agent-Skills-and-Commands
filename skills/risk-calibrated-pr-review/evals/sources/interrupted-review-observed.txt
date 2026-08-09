@@ -1,0 +1,7 @@
+Sanitized observed workflow failure record
+
+A review session stopped before completing its PR boundary, coverage, finding
+challenge, and exact-head terminal report. Later work treated the partial note
+as if a verdict existed. The required behavior is to preserve that no verdict
+was produced and perform a fresh review when no complete report bound to an
+exact prior head is available.

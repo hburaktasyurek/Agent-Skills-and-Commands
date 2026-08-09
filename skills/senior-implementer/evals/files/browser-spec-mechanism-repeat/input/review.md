@@ -11,6 +11,6 @@ Consequence surface: server configuration, browser projection and rendering,
 certificate construction and metadata, and independent result-level proof.
 
 Required closure: browser-visible results contain only browser-safe values,
-server connectivity retains `service_token`, prohibited credential-shaped
-metadata cannot enter a browser carrier, and acceptance is independent of the
-source scanner's own inventory.
+server connectivity retains `service_token`, credential-shaped content cannot
+appear anywhere within browser-visible certificate metadata, and acceptance is
+independent of the source scanner's own inventory.

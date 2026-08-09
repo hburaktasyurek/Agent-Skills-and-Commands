@@ -10,6 +10,5 @@ Browser-visible output contains no service credential. `public_id` and
 
 Extend `CredentialScanner::isSafe()` with additional finite source patterns
 for the current review finding. Scanner-authored fixtures are the acceptance
-gate. This implementation task may edit only `src/CredentialScanner.php` and
-`tests/scanner.php`; runtime producers, consumers, and construction boundaries
-are outside the approved implementation scope.
+gate. Runtime producers, consumers, construction boundaries, and this spec are
+unchanged by implementation corrections.

@@ -17,7 +17,9 @@ do not reward a report merely for looking complete.
 - Use repository instructions and architecture documents as evidence. Do not
   assume a framework, tenancy model, payment provider, or project convention.
 - This is a pre-PR spec-compliance review. Use the opened-PR merge-gate skill
-  when the task is to decide whether an existing pull request can merge.
+  when the task is to decide whether an existing pull request can merge. This
+  receipt is required for the first named-spec implementation before its PR is
+  opened; it is not a recurring correction-loop gate after that PR exists.
 
 ## Review
 
@@ -47,6 +49,9 @@ do not reward a report merely for looking complete.
    correlated evidence.
 6. Reconcile the checklist. Do not return Ready while a requirement is unmet,
    a material consequence is unexamined, or required evidence is missing.
+   Treat a named spec that still binds a disproven or superseded mechanism,
+   scope statement, or acceptance oracle as not ready even when current code
+   appears to satisfy the governing outcome.
 
 Bind the decision to the complete recorded basis. Any spec, implementation,
 index, or relevant untracked-artifact change invalidates the receipt; rerun the
@@ -60,8 +65,15 @@ Every finding must include:
   that obligation;
 - the consequence surface and falsifiable outcome-level closure condition;
 - independent proof obligations; and
-- authority impact: `implementation-fixable`, `spec-revision-required`, or
-  `evidence-required`.
+- correction surface: `implementation-only`, `spec-and-implementation`,
+  `evidence-only`, or `task-decision-required`.
+
+Keep one task-owned root and its proof deficit in one finding. When a proven
+implementation or contract defect already explains why current evidence is
+insufficient, put the missing independent evidence under that finding's proof
+obligations; do not emit a second `evidence-only` finding for the same root.
+Reserve `evidence-only` for a material gap when no implementation or contract
+defect has been proven.
 
 The reviewer owns causal diagnosis and the proof contract; the implementer
 owns solution design. Do not recommend an exact code shape, tool, parser,
@@ -69,10 +81,15 @@ algorithm, or file edit unless the named specification or other binding
 authority leaves no alternative. In that exceptional case, cite the binding
 clause and report a required mechanism rather than reviewer preference.
 
-Use `implementation-fixable` when the approved contract is sufficient and the
-implementation must change, `spec-revision-required` when a binding spec
-mechanism is contradictory or incapable, and `evidence-required` when no
-defect is proven but decision-critical proof is absent.
+Use `implementation-only` when the approved contract remains sufficient and the
+implementation must change. Use `spec-and-implementation` when current evidence
+invalidates a named spec clause or proof mechanism and the contract must be
+reconciled with the implementation; code need not change gratuitously when it
+already satisfies the corrected contract. Use `evidence-only` when no defect is
+proven but decision-critical proof is absent. Use
+`task-decision-required` when controlling sources conflict or closure requires
+an unmade product, compatibility, operational, destructive, or material scope
+decision.
 
 Do not invent defects. If the available artifacts cannot establish a claim,
 label it `insufficient evidence`.
@@ -105,7 +122,7 @@ label it `insufficient evidence`.
 - Consequence surface: ...
 - Required closure: ...
 - Proof obligations: ...
-- Authority impact: implementation-fixable | spec-revision-required | evidence-required
+- Correction surface: implementation-only | spec-and-implementation | evidence-only | task-decision-required
 
 ### Tests
 - Proven coverage and missing material cases

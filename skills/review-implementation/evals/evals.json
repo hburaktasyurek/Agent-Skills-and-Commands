@@ -83,7 +83,7 @@
     {
       "id": 5,
       "prompt": "Use $review-implementation. Review the named specification and implementation basis in evals/fixtures/browser-proof-basis.md. Return only the pre-PR compliance result and do not modify files.",
-      "expected_output": "The demonstrated browser leak is reported as a causal contract: deepest task-owned root cause, incapable proof or enforcement mechanism, consequence surface, outcome-level required closure, independent proof obligations, and authority impact. It does not prescribe an exact code patch, parser, tool, or file edit.",
+      "expected_output": "The demonstrated browser leak is reported as a causal contract: deepest task-owned root cause, incapable proof or enforcement mechanism, consequence surface, outcome-level required closure, independent proof obligations, and implementation-only correction surface. It does not prescribe an exact code patch, parser, tool, or file edit.",
       "files": [
         "evals/fixtures/browser-proof-basis.md"
       ],
@@ -92,7 +92,7 @@
         "The report explains why the current scanner-correlated proof mechanism cannot establish the browser-output invariant.",
         "Required closure states the falsifiable allowed browser result while preserving server-only credential use, without prescribing an exact implementation.",
         "Proof obligations require an independently varying result-level carrier or data-flow counterexample.",
-        "Authority impact is implementation-fixable, and the finding does not recommend exact code, a parser, a tool, or a file edit."
+        "Correction surface is implementation-only because the supplied named outcome and acceptance contract remain sufficient; the finding does not recommend exact code, a parser, a tool, or a file edit."
       ],
       "metadata": {
         "case_type": "primary",
@@ -103,6 +103,34 @@
           "origin": {
             "type": "observed_failure_record",
             "locator": "sanitized user feedback on causal review output",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "prompt": "Use $review-implementation. Review the named specification and implementation basis in evals/fixtures/stale-scanner-spec.md. Return only the pre-PR compliance result and do not modify files.",
+      "expected_output": "The report records the exact supplied basis and returns Ready for PR No because the named spec still binds acceptance to a disproven finite scanner while the implementation uses result-level construction; it sets Correction surface to spec-and-implementation without prescribing a replacement design.",
+      "files": [
+        "evals/fixtures/stale-scanner-spec.md"
+      ],
+      "assertions": [
+        "The review basis records all four supplied spec hashes, implementation head 2222222, and diff fingerprint diff-bb22.",
+        "Ready for PR is No because the named spec's exhaustive scanner contract is stale even though current result-level evidence supports the browser/server outcome.",
+        "Correction surface is spec-and-implementation and the invalidated scanner clauses are identified explicitly.",
+        "The report does not demand a code change when current implementation evidence already satisfies the outcome, and it does not prescribe a gateway, parser, algorithm, or file edit.",
+        "The receipt states that any spec or implementation basis change invalidates this first pre-PR review."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/review-contract-reconciliation-observed.txt",
+          "sha256": "4c7ef2c888333cf5b1b56d6e992aebcd1376861943dbbba53b92158dbdfea6e0",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized user-provided PR correction conversation",
             "captured_at": "2026-08-08"
           }
         }

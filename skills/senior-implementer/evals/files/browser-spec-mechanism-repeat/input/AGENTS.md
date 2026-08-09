@@ -1,4 +1,4 @@
 # Fixture rules
 
-Treat the named approved specification as binding implementation authority.
-Keep edits within its approved implementation scope.
+Preserve the task outcome and explicit product decisions. Do not commit, push,
+edit PR metadata, or contact external systems.

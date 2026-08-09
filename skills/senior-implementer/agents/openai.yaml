@@ -1,5 +1,6 @@
 interface:
-  display_name: Senior Implementer
-  short_description: Root-complete implementation with artifact proof
+  display_name: "Senior Implementer"
+  short_description: "Root-complete implementation with artifact proof"
+  default_prompt: "Use $senior-implementer to implement this task end to end and prove the resulting artifact or state."
 policy:
   allow_implicit_invocation: false

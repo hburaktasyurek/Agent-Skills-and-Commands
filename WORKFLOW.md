@@ -19,7 +19,7 @@ task-groundwork
 → senior-implementer
 → review-implementation        # named-spec work only
 → commit-work
-→ pr-branch                    # open or refresh when a PR is wanted
+→ pr-branch                    # open when a PR is wanted
 → risk-calibrated-pr-review    # opened PR only
 → human merge decision
 ```
@@ -34,7 +34,7 @@ it does not replace the opened-PR gate.
 |---|---|---|
 | Design | Grounding, product decisions, specs, verified spec corrections | Implementation, PR creation, merge |
 | Review | Spec attack, readiness, spec-code compliance, PR attack | Editing the reviewed artifact or approving its own corrections |
-| Implementation | Root-complete delivery of the task or complete findings | Unrelated redesign, PR creation, merge |
+| Implementation | Root-complete delivery of the task or complete findings, including task-owned spec reconciliation when current evidence invalidates it | Unrelated redesign, PR creation, merge |
 | Commit / PR | Intentional commits, PR description, requested publication | Implementation or independent review |
 | Human | Scope changes and commit/push/install/merge authority | Treating an automated verdict as irreversible permission |
 
@@ -75,34 +75,41 @@ closure surface. Otherwise reset to full review.
 
 1. For a named spec, give the exact spec cluster to `senior-implementer`.
    For a direct task, the current request is sufficient authority.
-2. Named-spec work must pass `review-implementation` before PR. Bind that
+2. The first named-spec implementation must pass `review-implementation`
+   before its PR is opened. Bind that
    receipt to the spec-file hashes, implementation HEAD, and staged/unstaged
-   plus relevant-untracked fingerprint. Any basis change invalidates it.
-3. Use `commit-work`; use `pr-branch` only when a PR is requested. After every
-   push to an open PR, invoke `pr-branch` to regenerate, validate, apply, and
-   verify the current title/body before hostile re-review.
+   plus relevant-untracked fingerprint. It is a pre-PR receipt, not a recurring
+   gate after that PR exists.
+3. Use `commit-work`; use `pr-branch` when a PR is first requested.
 4. Run `risk-calibrated-pr-review` against the exact opened PR revision.
-5. On FAIL, return complete findings to `senior-implementer`; after fixes,
-   rerun named-spec compliance when applicable, commit, refresh the open PR,
-   and then rerun PR review.
+5. On FAIL, always return complete findings to `senior-implementer`. The
+   implementer verifies or refutes each finding, reconciles any task-owned stale
+   spec with the implementation inside the existing outcome and scope, and
+   asks only for a real human decision. After accepted corrections, commit and
+   push when separately authorized, then rerun PR review. Do not rerun
+   `review-implementation` or refresh PR metadata merely because another
+   correction was pushed.
 6. On INCOMPLETE, gather named evidence. Implementation changes trigger the
-   same invalidation and rerun rules.
-7. PASS returns the merge decision to the human; it never merges.
+   current PR-review invalidation and rerun rules.
+7. Before an intended final merge-gate review, inspect current PR metadata. Run
+   `pr-branch` refresh only when the title/body still claims a superseded
+   mechanism, outcome, scope, non-goal, material artifact, validation result,
+   or mismatched base/head. If refreshed, run the terminal PR review afterward
+   against the current metadata and exact head.
+8. PASS returns the merge decision to the human; it never merges.
 
 The correction loop is therefore:
 
 ```text
 senior-implementer
-→ review-implementation        # named-spec work
-→ commit-work
-→ pr-branch                    # open or refresh
+→ commit-work / push           # only when separately authorized
 → risk-calibrated-pr-review
 ```
 
-Spec review, readiness, implementation review, and PR review results are gate
-receipts for exact artifacts, not durable approval of a task name. A changed
-spec cluster, implementation basis, or PR head invalidates only the receipts
-that depend on it and requires those gates to run again.
+Spec review, readiness, first implementation review, and PR review results are
+gate receipts for exact artifacts, not durable approval of a task name. After
+the PR exists, a changed spec cluster, implementation basis, or PR head
+invalidates the current PR-review verdict; it does not restart the pre-PR flow.
 
 Incremental PR re-review requires the exact prior report/head, stable base and
 task, provable ancestry and bounded delta, adequate prior coverage, and no new

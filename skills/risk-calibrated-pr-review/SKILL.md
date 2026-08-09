@@ -1,520 +1,278 @@
 ---
 name: risk-calibrated-pr-review
-description: "Review a current PR with zero assumed correctness: establish complete task and consequence scope, scale attack depth to evidenced impact, and bind PASS, FAIL, or INCOMPLETE to an exact PR revision. Use as the post-PR hostile merge gate and for evidence-bounded re-review after fixes; not for implementation or pre-PR spec compliance."
+description: "Use only when explicitly invoked as `$risk-calibrated-pr-review` or equivalent to independently review a current implementation PR as a read-only hostile merge gate. Reconstruct the governing task and consequence scope, scale attack depth to evidenced risk, diagnose root causes and proof gaps, and return PASS, FAIL, or INCOMPLETE bound to the exact reviewed base and head. Use after a PR exists and for re-review after fixes; not for spec review, implementation, pre-PR compliance, commit-history process analysis, or general PR summaries."
 ---
 
-# risk-calibrated-pr-review
+# Risk-Calibrated PR Review
 
-Treat every implementation as unverified, regardless of who or what produced
-it. Do not assign an author, tool, team, or reputation a trust or confidence
-score. Independently verify intent, completeness, assumptions, integration,
-failure behavior, and claimed evidence against the current task and system.
+## GOAL
 
-The consequence of a defect controls review depth and finding priority—not
-diff size, the apparent simplicity of the edit, or the amount of code involved.
-A one-character change can be system-critical; a large mechanical change can
-be low risk. Establish the mechanism and its consequences before deciding.
+Determine whether the exact current PR revision has independently demonstrated
+the outcome and safety properties required to proceed toward merge.
 
-Begin every first review with complete discovery, not with a preselected
-criticality tier. Discovery is always thorough enough to bound the task and
-its possible consequences; the attack that follows is as deep as those
-consequences require. This avoids both shallow averaging and maximum-depth
-review theater on contained changes.
+Assume no implementation, test, document, author, model, CI result, or previous
+review is correct until current evidence supports it. Own causal diagnosis,
+consequence analysis, independent verification, the closure proof contract,
+and an exact-revision result. Leave solution design and task-owned contract
+reconciliation to the implementer.
 
-Protect users, systems, assets, operators, and other affected stakeholders
-without manufacturing findings. High confidence in prose or code is never
-evidence. Only current, independently checked facts can support a result.
+## INPUT
 
-## When to use
+Require or recover:
 
-- Use after a PR exists, as the hostile shipping/merge gate that would
-  otherwise use `adversarial-diff-review`.
-- Use again after every correction round. Each invocation reviews the current
-  PR revision, not the remembered result of an earlier run.
-- Do not chain or require `adversarial-diff-review`; this skill occupies that
-  review role.
-- Do not use for plan/spec review or for named-spec pre-PR compliance.
-  `review-implementation` remains the separate compliance gate when applicable.
-- Do not use to implement fixes, teach or assess the implementer, infer who or
-  what wrote the code, approve on the PR host, or merge.
+- a current PR number, URL, or unambiguous current-branch PR;
+- exact base and head revisions;
+- the controlling task, spec, issue, plan, or commissioning source;
+- the complete current base-to-head diff; and
+- relevant implementation, callers, consumers, tests, contracts,
+  configuration, state boundaries, rollout, rollback, and recovery evidence.
 
-Mentorship is optional and normally omitted. Findings must be actionable, but
-the report exists to make the merge safe—not to fill space with teaching prose.
-The reviewer owns causal diagnosis and the proof contract; the implementer or
-spec reviser owns solution design. Do not replace root analysis with an exact
-code, tool, parser, algorithm, or file-edit recommendation unless binding
-authority leaves no alternative. Cite that authority and state a required
-mechanism rather than reviewer preference.
+Use task-intent authority in this order:
 
-## Read-only boundary
+1. independently approved task, spec, issue, plan, or commissioning source;
+2. PR description when no independent task source exists;
+3. title, branch, and commits only for their minimum jointly supported intent;
+4. PR-authored implementation, tests, docs, and comments.
 
-Do not modify project files. Do not commit, push, approve, request changes on
-the hosting service, or merge. Safe read-only inspection and diagnostic
-execution are allowed; never run a destructive command, a production action,
-or a check with material external side effects merely to strengthen a review.
+Use pre-existing contracts and observed behavior as baseline and compatibility
+evidence, not as silent overrides of declared task intent. Treat artifacts
+changed together in the PR as correlated claims rather than independent proof.
+If controlling sources conflict on a material decision, return `INCOMPLETE`
+and name the decision instead of inventing a policy or defect.
 
-## Inputs
+For re-review, require the complete prior report and its exact reviewed head.
+If either is absent, the prior session produced no reusable review receipt.
+Read [references/re-review.md](references/re-review.md) before choosing the mode.
 
-- Require a current PR number or URL, or resolve the PR for the current branch
-  when that mapping is unambiguous. Record the exact base and head revision
-  identifiers before reading for findings. If no current PR boundary can be
-  established, return `INCOMPLETE`.
-- Recover the task definition without treating PR-authored agreement as
-  independent proof. Separate task-intent authority from baseline and
-  compatibility evidence. Use this task-intent authority order:
-  1. an approved spec, linked issue, accepted plan, or commissioning
-     conversation that exists independently of the current diff;
-  2. when no independent task source exists, the PR description for its
-     declared intent;
-  3. when the description is absent, the PR title, branch name, and commit
-     messages only for the minimum declared intent they jointly support;
-  4. docs, tests, comments, and implementation added or changed by this PR.
-  Lower task-intent sources may clarify intent but cannot silently override
-  higher ones. Sparse metadata may establish a narrower minimum outcome, but
-  must not be expanded into unstated acceptance criteria. Pre-existing system
-  contracts and observed behavior establish baseline and compatibility
-  evidence; they do not by themselves define the requested outcome or override
-  declared task intent. A PR description may declare a requested contract
-  change, but it and other PR-authored artifacts remain claims rather than
-  proof of existing-system, external-consumer, correctness, or safety
-  behavior. Artifacts changed together in the PR remain correlated claims even
-  when they agree. A difference between declared task intent and a pre-existing
-  contract is not by itself a source conflict or reason for `INCOMPLETE`;
-  trace the affected consumers and compatibility consequences. When a material
-  compatibility conclusion depends on external consumers that cannot be
-  identified or checked, record the unknown as required evidence and return
-  `INCOMPLETE`. If controlling task-intent sources conflict, or a material
-  correctness claim depends only on circular PR-authored corroboration and
-  cannot be checked against the declared outcome, baseline, or compatibility
-  evidence, return `INCOMPLETE` and name the unresolved claim.
-- On re-review, require the complete prior report and the exact head revision
-  it reviewed when they are not already in the current conversation or
-  artifacts. A summary or unbound report cannot support incremental reuse. If
-  either is unavailable, perform a full fresh review.
+## BOUNDARIES
 
-Never ask the human to label the PR's criticality. Inferring consequence and
-criticality from the task, diff, codebase, and operational behavior is part of
-this skill's job. Ask for a missing fact only when it cannot be recovered and
-its answer changes whether the implementation is correct; until then, the
-result is `INCOMPLETE`, not an average-risk guess.
+Remain read-only. Do not edit project files; implement fixes; commit, push,
+approve, request changes, merge, or edit PR metadata; or run destructive,
+production, or materially external operations.
 
-Before returning, resolve the PR head again. If it changed during the review,
-restart against the new revision or return `INCOMPLETE`; never attach a result
-to code that was not reviewed.
+Do not:
 
-## Unverified implementation posture
+- infer correctness from producer identity, review count, green CI, clean code,
+  or agreement among PR-authored artifacts;
+- manufacture findings from suspicion or subsystem reputation;
+- expand into unrelated repository review after containment is evidenced;
+- prescribe a parser, gateway, algorithm, tool, or file edit unless binding
+  authority requires that mechanism; or
+- self-authorize merge from `PASS`.
 
-Use these as starting hypotheses about code, not labels for its producer:
+Diagnose what is wrong and what result must be established. The implementer
+owns the root-complete design.
 
-- Locally coherent reasoning can rest on a globally false premise.
-- Plausible-looking assumptions about APIs, contracts, schemas, configuration,
-  framework behavior, business rules, deployment, or runtime state may be
-  absent or false.
-- Tests can encode the same misconception as the implementation, assert the
-  implementation instead of the requirement, or pass without exercising the
-  failure mechanism.
-- A working happy path says nothing by itself about empty input, invalid state,
-  retries, reentrancy, concurrency, partial completion, timeouts, rollback, or
-  recovery.
-- Clean structure, convincing names, comments, extensive tests, and green CI
-  are claims or supporting signals; none independently proves correctness.
+## METHOD
 
-Do not turn this list into automatic findings. Trace each applicable
-hypothesis to the task and current system, then prove or kill it with evidence.
+1. Stabilize the PR boundary. Record exact base and head before inspecting for
+   findings.
+2. Reconstruct the governing outcome, acceptance behavior, explicit non-goals,
+   and compatibility constraints.
+3. Build two scopes:
+   - **Task scope:** what the PR must accomplish.
+   - **Consequence scope:** what can be harmed if it is wrong.
+4. Read the complete diff and enough surrounding implementation to trace every
+   changed entry point, consumer, state/effect boundary, contract, and
+   operational hook to a concrete consequence or containment boundary.
+5. Partition the consequence scope into impact surfaces. For each, establish
+   activation, reach, reversibility, detectability, containment, recovery cost,
+   worst credible failure, and material unknowns.
+6. Set attack depth from evidenced consequence, not diff size or subsystem
+   name. Read [references/deep-review.md](references/deep-review.md) for any
+   medium, high, critical, unknown, cross-boundary, or universal-claim surface.
+7. Map:
+   - task → diff: find missing, partial, or near-miss delivery;
+   - diff → task: justify every hunk; and
+   - diff → system: trace affected callers, consumers, contracts, and state
+     beyond the submitted diff.
+8. Prefer observed behavior and independent counterexamples over source
+   inference. Test whether each relevant check would fail when its claimed
+   invariant is violated.
+9. Challenge every candidate finding. Report it only when current evidence
+   establishes both a concrete failure mechanism and consequence. Otherwise
+   gather the missing evidence or record a coverage gap.
+10. Resolve the PR head again before reporting. If it changed, restart against
+    the new revision or return `INCOMPLETE`; never attach a verdict or coverage
+    from the old head to the new one. In an `INCOMPLETE` report, distinguish
+    the last revision actually reviewed from the unreviewed current PR head.
 
-## Establish two scopes
+Stop discovery when each material path reaches a concrete consumer,
+containment boundary, or named unknown. Do not search indefinitely to look
+thorough.
 
-On every first review, rebuild both scopes completely from current evidence
-before deciding how deep the attack must go:
+## NON-NEGOTIABLE REVIEW RULES
 
-1. **Task scope — what must change.** Extract the promised outcome, acceptance
-   behavior, explicit non-goals, and each hunk's claimed purpose.
-2. **Consequence scope — what can be harmed.** Trace the changed behavior
-   through entry points, callers and consumers, durable state, money or data
-   movement, permission boundaries, external contracts, operational controls,
-   rollout, rollback, and recovery.
+- Bind every result and every reused fact to exact revisions.
+- Keep repeated manifestations of one invariant under one stable `Root family`.
+- Classify recurrence as `first-seen`, `same-root-residual`, or
+  `mechanism-level-repeat`. Use the last when new evidence defeats the same
+  proof or enforcement model after a correction; do not report the latest
+  syntax form as an unrelated root.
+- For every load-bearing `all`, `none`, `never`, `anywhere`, or `exhaustive`
+  claim, classify the proof domain as closed, self-bounded, or open-world.
+  Never accept a finite inventory or correlated test family as proof of an
+  open-world invariant.
+- Track **artifact coverage** and **invariant coverage** separately. Reading
+  every current file does not prove that the chosen mechanism can establish
+  its claimed domain.
+- A concrete counterexample may prove `FAIL` while invariant coverage remains
+  partial. Do not downgrade a proven P0/P1 to `INCOMPLETE` because unrelated
+  coverage is still open.
+- Explain the deepest evidenced task-owned root cause and why the current
+  mechanism cannot establish the obligation. State outcome-level required
+  closure and independent proof obligations without choosing the replacement
+  design.
+- When current evidence invalidates a task-owned named-spec assumption,
+  mechanism, valid-state set, scope clause, or proof contract, cite the
+  invalidated clauses and use `spec-and-implementation`. Correct code does not
+  make a stale binding spec ready.
+- Use `spec-and-implementation` only when an independently governing named
+  specification itself binds the invalidated assumption, mechanism, state set,
+  scope, or proof contract. A PR-authored enforcement plan, implementation,
+  test family, prior review, or outcome-only task statement is not such a
+  clause. If the governing outcome remains valid and only the implementation's
+  mechanism fails, use `implementation-only`.
+- A valid outcome clause that the code violates is not an invalidated spec
+  clause. Report it as the governing obligation; reserve `Invalidated spec
+  clauses` for contract text that current evidence makes false or incapable.
+- Distinguish a latent enforcement failure from an active production failure.
+  When current handlers are evidenced as guarded, say explicitly that no
+  active leak is proven; do not use ambiguous language suggesting current
+  exposure is merely contained.
+- Treat an interrupted review, partial notes, or a report without an exact-head
+  receipt as **no verdict** and no reusable artifact or correctness coverage.
 
-These scopes are different. A tiny task can have a large consequence scope.
-An extensive diff can still be operationally contained.
+## FINDING CONTRACT
 
-Read the complete current PR diff and the full changed files needed to
-understand it. Inspect relevant callers, tests, configuration, schema,
-policies, contracts, and history outside the diff where the consequence path
-leads. PR prose, comments, tests, and implementation claims are hypotheses;
-current repository contracts and observed behavior are evidence.
+Assign priority from the evidenced failure's activation, consequence, reach,
+reversibility, and detectability:
 
-Partition the PR into distinct **impact surfaces**. For each surface, record:
+- **P0:** immediate or structural severe harm, or the central promised outcome
+  is absent with broad or difficult recovery.
+- **P1:** a normal or credibly reachable path materially misbehaves or omits a
+  required outcome.
+- **P2:** a realistic uncommon path causes contained correctness or safety
+  degradation with practical recovery.
+- **P3:** evidenced low consequence that is safely deferrable.
 
-- the user or business outcome it can affect;
-- the state, control boundary, or external behavior that changes;
-- one activation state: `live`, `conditional`, `dormant/support-only`, or
-  `unknown`, plus the concrete caller, configuration, rollout step, or other
-  prerequisite that activates it;
-- the worst credible failure path and how it activates;
-- affected reach;
-- reversibility and recovery cost;
-- detectability and containment;
-- material unknowns.
+Do not elevate priority merely because the code belongs to a high-risk domain.
+`P0` and `critical` require evidence of severe capability, reach, or recovery
+cost. A credential label or possible misuse alone does not establish those
+facts; when disclosure is proven but privilege or blast radius is unknown, use
+the highest supported lower tier and name the uncertainty.
 
-Examples such as payments, authentication, authorization, personal data,
-destructive operations, migrations, and availability are signals—not a closed
-checklist. Follow the actual consequence path.
+Every finding must include:
 
-## Determine criticality
-
-Assign each impact surface exactly one tier, then set the PR's overall tier to
-the highest credible surface tier:
-
-- **low** — failure is cosmetic or tightly local, has limited reach, is quickly
-  reversible, and does not cross a durable-state or trust boundary;
-- **medium** — failure causes real functional degradation or integration/state
-  errors, but its reach is contained and recovery is routine;
-- **high** — failure can cause material user, stakeholder, or system harm
-  involving money, access, privacy, data integrity, availability, compliance,
-  or another high-value outcome; reach, silent failure, or recovery difficulty
-  is significant;
-- **critical** — a concrete activation path can cause severe, widespread, or
-  difficult-to-reverse financial, security, privacy, data, legal, or
-  operational harm.
-
-Apply these rules:
-
-- Do not average surfaces or risk dimensions. Many harmless hunks cannot dilute
-  one credible critical path.
-- "Credible" requires a concrete mechanism. A subsystem name alone does not
-  make a finding or tier critical.
-- Diff size and line count affect inspection effort, not business criticality.
-- A typo on a payment surface is severe only if its mechanism can block,
-  misroute, duplicate, or otherwise corrupt payment behavior. Judge the
-  consequence, not the visual size of the mistake.
-- `live` is reachable in current operation. `conditional` is reachable through
-  a current documented trigger or configuration. `dormant/support-only` has no
-  current production caller but may be intended for later activation.
-  Dormancy rules out claims of immediate production harm, not latent harm:
-  record what must activate it and judge the task's exposure at that point.
-  It earns `critical` only when a concrete committed activation path can
-  produce critical consequences before safe containment.
-- `unknown` activation is not a middle tier. If resolving it could materially
-  raise the tier or attack depth, use the lowest defensible tier, record the
-  upward uncertainty, and return `INCOMPLETE`.
-- Producer identity, credentials, tooling, and apparent confidence never
-  change the tier or finding priority.
-- Select `low` only when evidence shows why failure is contained.
-- If missing evidence could materially raise the tier, state the lowest
-  defensible tier, identify the upward uncertainty, and make the result
-  `INCOMPLETE`. Never silently default uncertainty to `medium`.
-
-## Scale the attack
-
-Complete discovery is mandatory on every first review. After discovery, review
-each surface at the depth its consequence warrants. A critical PR does not
-require wasting critical-depth effort on an unrelated low-risk documentation
-hunk; coupling between surfaces can raise their depth.
-
-- **Low:** verify task-to-diff completeness, hunk justification, direct
-  consumers, and the smallest relevant check. Stop when the bounded behavior
-  and containment claim hold. Do not perform a speculative architecture hunt
-  or mine style findings.
-- **Medium:** also trace integration points and shared consumers; attack
-  realistic empty, error, state-transition, retry, and compatibility paths;
-  run relevant targeted tests.
-- **High:** also verify end-to-end business and safety invariants across the
-  diff boundary. Where relevant, attack authorization, isolation,
-  transactions, idempotency, concurrency, partial completion, rollback,
-  migration, configuration, deployment, and external-contract behavior.
-  Exercise focused failure paths rather than trusting happy-path tests.
-- **Critical:** independently substantiate every material safety claim with
-  the strongest safe evidence available. Verify recovery, containment,
-  observability/detection, rollout and rollback assumptions, and critical
-  dependency behavior. An unexercised critical invariant or unavailable
-  material evidence makes coverage partial and the result `INCOMPLETE`.
-
-Coverage is complete when the current task boundary, complete diff, and every
-tier-appropriate material attack angle have been examined. It never means
-"read the entire repository." Review depth varies; honesty about coverage does
-not.
-
-Track two coverage dimensions separately:
-
-- **artifact coverage** — whether the required diff, files, callers,
-  configuration, contracts, and operational evidence were examined;
-- **invariant coverage** — whether the selected evidence can establish the
-  claimed behavior over its actual proof domain.
-
-Complete artifact reading does not make invariant coverage complete. For a
-load-bearing `all`, `none`, `never`, or `exhaustive` claim, determine whether
-the domain is closed, self-bounded by an owned construction boundary, or
-open-world. A finite current inventory or correlated test family cannot close
-an open-world property merely because every listed artifact was read.
-
-Discovery is complete—not exhaustive—only when:
-
-- every changed file and hunk is inventoried as required, supporting,
-  unrelated, or unexplained and mapped to an impact surface;
-- every changed entry point, contract, state boundary, and operational hook is
-  assigned an activation state;
-- each material consequence trace reaches a concrete consumer, containment
-  boundary, or named unknown; and
-- every tier-appropriate attack angle is marked examined, not applicable with
-  reason, or blocked on named evidence.
-
-This does not require reading unrelated repository code or pursuing a
-speculative path after its containment is evidenced. Stop when that inventory
-is adjudicated. If repository evidence and safe focused diagnostics cannot
-close a material item, put it under `Required evidence / merge conditions` and
-`Not examined`, then return `INCOMPLETE`; do not keep expanding the search to
-look thorough.
-
-## Review procedure
-
-Work in this order:
-
-1. Rebuild the current PR boundary, task scope, and consequence scope.
-2. Record the exact base and head revision. Produce the impact-surface map and
-   choose the risk tier before assigning finding priorities.
-3. **Task → diff:** map every required behavior to implementation and observed
-   evidence. Find omissions, partial delivery, and near-misses.
-4. **Diff → task:** justify every hunk. Treat unrelated refactors and bundled
-   cleanup as unreviewed scope, not free improvements.
-5. **Diff → system:** follow changed contracts, callers, consumers, state, and
-   operational paths beyond the diff. The dangerous breakage may live outside
-   the submitted diff.
-6. Attack the failure modes selected by the impact tier. Do not run a rote
-   universal checklist or assume the happy path is representative.
-7. Prefer observed behavior over source inference when a safe focused command
-   can decide the question. Before accepting a test, doc, or example as
-   evidence, state the expected invariant and its authority. Corroborate
-   material PR-authored claims with an independently approved task source, a
-   pre-existing caller or contract, an authoritative external contract, or a
-   counterexample/fault injection that distinguishes the requirement from the
-   implementation's premise. Inspect whether each relevant test would fail
-   when that invariant is violated. Agreement among implementation and tests
-   changed in the same PR is not an independent oracle. If no independent
-   basis can decide a material correctness choice, record required evidence
-   and return `INCOMPLETE`. Inspect current CI/check results and run relevant
-   tests, but do not treat green checks as proof of untested invariants.
-8. Challenge each candidate finding. If there is no exact evidence and failure
-   mechanism, either gather the missing evidence or record a coverage gap;
-   never promote suspicion into a finding.
-9. Resolve the PR head again before reporting. Restart or return `INCOMPLETE`
-   if the reviewed revision is no longer current.
-
-For omissions, evidence may be the authoritative requirement plus the searched
-implementation locations or missing registration point. For present code,
-cite the exact current `file:line` or diff hunk.
-
-Low-risk work should converge quickly after its bounded attack survives. Do
-not prolong a review to look thorough. High-risk work should not pass because
-the easy parts looked clean.
-
-## Re-review after fixes
-
-A re-review is never automatically shallower. Reuse prior coverage only when
-revision evidence proves that the covered behavior is unchanged.
-
-First choose the mode:
-
-- **incremental** only when the prior reviewed head is known, its relationship
-  to the current head is provable, the task and PR purpose are unchanged, the
-  delta is bounded, and no new impact surface or material invariant appeared;
-- **reset-to-full** when the prior revision is unknown or not safely
-  comparable, the base or task changed materially, the delta introduces a new
-  surface, fixes reshape a high/critical invariant, prior coverage was
-  insufficient for the affected area, or the changes are too tangled to
-  isolate safely.
-
-`reset-to-full` reuses no prior artifact or correctness evidence. Preserve the
-prior report's attack families and root lineage only as hypotheses to challenge
-against the current revision; learned attack taxonomy is not baseline coverage.
-
-For an eligible incremental re-review:
-
-1. Reread the current task sources and PR metadata. Compare the complete delta
-   from the prior reviewed head to the current head.
-2. Reconcile every prior finding as `resolved`, `still present`, or
-   `superseded`, using current evidence. Do not carry forward old text.
-   Keep manifestations of the same invariant under one stable Root family.
-   Mark `same-root-residual` when the invariant remains reachable and
-   `mechanism-level-repeat` when another correction is defeated within the
-   same proof or enforcement model; recurrence is evidence-triggered, not
-   review-count-triggered.
-3. Verify the actual correction mechanism, the independence of its test
-   oracle, and relevant failure paths. A changed line or green test is not
-   proof that the failure is closed.
-4. Attack every new hunk, its affected callers/contracts/invariants, and all
-   previously declared coverage gaps.
-5. Sweep the complete current PR boundary for unreviewed or unexpected changes.
-   Reuse only areas proven unchanged from the recorded baseline.
-6. Recompute impact surfaces and criticality where the delta can affect them.
-   Switch to `reset-to-full` immediately if incremental eligibility fails.
-7. Resolve the head revision again before reporting.
-
-Converge honestly. Do not revive resolved findings, widen the task without
-evidence, or invent low-value issues to keep the loop alive. Any implementation
-change after a `PASS` invalidates that result. The human fixes findings and
-invokes this skill again; this skill never fixes and certifies its own work.
-
-## Priority
-
-PR criticality and finding priority are related but distinct. PR criticality
-sets attack depth. Finding priority comes from the evidenced failure's
-activation likelihood, consequence, reach, reversibility, and detectability:
-
-- **[P0]** Merging creates an immediate or structural threat to working
-  critical behavior, or the PR's central purpose is absent. The
-  credible consequence is severe, broad, or difficult to reverse.
-- **[P1]** A normal or credibly reachable path materially misbehaves, or a
-  required behavior is missing or wrong. This includes concrete financial,
-  access, privacy, data, availability, or compliance harm even when the faulty
-  edit is tiny.
-- **[P2]** A realistic but uncommon path degrades correctness or safety with
-  contained reach or practical recovery.
-- **[P3]** The evidenced consequence is low and safely deferrable.
-
-Do not elevate a finding merely because it sits in a high-risk subsystem.
-Criticality demands deeper proof; the failure mechanism earns the priority.
-Do not balance counts across levels, rank by indignation, or report style
-preferences as safety findings.
-
-## Output
-
-Review mode and report profile are separate axes: `full` review mode means no
-baseline coverage was reused, while `full` report profile means the expanded
-output structure was necessary.
-
-Choose `compact` when the boundary is small, coverage is complete, and the
-result can be supported without hiding multiple surfaces, material
-uncertainty, or a long reconciliation. Consequence severity alone does not
-force a long report. Use `full` otherwise. Both profiles must preserve result,
-mode, exact revisions, risk and activation rationale, findings, work
-completeness, required evidence, and coverage. A compact report may combine
-sections and omit empty boilerplate; it may not omit evidence needed to audit
-the gate.
-
-Return this full structure, with findings sorted by priority:
-
+```text
+[Px] Outcome-level title
+Root family
+Root cause
+Consequence surface
+Recurrence
+Current evidence
+Proof domain: closed | self-bounded | open-world | not-applicable
+Incapable mechanism
+Consequence
+Cascade
+Invalidated spec clauses
+Required closure
+Proof obligations
+Correction surface
 ```
+
+Use exactly one correction surface:
+
+- `implementation-only`: the current contract is sufficient and code must
+  change;
+- `spec-and-implementation`: current evidence invalidates a task-owned spec
+  clause or proof mechanism;
+- `evidence-only`: no defect is proven but decision-critical proof is missing;
+  or
+- `task-decision-required`: closure requires an unmade product,
+  compatibility, operational, destructive, or material scope decision.
+
+Do not convert a missing proof into a defect unless providing that proof is an
+explicit delivery requirement. Put other blocking gaps under required evidence
+with the same correction-surface classification.
+
+If no concrete defect or explicitly required proof deliverable is established,
+write `Findings: None`. Keep `evidence-only` and `task-decision-required` gaps
+under required evidence; do not give those gaps a P0-P3 finding label. A report
+must not simultaneously say that no P0/P1 is proven and emit a P0/P1 finding.
+
+## DONE WHEN
+
+A review is terminal only when the current boundary is stable, material impact
+surfaces are examined or named as unknowns, candidate findings are challenged,
+both coverage dimensions are reported, and the complete output contract is
+emitted.
+
+Choose the result in this order:
+
+1. Return `FAIL` on a stable current head when a P0/P1 defect or incomplete
+   promised outcome is proven. Known failure wins even if unrelated coverage
+   remains partial; report those gaps separately.
+2. Otherwise return `INCOMPLETE` when revision stability, controlling
+   authority, compatibility, material evidence, artifact coverage, or invariant
+   coverage remains unresolved. `INCOMPLETE` is not a soft pass.
+3. Otherwise return `PASS` only when the work is complete, artifact and
+   invariant coverage are complete at the declared risk depth, material
+   uncertainty is resolved, and no P0/P1 remains.
+
+An interrupted review, partial output, or report without an exact reviewed head
+has no verdict. `PASS` applies only to the reviewed revision and does not
+authorize merge.
+
+## OUTPUT FORMAT
+
+Use a compact report when one bounded surface and short evidence chain preserve
+all mandatory content. Use the full profile for multiple surfaces, findings,
+material unknowns, or substantial re-review reconciliation. Do not add empty
+boilerplate or filler findings.
+
+For a containment-based `PASS`, explicitly account for each plausibly affected
+entry route, caller or consumer, executable behavior, permission boundary,
+state boundary, external contract, and operational path. Mark a boundary
+unchanged or inapplicable only from current evidence; omit unrelated domains.
+For incremental reuse, state the exact prior evidence reused, why it is proven
+unchanged, and why its prior coverage is adequate for the affected area.
+
+Always return:
+
+```text
 ## Risk-Calibrated PR Review
 
 Result: PASS | FAIL | INCOMPLETE
 Review mode: full | incremental | reset-to-full
 Report profile: compact | full
-Reviewed revision: <base revision>...<head revision>
-Prior reviewed head: <revision or none>
+Reviewed revision: <base>...<head>
+Current PR head: <revision>
+Prior reviewed head: <revision | none>
 Overall risk: low | medium | high | critical
 
-### Criticality profile
-Task scope: <what the PR must accomplish>
-Consequence scope: <what can be harmed if it is wrong>
-Impact surfaces:
-- <surface>: <tier; activation state, prerequisite, and concrete mechanism>
-Worst credible consequence: <evidenced outcome>
-Material uncertainty: <none or unresolved upward risk>
-Applied depth: <how the tier changed the attack>
+Governing outcome
+Task scope
+Consequence scope
+Impact surfaces
+Prior finding reconciliation
+Required evidence / merge conditions
+Findings
+Work complete?
+Residual merge risk
 
-### Prior finding reconciliation
-<re-review only: each prior finding as resolved | still present | superseded>
-
-### Required evidence / merge conditions
-<none, or one item per material gap: ID; impact surface; unresolved invariant;
-why it blocks the result; exact evidence or safe check that would close it>
-
-### Findings
-
-[Px] <short title>
-Root family: <stable id or first-seen id>
-Root cause: <deepest task-owned cause, not the latest manifestation>
-Consequence surface: <producers, consumers, state/effect, and proof neighbors>
-Recurrence: first-seen | same-root-residual | mechanism-level-repeat
-Evidence: <current file:line, diff hunk, or omission evidence>
-Incapable mechanism: <why the current implementation, control, or proof model
-  cannot establish the obligation>
-Consequence: <user, business, financial, security, data, or operational result>
-Cascade: <what else breaks; required for P0/P1>
-Required closure: <falsifiable outcome-level invariant, not an implementation
-  recipe>
-Proof obligations: <independent evidence and counterexamples that would prove
-  closure>
-Authority impact: implementation-fixable | spec-revision-required | evidence-required
-
-### Work complete?
-yes | no | unknown — <why>
-
-### Residual merge risk
-<remaining P2/P3 items, assumptions, or "none identified">
-
-### Coverage
-Task sources: <current authoritative sources>
-PR/diff boundary: <exact current boundary>
-Baseline reuse: <areas proven unchanged and reused, or none>
-Attacked: <surfaces and failure paths genuinely examined>
-Executed: <commands, tests, and checks actually run>
-Not examined: <skipped files, unavailable systems, or none>
-Artifact coverage: complete | partial
-Invariant coverage: complete | partial
-Coverage: complete | partial
+Coverage
+  Task sources
+  PR/diff boundary
+  Baseline reuse
+  Attacked
+  Executed
+  Not examined
+  Artifact coverage: complete | partial
+  Invariant coverage: complete | partial
 ```
 
-If there are no findings, say so plainly; do not create P3 filler.
-For a compact report, retain the header fields and express the same mandatory
-content in short labeled paragraphs. Include prior-head reconciliation when
-re-reviewing and say `Required evidence: none` when none is missing.
-
-Use `implementation-fixable` when current task authority is sufficient and the
-implementation must change, `spec-revision-required` when a binding spec
-mechanism is contradictory or incapable, and `evidence-required` when no
-defect is proven but a decision-critical artifact or proof is absent.
-
-## Result gates
-
-Apply these gates in order:
-
-1. If the current PR boundary or head cannot be stabilized, return
-   `INCOMPLETE`; a finding cannot be bound to unknown code.
-2. On a stable head, return **FAIL** when one or more current P0/P1 findings
-   exist or evidence proves the promised work is incomplete. Known failure
-   wins even if other coverage remains partial; report those gaps separately.
-3. Otherwise return **INCOMPLETE** when coverage is partial, material
-   criticality or correctness remains unresolved, or any required evidence
-   item remains open. Missing proof is a coverage gap, not a defect finding,
-   unless supplying that artifact is itself an explicit delivery requirement.
-   `INCOMPLETE` is not a soft pass.
-4. Otherwise return **PASS** only when artifact and invariant coverage are both
-   complete at the declared risk depth, the work is complete, material
-   criticality is resolved, and no current P0/P1 remains. Report any P2/P3 as
-   residual risk for the human decision. Bind `PASS` only to the exact reviewed
-   head revision.
-
-`PASS` means the current implementation survived this hostile merge gate. It
-does not authorize merge, approve the PR on the host, or award Ready-for-PR.
-The human owns the merge decision. No trust accumulates across revisions;
-only unchanged evidence tied to an exact baseline may be reused.
-
-## Validation
-
-The draft achieves its purpose only when a separate reviewer can reproduce all
-of these behavior checks:
-
-| Case | Required observable result |
-| --- | --- |
-| Tiny manifest diff removes the sole dependency required before every live service instance can start; merging triggers an automatic rolling rollout that replaces the full fleet, every replacement fails startup, no alternate serving path or automated rollback exists, and recovery requires rebuilding and redeploying the image | Review mode `full`, overall risk `critical`, result `FAIL`, exact P0 evidence and complete coverage; compact report profile is allowed and no filler finding appears. |
-| Large database-support PR has no current production caller or flag, but is the approved persistence path for a separately reviewed later release; it claims concurrency-safe ownership over shared financial reservation rows, and if that invariant is wrong concurrent execution can silently duplicate ownership across accounts and require manual repair, while material real-database/concurrency evidence to decide the invariant is omitted | Activation is `dormant/support-only`, immediate production harm is not claimed, overall risk is `high`, result is `INCOMPLETE`, missing checks appear as required evidence, and the report terminates with named unexamined items. |
-| Passing PR-authored tests encode the implementation's false premise about an independent requirement or a pre-existing contract's compatibility consequences | The tests are rejected as an independent oracle; the controlling independent requirement or evidenced compatibility consequence controls the finding or required-evidence decision. A superseded baseline alone does not redefine task intent. |
-| No independent task source exists; the PR description explicitly declares replacing a pre-existing contract, and affected consumers and compatibility consequences are independently established | The PR description defines the requested outcome; the old contract remains baseline and compatibility evidence, but its difference alone does not cause `INCOMPLETE`. |
-| The same declared contract change depends on material external consumers that cannot be identified or checked, while PR-authored docs and tests merely assert compatibility | `INCOMPLETE`; the unknown consumers and exact evidence needed to close compatibility are named, and correlated PR-authored claims do not close the gap. |
-| Fix-only revision has a complete prior report bound to its exact reviewed head; the current PR boundary is stable; ancestry and the complete bounded delta are provable; task and PR purpose are unchanged; prior coverage is adequate for every affected area; and no new impact surface or material invariant appears | `incremental`; every prior finding is reconciled and only evidence proven unchanged is reused. |
-| A revision is described as fix-only, but the complete bound prior report or head is unavailable, ancestry or the complete delta is not safely comparable and bounded, the base, task, or purpose changed materially, prior coverage is inadequate for an affected area, a new impact surface appears, a new material invariant is added, or a high/critical invariant is reshaped | `reset-to-full`; no prior coverage is reused. |
-| Later revision adds a new state or authorization surface | `reset-to-full`; the new surface receives complete discovery before a result. |
-| PR head changes during review | Restart against the new head or return `INCOMPLETE`; never emit a result bound to the stale head. |
-
-Validation fails if author identity changes the result, if green CI alone
-produces `PASS`, if a small diff defaults to low risk, if a large diff causes
-unbounded searching, or if empty output sections obscure the decisive
-evidence.
-
-## Stop
-
-Stop after one complete report. On `FAIL` or `INCOMPLETE`, hand the complete
-report back for human-owned correction or evidence gathering, then wait for a
-new invocation against the updated PR. On `PASS`, stop for the human merge
-decision.
+Sort findings by priority. If none exists, say so without manufacturing P3
+filler. On `FAIL` or `INCOMPLETE`, hand the complete report back for correction,
+evidence gathering, or a task decision. Stop after one report and wait for a
+new invocation against an updated PR.

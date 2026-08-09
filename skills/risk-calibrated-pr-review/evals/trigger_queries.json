@@ -1,6 +1,6 @@
 {
   "skill_name": "risk-calibrated-pr-review",
-  "activation_mode": "implicit",
+  "activation_mode": "explicit_only",
   "queries": [
     {"id":"positive-train-01","split":"train","query":"Review PR 84 as the hostile merge gate and tell me whether it can safely merge.","should_trigger":true,"paired_with":"negative-train-01"},
     {"id":"negative-train-01","split":"train","query":"Review this implementation against the named spec before I open a PR.","should_trigger":false,"paired_with":"positive-train-01"},

@@ -119,7 +119,7 @@
     {
       "id": 5,
       "prompt": "Use /senior-implementer on the supplied named-spec task and complete review. Read AGENTS.md, task.md, approved-spec.md, review.md, the implementation, and visible scanner test before acting. Work only in the disposable workspace and return the evidence-backed workflow handoff.",
-      "expected_output": "The implementation stops without editing because the review proves the approved finite scanner mechanism incapable of establishing the open-world browser-output invariant; it returns Blocked with the root family, consequence surface, and spec-revision route.",
+      "expected_output": "The implementer verifies the mechanism-level repeat, preserves the governing browser/server outcome, revises the disproven scanner-bound spec and implementation together, proves the rendered result independently, and reports the contract reconciliation without asking for avoidable permission.",
       "files": [
         "evals/files/browser-spec-mechanism-repeat/input/AGENTS.md",
         "evals/files/browser-spec-mechanism-repeat/input/task.md",
@@ -132,21 +132,82 @@
         "evals/files/browser-spec-mechanism-repeat/input/tests/scanner.php"
       ],
       "assertions": [
-        "The handoff state is Blocked and classifies R-BROWSER-PROJECTION as a mechanism-level repeat.",
-        "The finite source scanner is named as incapable of proving the open-world browser-output invariant.",
-        "No implementation or test file is modified and no new scanner pattern is added.",
-        "The handoff preserves the required outcome and names the affected producer, consumer, construction, and proof surfaces.",
-        "The next authorized route is spec revision rather than completion, commit, or PR readiness."
+        "The finding disposition is accepted-and-corrected and R-BROWSER-PROJECTION is reconciled as a mechanism-level repeat.",
+        "approved-spec.md no longer binds acceptance to finite source patterns or scanner-authored fixtures, while preserving browser-safe public values and server-only service_token behavior.",
+        "browserOptions and Renderer exclude service_token, serverOptions retains it, and Certificate rejects credential-shaped approved_by content while accepting release-owner.",
+        "The correction does not add another scanner spelling and completion uses result-level evidence independent of the scanner inventory.",
+        "The handoff identifies the governing outcome, invalidated spec clauses, spec changes, implementation changes, independent verification, human-decision state, and PR metadata impact without committing, pushing, or editing a PR."
       ],
       "metadata": {
         "case_type": "primary",
         "source": "observed_failure",
         "source_evidence": {
-          "path": "evals/sources/browser-boundary-observed.txt",
-          "sha256": "8c6f13920be5e233aea65af74d0fbf6d4f05bf93f74a7ee4d14819e10d1d6aa9",
+          "path": "evals/sources/review-contract-reconciliation-observed.txt",
+          "sha256": "4cff78df1be7179d10931bf6aa9261bbb3e011fe5c9809591c6c7a9a0a528302",
           "origin": {
             "type": "observed_failure_record",
-            "locator": "sanitized multi-round browser-boundary review record",
+            "locator": "sanitized user-provided PR correction conversation",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "prompt": "Use /senior-implementer on the supplied named-spec task and complete review. Read AGENTS.md, task.md, approved-spec.md, review.md, and the implementation before acting. Work only in the disposable workspace and return the evidence-backed workflow handoff.",
+      "expected_output": "The implementer identifies the unresolved privacy-versus-client-contract choice, preserves all choice-dependent artifacts, and asks one precise human decision with concrete compatibility consequences instead of silently choosing a policy.",
+      "files": [
+        "evals/files/review-product-decision/input/AGENTS.md",
+        "evals/files/review-product-decision/input/task.md",
+        "evals/files/review-product-decision/input/approved-spec.md",
+        "evals/files/review-product-decision/input/review.md",
+        "evals/files/review-product-decision/input/src/CustomerExport.php"
+      ],
+      "assertions": [
+        "The finding disposition is human-decision-required rather than accepted-and-corrected or refuted-with-evidence.",
+        "The handoff states that full email, masked email, and field removal cannot be chosen without resolving privacy and contracted-client compatibility.",
+        "approved-spec.md and src/CustomerExport.php remain byte-for-byte unchanged.",
+        "The response asks for the minimum product decision and does not commit, push, claim completion, or create speculative scaffolding."
+      ],
+      "metadata": {
+        "case_type": "edge",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/review-contract-reconciliation-observed.txt",
+          "sha256": "4cff78df1be7179d10931bf6aa9261bbb3e011fe5c9809591c6c7a9a0a528302",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized user-provided PR correction conversation",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
+    },
+    {
+      "id": 7,
+      "prompt": "Use /senior-implementer to apply the supplied complete review finding. Read AGENTS.md, task.md, review.md, the implementation, and visible test before acting. Work only in the disposable workspace, run the relevant check, and return an evidence-backed handoff.",
+      "expected_output": "The implementer reproduces the current retry behavior, rejects the unsupported review finding with evidence, and leaves the already-correct implementation and tests unchanged.",
+      "files": [
+        "evals/files/review-refutation/input/AGENTS.md",
+        "evals/files/review-refutation/input/task.md",
+        "evals/files/review-refutation/input/review.md",
+        "evals/files/review-refutation/input/src/RetryClient.php",
+        "evals/files/review-refutation/input/tests/retry.php"
+      ],
+      "assertions": [
+        "The finding disposition is refuted-with-evidence and cites the observed two-attempt 503-then-200 behavior.",
+        "src/RetryClient.php and tests/retry.php remain byte-for-byte unchanged.",
+        "The handoff does not invent a correction, claim the reviewer is authoritative, commit, push, or modify PR metadata."
+      ],
+      "metadata": {
+        "case_type": "scope_preservation",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/review-contract-reconciliation-observed.txt",
+          "sha256": "4cff78df1be7179d10931bf6aa9261bbb3e011fe5c9809591c6c7a9a0a528302",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized user-provided PR correction conversation",
             "captured_at": "2026-08-08"
           }
         }

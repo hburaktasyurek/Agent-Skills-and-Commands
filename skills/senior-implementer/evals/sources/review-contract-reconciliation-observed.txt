@@ -1,0 +1,15 @@
+# Observed failure record
+
+- Source: sanitized PR correction conversation supplied by the user.
+- Captured: 2026-08-08.
+- Observed behavior: a complete hostile PR review proved that the approved
+  finite source scanner could not establish an open-world browser-output
+  invariant. The named-spec implementer treated the approved mechanism as an
+  immutable boundary, returned a passive permission question or a spec-route
+  block, and did not proactively reconcile the disproven spec mechanism with
+  the implementation despite being asked to close the complete review finding.
+- Required distinction: within an unchanged task outcome and scope, a senior
+  engineer verifies the review evidence and updates the task-owned spec and
+  implementation together. A real product or compatibility choice must be
+  surfaced precisely, and a false review finding must be rejected with current
+  evidence rather than implemented.

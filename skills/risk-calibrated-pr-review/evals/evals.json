@@ -3,7 +3,7 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Use $risk-calibrated-pr-review. Review disposable PR #42 in this repository. PR_CONTEXT.md is the frozen local PR-host snapshot with exact base/head identifiers; evals/fixtures/case-1.md is the commissioning artifact. Return the revision-bound merge-gate report.",
+      "prompt": "Use $risk-calibrated-pr-review. Review disposable PR #42 from the complete frozen task, PR-host, and diff snapshot in evals/fixtures/case-1.md. Return the revision-bound merge-gate report without modifying anything.",
       "expected_output": "A full review classifies overall risk as critical and returns FAIL with exact P0 evidence and complete consequence coverage; the small diff does not lower risk and no filler finding is added.",
       "files": ["evals/fixtures/case-1.md"],
       "metadata": {
@@ -28,7 +28,7 @@
     },
     {
       "id": 2,
-      "prompt": "Use $risk-calibrated-pr-review. Review disposable PR #43 in this repository. PR_CONTEXT.md is the frozen local PR-host snapshot with exact base/head identifiers; evals/fixtures/case-2.md is the approved task artifact. Return the revision-bound merge-gate report.",
+      "prompt": "Use $risk-calibrated-pr-review. Review disposable PR #43 from the complete frozen task, PR-host, and diff snapshot in evals/fixtures/case-2.md. Return the revision-bound merge-gate report without modifying anything.",
       "expected_output": "The report marks activation dormant/support-only, immediate production harm unproven, overall risk high, and returns INCOMPLETE with the missing database/concurrency evidence and named unexamined items.",
       "files": ["evals/fixtures/case-2.md"],
       "metadata": {"case_type":"edge","source":"synthetic"},
@@ -41,7 +41,7 @@
     },
     {
       "id": 3,
-      "prompt": "Use $risk-calibrated-pr-review. Re-review disposable PR #44 in this repository after fixes. PR_CONTEXT.md contains the exact base, prior, and current heads; PRIOR_REVIEW.md is the complete prior report; evals/fixtures/case-3.md is the approved task artifact.",
+      "prompt": "Use $risk-calibrated-pr-review. Re-review disposable PR #44 after fixes from the complete frozen task, PR-host, prior-report, and bounded-delta snapshot in evals/fixtures/case-3.md. Do not modify anything.",
       "expected_output": "The review uses incremental mode, reconciles every prior finding, reuses only evidence proven unchanged, and does not restart an unrelated full review.",
       "files": ["evals/fixtures/case-3.md"],
       "metadata": {"case_type":"scope_preservation","source":"synthetic"},
@@ -54,15 +54,16 @@
     },
     {
       "id": 4,
-      "prompt": "Use $risk-calibrated-pr-review. Re-review disposable PR #45 in this repository after a claimed fix-only revision. PR_CONTEXT.md contains the exact heads; PRIOR_REVIEW.md is the prior report; evals/fixtures/case-4.md is the approved task artifact.",
-      "expected_output": "The review resets to full, performs fresh discovery for the new authorization and ownership surface, and reuses no inadequate prior coverage.",
+      "prompt": "Use $risk-calibrated-pr-review. Re-review disposable PR #45 after a claimed fix-only revision from the complete frozen task, PR-host, prior-report, and delta snapshot in evals/fixtures/case-4.md. Do not modify anything.",
+      "expected_output": "The review resets to full, performs fresh discovery for the new authorization and ownership surface, reuses no inadequate prior coverage, and keeps unproven evidence or task-decision gaps out of P0-P3 findings.",
       "files": ["evals/fixtures/case-4.md"],
       "metadata": {"case_type":"edge","source":"synthetic"},
       "assertions": [
         "Review mode is reset-to-full.",
         "The new authorization and ownership surfaces receive fresh discovery.",
         "Inadequate prior coverage is not reused.",
-        "The fix-only label does not control the review mode."
+        "The fix-only label does not control the review mode.",
+        "Because no concrete defect or explicit proof deliverable is established, missing concurrency proof and authorization authority remain required-evidence gaps rather than P0-P3 findings."
       ]
     },
     {
@@ -96,7 +97,7 @@
     {
       "id": 6,
       "prompt": "Use $risk-calibrated-pr-review. Re-review disposable PR #46 from the frozen snapshot in evals/fixtures/case-5.md. Return the revision-bound hostile merge-gate report without modifying anything.",
-      "expected_output": "The repeated browser leak is reported as one causal contract: stable root family plus root cause, incapable mechanism, consequence surface, outcome-level required closure, independent proof obligations, and authority impact. It does not prescribe an exact code patch, parser, tool, or file edit.",
+      "expected_output": "The repeated browser leak is reported as one causal contract: stable root family plus root cause, incapable mechanism, consequence surface, outcome-level required closure, independent proof obligations, and implementation-only correction surface. It does not prescribe an exact code patch, parser, tool, or file edit.",
       "files": [
         "evals/fixtures/case-5.md"
       ],
@@ -105,7 +106,7 @@
         "The report explains why expanding the source-pattern scanner cannot establish the browser-output invariant.",
         "Required closure is an outcome-level browser/server invariant, not an allowlist implementation recipe or file edit.",
         "Proof obligations use a result-level oracle independent of the scanner representation.",
-        "Authority impact is implementation-fixable, and no exact code, parser, tool, algorithm, or file-edit recommendation is given."
+        "Correction surface is implementation-only because the supplied task outcome remains sufficient and no binding spec mechanism is invalidated; no exact code, parser, tool, algorithm, or file-edit recommendation is given."
       ],
       "metadata": {
         "case_type": "primary",
@@ -117,6 +118,112 @@
             "type": "observed_failure_record",
             "locator": "sanitized user feedback on causal review output",
             "captured_at": "2026-08-08"
+          }
+        }
+      }
+    },
+    {
+      "id": 7,
+      "prompt": "Use $risk-calibrated-pr-review. Review disposable PR #47 from the frozen snapshot in evals/fixtures/case-6.md. Return the revision-bound hostile merge-gate report without modifying anything.",
+      "expected_output": "The report returns FAIL at the exact current head, identifies the finite scanner as a mechanism-level proof failure shared by the binding spec and implementation, sets Correction surface to spec-and-implementation, and states outcome-level closure without prescribing a replacement design.",
+      "files": [
+        "evals/fixtures/case-6.md"
+      ],
+      "assertions": [
+        "The terminal result is FAIL and the reviewed revision ends at eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.",
+        "The root cause identifies an open-world browser-output obligation incorrectly bound to a finite scanner model in both the named spec and implementation.",
+        "Correction surface is spec-and-implementation, and the report cites the binding spec clauses invalidated by current counterexamples.",
+        "Required closure preserves browser-safe values and server-only credential use without prescribing a gateway, output buffer, parser, algorithm, or file edit.",
+        "Green scanner-owned fixtures are rejected as independent proof while current guarded production handlers are not falsely reported as an active leak."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/review-contract-reconciliation-observed.txt",
+          "sha256": "00f17156b248b3058344e4af5641429464a8655a4913a0d54c307c47ad74a279",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized user-provided PR correction conversation",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
+    },
+    {
+      "id": 8,
+      "prompt": "Use $risk-calibrated-pr-review. Review disposable PR #48 from the frozen snapshot in evals/fixtures/case-7.md. Return the revision-bound hostile merge-gate report without modifying anything.",
+      "expected_output": "The review returns INCOMPLETE because equally controlling task sources require incompatible browser identifier behavior; it records task-decision-required and names the exact human decision instead of inventing a product policy or implementation defect.",
+      "files": [
+        "evals/fixtures/case-7.md"
+      ],
+      "assertions": [
+        "The terminal result is INCOMPLETE rather than PASS or an invented implementation FAIL.",
+        "Correction surface is task-decision-required and the conflict between full email, masking, and removal is explicit.",
+        "Required evidence names a human-approved replacement identifier policy and compatibility decision.",
+        "No exact code change, preferred product policy, or unsupported privacy outcome is prescribed."
+      ],
+      "metadata": {
+        "case_type": "edge",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/review-contract-reconciliation-observed.txt",
+          "sha256": "00f17156b248b3058344e4af5641429464a8655a4913a0d54c307c47ad74a279",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized user-provided PR correction conversation",
+            "captured_at": "2026-08-08"
+          }
+        }
+      }
+    },
+    {
+      "id": 9,
+      "prompt": "Use $risk-calibrated-pr-review. Review disposable PR #49 from the complete frozen snapshot in evals/fixtures/case-8.md. Return the revision-bound merge-gate report without modifying anything.",
+      "expected_output": "The first review converges to a compact low-risk PASS at the exact stable head, proves why the wording-only change is contained, and produces no speculative security, architecture, or filler finding.",
+      "files": ["evals/fixtures/case-8.md"],
+      "assertions": [
+        "The terminal result is PASS at head 2222222222222222222222222222222222222222 and overall risk is low.",
+        "The report proves containment from the unchanged behavior, route, state, permissions, contracts, and sole caller rather than assuming a documentation diff is harmless.",
+        "Artifact and invariant coverage are complete for the bounded wording surface.",
+        "The report is compact and contains no speculative security, architecture, or P3 filler finding."
+      ],
+      "metadata": {"case_type":"scope_preservation","source":"synthetic"}
+    },
+    {
+      "id": 10,
+      "prompt": "Use $risk-calibrated-pr-review. Review disposable PR #50 from the frozen review timeline in evals/fixtures/case-9.md. Return only a result supportable by the exact current PR revision and do not modify anything.",
+      "expected_output": "The reviewer refuses to attach the completed work for the old head to the new unreviewed head; it restarts or returns INCOMPLETE, names the exact old and current heads, and gives no stale PASS or FAIL.",
+      "files": ["evals/fixtures/case-9.md"],
+      "assertions": [
+        "The report identifies 4444444444444444444444444444444444444444 as the reviewed start head and 5555555555555555555555555555555555555555 as the new current head.",
+        "It returns INCOMPLETE or explicitly restarts; it does not emit PASS or FAIL for the unreviewed current head.",
+        "It states that the additional implementation delta and consequence surfaces must be reviewed before any verdict.",
+        "No evidence from the old head is presented as current-head coverage."
+      ],
+      "metadata": {"case_type":"edge","source":"synthetic"}
+    },
+    {
+      "id": 11,
+      "prompt": "Use $risk-calibrated-pr-review. Review disposable PR #51 from the complete current snapshot and interrupted prior material in evals/fixtures/case-10.md. Return the exact-revision merge-gate report without modifying anything.",
+      "expected_output": "The partial prior note is explicitly treated as having no verdict and no reusable coverage; the reviewer performs a fresh full review of the stable current head and may PASS only from current complete evidence.",
+      "files": ["evals/fixtures/case-10.md"],
+      "assertions": [
+        "The interrupted prior notes are explicitly classified as no verdict, despite containing the word FAIL.",
+        "Review mode is full or reset-to-full, and no prior artifact or correctness coverage is reused.",
+        "Any PASS is bound only to current head 7777777777777777777777777777777777777777 and current complete authorization evidence.",
+        "The prior possible authorization concern is not carried forward as an unverified finding."
+      ],
+      "metadata": {
+        "case_type":"primary",
+        "source":"observed_failure",
+        "source_evidence": {
+          "path":"evals/sources/interrupted-review-observed.txt",
+          "sha256":"8125e8b651e1a6c4f9efcb8e8b8bfb8561d4b169d4b8d33cb00960b7929115e5",
+          "origin": {
+            "type":"observed_failure_record",
+            "locator":"sanitized interrupted review handoff record",
+            "captured_at":"2026-08-09"
           }
         }
       }
