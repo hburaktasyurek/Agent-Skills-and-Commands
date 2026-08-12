@@ -107,20 +107,24 @@
     {
       "id": 5,
       "prompt": "Use $to-spec to turn evals/contract-closure/scope-amplification/input/task.md and its supplied PHP sources and test into the normal implementation spec. Work only in this disposable workspace, do not implement, and return the saved spec path plus the concise handoff.",
-      "expected_output": "A four-file spec reuses CouponHandler, PendingIntentStore, Provider, and CouponResult for the bounded existing-pending positive update; it makes missing binding and zero amount no-ops and adds none of the excluded lifecycle framework.",
+      "expected_output": "A four-file spec reuses CouponHandler, PendingIntentStore, Provider::update, and CouponResult for the bounded existing-pending positive update; missing binding and zero amount stay local no-ops with no provider side effect; Provider::create/cancel, IdempotencyKey::sha256, and PublicationLog stay unused.",
       "files": [
         "evals/contract-closure/scope-amplification/input/task.md",
         "evals/contract-closure/scope-amplification/input/src/CouponHandler.php",
         "evals/contract-closure/scope-amplification/input/src/PendingIntentStore.php",
         "evals/contract-closure/scope-amplification/input/src/Provider.php",
         "evals/contract-closure/scope-amplification/input/src/CouponResult.php",
+        "evals/contract-closure/scope-amplification/input/src/IdempotencyKey.php",
+        "evals/contract-closure/scope-amplification/input/src/PublicationLog.php",
         "evals/contract-closure/scope-amplification/input/tests/CouponHandlerTest.php"
       ],
       "assertions": [
         "Exactly four spec files are saved under agent-os/specs and reuse CouponHandler::apply, PendingIntentStore::forSession, Provider::update, and the existing CouponResult.",
-        "The spec makes Provider::update one positive-amount call only for an existing server-bound intent, ignores browser intent ID as authority, and makes missing binding and zero amount unchanged local no-ops.",
-        "The spec does not add absent-intent creation, replacement, cancellation, durable transition state, custom cross-row publication, cross-family identity, deterministic key, or recovery lifecycle.",
-        "The spec names later-owned lifecycle concerns as non-goals instead of treating them as reachable current consequences."
+        "The spec makes Provider::update one positive-amount call only for an existing server-bound intent, ignores browser intent ID as authority, and treats missing binding and zero amount as unchanged local CouponResult no-ops with no provider side effect.",
+        "The saved plan/shape do not select Provider::create, Provider::cancel, IdempotencyKey::sha256, PublicationLog, absent-intent creation/replacement/cancellation, durable transition state, cross-row publication/recovery, cross-family identity, or a deterministic key as task-owned requirements or implementation steps.",
+        "Available-but-unowned create/cancel/SHA-256/publication surfaces remain unused non-goals rather than current closure rows, acceptance cases, or implementation tasks.",
+        "The deliverable or handoff refuses Provider::create, Provider::cancel, IdempotencyKey::sha256, and PublicationLog as task-owned and justifies that refusal by binding-outcome / sibling ownership or by stating that landed inventory presence is not authority to select them—not merely that the fixture does not mandate them.",
+        "The deliverable or handoff records Outcome-lock / sibling-fence reasoning (frozen binding outcome plus non-goals or sibling owners, or equivalent) that leaves those unused landed surfaces outside the current task."
       ],
       "metadata": {
         "case_type": "primary",
