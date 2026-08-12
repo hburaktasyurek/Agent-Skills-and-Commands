@@ -1,0 +1,5 @@
+interface:
+  display_name: Adversarial Spec Review
+  short_description: Red-team kill-test for plans and specs
+policy:
+  allow_implicit_invocation: false
