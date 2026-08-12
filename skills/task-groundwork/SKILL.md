@@ -14,11 +14,13 @@ Use the supplied task source as authority. A direct request is sufficient; do
 not require a roadmap, ticket, predecessor, or spec unless the request makes it
 controlling.
 
-If the task is already narrow and its implementation boundary is clear, stop
-with a short negative-fit result: say why groundwork adds no decision value,
+If the task is already narrow and its implementation boundary is clear, return
+a short negative-fit brief instead of a generic 5W2H inventory. It still uses
+the labels **Outcome lock**, **Non-goals and sibling fence**, **Viable minimal
+paths**, and **Open K2: none**; say why groundwork adds no decision value,
 state the bounded execution scope, and name the necessary verification guard.
 The guard should include a reference search plus diff, value, and behavior
-checks where those apply. Do not produce a generic 5W2H inventory.
+checks where those apply.
 
 ## Investigate what can change the decision
 
@@ -35,26 +37,41 @@ Match claims to evidence and cite files and lines where available. Separate
 verified fact from inference. Do not turn the investigation into an exhaustive
 system inventory; stop when more evidence would not change the decision.
 
-## Resolve the task tree
+## Resolve the task tree and handoff authority
 
-Derive the task purpose instead of repeating its title. Identify the material
-branches between the current state and a spec or implementation:
+Derive the task purpose instead of repeating its title. First state an
+**Outcome lock** in prose: quote the binding outcome, current scope, explicit
+non-goals, and sibling owners. It preserves task authority while leaving
+bounded local implementation choices to the next stage; it is not a JSON
+schema or permission to invent a larger mechanism.
 
-1. Eliminate impossible, unsafe, or out-of-scope routes with evidence.
-2. Resolve technical choices from repository precedent and constraints.
-3. Keep current, future, and explicitly deferred work separate.
-4. Ask the user only when a material product, priority, or authority decision
-   remains after the repository search. Include the search trail with the
-   question; do not ask the user to rediscover repository facts.
+Classify every decision-relevant branch against that lock:
 
-Do not manufacture a decision from hypothetical external state. If the
-artifacts show that superseded state expires within a bounded interval, record
-that consequence and keep migration, dual-read, or rollout machinery out of
-scope unless repository evidence makes compatibility work necessary.
+- **K0 — evidence question:** an authoritative source can resolve it.
+- **K1 — bounded implementation freedom:** alternatives preserve every
+  observable contract.
+- **K2 — missing human decision:** product, scope, or architecture authority
+  is absent and alternatives change observable behavior.
 
-Use qualitative engineering judgment. A load-bearing correctness, security,
-compatibility, money, or production invariant can outweigh convenience. Do not
-invent numeric scores.
+Resolve K0 before handoff. If unavailable evidence can change outcome, safety,
+or scope, stop blocked; otherwise retain a `⚠️ UNVERIFIED` evidence limit for
+the downstream author. Keep K1 visible as freedom rather than selecting it.
+Return ready for `to-spec` only when no K2 remains.
+
+If viable routes differ in public behavior, state/recovery behavior, a safety
+invariant without an owner, or pull sibling work forward, stop blocked and ask
+the one decision-changing K2 question. Repository defects, security findings,
+credible edge cases, and proof gaps are evidence to classify; they never
+enlarge the outcome lock by themselves.
+
+Eliminate impossible, unsafe, or out-of-scope routes with evidence. Use
+repository precedent and constraints for technical choices, keep current,
+future, and deferred work separate, and do not manufacture a decision from
+hypothetical external state. A bounded expiry consequence does not pull
+migration, dual-read, or rollout machinery into scope unless evidence makes it
+necessary. Qualitative engineering judgment still applies: a load-bearing
+correctness, security, compatibility, money, or production invariant can
+outweigh convenience.
 
 Never defer a material decision, change task scope, or pull future work forward
 without explicit approval. Default to read-only investigation and safe
@@ -62,18 +79,27 @@ non-mutating checks; ask before any repository write.
 
 ## Return the grounding brief
 
-Return the smallest brief that makes the next stage safe. It must make clear:
+Return the smallest brief that makes the next stage safe. For every
+positive-fit brief, use all four exact headings below; none is omittable. Use
+`none` where a heading has no remaining content. The narrow negative-fit
+result remains the exception.
 
-- the task's derived purpose and controlling source;
-- decision-relevant current-system evidence;
-- in-scope and out-of-scope boundaries, including future ownership;
-- viable routes, evidence-backed eliminations, and the chosen route;
-- assumptions, caveats, and unresolved human decisions;
-- whether the task is ready for specification or direct execution.
+- **Outcome lock:** binding outcome, scope, non-goals, and sibling owners.
+- **Non-goals and sibling fence:** excluded behavior and its owner.
+- **Viable minimal paths:** evidence-backed routes, eliminations, and the
+  least-widening safe route.
+- **Open K2:** each remaining human decision; write `Open K2: none` only when
+  ready.
 
-Use only headings that improve comprehension and omit empty sections. State why
-investigation stopped. Do not write a briefing file or invoke the next skill.
+Also include decision-relevant current-system evidence, assumptions and
+`⚠️ UNVERIFIED` caveats, why investigation stopped, and whether the task is
+ready for specification or direct execution. Cite files and lines for
+file-backed facts. A ready handoff has `Open K2: none`; otherwise report
+blocked/not ready with the single decision-changing question and do not invoke
+the next skill.
 
-Stop as blocked when evidence is contradictory or unavailable and guessing
-would decide product behavior, authority, safety, or scope. Stop as obsolete or
-misframed when the artifacts prove the requested task should not proceed.
+Return the completed brief directly. Do not leave a research plan, approval
+wrapper, or instructions for a later response in place of the brief.
+
+Do not write a briefing file. Stop as obsolete or misframed when the artifacts
+prove the requested task should not proceed.

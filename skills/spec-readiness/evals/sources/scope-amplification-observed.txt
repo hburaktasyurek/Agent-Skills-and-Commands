@@ -1,0 +1,7 @@
+Observed scope-amplification record, sanitized 2026-08-12.
+
+A bounded task required a server-authoritative update of an existing pending payment intent when a coupon changed its amount. A browser-provided intent identifier was not authority.
+
+The first spec added absent-intent creation, zero-total cancellation, identity partitioning, transition state, SHA-256 idempotency keys, and a cross-row publication/recovery protocol. Review and revision then amplified that optional machinery through five spec commits. The user stopped before Cycle 3 rather than authorize the new architecture.
+
+The regression fixtures use neutral names and invented values. They exclude raw session records, repository secrets, and external project identifiers.

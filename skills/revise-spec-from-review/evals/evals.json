@@ -17,7 +17,8 @@
         "The factory matrix and every producer that emits the restricted outcome are reconciled together.",
         "The auxiliary definite-failure pairing follows the binding reject contract instead of inventing an outcome.",
         "Acceptance coverage contains the cross-operation counterexample.",
-        "No unrelated spec behavior changes."
+        "No unrelated spec behavior changes.",
+        "The handoff reports the producer-consumer root disposition as patched, not removed, and retains full task-owned closure."
       ],
       "metadata": {
         "case_type": "primary",
@@ -126,6 +127,38 @@
             "type": "observed_failure_record",
             "locator": "sanitized multi-round browser-boundary review record",
             "captured_at": "2026-08-08"
+          }
+        }
+      }
+    },
+    {
+      "id": 5,
+      "prompt": "Use $revise-spec-from-review to apply the complete review in evals/closure/simplify-scope-amplification/input/review.txt to the named spec folder evals/closure/simplify-scope-amplification/input/agent-os/specs/fixture. Read the binding task contract and whole cluster first. Modify only that named spec folder and return a concise evidence-backed handoff.",
+      "expected_output": "The revision reports removed, deletes the optional lifecycle architecture and every dependent clause, retains the bounded existing-pending server-authoritative update, and changes nothing unrelated.",
+      "files": [
+        "evals/closure/simplify-scope-amplification/input/task-contract.md",
+        "evals/closure/simplify-scope-amplification/input/review.txt",
+        "evals/closure/simplify-scope-amplification/input/agent-os/specs/fixture/shape.md",
+        "evals/closure/simplify-scope-amplification/input/agent-os/specs/fixture/plan.md",
+        "evals/closure/simplify-scope-amplification/input/agent-os/specs/fixture/references.md",
+        "evals/closure/simplify-scope-amplification/input/agent-os/specs/fixture/standards.md"
+      ],
+      "assertions": [
+        "The handoff reports OPTIONAL_MECHANISM_SCOPE_AMPLIFICATION with disposition removed.",
+        "The revised four-file cluster deletes creation/replacement, cancellation, PendingCouponTransition, SHA-256 key, publication/recovery, confirmation identity, and every dependent plan or test clause.",
+        "The resulting cluster retains only the existing server-bound positive Provider::update path, ignores browser ID as authority, and preserves missing-binding and zero-amount no-op behavior.",
+        "No unrelated contract is changed or added."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/scope-amplification-observed.txt",
+          "sha256": "37402564798059904ae59cba1b507f769885ef7e790666f8854512049edfe1ce",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized bounded coupon scope-amplification record",
+            "captured_at": "2026-08-12"
           }
         }
       }

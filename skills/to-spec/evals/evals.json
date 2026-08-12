@@ -103,6 +103,57 @@
           }
         }
       }
+    },
+    {
+      "id": 5,
+      "prompt": "Use $to-spec to turn evals/contract-closure/scope-amplification/input/task.md and its supplied PHP sources and test into the normal implementation spec. Work only in this disposable workspace, do not implement, and return the saved spec path plus the concise handoff.",
+      "expected_output": "A four-file spec reuses CouponHandler, PendingIntentStore, Provider, and CouponResult for the bounded existing-pending positive update; it makes missing binding and zero amount no-ops and adds none of the excluded lifecycle framework.",
+      "files": [
+        "evals/contract-closure/scope-amplification/input/task.md",
+        "evals/contract-closure/scope-amplification/input/src/CouponHandler.php",
+        "evals/contract-closure/scope-amplification/input/src/PendingIntentStore.php",
+        "evals/contract-closure/scope-amplification/input/src/Provider.php",
+        "evals/contract-closure/scope-amplification/input/src/CouponResult.php",
+        "evals/contract-closure/scope-amplification/input/tests/CouponHandlerTest.php"
+      ],
+      "assertions": [
+        "Exactly four spec files are saved under agent-os/specs and reuse CouponHandler::apply, PendingIntentStore::forSession, Provider::update, and the existing CouponResult.",
+        "The spec makes Provider::update one positive-amount call only for an existing server-bound intent, ignores browser intent ID as authority, and makes missing binding and zero amount unchanged local no-ops.",
+        "The spec does not add absent-intent creation, replacement, cancellation, durable transition state, custom cross-row publication, cross-family identity, deterministic key, or recovery lifecycle.",
+        "The spec names later-owned lifecycle concerns as non-goals instead of treating them as reachable current consequences."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/scope-amplification-observed.txt",
+          "sha256": "37402564798059904ae59cba1b507f769885ef7e790666f8854512049edfe1ce",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized bounded coupon scope-amplification record",
+            "captured_at": "2026-08-12"
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "prompt": "Use $to-spec on evals/contract-closure/open-k2-stop/input/task.md, grounding.md, and the supplied source. The grounding claims readiness, but validate it yourself. Work only in this disposable workspace and do not implement.",
+      "expected_output": "No spec folder is saved. The result asks the one decision-changing question of whether zero total leaves the pending intent unchanged or cancels it.",
+      "files": [
+        "evals/contract-closure/open-k2-stop/input/task.md",
+        "evals/contract-closure/open-k2-stop/input/grounding.md",
+        "evals/contract-closure/open-k2-stop/input/src/CouponHandler.php"
+      ],
+      "assertions": [
+        "The supplied ready label is rejected because Open K2 remains nonempty.",
+        "No agent-os/specs folder or four-file cluster is created.",
+        "The result asks only the zero-total unchanged-versus-cancel decision and does not select a lifecycle framework."
+      ],
+      "metadata": {
+        "case_type": "edge",
+        "source": "synthetic"
+      }
     }
   ]
 }

@@ -25,7 +25,8 @@
         "The verdict opens with NOT READY.",
         "One Blocker traces production construction of ProviderTransport to the unreachability of both local-only actions during provider outage.",
         "The Blocker groups construction, dependency acquisition, production entry, local actions, provider retry, and their acceptance proof into one decision family.",
-        "The Blocker carries compact Evidence and impact, Root and closure, and Proof; Root and closure states the observable reachability and fail-closed guarantees without prescribing a resolver, factory, or service architecture."
+        "The Blocker carries compact Evidence and impact, Root and closure, and Proof; Root and closure states the observable reachability and fail-closed guarantees without prescribing a resolver, factory, or service architecture.",
+        "The proven provider-construction root is marked necessity=outcome-required and retains its full construction-to-local-action closure."
       ]
     },
     {
@@ -93,6 +94,34 @@
         "The report ends with Workflow stop.",
         "Workflow stop is a compact terminal report: it contains one plain-language Problem, a Required closure, two or three concrete Choices with consequences, and an evidence-backed Recommendation; it does not impose a word or token budget; no Choice weakens acceptance, changes the product outcome, or defers the root to another work package."
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Use $spec-readiness to review evals/fixtures/optional-mechanism-amplification-spec.md against its binding task in evals/fixtures/optional-mechanism-amplification-task.md. Return only the implementation-readiness verdict and evidence-backed report; do not modify files.",
+      "expected_output": "NOT READY groups the out-of-authority lifecycle machinery in one OPTIONAL_MECHANISM_SCOPE_AMPLIFICATION Blocker whose bounded closure removes it rather than designing fuller persistence or recovery.",
+      "files": [
+        "evals/fixtures/optional-mechanism-amplification-task.md",
+        "evals/fixtures/optional-mechanism-amplification-spec.md"
+      ],
+      "assertions": [
+        "The verdict opens with NOT READY.",
+        "One Blocker uses stable id OPTIONAL_MECHANISM_SCOPE_AMPLIFICATION and necessity=architecture-induced.",
+        "The Blocker groups creation/replacement, cancellation, PendingCouponTransition, SHA-256 key, publication/recovery, and confirmation identity as one out-of-authority family.",
+        "Root and closure directs a bounded handoff that removes the optional mechanisms while preserving the existing-pending positive update; it does not demand a fuller persistence, transaction, or recovery design."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/scope-amplification-observed.txt",
+          "sha256": "37402564798059904ae59cba1b507f769885ef7e790666f8854512049edfe1ce",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized bounded coupon scope-amplification record",
+            "captured_at": "2026-08-12"
+          }
+        }
+      }
     }
   ]
 }

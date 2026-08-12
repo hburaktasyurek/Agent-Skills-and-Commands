@@ -101,6 +101,58 @@
           }
         }
       }
+    },
+    {
+      "id": 5,
+      "prompt": "Use $task-groundwork on evals/files/scope-amplification/input/task.md, roadmap.md, and the supplied PHP sources. Work read-only, classify task authority and ownership, and return the normal decision-ready grounding brief without implementing.",
+      "expected_output": "The brief preserves the bounded existing-pending server-authoritative update, ignores browser identity as authority, fences lifecycle work to its roadmap owners, and never promotes optional state, identity, key, or publication machinery.",
+      "files": [
+        "evals/files/scope-amplification/input/AGENTS.md",
+        "evals/files/scope-amplification/input/task.md",
+        "evals/files/scope-amplification/input/roadmap.md",
+        "evals/files/scope-amplification/input/src/CouponHandler.php",
+        "evals/files/scope-amplification/input/src/PendingIntentStore.php",
+        "evals/files/scope-amplification/input/src/Provider.php",
+        "evals/files/scope-amplification/input/src/CouponResult.php"
+      ],
+      "assertions": [
+        "The brief contains Outcome lock, Non-goals and sibling fence, Viable minimal paths, and Open K2 headings.",
+        "Outcome lock limits the task to the existing server-bound pending-intent positive update, preserves the existing CouponResult, and rejects browser intent ID as authority.",
+        "Creation/replacement, cancellation/compensation, confirmation identity, and durable publication/recovery remain assigned to their later roadmap owners instead of becoming current requirements.",
+        "Open K2 is explicitly none, and the ready handoff introduces no transition state, idempotency key, custom publication protocol, or cross-family identity framework."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/scope-amplification-observed.txt",
+          "sha256": "37402564798059904ae59cba1b507f769885ef7e790666f8854512049edfe1ce",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized bounded coupon scope-amplification record",
+            "captured_at": "2026-08-12"
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "prompt": "Use $task-groundwork on evals/files/open-k2-stop/input/task.md and the supplied source. Work read-only and return the appropriate handoff without implementing.",
+      "expected_output": "The result is blocked or not ready because the zero-total provider outcome is an unresolved product/scope decision; it names that one Open K2 and does not select a route.",
+      "files": [
+        "evals/files/open-k2-stop/input/AGENTS.md",
+        "evals/files/open-k2-stop/input/task.md",
+        "evals/files/open-k2-stop/input/src/CouponHandler.php"
+      ],
+      "assertions": [
+        "The brief labels the zero-total choice as Open K2 rather than K0 evidence gathering or K1 implementation freedom.",
+        "The result is blocked or not ready and asks only whether zero total leaves the pending intent unchanged or cancels it.",
+        "No creation, cancellation, transition, idempotency, recovery, or other architecture is silently selected."
+      ],
+      "metadata": {
+        "case_type": "edge",
+        "source": "synthetic"
+      }
     }
   ]
 }

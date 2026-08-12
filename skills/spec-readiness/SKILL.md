@@ -12,6 +12,12 @@ Review the current spec from the implementer's chair:
 
 Review artifacts, not the author. Read only; do not edit the spec or code.
 
+**Output discipline — critical:** do all investigation through tools and private
+reasoning. The only natural-language response is the completed verdict report:
+its first byte is `READY` or `NOT READY`, immediately followed by the required
+fields. Never emit progress, intent, scope, method, approval, or a future-tense
+note before that verdict.
+
 ## Structural threshold
 
 A missing choice is a Blocker only when different answers change a declared
@@ -24,9 +30,41 @@ component and preserve every boundary and observable obligation. Private
 algorithms, helper names, local refactors, and hypothetical consumers are not
 Blockers unless the binding artifacts make them load-bearing.
 
-State activation or rollout timing only when a binding artifact defines it.
-Do not infer that activation is immediate merely because a code change would
-be deployed.
+State activation or rollout timing only when a binding artifact defines it. Do
+not infer that activation is immediate merely because a code change would be
+deployed.
+
+## Scope provenance and necessity
+
+Derive the Outcome lock independently from the spec: binding outcome, scope,
+non-goals, sibling owners, acceptance, and stop conditions. A proposed
+mechanism does not become task-owned merely because the spec depends on it.
+For every Blocker, put one classification inside **Root and closure**:
+
+- `necessity=outcome-required` when removing the mechanism makes the binding
+  outcome unsafe or unreachable; retain its full producer-consumer closure.
+- `necessity=architecture-induced` when removal eliminates a mechanism
+  unsupported by the Outcome lock; the closure is removal/simplification, not
+  fuller internal design.
+- `necessity=mixed` only when the finding identifies both a concrete
+  outcome-required obligation and separable optional manifestations; state both
+  in the same root. Do not use `mixed` merely because several designs could
+  meet an outcome-required contract.
+
+Classify the missing **observable obligation**, not merely the proposed
+mechanism that currently prevents it. If the binding outcome requires an
+action, path, or fail-closed boundary to remain reachable, a construction or
+dependency coupling that makes it unreachable is
+`necessity=outcome-required`: its repair may remove or simplify the coupling,
+but the reachability closure remains required. Use
+`architecture-induced` only if removing the whole mechanism family leaves
+every Outcome-lock obligation already satisfied.
+
+Use stable root `OPTIONAL_MECHANISM_SCOPE_AMPLIFICATION` when one
+architecture-induced family adds mechanisms unsupported by the Outcome lock.
+
+An unresolved K2 is an authority Blocker. Do not convert it into
+reviewer-selected architecture.
 
 ## Review basis
 
@@ -35,10 +73,10 @@ be deployed.
    staged and worktree content when they differ. If Git identity inspection is
    unavailable, record that limitation after one attempt; do not retry
    equivalent commands.
-2. Derive the binding task contract for the review (authority, outcome, scope,
-   non-goals, acceptance/stop conditions, ordered work packages, and relevant
-   migration, rollback, recovery, or activation state). Do not narrate it as a
-   separate report field.
+2. Derive the binding task contract independently of the spec: authority,
+   Outcome lock, acceptance/stop conditions, ordered work packages, and
+   relevant migration, rollback, recovery, or activation state. Do not narrate
+   it as a separate report field.
 3. Use `full` mode by default. For re-review mode selection, shared cycle
    semantics, and incremental procedure, follow
    [references/incremental-review.md](references/incremental-review.md).
@@ -124,6 +162,17 @@ Do not emit separate `Review mode`, `Review cycle`, `Artifact basis`,
 `Consequence posture`, or `Task contract` headers. Do not write a Coverage
 receipt. Reports do not restate task, method, or prior narrative.
 
+The response itself is the completed verdict report. Do not preface it with a
+private ledger, review plan, scope narrative, approval condition, or execution
+note. Start with the verdict and stop after its required fields; do not leave
+private analysis or a report outline as the final deliverable.
+
+`READY` is not a bare verdict. After Basis, include one concise `Ready
+evidence:` line that identifies the named contract/consumer coverage,
+implementation freedom where relevant, and why untriggered structural gates
+do not add an obligation. At cycle `3/3` with `NOT READY`, emit the actual
+three-field Blocker(s) and full Workflow stop below, never a plan to emit them.
+
 On re-review, before current findings, emit only concise decision-relevant
 Prior lines:
 
@@ -136,7 +185,7 @@ For each finding use the shared three-field compact form:
 ```text
 [Blocker | Gap | Note] <title>
 Evidence and impact: <current path:line/section or inline clause; activated harm / structural divergence and recoverability>
-Root and closure: <stable id; other manifestations; producers, consumers, states, and proofs revise must close; falsifiable decision without prescribing excess mechanism>
+Root and closure: <stable id; necessity=outcome-required | architecture-induced | mixed; other manifestations; producers, consumers, states, and proofs revise must close; falsifiable decision without prescribing excess mechanism>
 Proof: <independent evidence / distinguishing counterexamples>
 ```
 

@@ -1,18 +1,27 @@
 # Contract closure protocol
 
 Use this protocol only when the task has a contract-bearing boundary. Its goal
-is totality over reachable material behavior, not a maximal Cartesian product.
+is totality over reachable material behavior selected by the **Outcome lock**
+and current system, not a maximal Cartesian product or every mechanism a draft
+could invent.
 
 ## 1. Draw the closure graph
 
-Record the task-owned nodes and directed handoffs:
+Start with task-owned nodes and directed handoffs that the frozen outcome can
+reach. A candidate boundary belongs only when the outcome lock requires it or
+current-system evidence proves the outcome unsafe or unreachable without it.
+Reject a more complex candidate when a grounded viable minimal path preserves
+all observable behavior.
+
+Record selected nodes and handoffs:
 
 1. input sources and entry carriers;
 2. validation, proof, or normalization;
 3. classifiers, factories, or state constructors;
 4. public result and returned identity/data;
 5. consumer, authority action, persistence, and externally visible effect;
-6. retry, recovery, late-result, or competing-owner behavior when reachable;
+6. retry, recovery, late-result, or competing-owner behavior only when the
+   selected task-owned mechanism makes it reachable;
 7. acceptance oracle and distinguishing counterexample.
 
 Include all task-owned producers of a changed public result, not only the path
@@ -56,6 +65,12 @@ command, entrypoint/carrier, object family, resource/identity state,
 provenance, classification/outcome, consumer/action, and retry/recovery state.
 These are prompts, not a mandatory domain model.
 
+A language type does not by itself add an input-value closure axis. Include a
+value row only when the Outcome lock or current-system evidence makes it
+reachable and observable through the changed path; otherwise leave it unchanged
+and unowned, not as a new oracle. A selected task-owned consumer/action call
+still requires its downstream-failure row under the closure gates.
+
 Cross two axes only when their values can vary independently and the pairing
 can change a public result, rejection, state transition, ownership, persisted
 identity, side effect, or oracle. Collapse equivalent rows under one stated
@@ -86,6 +101,11 @@ Each row must be one of:
 Silence is not a fifth state.
 
 ## 5. Run closure gates
+
+Run gates only after scope provenance is established. Durable state, atomicity,
+retry identity, compensation, and recovery are obligations when a selected
+task-owned mechanism makes them necessary—not because a more complex draft
+could have used them.
 
 - **Totality:** every reachable material row has one status.
 - **Constructibility:** every emitted public result satisfies its own factory or

@@ -8,6 +8,12 @@ Treat every claim as unverified. Author and tooling are irrelevant.
 
 Do not modify files. Analysis only.
 
+**Output discipline — critical:** do all investigation through tools and private
+reasoning. The only natural-language response is the completed Report: its
+first byte is `PASS` or `FAIL`, immediately followed by the required fields.
+Never emit progress, intent, scope, method, approval, or a future-tense note
+before that verdict.
+
 ## Governing contract
 
 Ask:
@@ -50,12 +56,35 @@ stop. Group shared-root manifestations; split independently failing paths.
 Reviewer owns diagnosis and proof contract; reviser owns design. Prescribe a
 mechanism only when binding authority leaves no alternative.
 
-### Task-owned scope
+### Task-owned scope and necessity
 
-Stay inside the stated outcome, scope, activation, and contracts the plan
-necessarily depends on. Do not invent adjacent product requirements. Do not
-trust assertions merely because code, tests, diagrams, or prose repeat them.
-Distinguish lack of proof from proof of a defect.
+Derive the Outcome lock independently from the spec: binding outcome, scope,
+non-goals, sibling owners, activation, and acceptance. Stay inside that lock and
+the contracts it necessarily depends on. Do not invent adjacent product
+requirements or trust assertions merely because code, tests, diagrams, or prose
+repeat them. Distinguish lack of proof from proof of a defect.
+
+For every P0/P1, classify necessity inside **Root and closure** as exactly one:
+
+- `necessity=outcome-required` — removing the mechanism makes the binding
+  outcome unsafe or unreachable; retain full consequence closure.
+- `necessity=architecture-induced` — removing an unsupported mechanism makes
+  the failure disappear; require its removal/simplification, not completion.
+- `necessity=mixed` — separate the outcome-required obligation from optional
+  manifestations and close only the former.
+
+Classify the violated **observable obligation**, not merely the mechanism that
+causes it. If the Outcome lock requires an action, ordering, path, or
+fail-closed boundary to remain true, the failure is
+`necessity=outcome-required` even when its smallest repair removes or
+simplifies an architectural coupling. Use `architecture-induced` only when
+removing the entire mechanism family leaves every Outcome-lock obligation
+already satisfied.
+
+Use stable root `OPTIONAL_MECHANISM_SCOPE_AMPLIFICATION` when an
+architecture-induced family adds mechanisms unsupported by the Outcome lock.
+
+An unresolved K2 is an authority blocker, never reviewer-selected architecture.
 
 ### No-drop / no-downgrade
 
@@ -154,9 +183,11 @@ with a differently shaped equivalent.
 3. **Attack.** Highest-consequence path first, then remaining applicable
    surfaces. For each suspect: state the obligation; prove the failure to the
    deepest task-owned root; explain why the current contract/control/proof
-   cannot establish it; sweep every task-owned surface it can invalidate;
-   derive the smallest falsifiable closure outcome. Challenge confident
-   clauses, clean-looking boundaries, and tests that mirror the plan.
+   cannot establish it; sweep every task-owned surface it can invalidate; and
+   derive the smallest falsifiable closure outcome. Run the necessity removal
+   test against the independently derived Outcome lock before prescribing
+   completion of a mechanism. Challenge confident clauses, clean-looking
+   boundaries, and tests that mirror the plan.
 
 ### Claim authority
 
@@ -196,6 +227,13 @@ Apply only when the plan triggers the mechanism:
   malformed/conflicting wherever consequences differ; prove provenance and
   fail-closed behavior with counterexamples.
 
+The response itself is the completed Report. Start its first visible
+non-reasoning line with the verdict, then emit the required report fields and
+stop. Do not preface it with scope, method, planning, approval conditions, or
+an execution note. A response that says `will`, `on approval`, `after
+confirmation`, or merely outlines a report is incomplete: replace the outline
+with the actual Report before returning.
+
 ## Report
 
 Open with exactly one verdict, then one Basis line:
@@ -222,7 +260,7 @@ Report findings in priority order using the shared three-field compact form:
 ```text
 [Px] <short title>
 Evidence and impact: <current spec location + claim-matching source evidence; activated harm and recoverability>
-Root and closure: <stable id; manifestations; producers, consumers, gates, states, recovery, neighbors; falsifiable outcome>
+Root and closure: <stable id; necessity=outcome-required | architecture-induced | mixed; manifestations; producers, consumers, gates, states, recovery, neighbors; falsifiable outcome>
 Proof: <independent evidence / counterexamples>
 ```
 
@@ -249,7 +287,7 @@ Classification:
 [Px] <short title>
 Classification: incomplete closure | prior-review gap | revision-induced
 Evidence and impact: <current spec location + decisive evidence; activated harm and recoverability>
-Root and closure: <stable id; manifestations; producers, consumers, gates, states, recovery, neighbors; falsifiable outcome>
+Root and closure: <stable id; necessity=outcome-required | architecture-induced | mixed; manifestations; producers, consumers, gates, states, recovery, neighbors; falsifiable outcome>
 Proof: <independent evidence / counterexamples>
 ```
 

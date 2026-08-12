@@ -33,11 +33,18 @@ History, names, comments, and analogous code are supporting evidence, not
 authority. When sources conflict, expose the conflict rather than silently
 choosing one.
 
-Stop before drafting only for a material unmade product, scope, public-contract,
-architecture, acceptance, or output-location decision. Do not return ordinary
-technical consequences to the human when binding rules and repository evidence
-already determine them. Mark genuinely non-material mechanism choices as
-implementation freedom rather than inventing or blocking on them.
+Validate a grounding handoff; do not trust its readiness label. Freeze its
+**Outcome lock**—binding outcome, scope, non-goals, and sibling owners—and
+check any `Open K2` yourself. Resolve remaining K0 evidence questions, or use
+the existing material/non-material gap rule; preserve K1 as bounded
+implementation freedom. If any K2 remains, or an adjacent/future-owned concern
+was promoted without binding authority, stop without saving a spec.
+
+When stopping, explain the one real scenario, why its choices change observable
+behavior, two or three options with their consequences, one evidence-backed
+recommendation, and ask one question. Do not return ordinary technical
+consequences to the human when binding rules and repository evidence already
+determine them.
 
 ## Consequence calibration
 
@@ -67,16 +74,16 @@ extra depth only on the contract-bearing boundary.
 Record privately:
 
 - controlling request and authority source;
-- required outcome and affected observer;
-- in-scope and out-of-scope behavior;
-- accepted decisions and remaining material decisions;
+- frozen Outcome lock: required outcome and affected observer, in-scope and
+  out-of-scope behavior, non-goals, and sibling owners;
+- resolved K0 evidence, K1 implementation freedoms, and any Open K2;
 - exact spec root—`agent-os/specs` by default, or the approved alternative—and
   a clear timestamped slug.
 
-If a material decision is missing, do not save a partial cluster. Explain the
-real scenario, why the choice changes observable behavior, two or three options
-with their main consequences, one evidence-backed recommendation, and ask one
-question.
+Do not save a partial cluster while an Open K2 or promoted adjacent concern
+remains. Explain the real scenario, why the choice changes observable behavior,
+two or three options with their main consequences, one evidence-backed
+recommendation, and ask one question.
 
 ### 2. Inspect enough evidence
 
@@ -89,22 +96,44 @@ uniqueness claims with a search across plausible owners.
 Label a non-decision evidence gap as `⚠️ UNVERIFIED` everywhere it affects the
 cluster. A material decision may not be hidden under that label.
 
-### 3. Close behavior before drafting
+### 3. Proportion and close behavior before drafting
+
+Before closure, quote the frozen Outcome lock and run a widen test on every
+proposed major behavior. A public interface, persistent state,
+transaction/recovery protocol, idempotency identity, provider operation,
+cross-component identity, or lifecycle branch needs either outcome-lock
+authority or a cited current-system necessity without which the bounded outcome
+is unsafe or unreachable. Enforce the sibling fence: local mechanism ownership
+does not authorize absent-resource creation, replacement, cancellation, a new
+framework, or sibling work.
+
+Compare every grounded viable minimal path. Choose the safe route that reuses
+landed owners and state and adds the fewest task-owned states and boundaries.
+If no safe bounded route exists, stop without saving and surface the exact K2;
+never silently select a framework.
+
+A typed input's full representable range is not authority to add normative
+branches or acceptance tests. Specify only values that the Outcome lock or
+current-system evidence places on the changed path; leave other input behavior
+unchanged and unowned. This does not remove downstream-failure closure for a
+selected task-owned external call: once selected, its observable failure path
+remains mandatory.
 
 For focused work, prove the direct changed path, its observable result, and one
 counterexample when exactness matters.
 
 For contract-bearing work, build the closure model required by
 `references/contract-closure.md`. Decide, reject, or deliberately leave as
-bounded implementation freedom every reachable material row. If a row changes
-product behavior and no authority selects it, stop before drafting.
+bounded implementation freedom every reachable **task-owned** material row. If
+a row changes product behavior and no authority selects it, stop before
+drafting.
 
-Do not confuse a clean name, plausible API, happy-path test, or green suite with
-contract closure. Verify that every public producer result is constructible,
-accepted by its consumer, preserves required identity/state, and has an oracle
-that can distinguish the unsafe alternative. Treat downstream consumer failure
-as a separate row whenever the selected call can reject, throw, or partially
-apply an effect.
+Do not confuse a clean name, plausible API, happy-path test, or green suite
+with contract closure. Verify that every selected public producer result is
+constructible, accepted by its consumer, preserves required identity/state, and
+has an oracle that can distinguish the unsafe alternative. Treat downstream
+consumer failure as a separate row whenever the selected call can reject,
+throw, or partially apply an effect.
 
 ### 4. Draft exactly four files
 

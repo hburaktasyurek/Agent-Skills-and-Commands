@@ -107,6 +107,17 @@
           "captured_at": "2026-08-11"
         }
       }
+    },
+    {
+      "id": "optional-mechanism-amplification",
+      "input": "optional-mechanism-amplification/input",
+      "checks": [
+        "The report FAILs the current spec with a stable OPTIONAL_MECHANISM_SCOPE_AMPLIFICATION root.",
+        "Root and closure carries necessity=architecture-induced and identifies replacement creation, zero-total cancellation, PendingCouponTransition, SHA-256 key, custom publication/recovery, and confirmation identity as one unsupported mechanism family.",
+        "The smallest falsifiable closure removes or simplifies the optional architecture across all dependent clauses.",
+        "The existing server-bound positive Provider::update path, browser-ID non-authority, and local no-op boundaries remain task-owned and preserved.",
+        "The review does not demand completion of the optional transition state machine."
+      ]
     }
   ]
 }

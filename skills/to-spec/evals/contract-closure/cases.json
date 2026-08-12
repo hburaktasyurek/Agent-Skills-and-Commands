@@ -38,6 +38,27 @@
         "Legitimate server-only credential use remains available.",
         "Acceptance contains a safe browser value and an independent carrier or data-flow counterexample."
       ]
+    },
+    {
+      "id": "scope-amplification",
+      "input": "scope-amplification/input",
+      "checks": [
+        "Exactly four spec files are saved and reuse CouponHandler::apply, PendingIntentStore::forSession, Provider::update, and the existing CouponResult.",
+        "Only a positive amount with an existing server-bound pending intent calls Provider::update; browser intent ID is not authority.",
+        "Missing binding and zero amount preserve the local result with no provider call.",
+        "No creation/replacement/cancellation lifecycle, durable transition state, publication/recovery protocol, identity framework, or deterministic key is introduced.",
+        "Later-owned lifecycle concerns remain explicit non-goals rather than closure rows for this task."
+      ]
+    },
+    {
+      "id": "open-k2-stop",
+      "input": "open-k2-stop/input",
+      "checks": [
+        "The supplied grounding's ready label is not trusted while Open K2 still names the zero-total outcome.",
+        "No spec folder or four-file cluster is saved.",
+        "The only returned question asks whether zero total leaves the existing pending intent unchanged or cancels it.",
+        "No lifecycle framework is selected or proposed as a substitute for the missing authority."
+      ]
     }
   ]
 }
