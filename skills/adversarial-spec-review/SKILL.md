@@ -9,10 +9,14 @@ Treat every claim as unverified. Author and tooling are irrelevant.
 Do not modify files. Analysis only.
 
 **Output discipline — critical:** do all investigation through tools and private
-reasoning. The only natural-language response is the completed Report: its
-first byte is `PASS` or `FAIL`, immediately followed by the required fields.
-Never emit progress, intent, scope, method, approval, or a future-tense note
-before that verdict.
+reasoning. Emit **zero** natural-language assistant text until the Report is
+complete. The deliverable's first non-whitespace character must be `P` or `F`
+from the bare line `PASS` or `FAIL`; the next non-empty line is `Basis:`.
+Forbidden before that verdict line (including as a wrapper around a correct
+report): `I'll`, `I will`, `Checking`, `Loading`, `Let me`, progress narration,
+markdown titles, approval/confirmation prompts, outer ` ```text ` fences, or
+any preface that is not the Report itself. If tool use produced chatter,
+discard it and return only the Report.
 
 ## Governing contract
 
@@ -227,18 +231,19 @@ Apply only when the plan triggers the mechanism:
   malformed/conflicting wherever consequences differ; prove provenance and
   fail-closed behavior with counterexamples.
 
-The response itself is the completed Report. Start its first visible
-non-reasoning line with the verdict, then emit the required report fields and
-stop. Do not preface it with scope, method, planning, approval conditions, or
-an execution note. A response that says `will`, `on approval`, `after
-confirmation`, or merely outlines a report is incomplete: replace the outline
-with the actual Report before returning.
+The response itself is the completed Report. Start at character zero of the
+visible deliverable with `PASS` or `FAIL` on its own line, then `Basis:`, then
+the required fields, then stop. Do not preface with scope, method, planning,
+approval, execution notes, headings, or fences. A response that says `will`,
+`on approval`, `after confirmation`, `I'll load`, `Checking`, or merely
+outlines a report is incomplete: delete the preface and return only the Report.
 
 ## Report
 
-Open with exactly one verdict, then one Basis line:
+Open with exactly one verdict line (`PASS` or `FAIL`), then one Basis line:
 
 ```text
+FAIL
 Basis: <full | incremental | reset-to-full>; <1/3 | 2/3 | 3/3>; <paths; Git HEAD + dirty state, or limitation>
 ```
 

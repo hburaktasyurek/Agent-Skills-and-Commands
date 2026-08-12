@@ -89,6 +89,30 @@ const cursorPlan = parseCursor([
 ].join("\n"));
 assert.equal(cursorPlan.valid, true);
 assert.equal(cursorPlan.final_message, "grounded plan");
+const cursorVerdict = parseCursor([
+  JSON.stringify({ type: "system", subtype: "init", session_id: "u3" }),
+  JSON.stringify({
+    type: "result",
+    subtype: "success",
+    is_error: false,
+    result: "I'll load fixtures first.FAIL\nBasis: full; 1/3; fixture.md\n",
+    session_id: "u3",
+  }),
+].join("\n"));
+assert.equal(cursorVerdict.valid, true);
+assert.equal(cursorVerdict.final_message, "FAIL\nBasis: full; 1/3; fixture.md");
+const cursorVerdictBlank = parseCursor([
+  JSON.stringify({ type: "system", subtype: "init", session_id: "u4" }),
+  JSON.stringify({
+    type: "result",
+    subtype: "success",
+    is_error: false,
+    result: "preamble.FAIL\n\nBasis: incremental; 3/3; fixture.md\n",
+    session_id: "u4",
+  }),
+].join("\n"));
+assert.equal(cursorVerdictBlank.valid, true);
+assert.equal(cursorVerdictBlank.final_message, "FAIL\n\nBasis: incremental; 3/3; fixture.md");
 
 const opencode = parseOpenCode([
   JSON.stringify({ type: "text", part: { text: "working" } }),

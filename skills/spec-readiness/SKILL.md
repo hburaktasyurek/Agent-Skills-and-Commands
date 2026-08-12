@@ -13,10 +13,14 @@ Review the current spec from the implementer's chair:
 Review artifacts, not the author. Read only; do not edit the spec or code.
 
 **Output discipline — critical:** do all investigation through tools and private
-reasoning. The only natural-language response is the completed verdict report:
-its first byte is `READY` or `NOT READY`, immediately followed by the required
-fields. Never emit progress, intent, scope, method, approval, or a future-tense
-note before that verdict.
+reasoning. Emit **zero** natural-language assistant text until the verdict
+report is complete. The deliverable's first non-whitespace character must begin
+the bare first line `READY` or `NOT READY`; the next non-empty line is
+`Basis:`. Forbidden before that verdict line (including as a wrapper around a
+correct report): markdown titles such as `# Spec Readiness Verdict`, approval
+or “on confirmation re-emit” wrappers, outer ` ```text ` fences, `I'll`,
+`Checking`, progress narration, or any preface that is not the report itself.
+If tool use produced chatter, discard it and return only the report.
 
 ## Structural threshold
 
@@ -149,12 +153,15 @@ been checked. Keep the review proportional.
 
 ## Verdict and output
 
-Open with exactly `READY` or `NOT READY`. `READY` requires zero Blockers and
-only explicitly owned, bounded known unknowns. Never use "ready with caveats."
+Open at character zero of the visible deliverable with exactly `READY` or
+`NOT READY` on its own first line. `READY` requires zero Blockers and only
+explicitly owned, bounded known unknowns. Never use "ready with caveats."
+Do not wrap the report in a title, approval card, or outer code fence.
 
-Then one Basis line:
+Then one Basis line (example shape; use `READY` when that is the truth):
 
 ```text
+NOT READY
 Basis: <full | incremental | reset-to-full>; <1/3 | 2/3 | 3/3>; <paths and exact content/revision identity or limitation>
 ```
 
@@ -162,10 +169,9 @@ Do not emit separate `Review mode`, `Review cycle`, `Artifact basis`,
 `Consequence posture`, or `Task contract` headers. Do not write a Coverage
 receipt. Reports do not restate task, method, or prior narrative.
 
-The response itself is the completed verdict report. Do not preface it with a
-private ledger, review plan, scope narrative, approval condition, or execution
-note. Start with the verdict and stop after its required fields; do not leave
-private analysis or a report outline as the final deliverable.
+The response itself is the completed verdict report. Delete any preface
+(`# Spec Readiness Verdict`, “on confirmation”, ledger, plan, or execution
+note). Start with the verdict line and stop after the required fields.
 
 `READY` is not a bare verdict. After Basis, include one concise `Ready
 evidence:` line that identifies the named contract/consumer coverage,

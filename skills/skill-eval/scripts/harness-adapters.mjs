@@ -109,6 +109,15 @@ export function parseClaudeCode(raw) {
   );
 }
 
+function extractVerdictDeliverable(text) {
+  if (typeof text !== "string" || !text.trim()) return text ?? "";
+  let last = null;
+  const pattern = /(PASS|FAIL|READY|NOT READY)\r?\n(?:[ \t]*\r?\n)*Basis:/g;
+  for (const match of text.matchAll(pattern)) last = match;
+  if (!last) return text;
+  return text.slice(last.index);
+}
+
 export function parseCursor(raw) {
   const { events, errors } = jsonLines(raw);
   const results = events.filter((event) => event.type === "result");
@@ -122,10 +131,11 @@ export function parseCursor(raw) {
     .map((event) => event.tool_call?.createPlanToolCall?.args?.plan)
     .filter((value) => typeof value === "string" && value.trim())
     .at(-1);
+  const rawFinal = plan ?? (typeof result.result === "string" ? result.result : textParts(result.result).at(-1));
   return parsedResult(
     events,
     errors,
-    plan ?? (typeof result.result === "string" ? result.result : textParts(result.result).at(-1)),
+    extractVerdictDeliverable(rawFinal),
     { status: "unavailable" },
     result.session_id ?? events.find((event) => event.type === "system")?.session_id ?? null,
   );
