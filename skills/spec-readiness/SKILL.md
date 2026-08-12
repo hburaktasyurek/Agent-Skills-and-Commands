@@ -35,16 +35,25 @@ be deployed.
    staged and worktree content when they differ. If Git identity inspection is
    unavailable, record that limitation after one attempt; do not retry
    equivalent commands.
-2. State the binding task contract: authority, outcome, scope, non-goals,
-   acceptance/stop conditions, ordered work packages, and relevant migration,
-   rollback, recovery, or activation state.
-3. Use `full` mode by default. A claimed re-review is `incremental` only with
-   the complete prior report, exact unchanged basis, unchanged task contract,
-   and a correction-only delta. Otherwise use `reset-to-full`. For a re-review,
-   read [references/incremental-review.md](references/incremental-review.md).
+2. Derive the binding task contract for the review (authority, outcome, scope,
+   non-goals, acceptance/stop conditions, ordered work packages, and relevant
+   migration, rollback, recovery, or activation state). Do not narrate it as a
+   separate report field.
+3. Use `full` mode by default. For re-review mode selection, shared cycle
+   semantics, and incremental procedure, follow
+   [references/incremental-review.md](references/incremental-review.md).
 
 If no identifiable current spec exists, return `NOT READY` with the missing
 basis and stop. Do not reconstruct a spec from guesses.
+
+## Review cycle
+
+Shared cycle semantics live in
+[references/incremental-review.md](references/incremental-review.md). On a
+full review, finish every applicable node, edge, ledger row, acceptance path,
+and triggered reverse path before reporting. A first Blocker is not a reason
+to stop: return every distinct, currently detectable Blocker family in one
+batch.
 
 ## Contract ledger
 
@@ -105,39 +114,75 @@ been checked. Keep the review proportional.
 Open with exactly `READY` or `NOT READY`. `READY` requires zero Blockers and
 only explicitly owned, bounded known unknowns. Never use "ready with caveats."
 
-Then report:
+Then one Basis line:
 
 ```text
-Review mode: full | incremental | reset-to-full
-Artifact basis: <paths and exact content/revision identity or limitation>
-Task contract: <outcome, scope, work packages, activation and non-goals>
+Basis: <full | incremental | reset-to-full>; <1/3 | 2/3 | 3/3>; <paths and exact content/revision identity or limitation>
 ```
 
-For each finding use:
+Do not emit separate `Review mode`, `Review cycle`, `Artifact basis`,
+`Consequence posture`, or `Task contract` headers. Do not write a Coverage
+receipt. Reports do not restate task, method, or prior narrative.
+
+On re-review, before current findings, emit only concise decision-relevant
+Prior lines:
+
+```text
+Prior: <id> resolved | still present | superseded — <current-spec evidence that decides the status>
+```
+
+For each finding use the shared three-field compact form:
 
 ```text
 [Blocker | Gap | Note] <title>
-Evidence: <current path:line/section or inline clause>
-Task(s) / handoff: <affected nodes and edge>
-Missing decision: <what the implementer would otherwise choose>
-Why structural: <boundary or observable contract that changes>
-Consequence: <how implementations diverge or fail>
-Decision family / cascade: <dependent in-scope surfaces>
-Required closure: <what the spec must decide without prescribing excess mechanism>
-Verification: <distinguishing proof>
+Evidence and impact: <current path:line/section or inline clause; activated harm / structural divergence and recoverability>
+Root and closure: <stable id; other manifestations; producers, consumers, states, and proofs revise must close; falsifiable decision without prescribing excess mechanism>
+Proof: <independent evidence / distinguishing counterexamples>
 ```
 
-All fields are required for Blockers. A Gap is bounded local ambiguity or weak
-evidence that may cause rework but does not force a structural boundary choice.
-A Note is minor clarity loss with an obvious local resolution.
+Every Blocker field above is required. On an incremental review, add
+`Classification: incomplete closure | prior-review gap | revision-induced`.
+For a repeated root id in `Root and closure`, also add `Repeat diagnosis:
+incomplete revision | prior root diagnosis incorrect` with evidence. A Gap is
+bounded local ambiguity or weak evidence that may cause rework but does not
+force a structural boundary choice. A Note is minor clarity loss with an
+obvious local resolution. Combine fields on Gaps and Notes when doing so loses
+no decision-relevant information.
 
-Close with:
+Do not require Task contract, Coverage receipt, Checked and solid, or
+Consequence posture narration.
+
+On cycles `1/3` and `2/3`, close with:
 
 ```text
-Coverage receipt: <nodes/edges, ledger coverage, triggered gates, acceptance paths, reverse pass, limitations>
-Checked and solid: <only contracts whose complete ledger rows survived>
 Next: revise-spec-from-review | implementation
 ```
+
+When cycle `3/3` is `NOT READY`, after the Basis line and any Prior lines,
+list only the current three-field Blocker(s), then end with Workflow stop. Do
+not emit Consequence posture, Task contract, Coverage receipt, or Checked and
+solid, and do not repeat any expanded finding form:
+
+```text
+Workflow stop
+Problem: <one plain-language sentence naming the unresolved root>
+Why it is still open: <one plain-language sentence>
+Required closure: <the evidence-backed in-scope result that must hold>
+Choices:
+1. Confirm the required closure — <what it preserves>
+2. Provide binding evidence that another in-scope closure preserves every stated acceptance condition — <what it must prove>
+[3. Stop this task — <the requested outcome will not be delivered>]
+Recommendation: <evidence-backed choice, or "Need your decision" when binding authority is missing>
+```
+
+Use two or three concrete, plain-language choices. They must arise from the
+remaining root and preserve the binding task outcome. Offer a different
+behavior only when binding authority leaves that in-scope choice open. When
+the evidence admits only one closure, option 2 is evidence that it is already
+met, not authority to weaken it. Otherwise use confirmation of the required
+closure, missing binding authority, or stopping the task. Never present
+weakened acceptance, a changed product outcome, or deferral to another work
+package as a way to obtain READY.
 
 Do not prescribe architecture when several contracts satisfy the outcome.
 Route plan correctness to `adversarial-spec-review` and runtime/PR correctness

@@ -1,0 +1,22 @@
+{
+  "skill_name": "adversarial-spec-review",
+  "activation_mode": "implicit",
+  "queries": [
+    {"id":"positive-train-01","split":"train","query":"Red-team this implementation spec for payment recovery before it is handed to engineering.","should_trigger":true,"paired_with":"negative-train-01"},
+    {"id":"negative-train-01","split":"train","query":"Summarize this payment recovery implementation spec for its author.","should_trigger":false,"paired_with":"positive-train-01"},
+    {"id":"positive-train-02","split":"train","query":"Use $adversarial-spec-review to attack this revised plan and return PASS or FAIL findings.","should_trigger":true,"paired_with":"negative-train-02"},
+    {"id":"negative-train-02","split":"train","query":"Use $spec-readiness to decide whether this revised plan is structurally implementable.","should_trigger":false,"paired_with":"positive-train-02"},
+    {"id":"positive-train-03","split":"train","query":"Can this spec ship its stated checkout outcome without a payment, authority, or recovery failure? Review it adversarially.","should_trigger":true,"paired_with":"negative-train-03"},
+    {"id":"negative-train-03","split":"train","query":"Implement this checkout spec and run its tests.","should_trigger":false,"paired_with":"positive-train-03"},
+    {"id":"positive-train-04","split":"train","query":"$adversarial-spec-review ile bu planın P0/P1 kök nedenlerini ve PASS/FAIL sonucunu çıkar.","should_trigger":true,"paired_with":"negative-train-04"},
+    {"id":"negative-train-04","split":"train","query":"Bu planın P0/P1 kök nedenlerini düzeltmek için kodu değiştir.","should_trigger":false,"paired_with":"positive-train-04"},
+    {"id":"positive-validation-01","split":"validation","query":"Hostile review this authentication migration spec; reject it if any task-owned failure path can invalidate the outcome.","should_trigger":true,"paired_with":"negative-validation-01"},
+    {"id":"negative-validation-01","split":"validation","query":"Review this authentication migration pull request after it has been opened.","should_trigger":false,"paired_with":"positive-validation-01"},
+    {"id":"positive-validation-02","split":"validation","query":"Run /adversarial-spec-review on this exact plan and prior report before the next spec revision.","should_trigger":true,"paired_with":"negative-validation-02"},
+    {"id":"negative-validation-02","split":"validation","query":"Revise this plan from the supplied review report.","should_trigger":false,"paired_with":"positive-validation-02"},
+    {"id":"positive-validation-03","split":"validation","query":"Independently kill-test this database migration proposal for consequence-bearing paths and give a finding list.","should_trigger":true,"paired_with":"negative-validation-03"},
+    {"id":"negative-validation-03","split":"validation","query":"Run a database migration against the staging database.","should_trigger":false,"paired_with":"positive-validation-03"},
+    {"id":"positive-validation-04","split":"validation","query":"A revised specification claims every credential path is safe; red-team the universal claim before approval.","should_trigger":true,"paired_with":"negative-validation-04"},
+    {"id":"negative-validation-04","split":"validation","query":"Explain how universal quantification works in formal logic.","should_trigger":false,"paired_with":"positive-validation-04"}
+  ]
+}

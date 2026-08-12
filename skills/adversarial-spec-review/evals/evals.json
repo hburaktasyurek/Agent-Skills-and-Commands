@@ -1,0 +1,84 @@
+{
+  "skill_name": "adversarial-spec-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use $adversarial-spec-review to review the task, complete prior report, and current spec under evals/incremental-closure/residual-p1-forbids-pass/input/. Return only the evidence-backed review report; do not modify files.",
+      "expected_output": "An incremental FAIL at 2/3 resolves R1, treats the deadline root as a prior-review gap, and returns same-outcome confirm and capture deadline siblings under one Root and closure family in one FAIL batch rather than an unrelated full re-sweep.",
+      "files": [
+        "evals/incremental-closure/residual-p1-forbids-pass/input/task.md",
+        "evals/incremental-closure/residual-p1-forbids-pass/input/prior-report.md",
+        "evals/incremental-closure/residual-p1-forbids-pass/input/spec/shape.md"
+      ],
+      "assertions": [
+        "The report opens with FAIL and Basis contains 2/3.",
+        "R1 account-gate is reconciled as resolved with current-spec evidence.",
+        "One P0/P1 Root and closure family classifies the deadline root as prior-review gap and covers both confirm and capture post-deadline retries.",
+        "The report returns every same-outcome deadline sibling in this FAIL batch without deferring one to another review or resetting to an unrelated full re-sweep."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/incremental-closure/sources/convergence-loop-observed.txt",
+          "sha256": "834e4491eca2459c55e266354748bdd25150b88f3077419022a6ee878fc63412",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "observed 2026-08-11 Stripe coupon remediation spec-closure commit sequence",
+            "captured_at": "2026-08-11"
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "prompt": "Use $adversarial-spec-review to review the task, complete prior report, and current spec under evals/incremental-closure/revision-induced-new-root/input/. Return only the evidence-backed review report; do not modify files.",
+      "expected_output": "An incremental FAIL at 2/3 resolves R1 and classifies the notification-before-durable-result failure as revision-induced, with the introducing clause kept in this FAIL batch under the compact Evidence and impact / Root and closure / Proof contract rather than an unrelated full re-sweep.",
+      "files": [
+        "evals/incremental-closure/revision-induced-new-root/input/task.md",
+        "evals/incremental-closure/revision-induced-new-root/input/prior-report.md",
+        "evals/incremental-closure/revision-induced-new-root/input/spec/shape.md"
+      ],
+      "assertions": [
+        "The report opens with FAIL and Basis contains 2/3.",
+        "R1 recovery-operation-identity is reconciled as resolved.",
+        "The customer-notification failure is classified revision-induced and identifies the changed clause that introduced it.",
+        "The finding carries compact Evidence and impact, Root and closure, and Proof fields, including distinguishing proof that notification precedes durable result persistence, and stays in this incremental FAIL batch rather than an unrelated full re-sweep."
+      ],
+      "metadata": {
+        "case_type": "edge",
+        "source": "synthetic"
+      }
+    },
+    {
+      "id": 3,
+      "prompt": "Use $adversarial-spec-review to review the task, complete prior report, and current spec under evals/incremental-closure/third-cycle-stop/input/. Return only the evidence-backed review report; do not modify files.",
+      "expected_output": "A 3/3 incremental FAIL with a one-line Basis identifies R1 as incomplete closure with an incomplete-revision diagnosis, then ends with a compact Workflow stop terminal report without Consequence posture, Task contract, Coverage receipt, Checked and solid, or Next.",
+      "files": [
+        "evals/incremental-closure/third-cycle-stop/input/task.md",
+        "evals/incremental-closure/third-cycle-stop/input/prior-report.md",
+        "evals/incremental-closure/third-cycle-stop/input/spec/shape.md"
+      ],
+      "assertions": [
+        "The report opens with FAIL and Basis contains 3/3.",
+        "R1 local-only-provider-entry is classified incomplete closure with Repeat diagnosis incomplete revision.",
+        "The report includes a one-line Basis and does not emit Consequence posture, Task contract, Coverage receipt, Checked and solid, or Next.",
+        "The report ends with Workflow stop.",
+        "Workflow stop is a compact terminal report: it gives two or three plain-language choices with consequences and an evidence-backed recommendation, and does not impose a word or token budget; it does not weaken acceptance, change the product outcome, or defer the root."
+      ],
+      "metadata": {
+        "case_type": "scope_preservation",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/incremental-closure/sources/convergence-loop-observed.txt",
+          "sha256": "834e4491eca2459c55e266354748bdd25150b88f3077419022a6ee878fc63412",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "observed 2026-08-11 Stripe coupon remediation spec-closure commit sequence",
+            "captured_at": "2026-08-11"
+          }
+        }
+      }
+    }
+  ]
+}

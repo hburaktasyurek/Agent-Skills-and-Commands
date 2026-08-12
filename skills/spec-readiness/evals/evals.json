@@ -4,8 +4,10 @@
     {
       "id": 1,
       "prompt": "Use $spec-readiness. Review evals/fixtures/provider-recovery.md as the complete current implementation spec. Return the implementation-readiness verdict and evidence-backed report only; do not modify files.",
-      "expected_output": "NOT READY with one root-complete Blocker showing that production construction still requires the unavailable provider dependency before local-only branches can be reached; closure specifies the observable guarantee without choosing an architecture.",
-      "files": ["evals/fixtures/provider-recovery.md"],
+      "expected_output": "NOT READY with one root-complete Blocker showing that production construction still requires the unavailable provider dependency before local-only branches can be reached; Root and closure specifies the observable guarantee without choosing an architecture.",
+      "files": [
+        "evals/fixtures/provider-recovery.md"
+      ],
       "metadata": {
         "case_type": "primary",
         "source": "project_artifact",
@@ -23,33 +25,73 @@
         "The verdict opens with NOT READY.",
         "One Blocker traces production construction of ProviderTransport to the unreachability of both local-only actions during provider outage.",
         "The Blocker groups construction, dependency acquisition, production entry, local actions, provider retry, and their acceptance proof into one decision family.",
-        "Required closure states the observable reachability and fail-closed guarantees without prescribing a resolver, factory, or service architecture."
+        "The Blocker carries compact Evidence and impact, Root and closure, and Proof; Root and closure states the observable reachability and fail-closed guarantees without prescribing a resolver, factory, or service architecture."
       ]
     },
     {
       "id": 2,
       "prompt": "Use $spec-readiness. Review evals/fixtures/shared-identity.md as the complete current implementation spec. Return the implementation-readiness verdict and evidence-backed report only; do not modify files.",
       "expected_output": "NOT READY with a root-complete cross-package identity Blocker covering canonicalization, reproducible bytes/algorithm, storage/equality, collision or alias handling, conflict outcome, and a distinguishing producer-consumer proof.",
-      "files": ["evals/fixtures/shared-identity.md"],
-      "metadata": {"case_type":"edge","source":"synthetic"},
+      "files": [
+        "evals/fixtures/shared-identity.md"
+      ],
+      "metadata": {
+        "case_type": "edge",
+        "source": "synthetic"
+      },
       "assertions": [
         "The verdict opens with NOT READY.",
         "The importer-to-reconciler fingerprint is classified as a cross-package structural identity contract rather than local implementation freedom.",
         "One decision family covers canonical input, reproducible algorithm or bytes, persisted representation, equality, collision or alias behavior, and unique-conflict outcome.",
-        "Verification requires a distinguishing producer-consumer counterexample beyond the identical lowercase happy path."
+        "The Blocker carries compact Evidence and impact, Root and closure, and Proof; Proof requires a distinguishing producer-consumer counterexample beyond the identical lowercase happy path."
       ]
     },
     {
       "id": 3,
       "prompt": "Use $spec-readiness. Review evals/fixtures/local-formatter.md as the complete current implementation spec. Return the implementation-readiness verdict and evidence-backed report only; do not modify files.",
       "expected_output": "READY with zero Blockers; the private algorithm choice is implementation freedom and irrelevant database, concurrency, rollout, framework, and external-service gates are not imposed.",
-      "files": ["evals/fixtures/local-formatter.md"],
-      "metadata": {"case_type":"scope_preservation","source":"synthetic"},
+      "files": [
+        "evals/fixtures/local-formatter.md"
+      ],
+      "metadata": {
+        "case_type": "scope_preservation",
+        "source": "synthetic"
+      },
       "assertions": [
         "The verdict opens with READY and contains zero Blockers.",
         "Concatenation versus array/filter/join is recognized as implementation freedom.",
         "The supplied input, output, empty-state, ordering, whitespace, and non-mutation contracts are traced as sufficient for the only consumer.",
         "No database, concurrency, rollout, framework, external-service, or invented public-API requirement is imposed."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Use $spec-readiness. Review the current spec in evals/fixtures/third-cycle-stop.md against the complete prior readiness report in evals/fixtures/third-cycle-prior-report.md and its exact prior basis in evals/fixtures/third-cycle-prior-spec.md. Return the implementation-readiness verdict and evidence-backed report only; do not modify files.",
+      "expected_output": "NOT READY at Review cycle 3/3 with a one-line Basis: the repeated retry-pending-identity Blocker is classified as incomplete closure with an evidence-backed repeat diagnosis, then the report ends with a compact Workflow stop terminal report without Consequence posture, Task contract, Coverage receipt, Checked and solid, or Next.",
+      "files": [
+        "evals/fixtures/third-cycle-stop.md",
+        "evals/fixtures/third-cycle-prior-report.md",
+        "evals/fixtures/third-cycle-prior-spec.md"
+      ],
+      "metadata": {
+        "case_type": "edge",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/convergence-loop-observed.txt",
+          "sha256": "834e4491eca2459c55e266354748bdd25150b88f3077419022a6ee878fc63412",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "observed 2026-08-11 Stripe coupon remediation spec-closure commit sequence",
+            "captured_at": "2026-08-11"
+          }
+        }
+      },
+      "assertions": [
+        "The verdict opens with NOT READY and Basis contains 3/3.",
+        "The report includes a one-line Basis and does not emit Consequence posture, Task contract, Coverage receipt, Checked and solid, or Next.",
+        "The repeated retry-pending-identity Blocker carries compact Evidence and impact, Root and closure, and Proof, with Classification `incomplete closure` and Repeat diagnosis `incomplete revision` with current-spec evidence.",
+        "The report ends with Workflow stop.",
+        "Workflow stop is a compact terminal report: it contains one plain-language Problem, a Required closure, two or three concrete Choices with consequences, and an evidence-backed Recommendation; it does not impose a word or token budget; no Choice weakens acceptance, changes the product outcome, or defers the root to another work package."
       ]
     }
   ]

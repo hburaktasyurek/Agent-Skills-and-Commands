@@ -61,15 +61,26 @@ it does not replace the opened-PR gate.
    scope/non-goals, and acceptance or stop conditions.
 2. Produce the implementation handoff with `to-spec`.
 3. Run `adversarial-spec-review` independently.
-4. On FAIL, give the complete report to `revise-spec-from-review`, then
-   re-review the current spec. Do not drop residual P0/P1 findings for PASS.
-5. Run `spec-readiness`. On failure, revise from the complete report and
-   rerun readiness.
-6. Hand off only after both review gates pass.
+4. Spec review and readiness share `Review cycle` `1/3`-`3/3`. A revision
+   increments it; a second gate on the unchanged artifact keeps it. Do not
+   begin a fourth review.
+5. On FAIL before `3/3`, give the complete report to
+   `revise-spec-from-review`, then re-review the current spec. Return every
+   current P0/P1 root family in one batch; do not drop residuals for PASS.
+6. After adversarial PASS, run `spec-readiness`. On NOT READY before `3/3`,
+   revise from the complete report under the same batch rule, then route the
+   revised spec through `adversarial-spec-review`; only after adversarial
+   PASS can `spec-readiness` run again. This is the next shared cycle and
+   does not reuse the previous artifact's PASS.
+7. At `3/3` FAIL or NOT READY, stop for the human with the report's
+   `Workflow stop` choices. Do not send another speculative revision.
+8. Hand off only after both review gates pass.
 
 Incremental spec re-review requires the complete prior report and matching
 artifact basis, unchanged task contract, and changes bounded to the prior
-closure surface. Otherwise reset to full review.
+closure surface. Otherwise reset to full review. A prior-review gap or
+revision-induced root stays incremental and batches same-outcome siblings;
+it is not an unrelated full re-sweep.
 
 ## Implementation and PR
 

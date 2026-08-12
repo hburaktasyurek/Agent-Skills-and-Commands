@@ -1,5 +1,6 @@
 # Task
 
-Disabled recovery support must gate provider HTTP on bound account, keep
-null-account local abandon provider-free, and never POST confirm after the
-retry deadline.
+Disabled recovery support has one provider-request boundary: every recovery
+provider request is a Stripe POST and must require a bound account. Keep
+null-account local abandon provider-free, and never issue a Stripe provider
+POST after the retry deadline.
