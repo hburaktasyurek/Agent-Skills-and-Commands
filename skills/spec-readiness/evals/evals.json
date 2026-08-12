@@ -89,9 +89,9 @@
       },
       "assertions": [
         "The report's first non-whitespace characters are the bare line NOT READY with no preface, and Basis contains 3/3.",
-        "The report includes a one-line Basis and does not emit Consequence posture, Task contract, Coverage receipt, Checked and solid, or Next.",
+        "The report includes a one-line Basis and does not emit Consequence posture, Task contract, Coverage receipt, Checked and solid, Next, or an On-confirmation/Emit-only outline in place of the report.",
         "The repeated retry-pending-identity Blocker carries compact Evidence and impact, Root and closure, and Proof, with Classification `incomplete closure` and Repeat diagnosis `incomplete revision` with current-spec evidence.",
-        "The report ends with Workflow stop.",
+        "The report ends with Workflow stop (the literal block is present now; not deferred to a later confirmation).",
         "Workflow stop is a compact terminal report: it contains one plain-language Problem, a Required closure, two or three concrete Choices with consequences, and an evidence-backed Recommendation; it does not impose a word or token budget; no Choice weakens acceptance, changes the product outcome, or defers the root to another work package."
       ]
     },

@@ -60,3 +60,8 @@ Judge the current spec and:
 
 READY still requires zero Blockers. Finding shape and cycle-`3/3` terminal
 output are owned by the skill.
+
+On cycle `3/3` with residual Blockers, return the skill's compact `NOT READY`
+report in this turn: bare verdict + `Basis:` (with `3/3`) + Prior lines +
+three-field Blocker(s) + `Workflow stop`. Do not return a review ledger,
+approval card, or “emit on confirmation” outline in place of that report.

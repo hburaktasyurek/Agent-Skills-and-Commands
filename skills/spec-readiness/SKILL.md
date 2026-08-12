@@ -20,7 +20,9 @@ the bare first line `READY` or `NOT READY`; the next non-empty line is
 correct report): markdown titles such as `# Spec Readiness Verdict`, approval
 or “on confirmation re-emit” wrappers, outer ` ```text ` fences, `I'll`,
 `Checking`, progress narration, or any preface that is not the report itself.
-If tool use produced chatter, discard it and return only the report.
+If the host stores the answer in a plan/card, that stored body is still the
+report — not a ledger or emit-later outline. If tool use produced chatter,
+discard it and return only the report.
 
 ## Structural threshold
 
@@ -173,11 +175,23 @@ The response itself is the completed verdict report. Delete any preface
 (`# Spec Readiness Verdict`, “on confirmation”, ledger, plan, or execution
 note). Start with the verdict line and stop after the required fields.
 
+If the host forces a plan/card artifact, that artifact's body must still be
+the completed report: its first non-whitespace characters are `READY` or
+`NOT READY`, then `Basis:`, then the required fields. Incomplete (replace
+before returning — do not ask for confirmation):
+
+- ends with “On confirmation”, “Emit only”, or “emit the report” without the
+  report body already present after that instruction
+- is only Inputs / Mode and cycle / Outcome lock / Prior disposition / Verdict
+  notes with no following bare `NOT READY`/`READY` + `Basis:` report
+- at `3/3` `NOT READY`, omits the literal `Workflow stop` block below
+
 `READY` is not a bare verdict. After Basis, include one concise `Ready
 evidence:` line that identifies the named contract/consumer coverage,
 implementation freedom where relevant, and why untriggered structural gates
-do not add an obligation. At cycle `3/3` with `NOT READY`, emit the actual
-three-field Blocker(s) and full Workflow stop below, never a plan to emit them.
+do not add an obligation. At cycle `3/3` with `NOT READY`, the deliverable
+must already contain the three-field Blocker(s) and the full `Workflow stop`
+block below. A memo that only plans to emit them is not a report.
 
 On re-review, before current findings, emit only concise decision-relevant
 Prior lines:
