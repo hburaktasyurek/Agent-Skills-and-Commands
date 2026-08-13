@@ -24,9 +24,10 @@ flowchart TD
   askStop["ask + human/stop"]
   toSpec["to-spec (task)"]
   toSpecOnce["to-spec once (task), same spec identity"]
+  commitFirst["commit (commit)"]
+  commitR1["commit (commit)"]
   firstGate["first pair"]
   r1Gate["rewrite-1 pair"]
-  commitNode["commit (commit)"]
   stopNode["stop"]
   human["human (no patch)"]
 
@@ -44,20 +45,21 @@ flowchart TD
 
   gw -->|"K2"| askStop
   gw --> toSpec
-  toSpec --> advFirst
-  toSpec --> readyFirst
+  toSpec --> commitFirst
+  commitFirst --> advFirst
+  commitFirst --> readyFirst
   advFirst --> firstGate
   readyFirst --> firstGate
-  firstGate -->|"PASS+READY"| commitNode
+  firstGate -->|"PASS+READY"| stopNode
   firstGate -->|"K2 / lock enlarge / new durable store / parallel machine / create-replace-cancel request"| human
   firstGate -->|"in-lock FAIL/NOT READY + Next: to-spec"| toSpecOnce
-  toSpecOnce --> advR1
-  toSpecOnce --> readyR1
+  toSpecOnce --> commitR1
+  commitR1 --> advR1
+  commitR1 --> readyR1
   advR1 --> r1Gate
   readyR1 --> r1Gate
-  r1Gate -->|"PASS+READY"| commitNode
+  r1Gate -->|"PASS+READY"| stopNode
   r1Gate -->|"else"| human
-  commitNode --> stopNode
 ```
 
 Cycle is `first | rewrite-1 | stop`. No third rewrite.
@@ -92,9 +94,11 @@ adds no bans or commentary. **Call ≠ swallow.**
 First pair is parallel, isolated, cycle `first`. Gate is PASS and READY
 together. The parent does not force incremental.
 
-- PASS + READY → stop. No rewrite.
+- PASS + READY → stop. No rewrite. Reviews score the committed spec; do
+  not review uncommitted spec bytes.
 - In-lock FAIL/NOT READY and `Next: to-spec` → both complete reports to
-  `to-spec` once, same spec identity; then the same pair as `rewrite-1`.
+  `to-spec` once, same spec identity; commit that write; then the same
+  pair as `rewrite-1`.
 - Architecture, lock enlargement, a new durable store, or a
   create/replace/cancel *request* → human. No patch. A reviewer's
   `necessity=` stamp is not that request.
@@ -102,8 +106,10 @@ together. The parent does not force incremental.
 
 ## Spec commit
 
-This skill authorizes a spec commit via `commit` + `commit-work` after a
-`to-spec` write (first or the one rewrite). No commit on K2 or stop.
+This skill authorizes a spec commit via `commit` + `commit-work` after
+each `to-spec` write (first or the one rewrite), before that cycle's
+review pair. Reviews measure the committed spec. No second commit after
+PASS+READY. No commit on K2 or stop.
 
 ## Final summary
 
