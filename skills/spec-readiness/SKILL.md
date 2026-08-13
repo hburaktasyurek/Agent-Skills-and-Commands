@@ -10,7 +10,16 @@ Review the current spec from the implementer's chair:
 > If implementation started tomorrow, where would the implementer have to
 > choose a contract the spec should already have chosen?
 
-Review artifacts, not the author. Read only; do not edit the spec or code.
+Review artifacts, not the author. Do not edit the spec or code. Write a
+report file only when the invocation includes `Write report under:`; then
+write `YYYY-MM-DD-HHMM-spec-readiness.md` under that directory (local clock).
+If that exact name already exists in the same minute and this cycle is
+`rewrite-1`, use `YYYY-MM-DD-HHMM-spec-readiness-rewrite-1.md`. Finish the
+report, write those same bytes, then emit the same bytes in chat. Do not
+append a paste card to the report. With no `Write report under:` field, chat
+only — do not create or modify files. Do not guess a write path from the spec
+folder. If the invocation has `Lock:`, read that file whole as the frozen
+lock; do not substitute a chat summary.
 
 **Output discipline — critical:** do all investigation through tools and private
 reasoning. Emit **zero** natural-language assistant text until the verdict
@@ -95,7 +104,8 @@ An unresolved K2 is an authority blocker, never reviewer-selected architecture.
    equivalent commands.
 2. Consume the frozen Outcome lock four lanes, acceptance/stop conditions,
    ordered work packages, and relevant migration, rollback, recovery, or
-   activation state. Do not narrate it as a separate report field.
+   activation state. When the invocation has `Lock:`, read that file whole as
+   the frozen lock. Do not narrate it as a separate report field.
 3. Use `full` mode by default. For re-review mode selection, shared cycle
    semantics, and incremental procedure, follow
    [references/incremental-review.md](references/incremental-review.md).

@@ -97,6 +97,133 @@ closure surface. Otherwise reset to full review. A prior-review gap or
 revision-induced root stays incremental and batches same-outcome siblings;
 it is not an unrelated full re-sweep.
 
+## Spec hop
+
+The hop and `.workflow/` sidecars are for the multi-session spec path, not
+for tiny or already-narrow tasks.
+
+Carry the next skill as one pasted block. Full briefs and (carded) review
+reports live under `.workflow/`; do not paste those bodies into the next
+chat. `.handoff/` remains only `session-handoff`. `session-handoff` is not
+a review report.
+
+`task-groundwork` writes `.workflow/YYYY-MM-DD-HHMM-task-groundwork.md`
+and still returns the brief in chat, except when it returns the existing
+negative-fit / already-narrow brief. That case writes no sidecar.
+
+`to-spec` only writes the four-file spec and stops. After it returns the
+spec folder, the same session — not the `to-spec` skill — copies the
+same-session `.workflow/YYYY-MM-DD-HHMM-task-groundwork.md` unchanged into
+`.workflow/<spec-folder-basename>/`, keeping its filename, and prints the
+paste cards below. Do not rewrite the brief. `Lock:` on every card is that
+copied file.
+
+If there is no sidecar, do not copy a lock file, do not print paste cards,
+and do not tell the human to paste review cards. The same session can go
+to spec or direct execution without `.workflow/`.
+
+Paste one block at a time. Fill `<id>` with the spec folder basename,
+`<spec folder>` with the spec path, and clock fields from the **local**
+`YYYY-MM-DD-HHMM`.
+
+Do not add `Goal`, a correction recipe, a lock summary, or any line that
+is not in the templates below. Start every card with `Use` and exactly
+one of: `adversarial-spec-review`, `spec-readiness`, `to-spec`. Do not
+put other skill or workflow names on the card. `Write report under:`
+appears only on review cards.
+
+Which card:
+
+1. After the first `to-spec` save: paste `Use adversarial-spec-review`
+   (`Cycle: first`), then `Use spec-readiness` (`Cycle: first`).
+2. Paste `Use to-spec` (`Cycle: rewrite-1`) only after an in-lock first
+   FAIL whose `Next` is `to-spec`. Do not paste it on PASS+READY or stop.
+3. After that rewrite: paste the reprinted rewrite-1 review cards
+   (`Prior` is the real first-cycle report paths). There is no second
+   `to-spec` rewrite card.
+
+Review writes `YYYY-MM-DD-HHMM-<skill>.md` under `Write report under:`
+only when that field is on the pasted card (that implies a real hop).
+No card: chat only.
+
+### First save — three blocks
+
+Human pastes the two review cards after this save. Human pastes the
+`to-spec` rewrite card only after an in-lock first FAIL whose `Next` is
+`to-spec`. Do not paste that rewrite card on PASS+READY or stop.
+
+```text
+Use adversarial-spec-review
+Cycle: first
+Lock: .workflow/<id>/YYYY-MM-DD-HHMM-task-groundwork.md
+Spec: <spec folder>
+Write report under: .workflow/<id>/
+Report file: YYYY-MM-DD-HHMM-adversarial-spec-review.md
+Read Spec and Lock whole. Isolated review. Do not implement. Do not edit spec or code.
+```
+
+```text
+Use spec-readiness
+Cycle: first
+Lock: .workflow/<id>/YYYY-MM-DD-HHMM-task-groundwork.md
+Spec: <spec folder>
+Write report under: .workflow/<id>/
+Report file: YYYY-MM-DD-HHMM-spec-readiness.md
+Read Spec and Lock whole. Isolated review. Do not implement. Do not edit spec or code.
+```
+
+```text
+Use to-spec
+Cycle: rewrite-1
+Lock: .workflow/<id>/YYYY-MM-DD-HHMM-task-groundwork.md
+Spec: <spec folder>
+Reports:
+  .workflow/<id>/*-adversarial-spec-review.md
+  .workflow/<id>/*-spec-readiness.md
+Read Spec, Lock, and those report files whole (newest of each skill unless a path is named). The files win. One rewrite in place. Do not implement. Do not edit code.
+```
+
+### After in-lock rewrite — two blocks
+
+Reprint only these two. Set `Prior:` to the real first-cycle report paths
+from a glob under `.workflow/<id>/` (names without `-rewrite-1`). Do not
+guess a path. If the glob is empty, omit `Prior:` rather than inventing
+one. Do not emit a second `to-spec` rewrite card.
+
+`Report file` uses the current local minute. Same minute plus same skill
+plus rewrite-1: the review adds a `-rewrite-1` suffix when it writes.
+
+```text
+Use adversarial-spec-review
+Cycle: rewrite-1
+Lock: .workflow/<id>/YYYY-MM-DD-HHMM-task-groundwork.md
+Spec: <spec folder>
+Write report under: .workflow/<id>/
+Report file: YYYY-MM-DD-HHMM-adversarial-spec-review.md
+Prior: <globbed first-cycle adversarial-spec-review report path>
+Read Spec and Lock whole. Isolated review. Do not implement. Do not edit spec or code.
+```
+
+```text
+Use spec-readiness
+Cycle: rewrite-1
+Lock: .workflow/<id>/YYYY-MM-DD-HHMM-task-groundwork.md
+Spec: <spec folder>
+Write report under: .workflow/<id>/
+Report file: YYYY-MM-DD-HHMM-spec-readiness.md
+Prior: <globbed first-cycle spec-readiness report path>
+Read Spec and Lock whole. Isolated review. Do not implement. Do not edit spec or code.
+```
+
+### `.workflow/` and Git
+
+`.workflow/` may be committed on the task branch while that branch
+exists. It must not land on the default branch. Git has no merge
+path-exclude; `export-ignore` and `merge=ours` do not keep new files
+off the default branch. Drop `.workflow/` after merge or before squash.
+Deleting the feature branch loses lookback. This repository does not
+gitignore or CI-exclude `.workflow/`.
+
 ## Implementation and PR
 
 1. For a named spec, give the exact spec cluster to `senior-implementer`.
@@ -199,7 +326,8 @@ runtime copies. Repository agents do not synchronize them.
 Stay in one session while it remains reliable. Use `session-handoff` only
 when exact unresolved state must survive a fresh window, harness switch, or
 pause. Prefer existing durable artifacts when they already contain everything
-needed to resume.
+needed to resume. `session-handoff` is not a review report and does not
+replace `.workflow/` hop artifacts.
 
 For an interrupted critical review, carry the exact current base/head, prior
 reviewed head and complete report, review mode, open Root families, and

@@ -16,6 +16,7 @@ Commits should be easy to review and safe to ship: only intended changes include
 - Body explains WHY, not what (the diff shows what)
 - No `Co-Authored-By` or AI attribution of any kind — not in subject, body, or trailer; explicit project policy, applies even if a commit template includes it
 - If the diff contains secrets or tokens, **stop and report** — do not commit
+- Do not put `.workflow/` on the default branch. On a task branch it may be intended lookback. Git has no merge path-exclude: drop those paths after merge or before squash. Deleting the feature branch loses lookback.
 - Never use `--no-verify`
 - No debug logs or unrelated formatting churn — leave them unstaged and note them in the report
 - Keep mutating Git commands policy-readable. A single `&&` chain is fine when every segment is a direct, literal command, but never construct commit messages with heredocs, `$()`, backticks, redirection, or a `sh -c`/`zsh -lc` wrapper. Pass the subject and body as static, shell-safe arguments with repeated `-m` flags. If the environment cannot authorize the flat segments independently, run the same commands as separate tool calls instead of requesting broad shell approval.

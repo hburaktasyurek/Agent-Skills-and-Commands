@@ -6,7 +6,16 @@ description: Red-team review that tries to kill a plan or spec. Returns a priori
 Review the current plan or spec as the engineer accountable for approving it.
 Treat every claim as unverified. Author and tooling are irrelevant.
 
-Do not modify files. Analysis only.
+Spec and code stay read-only. Write a report file only when the invocation
+includes `Write report under:`; then write
+`YYYY-MM-DD-HHMM-adversarial-spec-review.md` under that directory (local
+clock). If that exact name already exists in the same minute and this cycle
+is `rewrite-1`, use `YYYY-MM-DD-HHMM-adversarial-spec-review-rewrite-1.md`.
+Finish the report, write those same bytes, then emit the same bytes in chat.
+Do not append a paste card to the report. With no `Write report under:`
+field, chat only — do not create or modify files. Do not guess a write path
+from the spec folder. If the invocation has `Lock:`, read that file whole as
+the frozen lock; do not substitute a chat summary.
 
 **Output discipline — critical:** do all investigation through tools and private
 reasoning. Emit **zero** natural-language assistant text until the Report is
@@ -113,7 +122,8 @@ downgrade, defer, or reopen already `resolved` families to obtain PASS.
 
 ### Read-only boundary
 
-No spec, code, Git, PR, or workflow mutation. No numeric confidence, aggregate
+No spec, code, Git, or PR mutation. The report sidecar is the only write, and
+only when `Write report under:` is present. No numeric confidence, aggregate
 risk scores, or finding quotas. Do not absorb `spec-readiness`, implementation,
 or PR review. Do not approve your own corrections.
 
@@ -186,7 +196,8 @@ with a differently shaped equivalent.
 
 1. **Basis.** Reread every in-scope artifact. Use Git status/diff/log only to
    identify current artifact state; record paths, `HEAD`, dirty state, or the
-   source/version limitation. Consume the frozen Outcome lock four lanes,
+   source/version limitation. When the invocation has `Lock:`, read that file
+   whole as the frozen lock. Consume the frozen Outcome lock four lanes,
    acceptance/stop, activation, material dependencies, and unresolved
    evidence. On re-review, require the complete prior report and its basis;
    memory and old findings are location aids, never current evidence. If task

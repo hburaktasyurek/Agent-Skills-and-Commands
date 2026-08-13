@@ -83,7 +83,10 @@ to complete. Missing local interface is not a ban on the call.
 
 Never defer a material decision, change task scope, or pull future work forward
 without explicit approval. Default to read-only investigation and safe
-non-mutating checks; ask before any repository write.
+non-mutating checks. After a positive-fit or blocked Open K2 brief is
+complete, write the `.workflow/` sidecar below; ask before any other
+repository write. Do not write spec or code. A narrow negative-fit brief
+writes no sidecar.
 
 Do not write `Open K2: none` when recovery or state owner would change across
 the remaining routes.
@@ -119,5 +122,14 @@ skill.
 Return the completed brief directly. Do not leave a research plan, approval
 wrapper, or instructions for a later response in place of the brief.
 
-Do not write a briefing file. Stop as obsolete or misframed when the artifacts
-prove the requested task should not proceed.
+After a completed positive-fit or blocked Open K2 brief exists, write those
+same bytes to `.workflow/YYYY-MM-DD-HHMM-task-groundwork.md` using the local
+clock. Create `.workflow/` if needed. Still return the same brief in chat.
+This sidecar is the only briefing-file exception. Do not write spec or code.
+
+If the result is the existing negative-fit / already-narrow brief
+(implementation boundary already clear, groundwork adds no decision value),
+return it in chat only. Do not write the sidecar or create `.workflow/`.
+
+Stop as obsolete or misframed when the artifacts prove the requested task
+should not proceed.

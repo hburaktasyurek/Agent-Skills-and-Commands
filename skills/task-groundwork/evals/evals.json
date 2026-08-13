@@ -16,7 +16,7 @@
         "The purpose is derived from the phase goal as support visibility into persisted retry safety without charging or relying on process-local state",
         "The chosen route is a tenant-scoped read-only API that reuses the persisted latest-attempt path and exposes the state and next_retry_at contract",
         "Dashboard UI and automatic retry execution remain out of scope with Tasks 2.3 and 2.4 named as their owners",
-        "The brief cites decision-relevant roadmap and implementation evidence, makes no repository write, and leaves no artifact-answerable technical branch as a user question"
+        "The brief cites decision-relevant roadmap and implementation evidence, writes no spec or code, and leaves no artifact-answerable technical branch as a user question"
       ],
       "metadata": {
         "case_type": "primary",
@@ -46,7 +46,7 @@
         "The direct request is treated as sufficient task authority and the absence of a roadmap or ticket is not reported as a gap",
         "The brief identifies the tenant-less user cache key and invalidation signature as the cross-tenant collision surface and observes that tenant ID is already available at both callers",
         "The chosen route includes tenant ID in both cache-key construction and invalidation, accounts for the existing 60-second old-key lifetime, and does not invent a broader cache or migration design unsupported by the artifacts",
-        "The result is ready for specification without a repository write or an artifact-answerable question to the user"
+        "The result is ready for specification without a spec or code write or an artifact-answerable question to the user"
       ],
       "metadata": {
         "case_type": "edge",
@@ -65,7 +65,8 @@
       "assertions": [
         "The result explicitly classifies the task as negative fit because no material decision branch remains for groundwork",
         "The bounded execution scope is only the DEFAULT_TTL to CACHE_TTL rename in src/config.ts with value and behavior preserved",
-        "The handoff recommends direct execution with reference search plus diff, value, and behavior verification and does not emit a generic seven-question inventory"
+        "The handoff recommends direct execution with reference search plus diff, value, and behavior verification and does not emit a generic seven-question inventory",
+        "The handoff writes no .workflow/ sidecar"
       ],
       "metadata": {
         "case_type": "scope_preservation",

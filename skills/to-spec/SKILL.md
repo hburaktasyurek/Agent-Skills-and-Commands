@@ -218,10 +218,11 @@ the task does not require.
 
 ### 6. Save, report, and stop
 
-Return the folder path, a one-line summary of each file, the exact
-`⚠️ UNVERIFIED` count, and confirmation that no implementation was performed.
-Stop after the specification. Do not independently review it, implement it,
-change workflow documentation, mutate Git, open a PR, install, or merge.
+Save the four-file cluster. Return the folder path, a one-line summary of
+each file, the exact `⚠️ UNVERIFIED` count, and confirmation that no
+implementation was performed. Stop after the specification. Do not
+independently review it, implement it, change workflow documentation,
+mutate Git, open a PR, install, or merge.
 
 On an in-lock rewrite after a `first` FAIL, replace the cluster in place as
 the same spec identity; do not open a parallel spec folder.
