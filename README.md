@@ -21,6 +21,7 @@ See [skills/INDEX.md](skills/INDEX.md) for the grouped index.
 
 | Skill | Description |
 |---|---|
+| [omp-task-to-spec](skills/omp-task-to-spec/SKILL.md) | OMP parent spec gate under orchestrate; not the four-file author. |
 | [task-groundwork](skills/task-groundwork/SKILL.md) | Ground a non-trivial software task with decision-changing evidence. |
 | [grill-me](skills/grill-me/SKILL.md) | Stress-test a plan or decision one question at a time. |
 | [to-spec](skills/to-spec/SKILL.md) | Produce a consequence-calibrated implementation spec. |

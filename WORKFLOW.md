@@ -57,7 +57,9 @@ it does not replace the opened-PR gate.
 ## Spec design
 
 Orchestrator contract. Host harnesses that still run a 3-cycle revise ladder
-are out of scope; this package does not patch them.
+are out of scope; this package does not patch them. The OMP runtime spec
+gate is `omp-task-to-spec`; this file is the human contract, and the edges
+live in that skill.
 
 The four design skills ship the identical lock file under
 `references/outcome-lock.md`. Review closes only by calling a landed
