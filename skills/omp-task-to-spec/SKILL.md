@@ -76,10 +76,29 @@ OMP agent types, not model roles (`TASK` / `SLOW` / `DEFAULT`):
 If `reviewer` or `sonic` is missing, stop before review. Do not substitute
 `reviewer` with `task`.
 
+## Rules
+
+Standing rules. Carry them on every spawn with the four lanes. They are
+not task-specific substrate bans.
+
+- **Verify, do not assume.** Treat assumptions as dangerous. Prefer
+  verification. Check MCP or web search before a claim enters the lock or
+  spec. Unverified assumption is not evidence.
+- **No UX change without owner permission.** Preserve the current system
+  when it already does the job. Before proposing work, inspect how that
+  job is done today and call that path. A new surface or flow needs owner
+  permission; it is not K1 freedom.
+- **In-use stack, not factory default.** What this repo installed and
+  actually runs is the substrate. The original stack, the textbook stack,
+  and a more common library are not. Before a store, query, or API enters
+  the spec, find the package and entry already used for that job and call
+  it. LPG in a petrol-bodied car: fill what they drive, not what the
+  badge says.
+
 ## Spawn
 
-Every spawn carries exact authority and the frozen four lanes. The parent
-adds no bans or commentary. **Call ≠ swallow.**
+Every spawn carries exact authority, the frozen four lanes, and the rules
+above. The parent adds no task-specific bans or commentary. **Call ≠ swallow.**
 
 - K2 options are only `call-substrate` / `own-in-child` / `defer-new-child` /
   `stop`. Pass them through `ask`. The parent does not decide.
