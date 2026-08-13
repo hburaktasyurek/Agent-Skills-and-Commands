@@ -122,6 +122,34 @@
           }
         }
       }
+    },
+    {
+      "id": 6,
+      "prompt": "Use $spec-readiness to review evals/fixtures/fence-vs-sibling-spec.md against its binding task in evals/fixtures/fence-vs-sibling-task.md and the live sibling in evals/fixtures/fence-vs-sibling-checkout.php. Return only the implementation-readiness verdict and evidence-backed report; do not modify files.",
+      "expected_output": "READY: the bounded existing-pending update is specified, and the live CheckoutRenderer sibling is not pulled into this contract.",
+      "files": [
+        "evals/fixtures/fence-vs-sibling-task.md",
+        "evals/fixtures/fence-vs-sibling-spec.md",
+        "evals/fixtures/fence-vs-sibling-checkout.php"
+      ],
+      "assertions": [
+        "The report's first non-whitespace characters are the bare line READY with no preface (no markdown title, approval wrapper, or outer fence), and the report contains zero Blockers.",
+        "No Blocker requires Provider::create, Provider::cancel, create+replace, cancellation, checkout-instance lifecycle, or a transaction/publication/recovery protocol.",
+        "The live CheckoutRenderer sibling is left outside this child; closure is not to specify or consume that renderer."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/fenced-neighbor-observed.txt",
+          "sha256": "ba2e551ed73fc87ea52550c46dcfa650747223c422e2c657e83740cd499b57c9",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized 2026-08-12 Cycle 1 fenced-neighbor lock-enlargement record",
+            "captured_at": "2026-08-12"
+          }
+        }
+      }
     }
   ]
 }

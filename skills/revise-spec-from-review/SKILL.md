@@ -81,17 +81,17 @@ Apply the dispositions in order:
    the binding outcome.
 3. **patched:** add the smallest outcome-required contract that closes the
    root across its recorded producers, consumers, states, proofs, and
-   interaction neighbors.
+   interaction neighbors, and only when that required closure stays inside
+   the frozen owned observables.
 4. **escalated:** surface the exact K2 when no authority selects a
    behavior-changing route; leave choice-dependent surfaces unchanged.
 5. **blocked:** stop before adding a protocol when required authority or
    evidence is absent.
 
-Before adding persistent state, a transaction/publication protocol, idempotency
-scheme, provider operation, cross-component identity, or recovery lifecycle,
-show Outcome-lock authority and evidence that remove, reuse, and a smaller
-patch cannot satisfy the outcome. Without both, report `blocked` rather than
-adding the protocol.
+Lock enlargement, fence swallowing, or a protocol the frozen lock did not
+name is not `patched`. If the finding is `necessity=architecture-induced`,
+use `removed`; otherwise `escalated` with zero edits. The reviewer's
+`necessity=` stamp is not lock authority.
 
 When disposition is `escalated` because a K2 controls any surface, make **zero
 spec-file edits** for that root: do not add a K2 marker, cross-reference,
@@ -100,8 +100,9 @@ exact question and affected surfaces. The caller owns the human decision and a
 later revision; unchanged source is the required artifact.
 
 Repair one root at a time across the surfaces named in its Root and closure.
-Before finishing, ensure interaction neighbors that share the changed rule are
-also closed in the spec, or mark the root blocked. Independent roots may proceed
+Before finishing, close interaction neighbors that share a task-owned changed
+rule, or mark the root blocked. Do not complete a neighbor of an unsupported
+mechanism; remove the mechanism instead. Independent roots may proceed
 when another is blocked. Do not guess past missing evidence, an unmade product
 decision, or an authority boundary. Do not add alternatives, placeholders,
 decision gates, future tests, or scaffolding in place of an escalated K2.

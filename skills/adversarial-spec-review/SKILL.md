@@ -60,30 +60,32 @@ stop. Group shared-root manifestations; split independently failing paths.
 Reviewer owns diagnosis and proof contract; reviser owns design. Prescribe a
 mechanism only when binding authority leaves no alternative.
 
-### Task-owned scope and necessity
+### Frozen lock and necessity
 
-Derive the Outcome lock independently from the spec: binding outcome, scope,
-non-goals, sibling owners, activation, and acceptance. Stay inside that lock and
-the contracts it necessarily depends on. Do not invent adjacent product
-requirements or trust assertions merely because code, tests, diagrams, or prose
-repeat them. Distinguish lack of proof from proof of a defect.
+The Outcome lock is frozen from the catalog, decisions, groundwork brief, or
+an explicit human lock: owned observables, sibling fence, and accepted
+residuals. The spec's own Outcome lock section is drift evidence, not new
+authority. An unclear lock is K2, not a stronger reviewer reading. Stay inside
+that lock; do not invent adjacent product requirements.
 
-For every P0/P1, classify necessity inside **Root and closure** as exactly one:
+Live code answers at most **Q-task** (is a frozen owned observable decided?),
+**Q-live** (landed neighbor hazard — not P0/P1 alone), and **Q-delta** (did
+this spec newly require that neighbor or newly break it?).
 
-- `necessity=outcome-required` — removing the mechanism makes the binding
-  outcome unsafe or unreachable; retain full consequence closure.
+For every P0/P1 or Blocker, classify necessity inside **Root and closure** as
+exactly one:
+
+- `necessity=outcome-required` — removing the mechanism makes a frozen owned
+  observable unsafe or unreachable; retain full consequence closure.
 - `necessity=architecture-induced` — removing an unsupported mechanism makes
-  the failure disappear; require its removal/simplification, not completion.
+  the failure disappear; require removal/simplification, not completion.
 - `necessity=mixed` — separate the outcome-required obligation from optional
   manifestations and close only the former.
 
-Classify the violated **observable obligation**, not merely the mechanism that
-causes it. If the Outcome lock requires an action, ordering, path, or
-fail-closed boundary to remain true, the failure is
-`necessity=outcome-required` even when its smallest repair removes or
-simplifies an architectural coupling. Use `architecture-induced` only when
-removing the entire mechanism family leaves every Outcome-lock obligation
-already satisfied.
+Score `necessity=` against the frozen lock. Create/replace/cancel, a
+transaction/publication/recovery protocol, or a fenced sibling is
+`architecture-induced` or K2, not `outcome-required`. An insufficient product
+lock is K2 or Workflow stop, not a larger lock.
 
 Use stable root `OPTIONAL_MECHANISM_SCOPE_AMPLIFICATION` when an
 architecture-induced family adds mechanisms unsupported by the Outcome lock.
@@ -110,7 +112,8 @@ or PR review. Do not approve your own corrections.
 | `reset-to-full` | Missing/mismatched prior handoff; task identity/scope/acceptance changed; new architecture/integration boundary prior coverage could not own; unexplained spec changes |
 
 An interaction-neighbor defect left by a repair is **not** grounds to reset —
-stay `incremental` and keep the P0/P1.
+stay `incremental`. Owned-rule neighbors stay P0/P1; unsupported-mechanism
+neighbors close by removal, not completion.
 
 **Review cycle:** first review is `1/3`. A review of a revision increments the
 prior report's cycle by one. A second gate on the unchanged artifact keeps the
@@ -135,7 +138,9 @@ P0/P1 batch — not an artificially small list, and not padded P2/P3.
 1. Classify every prior P0/P1 `resolved` | `still present` | `superseded` with
    current-spec evidence (wording-only ≠ resolved).
 2. Check recorded Root and closure surfaces and interaction neighbors that
-   share the changed rule, at posture depth.
+   share the changed rule, at posture depth. Owned-rule neighbors stay in
+   this batch; unsupported-mechanism neighbors close by removal, not
+   completion. `revision-induced` does not mean finish the new sentence.
 3. One bounded residual challenge: controlling outcome, acceptance/stop
    conditions, and the worst credible in-scope consequence path — not new
    product scope.
@@ -164,9 +169,10 @@ with a differently shaped equivalent.
 
 1. **Basis.** Reread every in-scope artifact. Use Git status/diff/log only to
    identify current artifact state; record paths, `HEAD`, dirty state, or the
-   source/version limitation. Derive outcome, authority, scope/non-goals,
-   acceptance/stop, activation, material dependencies, and unresolved
-   evidence. On re-review, require the complete prior report and its basis;
+   source/version limitation. Consume the frozen Outcome lock: owned
+   observables, fence, accepted residuals, acceptance/stop, activation,
+   material dependencies, and unresolved evidence. On re-review, require the
+   complete prior report and its basis;
    memory and old findings are location aids, never current evidence. If task
    identity/scope/activation/acceptance is contradictory in a way that can
    hide P0/P1, that is the finding — do not silently choose the product
@@ -189,8 +195,8 @@ with a differently shaped equivalent.
    deepest task-owned root; explain why the current contract/control/proof
    cannot establish it; sweep every task-owned surface it can invalidate; and
    derive the smallest falsifiable closure outcome. Run the necessity removal
-   test against the independently derived Outcome lock before prescribing
-   completion of a mechanism. Challenge confident clauses, clean-looking
+   test against the frozen Outcome lock before prescribing completion of a
+   mechanism. Challenge confident clauses, clean-looking
    boundaries, and tests that mirror the plan.
 
 ### Claim authority
@@ -312,11 +318,12 @@ Choices:
 Recommendation: <evidence-backed choice, or "Need your decision" when binding authority is missing>
 ```
 
-Use two or three concrete choices from the remaining root that preserve the
-binding task outcome. When evidence admits only one closure, option 2 is
-evidence it is already met — not authority to weaken it. Never present
-weakened acceptance, a changed product outcome, or deferral to another work
-package as a path to PASS. No word or token budget on this terminal block.
+Use two or three concrete choices from the remaining root. In-lock roots
+preserve the binding task outcome; when only one in-lock closure exists,
+option 2 is evidence it is already met. Never present weakened acceptance
+or deferral as a path to PASS. Lock-enlarging roots replace those choices
+with: enlarge the lock as a new task; revert to the last lock-faithful spec;
+or stop — never confirm the inflated closure. No word or token budget.
 
 ## Verification
 

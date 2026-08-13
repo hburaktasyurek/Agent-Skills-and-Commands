@@ -8,8 +8,9 @@ could invent.
 ## 1. Draw the closure graph
 
 Start with task-owned nodes and directed handoffs that the frozen outcome can
-reach. A candidate boundary belongs only when the outcome lock requires it or
-current-system evidence proves the outcome unsafe or unreachable without it.
+reach. A candidate boundary belongs only when the outcome lock requires it, or
+current-system evidence proves a frozen owned observable is unreachable in this
+child without that boundary. Current-system evidence cannot add an observable.
 Reject a more complex candidate when a grounded viable minimal path preserves
 all observable behavior.
 

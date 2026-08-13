@@ -36,7 +36,9 @@ Judge the current spec and:
 1. For each prior finding, record only `resolved` | `still present` |
    `superseded` plus a current-evidence pointer (wording-only ≠ resolved).
 2. Rebuild prior decision families, revision-touched edges, and their
-   interaction neighbors at full structural depth.
+   interaction neighbors at full structural depth. Owned-rule neighbors stay
+   in this batch; unsupported-mechanism neighbors close by removal, not
+   completion. `revision-induced` does not mean finish the new sentence.
 3. Run the reverse pass on that set and a bounded residual check on controlling
    acceptance paths and the highest-consequence in-scope handoff — not an
    unrelated full-ledger re-sweep.

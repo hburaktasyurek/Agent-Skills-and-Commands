@@ -59,6 +59,16 @@
         "Page, callback, nested metadata, and independent result-oracle neighbors are reconciled in the same revision.",
         "No parser technology or unrelated scope is invented."
       ]
+    },
+    {
+      "id": "lock-forbids-lifecycle",
+      "input": "lock-forbids-lifecycle/input",
+      "checks": [
+        "The handoff reports CHECKOUT_INSTANCE_BINDING_ALIAS with disposition escalated or removed, not patched.",
+        "The resulting four-file cluster does not add Provider::create, Provider::cancel, create+replace, cancellation, checkout-instance lifecycle, or a transaction/publication/recovery protocol.",
+        "The reviewer's necessity=outcome-required stamp is not treated as lock authority.",
+        "No unrelated spec behavior changes."
+      ]
     }
   ]
 }

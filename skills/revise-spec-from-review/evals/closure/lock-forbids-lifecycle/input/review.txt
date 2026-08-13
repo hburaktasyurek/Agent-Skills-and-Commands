@@ -1,0 +1,9 @@
+FAIL
+Basis: full; 1/3; task-contract.md and agent-os/specs/fixture/{shape.md,plan.md,references.md,standards.md}; frozen fixture cluster
+
+[P1] Bind each checkout instance before updating amount
+Evidence and impact: shape.md limits the child to `Provider::update` of an existing server-bound intent, but live `CheckoutRenderer::render` calls `Provider::create` on every render. A second render can leave a confirmable intent that this coupon path does not own. A failed update can leave local coupon state and the still-confirmable intent at different amounts.
+Root and closure: CHECKOUT_INSTANCE_BINDING_ALIAS; necessity=outcome-required; add create+replace when no updatable binding exists, cancel the superseded intent, and publish the coupon write with the provider update in one transaction with recovery replay. Producers are the checkout renderer and coupon writer; consumers are the bound intent and confirmer; neighbors are zero-total cancel and client restore.
+Proof: Render A then render B in the same session, then apply a positive coupon from A. The scalar binding resolves B while A remains confirmable. Starting from an updatable bound intent, persist a discounted local amount and make `Provider::update` throw; the confirmer can still confirm the pre-discount amount.
+
+Next: revise-spec-from-review

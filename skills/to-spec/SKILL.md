@@ -101,11 +101,11 @@ cluster. A material decision may not be hidden under that label.
 Before closure, quote the frozen Outcome lock and run a widen test on every
 proposed major behavior. A public interface, persistent state,
 transaction/recovery protocol, idempotency identity, provider operation,
-cross-component identity, or lifecycle branch needs either outcome-lock
-authority or a cited current-system necessity without which the bounded outcome
-is unsafe or unreachable. Enforce the sibling fence: local mechanism ownership
-does not authorize absent-resource creation, replacement, cancellation, a new
-framework, or sibling work.
+cross-component identity, or lifecycle branch needs outcome-lock authority.
+Current-system evidence may prove a frozen owned observable is unreachable in
+this child; it cannot add an observable. Enforce the sibling fence: local
+mechanism ownership does not authorize absent-resource creation, replacement,
+cancellation, a new framework, or sibling work.
 
 Compare every grounded viable minimal path. Choose the safe route that reuses
 landed owners and state and adds the fewest task-owned states and boundaries.

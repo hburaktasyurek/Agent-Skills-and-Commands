@@ -118,6 +118,25 @@
         "The existing server-bound positive Provider::update path, browser-ID non-authority, and local no-op boundaries remain task-owned and preserved.",
         "The review does not demand completion of the optional transition state machine."
       ]
+    },
+    {
+      "id": "fenced-neighbor",
+      "input": "fenced-neighbor/input",
+      "checks": [
+        "No P0/P1 Root and closure treats the fenced CheckoutRenderer / Provider::create neighbor as necessity=outcome-required.",
+        "Required closure does not include Provider::create, Provider::cancel, create+replace, cancellation, checkout-instance lifecycle, or a transaction/publication/recovery protocol.",
+        "If a P0/P1 remains, it is an in-lock owned observable such as authorization-before-local-write or retrieve failure, not the sibling checkout.",
+        "Report uses one-line `Basis:` (and concise `Prior:` lines on re-review); it does not emit separate `Review mode`, `Review cycle`, `Artifact basis`, `Consequence posture`, or `Task contract` headers, and does not include a Coverage receipt."
+      ],
+      "source_evidence": {
+        "path": "../sources/fenced-neighbor-observed.txt",
+        "sha256": "ba2e551ed73fc87ea52550c46dcfa650747223c422e2c657e83740cd499b57c9",
+        "origin": {
+          "type": "observed_failure_record",
+          "locator": "sanitized 2026-08-12 Cycle 1 fenced-neighbor lock-enlargement record",
+          "captured_at": "2026-08-12"
+        }
+      }
     }
   ]
 }

@@ -40,37 +40,37 @@ State activation or rollout timing only when a binding artifact defines it. Do
 not infer that activation is immediate merely because a code change would be
 deployed.
 
-## Scope provenance and necessity
+## Frozen lock and necessity
 
-Derive the Outcome lock independently from the spec: binding outcome, scope,
-non-goals, sibling owners, acceptance, and stop conditions. A proposed
-mechanism does not become task-owned merely because the spec depends on it.
-For every Blocker, put one classification inside **Root and closure**:
+The Outcome lock is frozen from the catalog, decisions, groundwork brief, or
+an explicit human lock: owned observables, sibling fence, and accepted
+residuals. The spec's own Outcome lock section is drift evidence, not new
+authority. An unclear lock is K2, not a stronger reviewer reading. Stay inside
+that lock; do not invent adjacent product requirements.
 
-- `necessity=outcome-required` when removing the mechanism makes the binding
-  outcome unsafe or unreachable; retain its full producer-consumer closure.
-- `necessity=architecture-induced` when removal eliminates a mechanism
-  unsupported by the Outcome lock; the closure is removal/simplification, not
-  fuller internal design.
-- `necessity=mixed` only when the finding identifies both a concrete
-  outcome-required obligation and separable optional manifestations; state both
-  in the same root. Do not use `mixed` merely because several designs could
-  meet an outcome-required contract.
+Live code answers at most **Q-task** (is a frozen owned observable decided?),
+**Q-live** (landed neighbor hazard — not P0/P1 alone), and **Q-delta** (did
+this spec newly require that neighbor or newly break it?).
 
-Classify the missing **observable obligation**, not merely the proposed
-mechanism that currently prevents it. If the binding outcome requires an
-action, path, or fail-closed boundary to remain reachable, a construction or
-dependency coupling that makes it unreachable is
-`necessity=outcome-required`: its repair may remove or simplify the coupling,
-but the reachability closure remains required. Use
-`architecture-induced` only if removing the whole mechanism family leaves
-every Outcome-lock obligation already satisfied.
+For every P0/P1 or Blocker, classify necessity inside **Root and closure** as
+exactly one:
 
-Use stable root `OPTIONAL_MECHANISM_SCOPE_AMPLIFICATION` when one
+- `necessity=outcome-required` — removing the mechanism makes a frozen owned
+  observable unsafe or unreachable; retain full consequence closure.
+- `necessity=architecture-induced` — removing an unsupported mechanism makes
+  the failure disappear; require removal/simplification, not completion.
+- `necessity=mixed` — separate the outcome-required obligation from optional
+  manifestations and close only the former.
+
+Score `necessity=` against the frozen lock. Create/replace/cancel, a
+transaction/publication/recovery protocol, or a fenced sibling is
+`architecture-induced` or K2, not `outcome-required`. An insufficient product
+lock is K2 or Workflow stop, not a larger lock.
+
+Use stable root `OPTIONAL_MECHANISM_SCOPE_AMPLIFICATION` when an
 architecture-induced family adds mechanisms unsupported by the Outcome lock.
 
-An unresolved K2 is an authority Blocker. Do not convert it into
-reviewer-selected architecture.
+An unresolved K2 is an authority blocker, never reviewer-selected architecture.
 
 ## Review basis
 
@@ -79,10 +79,10 @@ reviewer-selected architecture.
    staged and worktree content when they differ. If Git identity inspection is
    unavailable, record that limitation after one attempt; do not retry
    equivalent commands.
-2. Derive the binding task contract independently of the spec: authority,
-   Outcome lock, acceptance/stop conditions, ordered work packages, and
-   relevant migration, rollback, recovery, or activation state. Do not narrate
-   it as a separate report field.
+2. Consume the frozen Outcome lock: owned observables, fence, accepted
+   residuals, acceptance/stop conditions, ordered work packages, and
+   relevant migration, rollback, recovery, or activation state. Do not
+   narrate it as a separate report field.
 3. Use `full` mode by default. For re-review mode selection, shared cycle
    semantics, and incremental procedure, follow
    [references/incremental-review.md](references/incremental-review.md).
@@ -244,14 +244,13 @@ Choices:
 Recommendation: <evidence-backed choice, or "Need your decision" when binding authority is missing>
 ```
 
-Use two or three concrete, plain-language choices. They must arise from the
-remaining root and preserve the binding task outcome. Offer a different
-behavior only when binding authority leaves that in-scope choice open. When
-the evidence admits only one closure, option 2 is evidence that it is already
-met, not authority to weaken it. Otherwise use confirmation of the required
-closure, missing binding authority, or stopping the task. Never present
-weakened acceptance, a changed product outcome, or deferral to another work
-package as a way to obtain READY.
+Use two or three concrete, plain-language choices from the remaining root.
+In-lock roots preserve the binding task outcome. Offer a different behavior
+only when binding authority leaves that in-scope choice open. When only one
+in-lock closure exists, option 2 is evidence it is already met. Never present
+weakened acceptance or deferral as a way to obtain READY. Lock-enlarging
+roots replace those choices with: enlarge the lock as a new task; revert to
+the last lock-faithful spec; or stop — never confirm the inflated closure.
 
 Do not prescribe architecture when several contracts satisfy the outcome.
 Route plan correctness to `adversarial-spec-review` and runtime/PR correctness

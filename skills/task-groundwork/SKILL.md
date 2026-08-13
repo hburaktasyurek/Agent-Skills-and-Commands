@@ -40,10 +40,10 @@ system inventory; stop when more evidence would not change the decision.
 ## Resolve the task tree and handoff authority
 
 Derive the task purpose instead of repeating its title. First state an
-**Outcome lock** in prose: quote the binding outcome, current scope, explicit
-non-goals, and sibling owners. It preserves task authority while leaving
-bounded local implementation choices to the next stage; it is not a JSON
-schema or permission to invent a larger mechanism.
+**Outcome lock** in prose: quote the binding outcome, owned observables,
+scope, non-goals, sibling owners, and accepted residuals. It preserves task
+authority while leaving bounded local implementation choices to the next
+stage; it is not a JSON schema or permission to invent a larger mechanism.
 
 Classify every decision-relevant branch against that lock:
 
@@ -69,9 +69,8 @@ repository precedent and constraints for technical choices, keep current,
 future, and deferred work separate, and do not manufacture a decision from
 hypothetical external state. A bounded expiry consequence does not pull
 migration, dual-read, or rollout machinery into scope unless evidence makes it
-necessary. Qualitative engineering judgment still applies: a load-bearing
-correctness, security, compatibility, money, or production invariant can
-outweigh convenience.
+necessary. An unowned correctness, security, compatibility, money, or
+production invariant does not enlarge the outcome lock; it is a K2 question.
 
 Never defer a material decision, change task scope, or pull future work forward
 without explicit approval. Default to read-only investigation and safe
@@ -84,8 +83,10 @@ positive-fit brief, use all four exact headings below; none is omittable. Use
 `none` where a heading has no remaining content. The narrow negative-fit
 result remains the exception.
 
-- **Outcome lock:** binding outcome, scope, non-goals, and sibling owners.
-- **Non-goals and sibling fence:** excluded behavior and its owner.
+- **Outcome lock:** binding outcome, owned observables, scope, non-goals,
+  sibling owners, and accepted residuals this child will not close.
+- **Non-goals and sibling fence:** excluded behavior, its owner, and any
+  landed neighbor hazard this child will not close.
 - **Viable minimal paths:** evidence-backed routes, eliminations, and the
   least-widening safe route.
 - **Open K2:** each remaining human decision; write `Open K2: none` only when

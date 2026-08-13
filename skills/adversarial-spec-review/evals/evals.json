@@ -111,6 +111,40 @@
           }
         }
       }
+    },
+    {
+      "id": 5,
+      "prompt": "Use $adversarial-spec-review to review evals/incremental-closure/fenced-neighbor/input/task.md, its complete current spec, and the supplied PHP sources. Return only the evidence-backed review report; do not modify files.",
+      "expected_output": "The review does not own the fenced live checkout-create neighbor as P0/P1 and does not demand create, cancel, create+replace, or a transaction/recovery protocol. An in-lock authorization gap (local write before nonce rejection) may remain P1.",
+      "files": [
+        "evals/incremental-closure/fenced-neighbor/input/task.md",
+        "evals/incremental-closure/fenced-neighbor/input/spec/shape.md",
+        "evals/incremental-closure/fenced-neighbor/input/spec/plan.md",
+        "evals/incremental-closure/fenced-neighbor/input/src/CouponHandler.php",
+        "evals/incremental-closure/fenced-neighbor/input/src/CheckoutRenderer.php",
+        "evals/incremental-closure/fenced-neighbor/input/src/Provider.php",
+        "evals/incremental-closure/fenced-neighbor/input/src/PendingIntentStore.php",
+        "evals/incremental-closure/fenced-neighbor/input/src/CouponResult.php"
+      ],
+      "assertions": [
+        "The report's first non-whitespace characters are the bare line PASS or FAIL with no preface (no I'll/Checking/title/wrapper).",
+        "No P0/P1 Root and closure treats the fenced CheckoutRenderer / Provider::create neighbor as necessity=outcome-required.",
+        "Required closure does not include Provider::create, Provider::cancel, create+replace, cancellation, checkout-instance lifecycle, or a transaction/publication/recovery protocol.",
+        "If a P0/P1 remains, it is an in-lock owned observable such as authorization-before-local-write or retrieve failure, not the sibling checkout."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/fenced-neighbor-observed.txt",
+          "sha256": "ba2e551ed73fc87ea52550c46dcfa650747223c422e2c657e83740cd499b57c9",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized 2026-08-12 Cycle 1 fenced-neighbor lock-enlargement record",
+            "captured_at": "2026-08-12"
+          }
+        }
+      }
     }
   ]
 }

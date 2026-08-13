@@ -162,6 +162,38 @@
           }
         }
       }
+    },
+    {
+      "id": 6,
+      "prompt": "Use $revise-spec-from-review to apply the complete review in evals/closure/lock-forbids-lifecycle/input/review.txt to the named spec folder evals/closure/lock-forbids-lifecycle/input/agent-os/specs/fixture. Read the binding task contract and whole cluster first. Modify only that named spec folder and return a concise evidence-backed handoff.",
+      "expected_output": "The revision refuses the Cycle 1 lifecycle demand. Disposition is escalated or removed. The spec does not gain create, cancel, create+replace, or a transaction/recovery protocol.",
+      "files": [
+        "evals/closure/lock-forbids-lifecycle/input/task-contract.md",
+        "evals/closure/lock-forbids-lifecycle/input/review.txt",
+        "evals/closure/lock-forbids-lifecycle/input/agent-os/specs/fixture/shape.md",
+        "evals/closure/lock-forbids-lifecycle/input/agent-os/specs/fixture/plan.md",
+        "evals/closure/lock-forbids-lifecycle/input/agent-os/specs/fixture/references.md",
+        "evals/closure/lock-forbids-lifecycle/input/agent-os/specs/fixture/standards.md"
+      ],
+      "assertions": [
+        "The handoff reports CHECKOUT_INSTANCE_BINDING_ALIAS with disposition escalated or removed, not patched.",
+        "The resulting four-file cluster does not add Provider::create, Provider::cancel, create+replace, cancellation, checkout-instance lifecycle, or a transaction/publication/recovery protocol.",
+        "The reviewer's necessity=outcome-required stamp is not treated as lock authority to enlarge the frozen observables.",
+        "No unrelated contract is changed or added."
+      ],
+      "metadata": {
+        "case_type": "primary",
+        "source": "observed_failure",
+        "source_evidence": {
+          "path": "evals/sources/fenced-neighbor-observed.txt",
+          "sha256": "ba2e551ed73fc87ea52550c46dcfa650747223c422e2c657e83740cd499b57c9",
+          "origin": {
+            "type": "observed_failure_record",
+            "locator": "sanitized 2026-08-12 Cycle 1 fenced-neighbor lock-enlargement record",
+            "captured_at": "2026-08-12"
+          }
+        }
+      }
     }
   ]
 }
