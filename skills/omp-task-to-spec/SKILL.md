@@ -94,6 +94,12 @@ not task-specific substrate bans.
   the spec, find the package and entry already used for that job and call
   it. LPG in a petrol-bodied car: fill what they drive, not what the
   badge says.
+- **Ask the human in plain speech.** Questions, stop reasons, and the
+  final summary are for a person, not a glossary. Say the choice in
+  everyday words and what happens if they pick each option. Do not lead
+  with kit words (lock, substrate, K2, PI, and the like). Keep the enum
+  for the machine. If they would need to ask "what are you saying?",
+  rewrite before sending.
 
 ## Spawn
 
@@ -101,7 +107,8 @@ Every spawn carries exact authority, the frozen four lanes, and the rules
 above. The parent adds no task-specific bans or commentary. **Call ≠ swallow.**
 
 - K2 options are only `call-substrate` / `own-in-child` / `defer-new-child` /
-  `stop`. Pass them through `ask`. The parent does not decide.
+  `stop`. Pass them through `ask` in plain speech. The parent does not
+  decide.
 - Carry artifacts and complete reports. Do not summarize or filter.
 - Only `to-spec` writes spec bytes. Parent, reviewer, and ad-hoc fix-up do
   not. Reviews are read-only. OMP "trivial inline" does not apply to spec.
@@ -132,5 +139,6 @@ PASS+READY. No commit on K2 or stop.
 
 ## Final summary
 
-Non-technical. Purpose, boundary, ready?, substrate called vs a second
-machine, sibling overrun, open K2. No file, table, or lifecycle list.
+Plain speech, same bar as the ask rule. Purpose, boundary, ready?,
+called the existing path or built a second one, stepped on a neighbor,
+open choice. No file, table, lifecycle list, or kit glossary.
