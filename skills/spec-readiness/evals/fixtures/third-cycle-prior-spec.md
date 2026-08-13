@@ -1,4 +1,4 @@
-# Current implementation specification — cycle 2
+# Current implementation specification — after one rewrite
 
 ## Task contract
 

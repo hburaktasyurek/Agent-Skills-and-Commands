@@ -9,7 +9,6 @@ The directory layout stays flat. This file is the curated reading order.
 - [to-spec](to-spec/SKILL.md) — Produce a consequence-calibrated implementation spec.
 - [adversarial-spec-review](adversarial-spec-review/SKILL.md) — Try to kill a plan or spec before implementation.
 - [spec-readiness](spec-readiness/SKILL.md) — Check whether implementation would need to invent a structural contract.
-- [revise-spec-from-review](revise-spec-from-review/SKILL.md) — Apply complete supplied spec-review findings.
 
 ## Implementation
 

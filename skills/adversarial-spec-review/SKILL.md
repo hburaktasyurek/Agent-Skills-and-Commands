@@ -28,6 +28,11 @@ Ask:
 This is not `spec-readiness`. Report an omitted contract here only when that
 omission can invalidate outcome, safety, correctness, or recovery.
 
+Read `references/outcome-lock.md` and **score** the spec against its four lanes.
+Do not copy that essay into the report. A review closes only by calling a
+landed substrate or escalating the gap to its owner. Owning a parallel
+machine inside the child is not closure. That call is not lock enlargement.
+
 ### Verdict truth conditions
 
 - `FAIL` when any current P0/P1 exists: incomplete closure, prior-review gap,
@@ -54,41 +59,50 @@ credible P0/P1 consequence. State the missing proof; do not invent certainty.
 
 ### P0/P1 evidence
 
-On cycles `1/3` and `2/3` (and any PASS), every P0/P1 uses the three-field
-compact form in Report. Cycle `3/3` FAIL uses that same form before Workflow
+On `first` and `rewrite-1` (and any PASS), every P0/P1 uses the three-field
+compact form in Report. Cycle `stop` FAIL uses that same form before Workflow
 stop. Group shared-root manifestations; split independently failing paths.
-Reviewer owns diagnosis and proof contract; reviser owns design. Prescribe a
+Reviewer owns diagnosis and proof contract; `to-spec` owns design. Prescribe a
 mechanism only when binding authority leaves no alternative.
 
 ### Frozen lock and necessity
 
 The Outcome lock is frozen from the catalog, decisions, groundwork brief, or
-an explicit human lock: owned observables, sibling fence, and accepted
-residuals. The spec's own Outcome lock section is drift evidence, not new
-authority. An unclear lock is K2, not a stronger reviewer reading. Stay inside
-that lock; do not invent adjacent product requirements.
+an explicit human lock: the four lanes. The spec's own Outcome lock section is
+drift evidence, not new authority. An unclear lock is K2, not a stronger
+reviewer reading. Stay inside that lock; do not invent adjacent product
+requirements. A reviewer's `necessity=` stamp is not lock authority.
 
 Live code answers at most **Q-task** (is a frozen owned observable decided?),
-**Q-live** (landed neighbor hazard — not P0/P1 alone), and **Q-delta** (did
-this spec newly require that neighbor or newly break it?).
+**Q-live** (is the neighbor a substrate-call, sibling-fence, or residual — not
+P0/P1 alone), and **Q-delta** (did this spec newly swallow a sibling outcome,
+newly break a required substrate-call, or newly own a parallel machine?).
 
 For every P0/P1 or Blocker, classify necessity inside **Root and closure** as
 exactly one:
 
 - `necessity=outcome-required` — removing the mechanism makes a frozen owned
   observable unsafe or unreachable; retain full consequence closure.
-- `necessity=architecture-induced` — removing an unsupported mechanism makes
-  the failure disappear; require removal/simplification, not completion.
+- `necessity=architecture-induced` — the spec **owns** a parallel machine;
+  removing that ownership makes the failure disappear. Binding to / calling
+  the landed owner is not this. Require removal/simplification, not
+  completion of the parallel machine.
 - `necessity=mixed` — separate the outcome-required obligation from optional
   manifestations and close only the former.
 
-Score `necessity=` against the frozen lock. Create/replace/cancel, a
-transaction/publication/recovery protocol, or a fenced sibling is
-`architecture-induced` or K2, not `outcome-required`. An insufficient product
-lock is K2 or Workflow stop, not a larger lock.
+When the child binds to a landed owner, name that owner as `reused=<owner>`
+in Root and closure. That is not architecture-induced and not a patch
+instruction.
+
+Score `necessity=` against the frozen lock. This child **owning**
+create/replace/cancel, a new transaction/publication/recovery protocol, or a
+fenced sibling's product is `architecture-induced` or K2, not
+`outcome-required`. Entering a landed owner's existing entry is substrate-call.
+An insufficient product lock is K2 or Workflow stop, not a larger lock.
 
 Use stable root `OPTIONAL_MECHANISM_SCOPE_AMPLIFICATION` when an
-architecture-induced family adds mechanisms unsupported by the Outcome lock.
+architecture-induced family adds a parallel machine unsupported by the
+Outcome lock.
 
 An unresolved K2 is an authority blocker, never reviewer-selected architecture.
 
@@ -115,13 +129,16 @@ An interaction-neighbor defect left by a repair is **not** grounds to reset —
 stay `incremental`. Owned-rule neighbors stay P0/P1; unsupported-mechanism
 neighbors close by removal, not completion.
 
-**Review cycle:** first review is `1/3`. A review of a revision increments the
-prior report's cycle by one. A second gate on the unchanged artifact keeps the
-number. Legacy prior without the field → treat as `2/3` and say so. Do not
-begin a fourth review.
+**Review cycle:** `first | rewrite-1 | stop`. First review of a spec is
+`first`. Review of the one allowed `to-spec` rewrite is `rewrite-1`. A second
+gate on the unchanged rewrite keeps `rewrite-1`. `rewrite-1` FAIL is the
+second FAIL: emit cycle `stop` and Workflow stop. If prior is already
+`rewrite-1` or `stop`, this review is `stop`. Map legacy `1/3` → `first`,
+`2/3` → `rewrite-1`, `3/3` → `stop`. A prior without the field → treat as
+`rewrite-1` and say so. Do not begin another rewrite after `stop`.
 
-Shared unit with `revise-spec-from-review`: **Root and closure**. Judge
-the current spec, not reviser process claims.
+Shared unit with `spec-readiness`: **Root and closure**. Judge the current
+spec, not author process claims. There is no reviser.
 
 ### Full review
 
@@ -169,10 +186,9 @@ with a differently shaped equivalent.
 
 1. **Basis.** Reread every in-scope artifact. Use Git status/diff/log only to
    identify current artifact state; record paths, `HEAD`, dirty state, or the
-   source/version limitation. Consume the frozen Outcome lock: owned
-   observables, fence, accepted residuals, acceptance/stop, activation,
-   material dependencies, and unresolved evidence. On re-review, require the
-   complete prior report and its basis;
+   source/version limitation. Consume the frozen Outcome lock four lanes,
+   acceptance/stop, activation, material dependencies, and unresolved
+   evidence. On re-review, require the complete prior report and its basis;
    memory and old findings are location aids, never current evidence. If task
    identity/scope/activation/acceptance is contradictory in a way that can
    hide P0/P1, that is the finding — do not silently choose the product
@@ -197,7 +213,8 @@ with a differently shaped equivalent.
    derive the smallest falsifiable closure outcome. Run the necessity removal
    test against the frozen Outcome lock before prescribing completion of a
    mechanism. Challenge confident clauses, clean-looking
-   boundaries, and tests that mirror the plan.
+   boundaries, and tests that mirror the plan. Do not treat a required
+   substrate-call as lock enlargement.
 
 ### Claim authority
 
@@ -250,7 +267,7 @@ Open with exactly one verdict line (`PASS` or `FAIL`), then one Basis line:
 
 ```text
 FAIL
-Basis: <full | incremental | reset-to-full>; <1/3 | 2/3 | 3/3>; <paths; Git HEAD + dirty state, or limitation>
+Basis: <full | incremental | reset-to-full>; <first | rewrite-1 | stop>; <paths; Git HEAD + dirty state, or limitation>
 ```
 
 Do not emit separate `Review mode`, `Review cycle`, `Artifact basis`,
@@ -264,14 +281,14 @@ Prior lines:
 Prior: <id> resolved | still present | superseded — <current-spec evidence that decides the status>
 ```
 
-### Cycles 1/3 and 2/3 (and any PASS)
+### Cycles `first` and `rewrite-1` PASS, and `first` FAIL
 
 Report findings in priority order using the shared three-field compact form:
 
 ```text
 [Px] <short title>
 Evidence and impact: <current spec location + claim-matching source evidence; activated harm and recoverability>
-Root and closure: <stable id; necessity=outcome-required | architecture-induced | mixed; manifestations; producers, consumers, gates, states, recovery, neighbors; falsifiable outcome>
+Root and closure: <stable id; necessity=outcome-required | architecture-induced | mixed; reused=<owner> when scoring a substrate-call; manifestations; producers, consumers, gates, states, recovery, neighbors; falsifiable outcome>
 Proof: <independent evidence / counterexamples>
 ```
 
@@ -280,25 +297,37 @@ incomplete closure | prior-review gap | revision-induced`; for a repeated root
 id in Root and closure also `Repeat diagnosis` and its evidence. P2/P3 may
 combine fields.
 
-Close with:
+On `first` FAIL that is in-lock (owned observable or selected call's failure
+path), close with:
 
 ```text
-Next: revise-spec-from-review | spec-readiness
+Next: to-spec
 ```
+
+On PASS, close with:
+
+```text
+Next: spec-readiness
+```
+
+On `first` FAIL that is architecture-induced, lock enlargement, a new durable
+store, or a create/replace/cancel *request*, do not send `to-spec`. Emit
+Workflow stop with the typed K2 enum as Choices (`call-substrate` /
+`own-in-child` / `defer-new-child` / `stop`). Never present owning the
+parallel machine as the path to PASS.
 
 Keep low/standard reports compact. If nothing rises above P2, do not pad P3.
 
-### Cycle 3/3 FAIL — terminal compact form
+### Cycle `stop` FAIL — terminal compact form
 
-Do not write `Next` or a Coverage receipt. After the Basis line and any Prior
-lines, list each current P0/P1 in the same three-field compact form, with
-Classification:
+Do not write `Next`. After the Basis line and any Prior lines, list each
+current P0/P1 in the same three-field compact form, with Classification:
 
 ```text
 [Px] <short title>
 Classification: incomplete closure | prior-review gap | revision-induced
 Evidence and impact: <current spec location + decisive evidence; activated harm and recoverability>
-Root and closure: <stable id; necessity=outcome-required | architecture-induced | mixed; manifestations; producers, consumers, gates, states, recovery, neighbors; falsifiable outcome>
+Root and closure: <stable id; necessity=outcome-required | architecture-induced | mixed; reused=<owner> when scoring a substrate-call; manifestations; producers, consumers, gates, states, recovery, neighbors; falsifiable outcome>
 Proof: <independent evidence / counterexamples>
 ```
 
@@ -318,16 +347,20 @@ Choices:
 Recommendation: <evidence-backed choice, or "Need your decision" when binding authority is missing>
 ```
 
-Use two or three concrete choices from the remaining root. In-lock roots
-preserve the binding task outcome; when only one in-lock closure exists,
+Use two or three concrete choices from the remaining **in-lock** root. In-lock
+roots preserve the binding task outcome; when only one in-lock closure exists,
 option 2 is evidence it is already met. Never present weakened acceptance
-or deferral as a path to PASS. Lock-enlarging roots replace those choices
-with: enlarge the lock as a new task; revert to the last lock-faithful spec;
-or stop — never confirm the inflated closure. No word or token budget.
+or deferral as a path to PASS. Lock-enlarging or parallel-machine roots
+replace those choices with the typed K2 enum: `call-substrate`,
+`own-in-child`, `defer-new-child`, `stop` — never confirm the inflated
+closure. No word or token budget.
+
+`rewrite-1` FAIL uses this same terminal form with cycle `stop`.
 
 ## Verification
 
 Judge by the **report artifact**, not claimed reading order. Fixture
 expectations under `evals/` encode real failure modes (wording-only "fixes",
 residual P1 dropped for PASS, hollow Root and closure, prior-review gaps,
-revision-induced roots, unbounded third-cycle repair).
+revision-induced roots, second FAIL stop, swallow of a sibling outcome).
+Calling a landed substrate is not a fail.

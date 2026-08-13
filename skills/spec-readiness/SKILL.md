@@ -24,6 +24,11 @@ If the host stores the answer in a plan/card, that stored body is still the
 report — not a ledger or emit-later outline. If tool use produced chatter,
 discard it and return only the report.
 
+Read `references/outcome-lock.md` and **score** the spec against its four lanes.
+Do not copy that essay into the report. A review closes only by calling a
+landed substrate or escalating the gap to its owner. Owning a parallel
+machine inside the child is not closure. That call is not lock enlargement.
+
 ## Structural threshold
 
 A missing choice is a Blocker only when different answers change a declared
@@ -43,32 +48,41 @@ deployed.
 ## Frozen lock and necessity
 
 The Outcome lock is frozen from the catalog, decisions, groundwork brief, or
-an explicit human lock: owned observables, sibling fence, and accepted
-residuals. The spec's own Outcome lock section is drift evidence, not new
-authority. An unclear lock is K2, not a stronger reviewer reading. Stay inside
-that lock; do not invent adjacent product requirements.
+an explicit human lock: the four lanes. The spec's own Outcome lock section is
+drift evidence, not new authority. An unclear lock is K2, not a stronger
+reviewer reading. Stay inside that lock; do not invent adjacent product
+requirements. A reviewer's `necessity=` stamp is not lock authority.
 
 Live code answers at most **Q-task** (is a frozen owned observable decided?),
-**Q-live** (landed neighbor hazard — not P0/P1 alone), and **Q-delta** (did
-this spec newly require that neighbor or newly break it?).
+**Q-live** (is the neighbor a substrate-call, sibling-fence, or residual — not
+P0/P1 alone), and **Q-delta** (did this spec newly swallow a sibling outcome,
+newly break a required substrate-call, or newly own a parallel machine?).
 
 For every P0/P1 or Blocker, classify necessity inside **Root and closure** as
 exactly one:
 
 - `necessity=outcome-required` — removing the mechanism makes a frozen owned
   observable unsafe or unreachable; retain full consequence closure.
-- `necessity=architecture-induced` — removing an unsupported mechanism makes
-  the failure disappear; require removal/simplification, not completion.
+- `necessity=architecture-induced` — the spec **owns** a parallel machine;
+  removing that ownership makes the failure disappear. Binding to / calling
+  the landed owner is not this. Require removal/simplification, not
+  completion of the parallel machine.
 - `necessity=mixed` — separate the outcome-required obligation from optional
   manifestations and close only the former.
 
-Score `necessity=` against the frozen lock. Create/replace/cancel, a
-transaction/publication/recovery protocol, or a fenced sibling is
-`architecture-induced` or K2, not `outcome-required`. An insufficient product
-lock is K2 or Workflow stop, not a larger lock.
+When the child binds to a landed owner, name that owner as `reused=<owner>`
+in Root and closure. That is not architecture-induced and not a patch
+instruction.
+
+Score `necessity=` against the frozen lock. This child **owning**
+create/replace/cancel, a new transaction/publication/recovery protocol, or a
+fenced sibling's product is `architecture-induced` or K2, not
+`outcome-required`. Entering a landed owner's existing entry is substrate-call.
+An insufficient product lock is K2 or Workflow stop, not a larger lock.
 
 Use stable root `OPTIONAL_MECHANISM_SCOPE_AMPLIFICATION` when an
-architecture-induced family adds mechanisms unsupported by the Outcome lock.
+architecture-induced family adds a parallel machine unsupported by the
+Outcome lock.
 
 An unresolved K2 is an authority blocker, never reviewer-selected architecture.
 
@@ -79,10 +93,9 @@ An unresolved K2 is an authority blocker, never reviewer-selected architecture.
    staged and worktree content when they differ. If Git identity inspection is
    unavailable, record that limitation after one attempt; do not retry
    equivalent commands.
-2. Consume the frozen Outcome lock: owned observables, fence, accepted
-   residuals, acceptance/stop conditions, ordered work packages, and
-   relevant migration, rollback, recovery, or activation state. Do not
-   narrate it as a separate report field.
+2. Consume the frozen Outcome lock four lanes, acceptance/stop conditions,
+   ordered work packages, and relevant migration, rollback, recovery, or
+   activation state. Do not narrate it as a separate report field.
 3. Use `full` mode by default. For re-review mode selection, shared cycle
    semantics, and incremental procedure, follow
    [references/incremental-review.md](references/incremental-review.md).
@@ -107,7 +120,7 @@ node and edge classify these rows:
 
 | Row | Required contract |
 |---|---|
-| Owner and outcome | Entry point, owner, dependencies, construction, registration, transaction/lifecycle owner, promised outcome |
+| Owner and outcome | Entry point, owner, dependencies, construction, transaction/lifecycle owner, promised outcome |
 | Inputs and authority | Shapes, preconditions, context, canonical source when inputs or facts disagree |
 | Public contract and identity | Cross-task types, creation authority, states, payloads, equality and identity meaning |
 | Outcomes | Success, no-op, replay, denial, conflict, missing/malformed data, failure, rollback, retry and exhaustion |
@@ -123,7 +136,9 @@ Classify each applicable row as exactly one:
   boundary contract.
 
 Do not classify a whole node as complete because an endpoint or happy path is
-named.
+named. A selected substrate-call is SPECIFIED when the owner, entry, and
+failure path are named; it is not MISSING because this child does not own
+that machine.
 
 ## Conditional depth
 
@@ -164,7 +179,7 @@ Then one Basis line (example shape; use `READY` when that is the truth):
 
 ```text
 NOT READY
-Basis: <full | incremental | reset-to-full>; <1/3 | 2/3 | 3/3>; <paths and exact content/revision identity or limitation>
+Basis: <full | incremental | reset-to-full>; <first | rewrite-1 | stop>; <paths and exact content/revision identity or limitation>
 ```
 
 Do not emit separate `Review mode`, `Review cycle`, `Artifact basis`,
@@ -184,14 +199,15 @@ before returning — do not ask for confirmation):
   report body already present after that instruction
 - is only Inputs / Mode and cycle / Outcome lock / Prior disposition / Verdict
   notes with no following bare `NOT READY`/`READY` + `Basis:` report
-- at `3/3` `NOT READY`, omits the literal `Workflow stop` block below
+- at `stop` `NOT READY`, omits the literal `Workflow stop` block below
 
 `READY` is not a bare verdict. After Basis, include one concise `Ready
 evidence:` line that identifies the named contract/consumer coverage,
-implementation freedom where relevant, and why untriggered structural gates
-do not add an obligation. At cycle `3/3` with `NOT READY`, the deliverable
-must already contain the three-field Blocker(s) and the full `Workflow stop`
-block below. A memo that only plans to emit them is not a report.
+implementation freedom where relevant, the substrate-call that is in-lock,
+and why untriggered structural gates do not add an obligation. At cycle
+`stop` with `NOT READY`, the deliverable must already contain the three-field
+Blocker(s) and the full `Workflow stop` block below. A memo that only plans
+to emit them is not a report.
 
 On re-review, before current findings, emit only concise decision-relevant
 Prior lines:
@@ -205,7 +221,7 @@ For each finding use the shared three-field compact form:
 ```text
 [Blocker | Gap | Note] <title>
 Evidence and impact: <current path:line/section or inline clause; activated harm / structural divergence and recoverability>
-Root and closure: <stable id; necessity=outcome-required | architecture-induced | mixed; other manifestations; producers, consumers, states, and proofs revise must close; falsifiable decision without prescribing excess mechanism>
+Root and closure: <stable id; necessity=outcome-required | architecture-induced | mixed; reused=<owner> when scoring a substrate-call; other manifestations; producers, consumers, states, and proofs the next to-spec rewrite must close; falsifiable decision without prescribing excess mechanism>
 Proof: <independent evidence / distinguishing counterexamples>
 ```
 
@@ -221,13 +237,24 @@ no decision-relevant information.
 Do not require Task contract, Coverage receipt, Checked and solid, or
 Consequence posture narration.
 
-On cycles `1/3` and `2/3`, close with:
+On `first` NOT READY that is in-lock, close with:
 
 ```text
-Next: revise-spec-from-review | implementation
+Next: to-spec
 ```
 
-When cycle `3/3` is `NOT READY`, after the Basis line and any Prior lines,
+On READY, close with:
+
+```text
+Next: implementation
+```
+
+On `first` NOT READY that is architecture-induced, lock enlargement, a new
+durable store, or a create/replace/cancel *request*, do not send `to-spec`.
+Emit Workflow stop with the typed K2 enum as Choices. Never present owning
+the parallel machine as the path to READY.
+
+When cycle `stop` is `NOT READY`, after the Basis line and any Prior lines,
 list only the current three-field Blocker(s), then end with Workflow stop. Do
 not emit Consequence posture, Task contract, Coverage receipt, or Checked and
 solid, and do not repeat any expanded finding form:
@@ -244,13 +271,16 @@ Choices:
 Recommendation: <evidence-backed choice, or "Need your decision" when binding authority is missing>
 ```
 
-Use two or three concrete, plain-language choices from the remaining root.
-In-lock roots preserve the binding task outcome. Offer a different behavior
-only when binding authority leaves that in-scope choice open. When only one
-in-lock closure exists, option 2 is evidence it is already met. Never present
-weakened acceptance or deferral as a way to obtain READY. Lock-enlarging
-roots replace those choices with: enlarge the lock as a new task; revert to
-the last lock-faithful spec; or stop — never confirm the inflated closure.
+Use two or three concrete, plain-language choices from the remaining in-lock
+root. In-lock roots preserve the binding task outcome. Offer a different
+behavior only when binding authority leaves that in-scope choice open. When
+only one in-lock closure exists, option 2 is evidence it is already met. Never
+present weakened acceptance or deferral as a way to obtain READY.
+Lock-enlarging or parallel-machine roots replace those choices with the typed
+K2 enum: `call-substrate`, `own-in-child`, `defer-new-child`, `stop` — never
+confirm the inflated closure.
+
+`rewrite-1` NOT READY uses this same terminal form with cycle `stop`.
 
 Do not prescribe architecture when several contracts satisfy the outcome.
 Route plan correctness to `adversarial-spec-review` and runtime/PR correctness

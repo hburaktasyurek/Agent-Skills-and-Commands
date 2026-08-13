@@ -26,7 +26,6 @@ See [skills/INDEX.md](skills/INDEX.md) for the grouped index.
 | [to-spec](skills/to-spec/SKILL.md) | Produce a consequence-calibrated implementation spec. |
 | [adversarial-spec-review](skills/adversarial-spec-review/SKILL.md) | Red-team a plan or spec and return findings with a verdict. |
 | [spec-readiness](skills/spec-readiness/SKILL.md) | Check whether implementation can start without inventing structural contracts. |
-| [revise-spec-from-review](skills/revise-spec-from-review/SKILL.md) | Apply complete spec-review findings without introducing contradictions. |
 | [senior-implementer](skills/senior-implementer/SKILL.md) | Implement approved work and close task-related causes across affected surfaces. |
 | [tdd](skills/tdd/SKILL.md) | Build through vertical red-green-refactor cycles. |
 | [review-implementation](skills/review-implementation/SKILL.md) | Check a named spec against its implementation before PR. |
@@ -82,3 +81,10 @@ skills/example/
 The frontmatter must contain a lowercase hyphenated `name` matching the
 directory and a concise `description` that states what the skill does and
 when to use it. Include only runtime-relevant files.
+
+`npx skills` installs each `skills/<name>/` directory as its own package.
+A file a skill reads at runtime must live inside that directory. Do not put
+shared runtime files at `skills/*.md` or point at a sibling skill with `../`.
+If two skills need the same ontology, each ships an identical copy under
+`references/`. Repo-root files (`WORKFLOW.md`, `AGENTS.md`) are not skill
+packages.

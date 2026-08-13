@@ -32,7 +32,7 @@ it does not replace the opened-PR gate.
 
 | Role | Owns | Must not absorb |
 |---|---|---|
-| Design | Grounding, product decisions, specs, verified spec corrections | Implementation, PR creation, merge |
+| Design | Grounding, product decisions, specs (`to-spec` is the only spec-byte author) | Implementation, PR creation, merge |
 | Review | Spec attack, readiness, spec-code compliance, PR attack | Editing the reviewed artifact or approving its own corrections |
 | Implementation | Root-complete delivery of the task or complete findings, including task-owned spec reconciliation when current evidence invalidates it | Unrelated redesign, PR creation, merge |
 | Commit / PR | Intentional commits, PR description, requested publication | Implementation or independent review |
@@ -46,7 +46,6 @@ it does not replace the opened-PR gate.
 | `to-spec` | Grounded frame or equivalent current evidence |
 | `adversarial-spec-review` | Current spec cluster |
 | `spec-readiness` | Current spec cluster |
-| `revise-spec-from-review` | Complete failed spec-review or readiness report |
 | `senior-implementer` | Approved spec/brief or direct task; complete findings when correcting review failures |
 | `review-implementation` | Approved named spec and current implementation |
 | `adversarial-diff-review` | Explicit branch/worktree/diff boundary |
@@ -57,25 +56,38 @@ it does not replace the opened-PR gate.
 
 ## Spec design
 
-1. Use `task-groundwork` unless the session already states task authority,
+Orchestrator contract. Host harnesses that still run a 3-cycle revise ladder
+are out of scope; this package does not patch them.
+
+The four design skills ship the identical lock file under
+`references/outcome-lock.md`. Review closes only by calling a landed
+substrate or escalating the gap to its owner.
+
+1. Use `task-groundwork` unless the session already states the outcome lock,
    scope/non-goals, and acceptance or stop conditions.
-2. Produce the implementation handoff with `to-spec`.
+2. `to-spec` writes every spec byte. Parent, review, and ad-hoc hole-closing
+   do not write spec files.
 3. Run `adversarial-spec-review` independently.
-4. Spec review and readiness share `Review cycle` `1/3`-`3/3`. A revision
-   increments it; a second gate on the unchanged artifact keeps it. Do not
-   begin a fourth review.
-5. On FAIL before `3/3`, give the complete report to
-   `revise-spec-from-review` and re-review only when every P0/P1 required
-   closure stays inside the frozen lock. If any enlarges observables, fence,
-   or residuals, stop for the human; do not revise. Return every current
-   P0/P1 root family in one batch; do not drop residuals for PASS.
-6. After adversarial PASS, run `spec-readiness`. On NOT READY before `3/3`,
-   apply the same lock test; only an in-lock revision re-enters adversarial
-   review, and spec-readiness runs again only after that PASS. This is the
-   next shared cycle and does not reuse the previous artifact's PASS.
-7. At `3/3` FAIL or NOT READY, stop for the human with the report's
-   `Workflow stop` choices. Do not send another speculative revision.
-8. Hand off only after both review gates pass.
+4. One attack pair. Shared cycle is `first | rewrite-1 | stop`. There is no
+   `1/3`–`3/3` ladder.
+5. In-lock hole on `first`: `to-spec` rewrites once; re-enter review as
+   `rewrite-1`. Second FAIL is `stop` → human. Do not send another rewrite.
+6. Architecture, lock enlargement, a new durable store, or a
+   create/replace/cancel *request* (not a reviewer's `necessity=` stamp) →
+   human or catalog. No patch.
+7. After adversarial PASS, run `spec-readiness`. Same edges: in-lock →
+   `to-spec` once; architecture/lock growth → human; READY → implement.
+   Readiness does not reuse a previous PASS on a different artifact.
+8. Hand off only after both gates pass.
+
+Spawn carries the frozen outcome lock. It does not add substrate bans
+(for example "no PaymentAttempt", "do not call X").
+
+Step back / "remove this" returns to `task-groundwork`. Do not offer a
+repository or catalog menu as a substitute.
+
+`ask()` passes the skill's K2 enum unchanged (`call-substrate` /
+`own-in-child` / `defer-new-child` / `stop`). Do not rewrite options.
 
 Incremental spec re-review requires the complete prior report and matching
 artifact basis, unchanged task contract, and changes bounded to the prior
@@ -133,12 +145,18 @@ The host-provided `skill-creator` is the single authoring and update entry
 point. This repository maintains no second methodology, proposal, review, or
 ship lifecycle.
 
+Ontology or job-definition cuts rewrite the skill. Do not patch compensating
+paragraphs onto a prior freeze. `skill-creator`'s smallest-package default
+does not apply to those cuts.
+
 ### New skill
 
 1. Give `skill-creator` concrete positive, difficult, and
    scope-preservation examples.
 2. Create `skills/<name>/` directly in a working branch.
 3. Include only instructions and resources the agent would otherwise lack.
+   Those files live inside that directory. Do not add `skills/*.md` or
+   `../` reads; copy a shared ontology into each consumer's `references/`.
 4. Run structural validation and realistic forward-tests.
 5. Use `skill-eval` against `without_skill` for substantial behavior.
 6. Keep the package only when artifacts show lift without regression.
@@ -148,7 +166,8 @@ ship lifecycle.
 
 1. Preserve the exact pre-change Git revision as the old-skill baseline.
 2. Turn the observed failure into a realistic eval case.
-3. Use `skill-creator` for the smallest root-complete package change.
+3. Use `skill-creator` for the smallest root-complete package change, except
+   when the job or ontology itself changed — then rewrite the job.
 4. Calibrate assertions after seeing both artifacts; reject assertions a
    clearly wrong artifact can satisfy.
 5. Run `skill-eval` verify in clean paired contexts.

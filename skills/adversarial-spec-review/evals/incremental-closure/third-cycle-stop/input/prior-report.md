@@ -1,7 +1,7 @@
 FAIL
 
 Review mode: incremental
-Review cycle: 2/3
+Review cycle: rewrite-1
 Artifact basis: task.md; spec/shape.md at fixture revision 2
 Consequence posture: high — local abandon is unavailable during provider outage
 

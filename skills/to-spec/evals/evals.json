@@ -143,7 +143,7 @@
     {
       "id": 6,
       "prompt": "Use $to-spec on evals/contract-closure/open-k2-stop/input/task.md, grounding.md, and the supplied source. The grounding claims readiness, but validate it yourself. Work only in this disposable workspace and do not implement.",
-      "expected_output": "No spec folder is saved. The result asks the one decision-changing question of whether zero total leaves the pending intent unchanged or cancels it.",
+      "expected_output": "No spec folder is saved. The result asks the typed K2 enum (call-substrate / own-in-child / defer-new-child / stop) because zero total changes recovery/state owner.",
       "files": [
         "evals/contract-closure/open-k2-stop/input/task.md",
         "evals/contract-closure/open-k2-stop/input/grounding.md",
@@ -152,7 +152,8 @@
       "assertions": [
         "The supplied ready label is rejected because Open K2 remains nonempty.",
         "No agent-os/specs folder or four-file cluster is created.",
-        "The result asks only the zero-total unchanged-versus-cancel decision and does not select a lifecycle framework."
+        "The result asks exactly one question whose options are only call-substrate, own-in-child, defer-new-child, and stop, and does not select a lifecycle framework.",
+        "The ask is not a free-form unchanged-versus-cancel menu."
       ],
       "metadata": {
         "case_type": "edge",

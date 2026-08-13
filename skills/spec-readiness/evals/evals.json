@@ -16,7 +16,7 @@
           "sha256": "9250872ab41ad8d5868a79328c1be7132aa084a13be069d8da94817466cca39c",
           "origin": {
             "type": "git_blob",
-            "locator": "skills/revise-spec-from-review/evals/closure/local-only-dependency-entry/input/review.txt at baseline commit 3d14b6e",
+            "locator": "git blob at baseline commit 3d14b6e (historical local-only-dependency-entry review.txt)",
             "captured_at": "2026-08-02"
           }
         }
@@ -68,7 +68,7 @@
     {
       "id": 4,
       "prompt": "Use $spec-readiness. Review the current spec in evals/fixtures/third-cycle-stop.md against the complete prior readiness report in evals/fixtures/third-cycle-prior-report.md and its exact prior basis in evals/fixtures/third-cycle-prior-spec.md. Return the implementation-readiness verdict and evidence-backed report only; do not modify files.",
-      "expected_output": "NOT READY at Review cycle 3/3 with a one-line Basis: the repeated retry-pending-identity Blocker is classified as incomplete closure with an evidence-backed repeat diagnosis, then the report ends with a compact Workflow stop terminal report without Consequence posture, Task contract, Coverage receipt, Checked and solid, or Next.",
+      "expected_output": "NOT READY at Review cycle stop (second FAIL; no further rewrite) with a one-line Basis: the repeated retry-pending-identity Blocker is classified as incomplete closure with an evidence-backed repeat diagnosis, then the report ends with a compact Workflow stop terminal report without Consequence posture, Task contract, Coverage receipt, Checked and solid, or Next.",
       "files": [
         "evals/fixtures/third-cycle-stop.md",
         "evals/fixtures/third-cycle-prior-report.md",
@@ -88,7 +88,7 @@
         }
       },
       "assertions": [
-        "The report's first non-whitespace characters are the bare line NOT READY with no preface, and Basis contains 3/3.",
+        "The report's first non-whitespace characters are the bare line NOT READY with no preface, and Basis contains stop.",
         "The report includes a one-line Basis and does not emit Consequence posture, Task contract, Coverage receipt, Checked and solid, Next, or an On-confirmation/Emit-only outline in place of the report.",
         "The repeated retry-pending-identity Blocker carries compact Evidence and impact, Root and closure, and Proof, with Classification `incomplete closure` and Repeat diagnosis `incomplete revision` with current-spec evidence.",
         "The report ends with Workflow stop (the literal block is present now; not deferred to a later confirmation).",
@@ -126,7 +126,7 @@
     {
       "id": 6,
       "prompt": "Use $spec-readiness to review evals/fixtures/fence-vs-sibling-spec.md against its binding task in evals/fixtures/fence-vs-sibling-task.md and the live sibling in evals/fixtures/fence-vs-sibling-checkout.php. Return only the implementation-readiness verdict and evidence-backed report; do not modify files.",
-      "expected_output": "READY: the bounded existing-pending update is specified, and the live CheckoutRenderer sibling is not pulled into this contract.",
+      "expected_output": "READY: the spec calls landed Provider::update (substrate-call, not lock enlargement) and does not swallow CheckoutRenderer's create outcome. Naming the sibling owner in the fence is not a Blocker.",
       "files": [
         "evals/fixtures/fence-vs-sibling-task.md",
         "evals/fixtures/fence-vs-sibling-spec.md",
@@ -134,8 +134,9 @@
       ],
       "assertions": [
         "The report's first non-whitespace characters are the bare line READY with no preface (no markdown title, approval wrapper, or outer fence), and the report contains zero Blockers.",
-        "No Blocker requires Provider::create, Provider::cancel, create+replace, cancellation, checkout-instance lifecycle, or a transaction/publication/recovery protocol.",
-        "The live CheckoutRenderer sibling is left outside this child; closure is not to specify or consume that renderer."
+        "The landed Provider::update call is not a Blocker and is not necessity=architecture-induced.",
+        "No Blocker requires this child to own Provider::create, Provider::cancel, create+replace, cancellation, checkout-instance lifecycle, or a new transaction/publication/recovery protocol.",
+        "CheckoutRenderer's create-on-render outcome stays sibling-fence; naming that owner is not a Blocker. Next is implementation."
       ],
       "metadata": {
         "case_type": "primary",

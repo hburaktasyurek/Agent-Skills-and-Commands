@@ -17,7 +17,7 @@
       "input": "residual-p1-forbids-pass/input",
       "checks": [
         "Verdict is FAIL (not PASS).",
-        "Basis contains 2/3.",
+        "Basis contains stop.",
         "Prior R1 account-gate closure is classified resolved with current-spec evidence.",
         "One P0/P1 `prior-review gap` Root and closure covers both post-deadline confirm and capture retries, and names the task's existing no-POST-after-deadline clause as prior-basis evidence.",
         "The report returns every detectable post-deadline sibling in the same FAIL batch and does not defer either manifestation to another review.",
@@ -71,7 +71,7 @@
       "id": "revision-induced-new-root",
       "input": "revision-induced-new-root/input",
       "checks": [
-        "Verdict is FAIL and Basis contains 2/3.",
+        "Verdict is FAIL and Basis contains stop.",
         "Prior R1 recovery-operation-identity is classified resolved with current-spec evidence.",
         "The notification-before-persistence P0/P1 is classified `revision-induced` rather than prior-review gap.",
         "The finding names the revised notification clause as the change that made the root reachable.",
@@ -92,7 +92,7 @@
       "id": "third-cycle-stop",
       "input": "third-cycle-stop/input",
       "checks": [
-        "Verdict is FAIL and Basis contains 3/3.",
+        "Verdict is FAIL and Basis contains stop.",
         "The repeated R1 local-only-provider-entry finding is classified incomplete closure with Repeat diagnosis `incomplete revision` and current-spec evidence.",
         "The report ends with Workflow stop and not `Next`; after one-line `Basis:` and any Prior lines it uses the same three-field Evidence and impact, Root and closure, and Proof form; it does not re-narrate a Coverage receipt or emit separate `Review mode`, `Review cycle`, `Artifact basis`, `Consequence posture`, or `Task contract` headers.",
         "Report does not restate task, method, or prior narrative.",
@@ -123,10 +123,12 @@
       "id": "fenced-neighbor",
       "input": "fenced-neighbor/input",
       "checks": [
-        "No P0/P1 Root and closure treats the fenced CheckoutRenderer / Provider::create neighbor as necessity=outcome-required.",
-        "Required closure does not include Provider::create, Provider::cancel, create+replace, cancellation, checkout-instance lifecycle, or a transaction/publication/recovery protocol.",
-        "If a P0/P1 remains, it is an in-lock owned observable such as authorization-before-local-write or retrieve failure, not the sibling checkout.",
-        "Report uses one-line `Basis:` (and concise `Prior:` lines on re-review); it does not emit separate `Review mode`, `Review cycle`, `Artifact basis`, `Consequence posture`, or `Task contract` headers, and does not include a Coverage receipt."
+        "Calling or naming the landed Provider::update (substrate-call) is not treated as lock enlargement or necessity=architecture-induced.",
+        "No P0/P1 Root and closure treats the CheckoutRenderer / Provider::create sibling outcome as this child's owned result (necessity=outcome-required). Swallowing that sibling outcome is FAIL; calling the landed update owner is not.",
+        "Required closure does not make this child own Provider::create, Provider::cancel, create+replace, cancellation, checkout-instance lifecycle, or a new transaction/publication/recovery protocol.",
+        "A reused platform owner may be named in the report; that is not a patch instruction and does not enlarge the lock. A necessity=outcome-required stamp on the sibling lifecycle is not lock authority.",
+        "If a P0/P1 remains, it is an in-lock owned observable such as authorization-before-local-write or retrieve failure, not ownership of the sibling checkout outcome.",
+        "Report uses one-line `Basis:` (and concise `Prior:` lines on re-review); it does not emit separate `Review mode`, `Review cycle`, `Artifact basis`, `Consequence posture`, or `Task contract` headers, and does not include a Coverage receipt. Next, if present, is to-spec or spec-readiness."
       ],
       "source_evidence": {
         "path": "../sources/fenced-neighbor-observed.txt",

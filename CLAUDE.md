@@ -1,6 +1,12 @@
 # CLAUDE.md
 
-Bu repo, `npx skills` ile dağıtılan kişisel bir skill koleksiyonudur (bkz. [README.md](README.md)). Dağıtılan içerik yalnızca `skills/` dizinindedir.
+Bu repo, `npx skills` ile dağıtılan kişisel bir skill koleksiyonudur (bkz. [README.md](README.md)). Dağıtılan içerik yalnızca `skills/<name>/` paketleridir. `skills/INDEX.md` ve repo kökü (`WORKFLOW.md`, bu dosya) indeks ve sözleşme; `npx` onları skill olarak kurmaz.
+
+## Paket birimi — npx
+
+`npx skills` her `skills/<name>/` klasörünü ayrı paketler. Runtime'da okunan her dosya o paketin içinde olmalı (`SKILL.md`, `references/`, `scripts/`, `assets/`).
+
+`skills/foo.md` veya kardeş skill'e `../` ile bağlamak kurulunca kırılır. İki skill aynı ontolojiyi paylaşıyorsa her biri kendi kopyasını taşır; kopyalar aynı kalır. Yeni skill veya paylaşılan referans eklerken bu kuralı ihlal etme.
 
 ## Kapsam kısıtı — kritik
 

@@ -4,18 +4,23 @@ Canonical re-review protocol for `spec-readiness`. The skill owns purpose,
 threshold, ledger, and terminal output. This file owns mode selection, shared
 cycle semantics, and incremental procedure.
 
+Read `references/outcome-lock.md` when scoring. Do not copy it.
+
 ## Shared cycle
 
 `adversarial-spec-review` and `spec-readiness` share one `Review cycle` for one
-unchanged spec revision (`1/3`, `2/3`, or `3/3`). The first review of a task's
-spec is `1/3`. Only a subsequent revision increments the complete prior
-report's cycle by one. A second gate on the same revision carries the number
-forward; it does not increment or reset it. If a legacy prior report lacks the
-field, treat its re-review as `2/3` and record the limitation. Do not begin a
-fourth review.
+unchanged spec revision: `first | rewrite-1 | stop`. The first review of a
+task's spec is `first`. Review of the one allowed `to-spec` rewrite is
+`rewrite-1`. A second gate on the same rewrite carries `rewrite-1`; it does
+not increment. `rewrite-1` FAIL / NOT READY is the second FAIL: emit cycle
+`stop` and the skill's Workflow stop. If prior is already `rewrite-1` or
+`stop`, this review is `stop`. Map legacy `1/3` → `first`, `2/3` →
+`rewrite-1`, `3/3` → `stop`. If a legacy prior report lacks the field, treat
+its re-review as `rewrite-1` and record the limitation. Do not begin another
+rewrite after `stop`.
 
-After `3/3` ends in `Workflow stop`, a human change to task authority begins a
-new task at `1/3`. It does not silently reset the stopped task's counter.
+After `stop` ends in `Workflow stop`, a human change to task authority begins a
+new task at `first`. It does not silently reset the stopped task's counter.
 
 ## Mode
 
@@ -39,6 +44,7 @@ Judge the current spec and:
    interaction neighbors at full structural depth. Owned-rule neighbors stay
    in this batch; unsupported-mechanism neighbors close by removal, not
    completion. `revision-induced` does not mean finish the new sentence.
+   A required substrate-call is not a sibling to complete.
 3. Run the reverse pass on that set and a bounded residual check on controlling
    acceptance paths and the highest-consequence in-scope handoff — not an
    unrelated full-ledger re-sweep.
@@ -60,10 +66,10 @@ Judge the current spec and:
    incomplete revision | prior root diagnosis incorrect` with current
    evidence.
 
-READY still requires zero Blockers. Finding shape and cycle-`3/3` terminal
+READY still requires zero Blockers. Finding shape and cycle-`stop` terminal
 output are owned by the skill.
 
-On cycle `3/3` with residual Blockers, return the skill's compact `NOT READY`
-report in this turn: bare verdict + `Basis:` (with `3/3`) + Prior lines +
+On cycle `stop` with residual Blockers, return the skill's compact `NOT READY`
+report in this turn: bare verdict + `Basis:` (with `stop`) + Prior lines +
 three-field Blocker(s) + `Workflow stop`. Do not return a review ledger,
 approval card, or “emit on confirmation” outline in place of that report.

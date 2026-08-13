@@ -138,7 +138,7 @@
     {
       "id": 6,
       "prompt": "Use $task-groundwork on evals/files/open-k2-stop/input/task.md and the supplied source. Work read-only and return the appropriate handoff without implementing.",
-      "expected_output": "The result is blocked or not ready because the zero-total provider outcome is an unresolved product/scope decision; it names that one Open K2 and does not select a route.",
+      "expected_output": "The result is blocked or not ready because the zero-total provider outcome changes recovery/state owner; it names that Open K2 with the typed enum (call-substrate / own-in-child / defer-new-child / stop) and does not select a route.",
       "files": [
         "evals/files/open-k2-stop/input/AGENTS.md",
         "evals/files/open-k2-stop/input/task.md",
@@ -146,8 +146,9 @@
       ],
       "assertions": [
         "The brief labels the zero-total choice as Open K2 rather than K0 evidence gathering or K1 implementation freedom.",
-        "The result is blocked or not ready and asks only whether zero total leaves the pending intent unchanged or cancels it.",
-        "No creation, cancellation, transition, idempotency, recovery, or other architecture is silently selected."
+        "The result is blocked or not ready and asks exactly one question whose options are only call-substrate, own-in-child, defer-new-child, and stop.",
+        "Open K2 is not none: recovery or state owner would change. No creation, cancellation, transition, idempotency, recovery, or other architecture is silently selected.",
+        "The ask is not a free-form unchanged-versus-cancel menu."
       ],
       "metadata": {
         "case_type": "edge",

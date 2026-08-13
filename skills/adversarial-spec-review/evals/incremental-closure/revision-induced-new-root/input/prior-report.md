@@ -1,7 +1,7 @@
 FAIL
 
 Review mode: full
-Review cycle: 1/3
+Review cycle: first
 Artifact basis: task.md; pre-revision spec/shape.md at fixture revision 1, which had no customer-notification behavior
 Consequence posture: high — retries can create duplicate recovery events
 [P1] Recovery events lack a durably persisted operation id

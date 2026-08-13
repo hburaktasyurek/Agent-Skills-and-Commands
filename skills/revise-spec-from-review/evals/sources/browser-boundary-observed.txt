@@ -1,6 +1,0 @@
-Observed failure record, sanitized 2026-08-08.
-
-A high-consequence server-only-data boundary survived several green test and
-review rounds while new reachable browser carriers continued to expose the
-same protected value. The fixture derived from this record uses neutral names
-and fake values; proprietary source and live credentials are excluded.

@@ -1,9 +1,0 @@
-FAIL
-Basis: full; 1/3; task-contract.md and agent-os/specs/fixture/{shape.md,plan.md,references.md,standards.md}; frozen fixture cluster
-
-[P1] Optional lifecycle framework widens the coupon task
-Evidence and impact: shape.md “Added lifecycle framework”, plan.md tasks 1–5, and standards.md require creation, cancellation, durable transitions, keys, publication, recovery, and identity partitioning even though task-contract.md limits the observable change to an existing positive server-bound update. Those additions create new provider state and recovery behavior outside task authority.
-Root and closure: OPTIONAL_MECHANISM_SCOPE_AMPLIFICATION; necessity=architecture-induced; remove the unsupported lifecycle, transition, SHA-256 key, publication/recovery, and confirmation-identity mechanism plus every dependent shape, plan, reference, standard, and test clause. Retain only the existing-pending positive server-authoritative update and its no-op boundaries; do not complete the optional state machine.
-Proof: Deleting the lifecycle framework preserves every task-contract acceptance path: the only provider operation is update(existing server binding, positive amount), while missing binding and zero amount remain local no-ops.
-
-Next: revise-spec-from-review

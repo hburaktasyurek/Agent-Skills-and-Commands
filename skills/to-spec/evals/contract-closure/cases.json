@@ -58,7 +58,7 @@
       "checks": [
         "The supplied grounding's ready label is not trusted while Open K2 still names the zero-total outcome.",
         "No spec folder or four-file cluster is saved.",
-        "The only returned question asks whether zero total leaves the existing pending intent unchanged or cancels it.",
+        "The only returned question uses the typed enum call-substrate / own-in-child / defer-new-child / stop, not a free-form unchanged-versus-cancel menu.",
         "No lifecycle framework is selected or proposed as a substitute for the missing authority."
       ]
     }

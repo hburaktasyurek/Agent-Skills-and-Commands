@@ -8,7 +8,7 @@ Nonce and booking-session authorization reject before any local session write, d
 
 ## Sibling fence
 
-`CheckoutRenderer::render` still calls `Provider::create` on each render. That owner, plus cancel/compensation, confirmation identity, and durable publication/recovery, stays outside this child. This spec does not consume or replace that renderer.
+`CheckoutRenderer::render` still calls `Provider::create` on each render. That create outcome is sibling-fence. This child calls `Provider::update` on the existing binding; it does not own or replace the renderer.
 
 ## Acceptance
 

@@ -8,6 +8,9 @@ description: "Use only when the user explicitly names task-groundwork to ground 
 Turn an underspecified task into decision-ready context. The value is the
 decision-changing evidence and resolved scope, not a filled methodology form.
 
+Read `references/outcome-lock.md` and **produce** its four lanes. Do not copy that
+essay into the brief.
+
 ## Establish fit and authority
 
 Use the supplied task source as authority. A direct request is sufficient; do
@@ -39,9 +42,11 @@ system inventory; stop when more evidence would not change the decision.
 
 ## Resolve the task tree and handoff authority
 
-Derive the task purpose instead of repeating its title. First state an
-**Outcome lock** in prose: quote the binding outcome, owned observables,
-scope, non-goals, sibling owners, and accepted residuals. It preserves task
+Derive the task purpose instead of repeating its title. Produce an **Outcome
+lock** in prose that states the four lanes: owned outcome, substrate-call,
+sibling-fence, and accepted residual. Quote the binding outcome, owned
+observables, the landed owner this child will call, sibling owners this child
+will not swallow, and residuals this child will not close. It preserves task
 authority while leaving bounded local implementation choices to the next
 stage; it is not a JSON schema or permission to invent a larger mechanism.
 
@@ -58,11 +63,12 @@ or scope, stop blocked; otherwise retain a `⚠️ UNVERIFIED` evidence limit fo
 the downstream author. Keep K1 visible as freedom rather than selecting it.
 Return ready for `to-spec` only when no K2 remains.
 
-If viable routes differ in public behavior, state/recovery behavior, a safety
+If viable routes differ in public behavior, state/recovery owner, a safety
 invariant without an owner, or pull sibling work forward, stop blocked and ask
-the one decision-changing K2 question. Repository defects, security findings,
-credible edge cases, and proof gaps are evidence to classify; they never
-enlarge the outcome lock by themselves.
+exactly one Open K2 question whose options are only `call-substrate` /
+`own-in-child` / `defer-new-child` / `stop`. Do not offer a free-form menu.
+Repository defects, security findings, credible edge cases, and proof gaps are
+evidence to classify; they never enlarge the outcome lock by themselves.
 
 Eliminate impossible, unsafe, or out-of-scope routes with evidence. Use
 repository precedent and constraints for technical choices, keep current,
@@ -72,9 +78,15 @@ migration, dual-read, or rollout machinery into scope unless evidence makes it
 necessary. An unowned correctness, security, compatibility, money, or
 production invariant does not enlarge the outcome lock; it is a K2 question.
 
+A landed neighbor is a substrate to call or a sibling to fence, not a hazard
+to complete. Missing local interface is not a ban on the call.
+
 Never defer a material decision, change task scope, or pull future work forward
 without explicit approval. Default to read-only investigation and safe
 non-mutating checks; ask before any repository write.
+
+Do not write `Open K2: none` when recovery or state owner would change across
+the remaining routes.
 
 ## Return the grounding brief
 
@@ -83,21 +95,26 @@ positive-fit brief, use all four exact headings below; none is omittable. Use
 `none` where a heading has no remaining content. The narrow negative-fit
 result remains the exception.
 
-- **Outcome lock:** binding outcome, owned observables, scope, non-goals,
-  sibling owners, and accepted residuals this child will not close.
-- **Non-goals and sibling fence:** excluded behavior, its owner, and any
-  landed neighbor hazard this child will not close.
+- **Outcome lock:** the four lanes — owned outcome, substrate-call (named
+  landed owner and entry), sibling-fence (named owners this child will not
+  swallow), accepted residual.
+- **Non-goals and sibling fence:** excluded behavior and its owner. Not a
+  list of landed hazards.
 - **Viable minimal paths:** evidence-backed routes, eliminations, and the
-  least-widening safe route.
-- **Open K2:** each remaining human decision; write `Open K2: none` only when
-  ready.
+  least-widening safe route that calls landed owners rather than owning a
+  parallel machine.
+- **Open K2:** each remaining human decision as the typed enum; write
+  `Open K2: none` only when ready and no recovery/state owner still moves.
+
+When asking, emit the four options with the concrete binding for this
+scenario. Do not replace them with a product-outcome menu.
 
 Also include decision-relevant current-system evidence, assumptions and
 `⚠️ UNVERIFIED` caveats, why investigation stopped, and whether the task is
 ready for specification or direct execution. Cite files and lines for
 file-backed facts. A ready handoff has `Open K2: none`; otherwise report
-blocked/not ready with the single decision-changing question and do not invoke
-the next skill.
+blocked/not ready with the single enum question and do not invoke the next
+skill.
 
 Return the completed brief directly. Do not leave a research plan, approval
 wrapper, or instructions for a later response in place of the brief.

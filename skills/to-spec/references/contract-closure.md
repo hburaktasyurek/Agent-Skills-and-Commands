@@ -5,30 +5,42 @@ is totality over reachable material behavior selected by the **Outcome lock**
 and current system, not a maximal Cartesian product or every mechanism a draft
 could invent.
 
+Read `references/outcome-lock.md` before drawing nodes. Freeze the four lanes;
+do not copy that essay here.
+
 ## 1. Draw the closure graph
 
-Start with task-owned nodes and directed handoffs that the frozen outcome can
-reach. A candidate boundary belongs only when the outcome lock requires it, or
-current-system evidence proves a frozen owned observable is unreachable in this
-child without that boundary. Current-system evidence cannot add an observable.
-Reject a more complex candidate when a grounded viable minimal path preserves
-all observable behavior.
+Start with the frozen **substrate-call**: the landed owner and entry this
+child will invoke. Then add task-owned nodes and directed handoffs that the
+frozen owned outcome can reach. A candidate boundary belongs only when the
+outcome lock requires it as owned outcome or substrate-call, or current-system
+evidence proves a frozen owned observable is unreachable in this child without
+that call. Current-system evidence cannot add an observable.
+
+Absence of an applicable local interface is not a reason to omit the call or
+to invent a parallel machine; it is Open K2 `call-substrate` or
+`defer-new-child`. Reject a more complex candidate when a grounded viable
+minimal path preserves all observable behavior by calling the landed owner.
 
 Record selected nodes and handoffs:
 
 1. input sources and entry carriers;
-2. validation, proof, or normalization;
-3. classifiers, factories, or state constructors;
-4. public result and returned identity/data;
-5. consumer, authority action, persistence, and externally visible effect;
-6. retry, recovery, late-result, or competing-owner behavior only when the
-   selected task-owned mechanism makes it reachable;
-7. acceptance oracle and distinguishing counterexample.
+2. the selected substrate-call (named owner, entry, arguments);
+3. validation, proof, or normalization;
+4. classifiers, factories, or state constructors;
+5. public result and returned identity/data;
+6. consumer, authority action, persistence, and externally visible effect;
+7. retry, recovery, late-result, or competing-owner behavior only when the
+   selected task-owned mechanism or selected call makes it reachable;
+8. acceptance oracle and distinguishing counterexample.
 
 Include all task-owned producers of a changed public result, not only the path
 named by the task or review example. A fact arriving in a normal return, typed
 error, callback, decoded object, replay, or recovery load is a separate carrier
 only when that route is reachable and changes validation or preservation.
+
+Do not add sibling-fence create/replace/cancel, a new durable store, or a new
+lifecycle as closure nodes unless Open K2 `own-in-child` selected them.
 
 ## 2. Classify the proof domain
 
@@ -101,12 +113,16 @@ Each row must be one of:
 
 Silence is not a fifth state.
 
+The selected **substrate-call** always has a downstream-failure row. If the
+call selection is wrong, the row is blocked Open K2 — do not invent extra
+identity, store, or recovery fields to make the wrong call work.
+
 ## 5. Run closure gates
 
 Run gates only after scope provenance is established. Durable state, atomicity,
 retry identity, compensation, and recovery are obligations when a selected
-task-owned mechanism makes them necessary—not because a more complex draft
-could have used them.
+task-owned mechanism or selected substrate-call makes them necessary—not
+because a more complex draft could have used them.
 
 - **Totality:** every reachable material row has one status.
 - **Constructibility:** every emitted public result satisfies its own factory or
@@ -140,8 +156,9 @@ state that its factory or consumer rejects.
 
 ## 6. Keep a private closure receipt
 
-Before drafting, record the axes considered, collapsed equivalence rules,
-rejected rows, producer/consumer traces, required state/identity continuity,
-downstream-failure behavior, proof-domain classification, and acceptance
-oracles. The receipt is reasoning scaffolding, not a required fifth artifact.
-Put only the canonical contracts and useful tables in the four-file cluster.
+Before drafting, record the frozen substrate-call, axes considered, collapsed
+equivalence rules, rejected rows, producer/consumer traces, required
+state/identity continuity, downstream-failure behavior, proof-domain
+classification, and acceptance oracles. The receipt is reasoning scaffolding,
+not a required fifth artifact. Put only the canonical contracts and useful
+tables in the four-file cluster.

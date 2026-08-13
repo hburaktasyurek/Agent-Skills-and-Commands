@@ -1,4 +1,4 @@
-# Shape — second revised fixture
+# Shape — rewritten fixture
 
 Every `RecoveryController` constructor creates `ProviderTransport` before it
 reads the record or chooses the requested recovery action. A null-account

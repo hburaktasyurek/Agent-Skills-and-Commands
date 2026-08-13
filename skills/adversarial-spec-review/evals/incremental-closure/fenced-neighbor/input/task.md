@@ -4,4 +4,4 @@ Update an **existing server-bound pending intent** to a positive coupon-adjusted
 
 Nonce and booking-session authorization must reject before any local session write, database write, or provider retrieve/update.
 
-Out of scope and owned later: intent creation/replacement, cancellation/compensation, checkout-instance lifecycle, confirmation identity across payment families, and durable transition/idempotency/publication/recovery design. The live checkout renderer still calls `Provider::create` on each render; that landed hazard is an accepted residual of this child.
+Out of scope and owned later: intent creation/replacement, cancellation/compensation, checkout-instance lifecycle, confirmation identity across payment families, and durable transition/idempotency/publication/recovery design. The live checkout renderer still calls `Provider::create` on each render. That create outcome is sibling-fence / accepted residual: this child calls `Provider::update` on an existing binding; it does not own checkout-instance creation.

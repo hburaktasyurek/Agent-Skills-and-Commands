@@ -1,7 +1,7 @@
 NOT READY
 
 Review mode: incremental
-Review cycle: 2/3
+Review cycle: rewrite-1
 Artifact basis: `evals/fixtures/third-cycle-prior-spec.md`
 sha256 `8236a39c808daed15f58c45f1f9c5b6bd8beec4143dc9e7a0ec1c40852126e82`
 Task contract: provider-unavailable retry has one joined pending record per logical recovery

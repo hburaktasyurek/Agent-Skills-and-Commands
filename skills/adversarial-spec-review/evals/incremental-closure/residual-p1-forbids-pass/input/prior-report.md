@@ -1,7 +1,7 @@
 FAIL
 
 Review mode: full
-Review cycle: 1/3
+Review cycle: first
 Artifact basis: task.md; pre-revision spec/shape.md at fixture revision 1
 Consequence posture: high — wrong-account HTTP
 

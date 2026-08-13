@@ -1,6 +1,0 @@
-interface:
-  display_name: "Revise Spec from Review"
-  short_description: "Reconcile review findings into a spec safely"
-  default_prompt: "Use $revise-spec-from-review to verify these supplied findings and revise only the named spec folder."
-policy:
-  allow_implicit_invocation: false
