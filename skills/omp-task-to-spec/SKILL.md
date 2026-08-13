@@ -21,7 +21,8 @@ not paste that essay into a child.
 ```mermaid
 flowchart TD
   gw["task-groundwork (task)"]
-  askStop["ask + human/stop"]
+  askGw["ask"]
+  askPair["ask"]
   toSpec["to-spec (task)"]
   toSpecOnce["to-spec once (task), same spec identity"]
   commitFirst["commit (commit)"]
@@ -43,16 +44,21 @@ flowchart TD
     readyR1["spec-readiness (sonic)"]
   end
 
-  gw -->|"K2"| askStop
+  gw -->|"unresolved choice"| askGw
   gw --> toSpec
+  askGw -->|"owner says stop"| stopNode
+  askGw -->|"owner answers"| toSpec
   toSpec --> commitFirst
   commitFirst --> advFirst
   commitFirst --> readyFirst
   advFirst --> firstGate
   readyFirst --> firstGate
   firstGate -->|"PASS+READY"| stopNode
-  firstGate -->|"K2 / lock enlarge / new durable store / parallel machine / create-replace-cancel request"| human
+  firstGate -->|"unresolved owner choice"| askPair
   firstGate -->|"in-lock FAIL/NOT READY + Next: to-spec"| toSpecOnce
+  askPair -->|"owner says stop"| stopNode
+  askPair -->|"owner answers, rewrite unused"| toSpecOnce
+  askPair -->|"owner answers, rewrite already used"| human
   toSpecOnce --> commitR1
   commitR1 --> advR1
   commitR1 --> readyR1
@@ -100,6 +106,10 @@ not task-specific substrate bans.
   with kit words (lock, substrate, K2, PI, and the like). Keep the enum
   for the machine. If they would need to ask "what are you saying?",
   rewrite before sending.
+- **Ask is a wait, not a stop.** After they answer, continue this same
+  run with that answer frozen. Do not end the gate or ask them to start
+  a new `omp-task-to-spec` call. Stop only when READY, they pick stop,
+  rewrite-1 fails, or `reviewer`/`sonic` is missing.
 
 ## Spawn
 
@@ -108,7 +118,10 @@ above. The parent adds no task-specific bans or commentary. **Call ≠ swallow.*
 
 - K2 options are only `call-substrate` / `own-in-child` / `defer-new-child` /
   `stop`. Pass them through `ask` in plain speech. The parent does not
-  decide.
+  decide. Ask is a wait, not a stop. After they answer, freeze that
+  answer as authority and continue this same run. Do not tell them to
+  start a new `omp-task-to-spec` call. Stop the gate only when READY,
+  they pick `stop`, rewrite-1 fails, or `reviewer`/`sonic` is missing.
 - Carry artifacts and complete reports. Do not summarize or filter.
 - Only `to-spec` writes spec bytes. Parent, reviewer, and ad-hoc fix-up do
   not. Reviews are read-only. OMP "trivial inline" does not apply to spec.
@@ -126,16 +139,20 @@ together. The parent does not force incremental.
   `to-spec` once, same spec identity; commit that write; then the same
   pair as `rewrite-1`.
 - Architecture, lock enlargement, a new durable store, or a
-  create/replace/cancel *request* → human. No patch. A reviewer's
-  `necessity=` stamp is not that request.
-- Groundwork K2 → `ask` + stop. Do not spawn `to-spec`.
+  create/replace/cancel *request* without an owner answer → `ask`. Do
+  not patch. A reviewer's `necessity=` stamp is not that answer. After
+  they answer, continue this run; do not treat the answer as a new
+  reason to stop.
+- Groundwork unresolved choice → `ask`, then `to-spec` with the answer.
+  Do not stop the gate.
 
 ## Spec commit
 
 This skill authorizes a spec commit via `commit` + `commit-work` after
 each `to-spec` write (first or the one rewrite), before that cycle's
 review pair. Reviews measure the committed spec. No second commit after
-PASS+READY. No commit on K2 or stop.
+PASS+READY. No commit while a question is unanswered, or after they
+pick `stop`.
 
 ## Final summary
 
