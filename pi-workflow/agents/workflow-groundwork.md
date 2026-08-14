@@ -11,7 +11,7 @@ inheritProjectContext: true
 inheritSkills: false
 skills: task-groundwork
 defaultContext: fresh
-async: false
+async: true
 acceptance: {"level":"none","reason":"The hospital workflow owns acceptance"}
 acceptanceRole: writer
 completionGuard: false

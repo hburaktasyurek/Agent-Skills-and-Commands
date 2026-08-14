@@ -10,7 +10,8 @@ the installer again.
 pi-workflow/
 ├── agents/                 # pinned hospital roles
 ├── extensions/
-│   └── hospital-spec.ts    # automatic spec state machine and deterministic gate
+│   └── hospital-spec.ts    # visible main-session supervisor and async launcher
+├── EXTENSIONS.md           # reviewed extension candidates and decisions
 ├── install.sh              # install/sync and verification
 └── README.md
 ```
@@ -73,6 +74,11 @@ Verify the installed copy at any time:
 Every configured agent has `fallbackModels: []`. If its required model is not
 available, the workflow blocks instead of substituting another model.
 
+The packages considered but intentionally not installed are recorded in
+[EXTENSIONS.md](EXTENSIONS.md), including the conditions for reconsidering
+Todo, loop protection, goal/audit automation, TUI layers, and alternative
+orchestrators.
+
 ## Run the spec workflow
 
 Start Pi inside the target Git repository:
@@ -95,18 +101,46 @@ workflow stops only on the same committed revision receiving `PASS + READY`,
 on a real owner question, or on `BLOCKED`. It commits the four spec files but
 does not push.
 
-Useful commands:
+Before starting, Hospital Spec shows the exact repository and task for
+confirmation. It also asks before changing the main model to DeepSeek V4
+Pro/high. Every specialist is then launched as a top-level async run with
+fresh context. The main session remains available while the child works.
+
+Normal operation needs only one command:
 
 ```text
-/hospital-spec status
-/hospital-spec answer <owner answer>
-/hospital-spec self-test
+/hospital-spec <task description>
 ```
 
-The parent must be DeepSeek V4 Pro/high. If it is not, the extension asks once
-before switching. Normal stage transitions are automatic; no manual
-`continue` message is required. A Pi restart resumes a non-terminal project
-from its last durable phase with fresh child context.
+After that, talk to the main agent naturally. Examples:
+
+```text
+Şu an ne yapıyor, hangi kanıta bakıyor?
+Yanlış dosyaya yöneldi; önce booking-form.php içindeki owner'ı doğrulasın.
+Bu varsayımı yapmasın, mevcut lock içinde kalsın.
+Bu workflow'u durdur.
+```
+
+The main supervisor resolves the exact active run id, optionally reads its
+live transcript, and sends the correction with `subagent steer`. It reports the
+delivery receipt back in main. `stop` is supported because Hospital children
+are async; the old foreground interrupt path is not used.
+
+Every 45 seconds the extension posts a compact heartbeat to main with the
+active agent, current tool/path when available, and turn/tool counts. This is
+supplementary: the parent can inspect and explain the transcript whenever the
+user asks. The Fleet inspector remains an optional low-level diagnostic, not
+the normal operator interface.
+
+When a child needs an owner decision, the native supervisor channel wakes the
+main session. The main agent asks the exact question, preserves the user's
+answer, and replies to the waiting child. After compaction or restart, the
+parent checks the durable Hospital checkpoint plus Pi's mission/run ledger
+before continuing; it never launches a duplicate while the old run is active.
+
+`/hospital-spec` without arguments prints the current durable state. The
+diagnostic `/hospital-spec self-test` verifies the pinned agents and required
+Pi tools; neither is needed during ordinary operation.
 
 ## State and generated data
 
@@ -117,9 +151,9 @@ under:
 ~/.pi/agent/state/hospital-spec/<project-hash>.json
 ```
 
-Detached review worktrees live temporarily under the same state directory and
-are removed by the extension. Credentials, sessions, runtime state, and model
-outputs must not be committed here.
+Pi-subagents owns its own temporary session, mission, and run artifacts.
+Credentials, sessions, runtime state, and model outputs must not be committed
+here.
 
 ## Change and deploy
 
@@ -132,4 +166,3 @@ outputs must not be committed here.
 
 The installer is intentionally one-way: repository to global installation.
 Never repair the repository by copying unknown global state back over it.
-

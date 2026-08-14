@@ -11,7 +11,7 @@ inheritProjectContext: true
 inheritSkills: false
 skills: to-spec
 defaultContext: fresh
-async: false
+async: true
 acceptance: {"level":"none","reason":"Independent reviewers own acceptance"}
 acceptanceRole: writer
 completionGuard: false

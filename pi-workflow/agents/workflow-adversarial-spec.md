@@ -11,7 +11,7 @@ inheritProjectContext: true
 inheritSkills: false
 skills: adversarial-spec-review
 defaultContext: fresh
-async: false
+async: true
 acceptance: {"level":"none","reason":"The deterministic gate combines reviewer verdicts"}
 acceptanceRole: read-only
 maxSubagentDepth: 1

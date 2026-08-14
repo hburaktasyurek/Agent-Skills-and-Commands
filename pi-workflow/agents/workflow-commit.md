@@ -11,7 +11,7 @@ inheritProjectContext: true
 inheritSkills: false
 skills: commit-work
 defaultContext: fresh
-async: false
+async: true
 acceptance: {"level":"none","reason":"The hospital workflow verifies the resulting Git basis"}
 acceptanceRole: writer
 completionGuard: false
