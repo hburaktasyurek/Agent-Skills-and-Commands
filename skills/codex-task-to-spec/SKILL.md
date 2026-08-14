@@ -32,9 +32,16 @@ Run the two reviewers in parallel. If the host cannot request or confirm one
 of these exact model/effort pairs, roles, or required skills, return `BLOCKED`.
 Never substitute a weaker agent.
 
-If the current agent is not confirmed Terra/medium, spawn a fresh Terra/medium
-parent with only this skill path and either the exact task artifact for a new
-run or the verified `CURRENT` pointer for a resumed run.
+Distinguish an unavailable model from an unobservable current-model label. If
+host metadata explicitly shows a mismatch, spawn a fresh Terra/medium parent
+with only this skill path and either the exact task artifact for a new run or
+the verified `CURRENT` pointer for a resumed run. If the host merely does not
+expose the current model/effort, do not hand off automatically. Ask the owner
+whether they approve treating the current task as the Terra/medium parent. A
+clear approval confirms this parent for the run; a rejection requires the
+fresh exact-role spawn. If neither route can confirm the exact role, return
+`BLOCKED`. Never claim that a handoff occurred before the host returns its
+agent identity.
 
 ## Parent boundary and durable continuation
 
