@@ -60,10 +60,11 @@ invalidate outcome, safety, correctness, or recovery.
    or imaginable edge case is not a finding.
 2. A prior root, review history, proof gate, or review mode is never a reason
    to manufacture or prolong a finding.
-3. Complete the bounded review below. If it establishes zero current P0/P1,
-   return `PASS` immediately. Inability to establish a current P0/P1 after the
-   required attack is affirmative PASS evidence, not permission to widen the
-   scope or keep searching.
+3. Complete and receipt the closed attack domain below. If it establishes zero
+   current P0/P1, return `PASS` immediately. Inability to establish a current
+   P0/P1 after every domain row is closed and the required final challenge is
+   affirmative PASS evidence, not permission to widen the scope or keep
+   searching.
 4. Apply no numeric review-round or rewrite limit. A re-review may return
    `FAIL` while evidence proves a current P0/P1 and must return `PASS` as soon
    as none remains. Round count, review fatigue, and desired convergence never
@@ -76,8 +77,11 @@ invalidate outcome, safety, correctness, or recovery.
 
 - `FAIL` when at least one current P0/P1 is proved, including a load-bearing
   premise whose missing proof credibly permits that severity.
-- `PASS` when the review is complete and zero current P0/P1 is proved. P2/P3
-  may remain; return to the shared review-stage gate.
+- `PASS` when every closed-domain row has a coverage receipt and zero current
+  P0/P1 is proved. P2/P3 may remain; return to the shared review-stage gate.
+
+Do not emit `FAIL` merely because one P0/P1 was found. Finish every row in the
+closed attack domain and batch every current P0/P1 before applying the verdict.
 
 Do not withhold PASS by widening scope, reviving a resolved root, replacing a
 frozen partition with another formulation, mining P2/P3, or demanding proof
@@ -97,8 +101,8 @@ Use one mode:
 | Mode | Condition |
 |---|---|
 | `full` | First review or deliberate end-to-end review |
-| `incremental` | Complete prior report and matching basis; unchanged outcome, scope, acceptance, and activation; changes are prior closures or their required consequences |
-| `reset-to-full` | Missing/mismatched basis; changed task authority; new integration or architecture boundary; unexplained changes |
+| `incremental` | Complete prior report, matching basis, and complete coverage receipt; unchanged outcome, scope, acceptance, activation, and attack-domain membership; changes are prior closures or their required consequences |
+| `reset-to-full` | Missing/mismatched basis or coverage receipt; changed task authority or attack-domain membership; new integration or architecture boundary; unexplained changes |
 
 For a normal `codex-task-to-spec` review, use this exact machine identity in
 the existing Basis line:
@@ -113,8 +117,9 @@ perform an open-ended repository scan. For each such path, record its
 repository-relative path, full Git blob hash at the review commit, and reason
 as an `Evidence addition:` line in the report.
 
-An interaction neighbor exposed by a correction stays `incremental`. Reset
-only when the prior review can no longer own the basis, not because a new
+An interaction neighbor exposed by a correction stays `incremental` only when
+the prior coverage receipt still owns every affected row. Reset when the prior
+review can no longer own the basis or closed attack domain, not because a new
 finding is inconvenient.
 
 Derive the frozen outcome lock from the latest explicit human decision and
@@ -150,6 +155,26 @@ reversibility, recovery cost, detectability, and activation. Domain labels do
 not assign severity. Use direct evidence for load-bearing critical/high paths;
 keep standard/low review on credible interfaces.
 
+Before attacking, derive a finite closed attack domain from the frozen outcome,
+the spec's owned mechanisms, and their necessary consequence-bearing paths.
+Create one row for every applicable surface below; split a surface only when
+its activation or evidence differs materially:
+
+- authority, ownership, and identity;
+- input producers, constructors, and entry gates;
+- state transitions and invariants;
+- persistence, publication, and external effects;
+- duplicate, retry, concurrency, and ordering paths;
+- rollback, compensation, recovery, terminal, and teardown paths;
+- consumers, return/hydration handoffs, and acceptance oracles.
+
+Keep the domain bounded to task-owned or necessarily depended-on paths. For
+each row record one status: `clean`, `finding`, `out-of-scope`, or
+`not-applicable`. A clean row requires the decisive evidence and attack or
+counterexample used to clear it; an excluded row requires the authority that
+excludes it. A label or untested assertion is not a receipt. Do not emit a
+verdict while any row is absent or unscored.
+
 Attack the highest-consequence path first, then every remaining applicable
 task-owned surface. For every suspected root:
 
@@ -167,8 +192,8 @@ task-owned surface. For every suspected root:
    Prescribe a mechanism only when binding authority leaves no alternative.
 
 Do not return one visible symptom per round. Before emitting any `FAIL`, finish
-the consequence sweep for every discovered P0/P1 root and include every
-credible current P0/P1 in the same batch.
+every closed-domain row, complete the consequence sweep for every discovered
+P0/P1 root, and include every credible current P0/P1 in the same batch.
 
 When the spec provides an ordered exhaustive partition, attack its membership,
 empty rows, contradictions, missing consequence rows, and task-owned extension
@@ -176,7 +201,8 @@ points. Do not replace it with a differently shaped equivalent. Treat a finite
 inventory as total only when membership and every task-owned extension point
 are closed.
 
-After completing all discovered root families, run one final bounded challenge:
+After closing every domain row and completing all discovered root families, run
+one final bounded challenge:
 
 - for critical/high, re-attack the cleanest highest-consequence claim from one
   independent carrier or failure angle;
@@ -184,27 +210,38 @@ After completing all discovered root families, run one final bounded challenge:
   outcome, scope, acceptance, or stop condition.
 
 Do not start a new general sweep. If this challenge proves a new P0/P1 root,
-complete that entire root family before reporting. If it does not, stop the
-attack and apply the verdict truth conditions.
+reopen every domain row affected by that root, complete its entire root family,
+and re-close those rows before reporting. If it does not, stop the attack and
+apply the verdict truth conditions.
 
 ## Re-review convergence
 
 On every re-review:
 
-1. Mark each prior P0/P1 `resolved`, `still present`, or `superseded` using
+1. Reject `incremental` when the prior report lacks a complete matching coverage
+   receipt or the revision changes attack-domain membership; continue the same
+   invocation in `reset-to-full` mode.
+2. Mark each prior P0/P1 `resolved`, `still present`, or `superseded` using
    current evidence. Wording change alone is not closure.
-2. Verify each correction across its recorded root, consequence surface, and
+3. Verify each correction across its recorded root, consequence surface, and
    changed-rule interaction neighbors.
-3. Run the single bounded final challenge defined above.
-4. For every proved current P0/P1, state whether the prior root remains, the
+4. Rebuild the coverage receipt. Inherit a prior clean row only when its
+   authority and evidence are unchanged and the revision cannot interact with
+   it; otherwise re-attack it.
+5. If a new P0/P1 was already reachable in the prior basis but absent from its
+   findings, treat the prior coverage as disproved. Continue the same invocation
+   in `reset-to-full`, complete the whole closed domain, and only then report.
+6. Run the single bounded final challenge defined above.
+7. For every proved current P0/P1, state whether the prior root remains, the
    prior review missed a different root already visible in its basis, or the
    revision made the root reachable. Cite the decisive prior evidence or
    changed clause; do not emit a separate classification field.
-5. If a root repeats, prove its current reachability and explain whether the
+8. If a root repeats, prove its current reachability and explain whether the
    prior correction was incomplete or the prior diagnosis was wrong. A new
    line number, paraphrase, or alternative partition is not proof.
-6. If any P0/P1 is proved, complete and return its whole root family in this
-   FAIL batch. If none is proved, return PASS. Do not perform another sweep.
+9. Apply the verdict only after every coverage row is closed. If any P0/P1 is
+   proved, return every current root family in one FAIL batch. If none is
+   proved, return PASS. Do not perform another unbounded sweep.
 
 ## Evidence and priority
 
@@ -264,6 +301,17 @@ On re-review, add concise prior decisions before current findings:
 ```text
 Prior: <id> resolved | still present | superseded — <decisive current evidence>
 ```
+
+After `Basis:` and any `Evidence addition:` lines, emit one receipt per closed
+attack-domain row before prior decisions or findings:
+
+```text
+Coverage: <surface> | <clean | finding | out-of-scope | not-applicable> | <decisive evidence, attack, or excluding authority>
+```
+
+Use exactly one status token per line. A `finding` receipt names the matching
+finding title or stable root. Keep receipts concise; they prove review coverage,
+not narrative completeness.
 
 In Codex adapter mode, add one line for every direct path opened beyond the
 seed inventory:
