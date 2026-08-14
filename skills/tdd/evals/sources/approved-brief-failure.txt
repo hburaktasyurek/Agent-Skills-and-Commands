@@ -1,7 +1,0 @@
-Observed failure record, 2026-08-03.
-
-When TDD was invoked with an already approved and sufficiently complete task
-brief, the skill's mandatory planning checklist still asked the user to confirm
-the interface, choose behaviors, and approve the plan. The required behavior is
-to treat the approved artifact as authority and start the first valid RED cycle;
-only a material unresolved contract decision should stop before writes.

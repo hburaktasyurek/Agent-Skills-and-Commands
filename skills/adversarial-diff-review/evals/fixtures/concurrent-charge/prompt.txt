@@ -1,1 +1,0 @@
-Use $adversarial-diff-review. Review the exact pre-PR task, diff, implementation, and test record under evals/fixtures/concurrent-charge/. Return only the evidence-backed hostile review; do not modify files.

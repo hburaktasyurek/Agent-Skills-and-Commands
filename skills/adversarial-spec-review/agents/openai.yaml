@@ -1,5 +1,5 @@
 interface:
   display_name: Adversarial Spec Review
-  short_description: Red-team kill-test for plans and specs
+  short_description: Evidence-bounded red-team review for plans and specs
 policy:
   allow_implicit_invocation: false

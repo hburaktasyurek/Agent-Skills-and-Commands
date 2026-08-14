@@ -1,5 +1,0 @@
-Observed failure record, sanitized 2026-08-08.
-
-An open pull request advanced through several correction commits while its
-description continued reporting an older head, commit count, file count, and
-pending work. The fixture uses a mocked host and disposable repository.

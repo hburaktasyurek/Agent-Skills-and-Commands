@@ -5,27 +5,28 @@ is totality over reachable material behavior selected by the **Outcome lock**
 and current system, not a maximal Cartesian product or every mechanism a draft
 could invent.
 
-Read `references/outcome-lock.md` before drawing nodes. Freeze the four lanes;
-do not copy that essay here.
+Read `references/outcome-lock.md` before drawing nodes. Freeze its four fields;
+do not copy that reference here.
 
 ## 1. Draw the closure graph
 
-Start with the frozen **substrate-call**: the landed owner and entry this
-child will invoke. Then add task-owned nodes and directed handoffs that the
+Start with the frozen **existing owner/path**: the landed owner and entry this
+task will invoke. Then add task-owned nodes and directed handoffs that the
 frozen owned outcome can reach. A candidate boundary belongs only when the
-outcome lock requires it as owned outcome or substrate-call, or current-system
-evidence proves a frozen owned observable is unreachable in this child without
-that call. Current-system evidence cannot add an observable.
+Outcome lock requires it as owned outcome or existing owner/path, or
+current-system evidence proves a frozen owned observable is unreachable in
+this task without that call. Current-system evidence cannot add an observable.
 
-Absence of an applicable local interface is not a reason to omit the call or
-to invent a parallel machine; it is Open K2 `call-substrate` or
-`defer-new-child`. Reject a more complex candidate when a grounded viable
-minimal path preserves all observable behavior by calling the landed owner.
+Absence of an applicable local interface is not a reason to omit the landed
+owner or invent a parallel machine. Ask the human only when evidence cannot
+decide whether this task should expose that entry or leave the work with a
+separately owned task. Reject a more complex candidate when a grounded viable
+minimal path preserves all observable behavior by using the landed owner.
 
 Record selected nodes and handoffs:
 
 1. input sources and entry carriers;
-2. the selected substrate-call (named owner, entry, arguments);
+2. the selected existing owner/path (named owner, entry, arguments);
 3. validation, proof, or normalization;
 4. classifiers, factories, or state constructors;
 5. public result and returned identity/data;
@@ -39,13 +40,14 @@ named by the task or review example. A fact arriving in a normal return, typed
 error, callback, decoded object, replay, or recovery load is a separate carrier
 only when that route is reachable and changes validation or preservation.
 
-Do not add sibling-fence create/replace/cancel, a new durable store, or a new
-lifecycle as closure nodes unless Open K2 `own-in-child` selected them.
+Do not add neighboring create/replace/cancel behavior, a new durable store, or
+a new lifecycle as closure nodes without explicit authority for this task to
+own them.
 
-## 2. Classify the proof domain
+## 2. Bound the proof domain
 
 Before using `all`, `none`, `never`, `exhaustive`, or an equivalent load-bearing
-claim, classify the set the mechanism must cover:
+claim, decide which kind of set the mechanism must cover:
 
 - **closed** — binding authority defines finite, enumerable membership and all
   task-owned additions pass through an owned registration or construction
@@ -57,7 +59,7 @@ claim, classify the set the mechanism must cover:
   integrations, or other reachable forms can expand the set without passing a
   boundary the plan proves complete.
 
-State why the classification holds and what evidence would falsify it. A
+State why that bound holds and what evidence would falsify it. A
 finite inventory of current files, tokens, call spellings, sinks, or
 mechanism-authored fixtures proves an exhaustive claim only when membership
 and every task-owned extension point are themselves closed. For an open-world
@@ -75,7 +77,7 @@ evidence, not proof of totality.
 
 Derive axis values from binding evidence. Common axes include operation or
 command, entrypoint/carrier, object family, resource/identity state,
-provenance, classification/outcome, consumer/action, and retry/recovery state.
+provenance, result, consumer/action, and retry/recovery state.
 These are prompts, not a mandatory domain model.
 
 A language type does not by itself add an input-value closure axis. Include a
@@ -103,28 +105,28 @@ For each row, establish:
 | Downstream failure | Outward error/result, attempts, retry/compensation, partial-effect owner, and reuse/replay meaning |
 | Oracle | A check that proves this row and rejects its nearest unsafe alternative |
 
-Each row must be one of:
+Every row must be:
 
-- **specified** by binding evidence;
-- **explicitly rejected** before an invalid result is constructed;
-- **implementation freedom** because alternatives are behaviorally equivalent
+- decided by binding evidence;
+- explicitly rejected before an invalid result is constructed;
+- left to implementation because the alternatives are behaviorally equivalent
   inside the task contract; or
-- **blocked** by a named material decision, which stops authoring before save.
+- held for a named human decision, which stops authoring before save.
 
 Silence is not a fifth state.
 
-The selected **substrate-call** always has a downstream-failure row. If the
-call selection is wrong, the row is blocked Open K2 — do not invent extra
-identity, store, or recovery fields to make the wrong call work.
+The selected **existing owner/path** always has a downstream-failure row. If
+its ownership is genuinely undecided, ask the human; do not invent extra
+identity, store, or recovery fields to make the wrong path work.
 
 ## 5. Run closure gates
 
 Run gates only after scope provenance is established. Durable state, atomicity,
 retry identity, compensation, and recovery are obligations when a selected
-task-owned mechanism or selected substrate-call makes them necessary—not
+task-owned mechanism or selected existing owner/path makes them necessary—not
 because a more complex draft could have used them.
 
-- **Totality:** every reachable material row has one status.
+- **Totality:** every reachable material row has one disposition.
 - **Constructibility:** every emitted public result satisfies its own factory or
   value-object invariant.
 - **Consumability:** the selected consumer accepts the exact result, identity,
@@ -156,9 +158,9 @@ state that its factory or consumer rejects.
 
 ## 6. Keep a private closure receipt
 
-Before drafting, record the frozen substrate-call, axes considered, collapsed
-equivalence rules, rejected rows, producer/consumer traces, required
-state/identity continuity, downstream-failure behavior, proof-domain
-classification, and acceptance oracles. The receipt is reasoning scaffolding,
-not a required fifth artifact. Put only the canonical contracts and useful
-tables in the four-file cluster.
+Before drafting, record the frozen existing owner/path, axes considered,
+collapsed equivalence rules, rejected rows, producer/consumer traces, required
+state/identity continuity, downstream-failure behavior, proof-domain bound,
+and acceptance oracles. The receipt is reasoning scaffolding, not a required
+fifth artifact. Put only the canonical contracts and useful tables in the
+four-file cluster.

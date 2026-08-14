@@ -1,6 +1,0 @@
-PASS test/config.test.js
-  logger configuration is present
-  manifest parses as JSON
-
-The unit runner stubs service startup and does not install production
-dependencies, build the image, or start service.js.

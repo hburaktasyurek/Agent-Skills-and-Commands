@@ -8,7 +8,7 @@ The directory layout stays flat. This file is the curated reading order.
 - [task-groundwork](task-groundwork/SKILL.md) — Ground a non-trivial task with decision-changing evidence.
 - [grill-me](grill-me/SKILL.md) — Stress-test a plan or decision one question at a time.
 - [to-spec](to-spec/SKILL.md) — Produce a consequence-calibrated implementation spec.
-- [adversarial-spec-review](adversarial-spec-review/SKILL.md) — Try to kill a plan or spec before implementation.
+- [adversarial-spec-review](adversarial-spec-review/SKILL.md) — Challenge a plan or spec within evidence and return a bounded verdict.
 - [spec-readiness](spec-readiness/SKILL.md) — Check whether implementation would need to invent a structural contract.
 
 ## Implementation
@@ -27,4 +27,4 @@ The directory layout stays flat. This file is the curated reading order.
 
 ## Skill Quality
 
-- [skill-eval](skill-eval/SKILL.md) — Compare one package with its exact old-skill or no-skill baseline.
+- [skill-eval](skill-eval/SKILL.md) — Standalone comparison utility; outside this repository's maintenance policy.

@@ -13,30 +13,37 @@ Review the current spec from the implementer's chair:
 Review artifacts, not the author. Do not edit the spec or code. Write a
 report file only when the invocation includes `Write report under:`; then
 write `YYYY-MM-DD-HHMM-spec-readiness.md` under that directory (local clock).
-If that exact name already exists in the same minute and this cycle is
-`rewrite-1`, use `YYYY-MM-DD-HHMM-spec-readiness-rewrite-1.md`. Finish the
-report, write those same bytes, then emit the same bytes in chat. Do not
-append a paste card to the report. With no `Write report under:` field, chat
-only — do not create or modify files. Do not guess a write path from the spec
-folder. If the invocation has `Lock:`, read that file whole as the frozen
+If that exact name exists, append the lowest available `-2`, `-3`, and so on.
+Finish the report, write those same bytes, then emit the same bytes in chat.
+Do not append a paste card to the report. With no `Write report under:` field,
+chat only — do not create or modify files. Do not guess a write path from the
+spec folder. If the invocation has `Lock:`, read that file whole as the frozen
 lock; do not substitute a chat summary.
 
-**Output discipline — critical:** do all investigation through tools and private
-reasoning. Emit **zero** natural-language assistant text until the verdict
-report is complete. The deliverable's first non-whitespace character must begin
-the bare first line `READY` or `NOT READY`; the next non-empty line is
-`Basis:`. Forbidden before that verdict line (including as a wrapper around a
-correct report): markdown titles such as `# Spec Readiness Verdict`, approval
-or “on confirmation re-emit” wrappers, outer ` ```text ` fences, `I'll`,
-`Checking`, progress narration, or any preface that is not the report itself.
-If the host stores the answer in a plan/card, that stored body is still the
-report — not a ledger or emit-later outline. If tool use produced chatter,
-discard it and return only the report.
+Do all investigation through tools and private reasoning. Return only the
+completed report: its first line is `READY` or `NOT READY`, and its next
+non-empty line is `Basis:`. Do not add a title, progress narration, wrapper,
+approval step, or emit-later outline. If the host stores the answer in an
+artifact, that artifact contains the same completed report.
 
-Read `references/outcome-lock.md` and **score** the spec against its four lanes.
-Do not copy that essay into the report. A review closes only by calling a
-landed substrate or escalating the gap to its owner. Owning a parallel
-machine inside the child is not closure. That call is not lock enlargement.
+Read `references/outcome-lock.md` and **score** the spec against that boundary.
+Do not copy the reference into the report. Use a landed owner/path when it
+already owns the needed result; owning a parallel machine inside this task is
+not closure.
+
+## Convergence law — overrides every later instruction
+
+1. Establish a Blocker only when current evidence proves that implementation
+   must choose a binding structural contract the spec should own and that
+   different choices change a declared work package, consumer, or observable.
+2. A prior root, review history, review mode, or repeated root does not create
+   a Blocker.
+3. Complete the bounded ledger, dependency, acceptance, and reverse-path review
+   below. If it establishes zero current Blockers, return READY immediately.
+4. Apply no numeric review-round or rewrite limit. Remain NOT READY only while
+   current evidence proves at least one Blocker.
+5. Ask a question only when missing or contradictory binding authority requires
+   a human choice. Never pause because a prior review failed or a root repeated.
 
 ## Structural threshold
 
@@ -54,46 +61,24 @@ State activation or rollout timing only when a binding artifact defines it. Do
 not infer that activation is immediate merely because a code change would be
 deployed.
 
-## Frozen lock and necessity
+## Frozen boundary
 
-The Outcome lock is frozen from the catalog, decisions, groundwork brief, or
-an explicit human lock: the four lanes. The spec's own Outcome lock section is
-drift evidence, not new authority. An unclear lock is K2, not a stronger
-reviewer reading. Stay inside that lock; do not invent adjacent product
-requirements. A reviewer's `necessity=` stamp is not lock authority.
+Freeze the Outcome lock from the catalog, decisions, groundwork brief, or an
+explicit human lock. The spec's own Outcome lock section is drift evidence,
+not new authority. Stay inside the frozen boundary; do not invent adjacent
+product requirements.
 
-Live code answers at most **Q-task** (is a frozen owned observable decided?),
-**Q-live** (is the neighbor a substrate-call, sibling-fence, or residual — not
-P0/P1 alone), and **Q-delta** (did this spec newly swallow a sibling outcome,
-newly break a required substrate-call, or newly own a parallel machine?).
+Live code may show whether the frozen outcome is decided, which landed owner or
+neighbor currently owns a behavior, and what this spec changes. It cannot
+enlarge the task merely because a serious failure exists nearby.
 
-For every P0/P1 or Blocker, classify necessity inside **Root and closure** as
-exactly one:
-
-- `necessity=outcome-required` — removing the mechanism makes a frozen owned
-  observable unsafe or unreachable; retain full consequence closure.
-- `necessity=architecture-induced` — the spec **owns** a parallel machine;
-  removing that ownership makes the failure disappear. Binding to / calling
-  the landed owner is not this. Require removal/simplification, not
-  completion of the parallel machine.
-- `necessity=mixed` — separate the outcome-required obligation from optional
-  manifestations and close only the former.
-
-When the child binds to a landed owner, name that owner as `reused=<owner>`
-in Root and closure. That is not architecture-induced and not a patch
-instruction.
-
-Score `necessity=` against the frozen lock. This child **owning**
-create/replace/cancel, a new transaction/publication/recovery protocol, or a
-fenced sibling's product is `architecture-induced` or K2, not
-`outcome-required`. Entering a landed owner's existing entry is substrate-call.
-An insufficient product lock is K2 or Workflow stop, not a larger lock.
-
-Use stable root `OPTIONAL_MECHANISM_SCOPE_AMPLIFICATION` when an
-architecture-induced family adds a parallel machine unsupported by the
-Outcome lock.
-
-An unresolved K2 is an authority blocker, never reviewer-selected architecture.
+For every Blocker, **Root and closure** must say why the missing contract
+belongs to this task. If removing unsupported child-owned machinery removes the
+problem, require removal or a human decision—not completion of that machinery.
+If the frozen outcome still requires part of the behavior, separate and close
+only that part. Name any existing owner/path in plain prose. Missing or
+contradictory task authority becomes a question for the human, never a stronger
+reviewer interpretation.
 
 ## Review basis
 
@@ -102,31 +87,29 @@ An unresolved K2 is an authority blocker, never reviewer-selected architecture.
    staged and worktree content when they differ. If Git identity inspection is
    unavailable, record that limitation after one attempt; do not retry
    equivalent commands.
-2. Consume the frozen Outcome lock four lanes, acceptance/stop conditions,
+2. Consume the frozen Outcome lock, acceptance/stop conditions,
    ordered work packages, and relevant migration, rollback, recovery, or
    activation state. When the invocation has `Lock:`, read that file whole as
    the frozen lock. Do not narrate it as a separate report field.
-3. Use `full` mode by default. For re-review mode selection, shared cycle
-   semantics, and incremental procedure, follow
+3. Use `full` mode by default. For re-review mode selection, convergence, and
+   incremental procedure, follow
    [references/incremental-review.md](references/incremental-review.md).
 
 If no identifiable current spec exists, return `NOT READY` with the missing
 basis and stop. Do not reconstruct a spec from guesses.
 
-## Review cycle
+## Review completeness
 
-Shared cycle semantics live in
-[references/incremental-review.md](references/incremental-review.md). On a
-full review, finish every applicable node, edge, ledger row, acceptance path,
-and triggered reverse path before reporting. A first Blocker is not a reason
-to stop: return every distinct, currently detectable Blocker family in one
-batch.
+On every review, finish every applicable node, edge, ledger row, acceptance
+path, and triggered reverse path before reporting. A first Blocker is not a
+reason to stop: return every distinct, currently detectable Blocker family in
+one batch.
 
 ## Contract ledger
 
 Create a private node for every independently owned work package and a directed
-edge for every producer-consumer or authority handoff. For every applicable
-node and edge classify these rows:
+edge for every producer-consumer or authority handoff. Check these rows for
+every applicable node and edge:
 
 | Row | Required contract |
 |---|---|
@@ -137,18 +120,16 @@ node and edge classify these rows:
 | State and effects | Pre/post state, exact records, persistence, side effects, ordering, compatibility, activation and recovery |
 | Proof | Acceptance criterion, observation point, distinguishing counterexample and test oracle |
 
-Classify each applicable row as exactly one:
+For each applicable row decide privately whether the artifacts choose a
+coherent contract, the remaining choices are behaviorally equivalent local
+freedom, an unknown is explicitly owned and bounded, or implementation would
+have to choose a missing boundary contract. Only the last case is a Blocker.
+Do not emit these as status labels.
 
-- `SPECIFIED`: current artifacts select one coherent contract;
-- `IMPLEMENTATION_FREEDOM`: alternatives preserve all boundaries and outcomes;
-- `KNOWN_UNKNOWN`: explicitly owned and bounded without blocking current work;
-- `MISSING_STRUCTURAL_DECISION`: implementation must choose an unspecified
-  boundary contract.
-
-Do not classify a whole node as complete because an endpoint or happy path is
-named. A selected substrate-call is SPECIFIED when the owner, entry, and
-failure path are named; it is not MISSING because this child does not own
-that machine.
+Do not treat a whole node as complete because an endpoint or happy path is
+named. An existing owner/path is sufficient when its owner, entry, and
+observable failure path are named; this task need not specify that owner's
+internal machine.
 
 ## Conditional depth
 
@@ -189,35 +170,16 @@ Then one Basis line (example shape; use `READY` when that is the truth):
 
 ```text
 NOT READY
-Basis: <full | incremental | reset-to-full>; <first | rewrite-1 | stop>; <paths and exact content/revision identity or limitation>
+Basis: <full | incremental | reset-to-full>; <paths and exact content/revision identity or limitation>
 ```
 
-Do not emit separate `Review mode`, `Review cycle`, `Artifact basis`,
-`Consequence posture`, or `Task contract` headers. Do not write a Coverage
-receipt. Reports do not restate task, method, or prior narrative.
-
-The response itself is the completed verdict report. Delete any preface
-(`# Spec Readiness Verdict`, “on confirmation”, ledger, plan, or execution
-note). Start with the verdict line and stop after the required fields.
-
-If the host forces a plan/card artifact, that artifact's body must still be
-the completed report: its first non-whitespace characters are `READY` or
-`NOT READY`, then `Basis:`, then the required fields. Incomplete (replace
-before returning — do not ask for confirmation):
-
-- ends with “On confirmation”, “Emit only”, or “emit the report” without the
-  report body already present after that instruction
-- is only Inputs / Mode and cycle / Outcome lock / Prior disposition / Verdict
-  notes with no following bare `NOT READY`/`READY` + `Basis:` report
-- at `stop` `NOT READY`, omits the literal `Workflow stop` block below
+Report only the fields defined below. Do not restate the task, review method,
+coverage process, or prior narrative.
 
 `READY` is not a bare verdict. After Basis, include one concise `Ready
-evidence:` line that identifies the named contract/consumer coverage,
-implementation freedom where relevant, the substrate-call that is in-lock,
-and why untriggered structural gates do not add an obligation. At cycle
-`stop` with `NOT READY`, the deliverable must already contain the three-field
-Blocker(s) and the full `Workflow stop` block below. A memo that only plans
-to emit them is not a report.
+evidence:` line that identifies the named contract/consumer coverage, material
+implementation freedom where relevant, the existing owner/path, and why
+untriggered structural gates do not add an obligation.
 
 On re-review, before current findings, emit only concise decision-relevant
 Prior lines:
@@ -226,28 +188,22 @@ Prior lines:
 Prior: <id> resolved | still present | superseded — <current-spec evidence that decides the status>
 ```
 
-For each finding use the shared three-field compact form:
+Report only current Blockers, using this compact form:
 
 ```text
-[Blocker | Gap | Note] <title>
+[Blocker] <title>
 Evidence and impact: <current path:line/section or inline clause; activated harm / structural divergence and recoverability>
-Root and closure: <stable id; necessity=outcome-required | architecture-induced | mixed; reused=<owner> when scoring a substrate-call; other manifestations; producers, consumers, states, and proofs the next to-spec rewrite must close; falsifiable decision without prescribing excess mechanism>
+Root and closure: <stable descriptive root; why it belongs to this task; existing owner/path when applicable; other manifestations; producers, consumers, states, and proofs the next to-spec rewrite must close; falsifiable decision without prescribing excess mechanism>
 Proof: <independent evidence / distinguishing counterexamples>
 ```
 
-Every Blocker field above is required. On an incremental review, add
-`Classification: incomplete closure | prior-review gap | revision-induced`.
-For a repeated root id in `Root and closure`, also add `Repeat diagnosis:
-incomplete revision | prior root diagnosis incorrect` with evidence. A Gap is
-bounded local ambiguity or weak evidence that may cause rework but does not
-force a structural boundary choice. A Note is minor clarity loss with an
-obvious local resolution. Combine fields on Gaps and Notes when doing so loses
-no decision-relevant information.
+Every Blocker field above is required. On re-review, put the concise origin or
+repeat explanation in `Root and closure`: say whether the prior root remains,
+the prior review missed evidence already in its basis, or the rewrite made the
+root reachable. Non-blocking local ambiguity, weak evidence, and minor clarity
+loss do not belong in this readiness report.
 
-Do not require Task contract, Coverage receipt, Checked and solid, or
-Consequence posture narration.
-
-On `first` NOT READY that is in-lock, close with:
+On in-lock NOT READY, close with:
 
 ```text
 Next: to-spec
@@ -256,41 +212,18 @@ Next: to-spec
 On READY, close with:
 
 ```text
-Next: implementation
+Next: review-stage gate
 ```
 
-On `first` NOT READY that is architecture-induced, lock enlargement, a new
-durable store, or a create/replace/cancel *request*, do not send `to-spec`.
-Emit Workflow stop with the typed K2 enum as Choices. Never present owning
-the parallel machine as the path to READY.
-
-When cycle `stop` is `NOT READY`, after the Basis line and any Prior lines,
-list only the current three-field Blocker(s), then end with Workflow stop. Do
-not emit Consequence posture, Task contract, Coverage receipt, or Checked and
-solid, and do not repeat any expanded finding form:
-
-```text
-Workflow stop
-Problem: <one plain-language sentence naming the unresolved root>
-Why it is still open: <one plain-language sentence>
-Required closure: <the evidence-backed in-scope result that must hold>
-Choices:
-1. Confirm the required closure — <what it preserves>
-2. Provide binding evidence that another in-scope closure preserves every stated acceptance condition — <what it must prove>
-[3. Stop this task — <the requested outcome will not be delivered>]
-Recommendation: <evidence-backed choice, or "Need your decision" when binding authority is missing>
-```
-
-Use two or three concrete, plain-language choices from the remaining in-lock
-root. In-lock roots preserve the binding task outcome. Offer a different
-behavior only when binding authority leaves that in-scope choice open. When
-only one in-lock closure exists, option 2 is evidence it is already met. Never
-present weakened acceptance or deferral as a way to obtain READY.
-Lock-enlarging or parallel-machine roots replace those choices with the typed
-K2 enum: `call-substrate`, `own-in-child`, `defer-new-child`, `stop` — never
-confirm the inflated closure.
-
-`rewrite-1` NOT READY uses this same terminal form with cycle `stop`.
+Unsupported child-owned architecture is an in-lock Blocker when the frozen lock
+already decides removal or use of a landed owner/path; close it with `Next:
+to-spec`. When binding authority is missing or contradictory and leaves a real
+architecture, scope, durable-store, or create/replace/cancel choice open, do
+not send `to-spec`. After the current Blocker(s), end with one concrete
+plain-language `Question:` and `Next: wait for answer`. Explain the
+evidence-backed choices and consequences without a fixed menu. Never turn a
+repeated root, incomplete correction, or prior NOT READY into an authority
+question.
 
 Do not prescribe architecture when several contracts satisfy the outcome.
 Route plan correctness to `adversarial-spec-review` and runtime/PR correctness

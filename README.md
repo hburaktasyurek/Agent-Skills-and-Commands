@@ -25,7 +25,7 @@ See [skills/INDEX.md](skills/INDEX.md) for the grouped index.
 | [task-groundwork](skills/task-groundwork/SKILL.md) | Ground a non-trivial software task with decision-changing evidence. |
 | [grill-me](skills/grill-me/SKILL.md) | Stress-test a plan or decision one question at a time. |
 | [to-spec](skills/to-spec/SKILL.md) | Produce a consequence-calibrated implementation spec. |
-| [adversarial-spec-review](skills/adversarial-spec-review/SKILL.md) | Red-team a plan or spec and return findings with a verdict. |
+| [adversarial-spec-review](skills/adversarial-spec-review/SKILL.md) | Evidence-bounded red-team review of a plan or spec. |
 | [spec-readiness](skills/spec-readiness/SKILL.md) | Check whether implementation can start without inventing structural contracts. |
 | [senior-implementer](skills/senior-implementer/SKILL.md) | Implement approved work and close task-related causes across affected surfaces. |
 | [tdd](skills/tdd/SKILL.md) | Build through vertical red-green-refactor cycles. |
@@ -35,25 +35,27 @@ See [skills/INDEX.md](skills/INDEX.md) for the grouped index.
 | [commit-work](skills/commit-work/SKILL.md) | Stage and commit intended changes; push only when requested. |
 | [pr-branch](skills/pr-branch/SKILL.md) | Write a two-audience PR description, then open or refresh the PR. |
 | [session-handoff](skills/session-handoff/SKILL.md) | Preserve exact unresolved state across sessions or harnesses. |
-| [skill-eval](skills/skill-eval/SKILL.md) | Compare one skill with an exact old-skill or no-skill baseline. |
+| [skill-eval](skills/skill-eval/SKILL.md) | Standalone comparison utility; not used by this repository's maintenance policy. |
 
 ## Skill Maintenance
 
 Use the host-provided `skill-creator` to create or update
 `skills/<name>/`. It owns concrete-example intake, package design,
-structural validation, and forward-testing.
+and structural validation.
 
 ```text
 skill-creator
-→ skill-eval against an exact Git or without-skill baseline
-→ human artifact review
+→ exact diff and structural validation
+→ human review of real-task evidence when available
 → commit-work
 ```
 
-Keep a behavior revision only when produced artifacts improve without
-regression. `FAIL`, `NO_LIFT`, or `INCONCLUSIVE` is not evidence that the
-behavior is ready. An eval-only provenance or schema correction may be kept
-after deterministic validation, but it does not certify runtime behavior.
+This repository does not run model-judged evals, synthetic eval cases, baseline
+comparisons, or `skill-eval` for skill maintenance. A high eval score does not
+establish reliable behavior in real work. When real-task evidence is not yet
+available, say so instead of substituting a scored simulation. The standalone
+`skill-eval` package keeps only its own self-test fixtures; they are not a
+maintenance gate for this repository.
 
 ## Manage Installed Skills
 
@@ -75,8 +77,7 @@ skills/example/
 ├── agents/openai.yaml   # optional host metadata
 ├── scripts/             # optional deterministic helpers
 ├── references/          # optional on-demand knowledge
-├── assets/              # optional output resources
-└── evals/               # optional behavior definitions
+└── assets/              # optional output resources
 ```
 
 The frontmatter must contain a lowercase hyphenated `name` matching the

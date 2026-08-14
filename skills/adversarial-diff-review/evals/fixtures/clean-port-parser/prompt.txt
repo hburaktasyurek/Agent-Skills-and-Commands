@@ -1,1 +1,0 @@
-Use $adversarial-diff-review. Review the exact pre-PR task, diff, implementation, callers, and test record under evals/fixtures/clean-port-parser/. Return only the evidence-backed hostile review; do not modify files.

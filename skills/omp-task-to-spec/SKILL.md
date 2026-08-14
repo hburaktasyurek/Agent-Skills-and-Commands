@@ -1,6 +1,6 @@
 ---
 name: omp-task-to-spec
-description: "Use only when the user explicitly names omp-task-to-spec. OMP parent spec gate under orchestrate: run the spec path until READY, then stop. Not the child skill to-spec (four-file author). Triggers: omp-task-to-spec; OMP spec gate; orchestrate until the spec is ready. Do not use to write spec files or to implement."
+description: "Use only when the user explicitly names omp-task-to-spec. OMP parent spec gate under orchestrate: run the spec path until the same committed revision has adversarial PASS and readiness READY, then stop. Not the child skill to-spec (four-file author). Triggers: omp-task-to-spec; OMP spec gate; orchestrate until the spec is ready. Do not use to write spec files or to implement."
 ---
 
 # OMP Task to Spec
@@ -9,70 +9,69 @@ OMP parent spec gate. Constrains `orchestrate`; does not replace it. The
 word `orchestrate` in this file is not a trigger. Children do not read this
 skill. This skill is not `to-spec`.
 
-Stop when the spec is READY. Implementation, PR, and merge are out of
-scope. This is spec work: do not implement even if a named spec exists, and
-do not skip `to-spec` when groundwork says the task is already narrow.
+Stop when the same committed spec revision has adversarial PASS and readiness
+READY. Implementation, PR, and merge are out of scope. This is spec work: do
+not implement even if a named spec exists, and do not skip `to-spec` when
+groundwork says the task is already narrow.
 
-Read `references/outcome-lock.md`. Carry the four lanes on every spawn. Do
-not paste that essay into a child.
+Read `references/outcome-lock.md`. Carry the frozen boundary on every spawn.
+Do not paste that reference into a child.
 
-## Cycle
+## Convergence
 
 ```mermaid
 flowchart TD
   gw["task-groundwork (task)"]
-  askGw["ask"]
-  askPair["ask"]
+  verify["verify assumptions<br/>use MCP or web when needed"]
   toSpec["to-spec (task)"]
-  toSpecOnce["to-spec once (task), same spec identity"]
-  commitFirst["commit (commit)"]
-  commitR1["commit (commit)"]
-  firstGate["first pair"]
-  r1Gate["rewrite-1 pair"]
+  commit["commit (commit)"]
+  gate["PASS + READY?"]
   stopNode["stop"]
-  human["human (no patch)"]
 
-  subgraph firstPair [first]
+  subgraph reviewStage [review-stage]
     direction LR
-    advFirst["adversarial-spec-review (reviewer)"]
-    readyFirst["spec-readiness (sonic)"]
+    adv["adversarial-spec-review (reviewer)"]
+    ready["spec-readiness (sonic)"]
   end
 
-  subgraph rewriteOne [rewrite-1]
-    direction LR
-    advR1["adversarial-spec-review (reviewer)"]
-    readyR1["spec-readiness (sonic)"]
+  gw --> verify
+  verify --> toSpec
+  toSpec --> commit
+  commit --> adv
+  commit --> ready
+  adv --> gate
+  ready --> gate
+  gate -->|"PASS + READY"| stopNode
+  gate -->|"FAIL or NOT READY"| toSpec
+
+  subgraph questionProtocol [question protocol — available at every stage]
+    question["a necessary question arises"]
+    talk["ask and wait"]
+    resolved["issue resolved?"]
+    resume["freeze answers<br/>resume first affected phase"]
+    question --> talk
+    talk --> resolved
+    resolved -->|"no; continue the conversation"| talk
+    resolved -->|"yes"| resume
+    talk -->|"owner says stop"| stopNode
   end
 
-  gw -->|"unresolved choice"| askGw
-  gw --> toSpec
-  askGw -->|"owner says stop"| stopNode
-  askGw -->|"owner answers"| toSpec
-  toSpec --> commitFirst
-  commitFirst --> advFirst
-  commitFirst --> readyFirst
-  advFirst --> firstGate
-  readyFirst --> firstGate
-  firstGate -->|"PASS+READY"| stopNode
-  firstGate -->|"unresolved owner choice"| askPair
-  firstGate -->|"in-lock FAIL/NOT READY + Next: to-spec"| toSpecOnce
-  askPair -->|"owner says stop"| stopNode
-  askPair -->|"owner answers, rewrite unused"| toSpecOnce
-  askPair -->|"owner answers, rewrite already used"| human
-  toSpecOnce --> commitR1
-  commitR1 --> advR1
-  commitR1 --> readyR1
-  advR1 --> r1Gate
-  readyR1 --> r1Gate
-  r1Gate -->|"PASS+READY"| stopNode
-  r1Gate -->|"else"| human
+  gw -.->|"question"| question
+  verify -.->|"question"| question
+  toSpec -.->|"question"| question
+  commit -.->|"question"| question
+  adv -.->|"question"| question
+  ready -.->|"question"| question
+  gate -.->|"question"| question
 ```
 
-Cycle is `first | rewrite-1 | stop`. No third rewrite.
+This is an evidence-bounded convergence loop, not a round ladder. Apply no
+numeric review or rewrite limit. Every rewrite keeps the same spec identity and
+invalidates both prior verdicts.
 
 ## Agents
 
-OMP agent types, not model roles (`TASK` / `SLOW` / `DEFAULT`):
+Use these OMP agent types:
 
 - `task-groundwork` and `to-spec` → `task`
 - `adversarial-spec-review` → `reviewer`
@@ -84,78 +83,91 @@ If `reviewer` or `sonic` is missing, stop before review. Do not substitute
 
 ## Rules
 
-Standing rules. Carry them on every spawn with the four lanes. They are
-not task-specific substrate bans.
+Standing rules. Carry them on every spawn with the frozen boundary. They are
+not task-specific bans.
 
-- **Verify, do not assume.** Treat assumptions as dangerous. Prefer
-  verification. Check MCP or web search before a claim enters the lock or
-  spec. Unverified assumption is not evidence.
+- **Verify, do not assume.** Treat assumptions as dangerous. Use the
+  authoritative source appropriate to the claim; use MCP or web search when
+  needed. Do not leave a decision-bearing assumption unresolved.
 - **No UX change without owner permission.** Preserve the current system
   when it already does the job. Before proposing work, inspect how that
   job is done today and call that path. A new surface or flow needs owner
-  permission; it is not K1 freedom.
+  permission; it is not local implementation freedom.
 - **In-use stack, not factory default.** What this repo installed and
-  actually runs is the substrate. The original stack, the textbook stack,
+  actually runs is the system to use. The original stack, the textbook stack,
   and a more common library are not. Before a store, query, or API enters
   the spec, find the package and entry already used for that job and call
-  it. LPG in a petrol-bodied car: fill what they drive, not what the
-  badge says.
+  it.
 - **Ask the human in plain speech.** Questions, stop reasons, and the
   final summary are for a person, not a glossary. Say the choice in
-  everyday words and what happens if they pick each option. Do not lead
-  with kit words (lock, substrate, K2, PI, and the like). Keep the enum
-  for the machine. If they would need to ask "what are you saying?",
-  rewrite before sending.
-- **Ask is a wait, not a stop.** After they answer, continue this same
-  run with that answer frozen. Do not end the gate or ask them to start
-  a new `omp-task-to-spec` call. Stop only when READY, they pick stop,
-  rewrite-1 fails, or `reviewer`/`sonic` is missing.
+  everyday words and what happens if they pick each option. If they would need
+  to ask "what are you saying?", rewrite before sending.
+- **Question protocol at every stage.** Parent, child, reviewer, or commit agent
+  may raise a necessary question. Preserve its substance, ask in plain speech,
+  and wait. Continue the conversation until the issue is resolved or the owner
+  chooses `stop`; do not treat the first answer as sufficient when it leaves the
+  issue open. Freeze the resolved answers and resume from the earliest phase
+  whose output must be regenerated; if no output was invalidated, resume the
+  interrupted phase. Do not ask what available evidence can decide, and do not
+  silently answer or discard another agent's question.
 
 ## Spawn
 
-Every spawn carries exact authority, the frozen four lanes, and the rules
-above. The parent adds no task-specific bans or commentary. **Call ≠ swallow.**
+Every spawn carries exact authority, the frozen boundary, and the rules above.
+The parent adds no task-specific bans or commentary.
 
-- K2 options are only `call-substrate` / `own-in-child` / `defer-new-child` /
-  `stop`. Pass them through `ask` in plain speech. The parent does not
-  decide. Ask is a wait, not a stop. After they answer, freeze that
-  answer as authority and continue this same run. Do not tell them to
-  start a new `omp-task-to-spec` call. Stop the gate only when READY,
-  they pick `stop`, rewrite-1 fails, or `reviewer`/`sonic` is missing.
+- The parent preserves a child's concrete question, evidence, viable choices,
+  and consequences, but does not decide for the human. Asking pauses this run;
+  it does not end it or require a new `omp-task-to-spec` call.
+- After resolution, route by invalidation: changed task outcome, scope, owner,
+  or Outcome lock → `task-groundwork`; changed or incomplete spec contract →
+  `to-spec`; commit-only issue → `commit`; review-only issue with unchanged
+  committed artifacts → the affected review. If nothing was invalidated,
+  resume the interrupted phase. Stop only on PASS + READY, owner `stop`, or a
+  missing `reviewer`/`sonic`.
 - Carry artifacts and complete reports. Do not summarize or filter.
 - Only `to-spec` writes spec bytes. Parent, reviewer, and ad-hoc fix-up do
   not. Reviews are read-only. OMP "trivial inline" does not apply to spec.
-- Todos only for the active phase. Do not open `rewrite-1` until the first
-  pair fails in-lock.
+- Todos only for the active phase. Do not preallocate numbered review rounds.
 
 ## Pair
 
-First pair is parallel, isolated, cycle `first`. Gate is PASS and READY
-together. The parent does not force incremental.
+Every pair is parallel and isolated. Gate is PASS and READY together against
+the same committed spec revision. The parent does not force incremental.
 
 - PASS + READY → stop. No rewrite. Reviews score the committed spec; do
   not review uncommitted spec bytes.
-- In-lock FAIL/NOT READY and `Next: to-spec` → both complete reports to
-  `to-spec` once, same spec identity; commit that write; then the same
-  pair as `rewrite-1`.
-- Architecture, lock enlargement, a new durable store, or a
-  create/replace/cancel *request* without an owner answer → `ask`. Do
-  not patch. A reviewer's `necessity=` stamp is not that answer. After
-  they answer, continue this run; do not treat the answer as a new
-  reason to stop.
-- Groundwork unresolved choice → `ask`, then `to-spec` with the answer.
-  Do not stop the gate.
+- After any FAIL/NOT READY, read both complete reports before rewriting. If
+  either raises a necessary question, enter the question protocol first. Once
+  resolved, route from the first affected phase using the invalidation rule
+  above.
+- If no question remains and `Next: to-spec`, pass both complete reports to
+  `to-spec`, same spec identity. Require one root-complete rewrite operation
+  that closes every current in-lock root family, commit it, then rerun both
+  gates. Continue while current evidence proves a P0/P1 or structural Blocker;
+  do not stop or continue because of the number of prior reviews.
+- Unsupported child-owned architecture or a parallel machine whose removal or
+  existing owner/path is already decided by the frozen lock → `to-spec`; do
+  not ask.
+  Missing or contradictory authority for a real lock enlargement, durable
+  store, or create/replace/cancel choice → question protocol. A reviewer's
+  opinion is not that authority.
+- A groundwork question uses the same protocol. After resolution, rerun
+  `task-groundwork` when its authority changed; otherwise continue from the
+  interrupted point.
 
 ## Spec commit
 
 This skill authorizes a spec commit via `commit` + `commit-work` after
-each `to-spec` write (first or the one rewrite), before that cycle's
-review pair. Reviews measure the committed spec. No second commit after
-PASS+READY. No commit while a question is unanswered, or after they
-pick `stop`.
+each completed `to-spec` write, before the next review pair. Inspect the exact
+`to-spec` output before committing. If it raises a question, enter the question
+protocol and do not commit. After resolution, rerun `task-groundwork` or
+`to-spec` when the answer invalidated their artifact; otherwise resume the
+commit. Reviews measure the committed spec. No further commit after PASS +
+READY or after owner `stop`.
 
 ## Final summary
 
-Plain speech, same bar as the ask rule. Purpose, boundary, ready?,
-called the existing path or built a second one, stepped on a neighbor,
-open choice. No file, table, lifecycle list, or kit glossary.
+Plain speech, same bar as the ask rule. Purpose, boundary, ready?, used the
+existing path or built a second one, absorbed neighboring work, open choice.
+No file, table, lifecycle list, or glossary.

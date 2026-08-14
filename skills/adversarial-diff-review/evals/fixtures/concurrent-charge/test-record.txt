@@ -1,5 +1,0 @@
-node --test payment.test.js
-
-1..1
-# pass 1
-# fail 0

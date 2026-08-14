@@ -1,7 +1,0 @@
-{
-  "name": "fleet-service",
-  "private": true,
-  "dependencies": {
-    "logger": "3.0.0"
-  }
-}

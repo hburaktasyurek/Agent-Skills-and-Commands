@@ -23,9 +23,9 @@ Ask:
 > Can this plan achieve its frozen outcome without an unacceptable failure on
 > any consequence-bearing path it owns or necessarily depends on?
 
-Read `references/outcome-lock.md` completely and score the four lanes. This is
-not `spec-readiness`: report an omitted contract only when it can invalidate
-outcome, safety, correctness, or recovery.
+Read `references/outcome-lock.md` completely and score the frozen boundary.
+This is not `spec-readiness`: report an omitted contract only when it can
+invalidate outcome, safety, correctness, or recovery.
 
 ### Convergence law — overrides every later instruction
 
@@ -33,9 +33,8 @@ outcome, safety, correctness, or recovery.
    obligation, a credible activation path, a P0/P1 consequence, and the
    violated or missing contract that permits it. A label, taxonomy, suspicion,
    or imaginable edge case is not a finding.
-2. Use classifications only after proving a finding. Never use `incomplete
-   closure`, `prior-review gap`, `revision-induced`, a proof gate, or a review
-   mode as a reason to manufacture or prolong one.
+2. A prior root, review history, proof gate, or review mode is never a reason
+   to manufacture or prolong a finding.
 3. Complete the bounded review below. If it establishes zero current P0/P1,
    return `PASS` immediately. Inability to establish a current P0/P1 after the
    required attack is affirmative PASS evidence, not permission to widen the
@@ -44,16 +43,16 @@ outcome, safety, correctness, or recovery.
    `FAIL` while evidence proves a current P0/P1 and must return `PASS` as soon
    as none remains. Round count, review fatigue, and desired convergence never
    change the verdict.
-5. Use `Workflow stop` only when missing or contradictory binding authority
-   prevents safe scoring and requires an owner choice. Never stop merely
-   because a root repeated or a prior review also failed.
+5. Ask a question only when missing or contradictory binding authority prevents
+   safe scoring and requires a human choice. Never pause merely because a root
+   repeated or a prior review also failed.
 
 ### Verdict truth conditions
 
 - `FAIL` when at least one current P0/P1 is proved, including a load-bearing
   premise whose missing proof credibly permits that severity.
 - `PASS` when the review is complete and zero current P0/P1 is proved. P2/P3
-  may remain; continue to `spec-readiness`.
+  may remain; return to the shared review-stage gate.
 
 Do not withhold PASS by widening scope, reviving a resolved root, replacing a
 frozen partition with another formulation, mining P2/P3, or demanding proof
@@ -83,28 +82,21 @@ finding is inconvenient.
 Derive the frozen outcome lock from the latest explicit human decision and
 the most specific binding catalog, decision, groundwork, task, scope, and
 acceptance contract. The spec's own lock wording is drift evidence, not new
-authority. If an ambiguity can hide P0/P1, prove that consequence and use
-`Workflow stop`; do not choose the product decision.
+authority. If an ambiguity can hide P0/P1, prove that consequence, ask the
+human, and wait; do not choose the product decision.
 
 ## Scope and ownership
 
-Stay inside the frozen four lanes. Do not invent adjacent product requirements.
-A review closes a dependency by calling a landed substrate or escalating the
-gap to its owner; owning a parallel machine inside the child is not closure.
+Stay inside the frozen boundary. Do not invent adjacent product requirements.
+Use a landed owner/path when it already owns the needed result; owning a
+parallel machine inside this task is not closure.
 
-For each P0/P1, classify necessity in `Root and closure`:
-
-- `necessity=outcome-required` — removing the obligation makes a frozen
-  observable unsafe or unreachable;
-- `necessity=architecture-induced` — removing unsupported child ownership
-  removes the failure; require removal or an owner decision, not completion of
-  the parallel machine;
-- `necessity=mixed` — separate and close only the outcome-required part.
-
-Name a landed call as `reused=<owner>`. Entering its existing API/entity/
-protocol is not lock enlargement. New create/replace/cancel ownership, a new
-durable store, lifecycle, publication machine, or recovery protocol requires
-the Outcome-lock K2 owner choice. Reviewer necessity is not authority.
+For each P0/P1, `Root and closure` must say why the obligation belongs to this
+task. If removing unsupported child-owned machinery removes the failure,
+require removal or a human decision—not completion of that machinery. If the
+frozen outcome still requires part of the behavior, separate and close only
+that part. Name any landed owner/path in plain prose. A reviewer cannot enlarge
+the Outcome lock by declaring something necessary.
 
 Do not revise the spec, approve your own correction, absorb implementation or
 PR review, use numeric confidence, aggregate risk scores, or finding quotas.
@@ -157,19 +149,18 @@ attack and apply the verdict truth conditions.
 
 On every re-review:
 
-1. Classify each prior P0/P1 `resolved`, `still present`, or `superseded` using
+1. Mark each prior P0/P1 `resolved`, `still present`, or `superseded` using
    current evidence. Wording change alone is not closure.
 2. Verify each correction across its recorded root, consequence surface, and
    changed-rule interaction neighbors.
 3. Run the single bounded final challenge defined above.
-4. For every proved current P0/P1, classify it only after proof as:
-   - `incomplete closure` — the prior root or recorded closure remains reachable;
-   - `prior-review gap` — a different root was already provable from the prior
-     basis but omitted; name that exact prior evidence;
-   - `revision-induced` — the revision made the root reachable; name the clause.
-5. If a root repeats, prove its current reachability and state whether the
-   prior closure was incomplete or the prior diagnosis was wrong. A new line
-   number, paraphrase, or alternative partition is not proof.
+4. For every proved current P0/P1, state whether the prior root remains, the
+   prior review missed a different root already visible in its basis, or the
+   revision made the root reachable. Cite the decisive prior evidence or
+   changed clause; do not emit a separate classification field.
+5. If a root repeats, prove its current reachability and explain whether the
+   prior correction was incomplete or the prior diagnosis was wrong. A new
+   line number, paraphrase, or alternative partition is not proof.
 6. If any P0/P1 is proved, complete and return its whole root family in this
    FAIL batch. If none is proved, return PASS. Do not perform another sweep.
 
@@ -236,15 +227,15 @@ Report findings in priority order:
 
 ```text
 [Px] <short title>
-[Classification: incomplete closure | prior-review gap | revision-induced]
 Evidence and impact: <current location and source evidence; activation, harm, recoverability>
-Root and closure: <stable id; necessity; reused owner when applicable; complete manifestation and consequence sweep; falsifiable closure>
+Root and closure: <stable descriptive root; why it belongs to this task; existing owner/path when applicable; complete manifestation and consequence sweep; falsifiable closure>
 Proof: <independent evidence or counterexamples>
 ```
 
-Require all three fields for P0/P1. Include `Classification` only on re-review.
-Combine P2/P3 fields when decision-relevant meaning remains clear. Do not
-repeat resolved roots in the finding list.
+Require all three fields for P0/P1. On re-review, put the concise origin or
+repeat explanation in `Root and closure`. Combine P2/P3 fields when
+decision-relevant meaning remains clear. Do not repeat resolved roots in the
+finding list.
 
 On in-lock FAIL, end with:
 
@@ -255,11 +246,11 @@ Next: to-spec
 On PASS, end with:
 
 ```text
-Next: spec-readiness
+Next: review-stage gate
 ```
 
 When binding authority is missing or contradictory, return `FAIL` only if the
-gap credibly permits P0/P1, then end with `Workflow stop` and the exact K2
-choices from `references/outcome-lock.md`. Recommend `Need your decision`
-unless binding evidence selects one. Do not turn a repeated review, an
-incomplete correction, or a difficult proof into an authority stop.
+gap credibly permits P0/P1. End with one concrete plain-language `Question:`
+and `Next: wait for answer`. Explain the evidence-backed choices and
+consequences without a fixed menu. Do not turn a repeated review, an incomplete
+correction, or a difficult proof into an authority question.

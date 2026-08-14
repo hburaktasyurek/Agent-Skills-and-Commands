@@ -17,8 +17,8 @@ change, and independently verifiable.
 This skill is the only spec-byte author. Parent, review, and ad-hoc
 hole-closing do not write spec files.
 
-Read `references/outcome-lock.md` and **freeze** its four lanes. Do not copy that
-essay into the spec.
+Read `references/outcome-lock.md` and **freeze** its four boundary fields. Do
+not copy that reference into the spec.
 
 ## Inputs and authority
 
@@ -37,22 +37,21 @@ Resolve premise types with the source that owns them:
 
 History, names, comments, and analogous code are supporting evidence, not
 authority. When sources conflict, expose the conflict rather than silently
-choosing one. A reviewer's `necessity=` stamp is not lock authority.
+choosing one.
 
 Validate a grounding handoff; do not trust its readiness label. Freeze the
-**Outcome lock** four lanes—owned outcome, substrate-call, sibling-fence,
-accepted residual—and check any `Open K2` yourself. Resolve remaining K0
-evidence questions, or use the existing material/non-material gap rule;
-preserve K1 as bounded implementation freedom. If any K2 remains, or an
-adjacent/future-owned concern was promoted without binding authority, stop
-without saving a spec.
+**Outcome lock** fields—owned outcome, existing owner/path, neighbor boundary,
+accepted residual—and verify any remaining question yourself. Investigate
+what authoritative evidence can decide and preserve behaviorally equivalent
+local choices as implementation freedom. If evidence cannot decide a choice
+that changes observable behavior, scope, ownership, state, recovery, or safety,
+ask the human and wait; do not save a partial spec.
 
-When stopping, name the one real scenario, why the choice changes observable
-behavior, and ask exactly one question whose options are only
-`call-substrate` / `own-in-child` / `defer-new-child` / `stop`. Fill each
-option with the concrete binding for this scenario. Do not offer a free-form
-menu. Do not return ordinary technical consequences to the human when binding
-rules and repository evidence already determine them.
+Ask one concrete question at a time in plain language. Explain the viable
+choices and their evidence-backed consequences. Continue the conversation if
+the answer remains incomplete. Do not return ordinary technical consequences
+to the human when binding rules and repository evidence already determine
+them.
 
 ## Consequence calibration
 
@@ -82,14 +81,16 @@ extra depth only on the contract-bearing boundary.
 Record privately:
 
 - controlling request and authority source;
-- frozen Outcome lock four lanes: owned outcome, substrate-call (named landed
-  owner and entry), sibling-fence, accepted residual;
-- resolved K0 evidence, K1 implementation freedoms, and any Open K2;
+- frozen Outcome lock: owned outcome, existing owner/path, neighbor boundary,
+  and accepted residual;
+- verified evidence, bounded implementation freedoms, and any question that
+  still needs a human decision;
 - exact spec root—`agent-os/specs` by default, or the approved alternative—and
   a clear timestamped slug.
 
-Do not save a partial cluster while an Open K2 or promoted adjacent concern
-remains. Ask the typed enum; do not write spec bytes to paper over it.
+Do not save a partial cluster while a necessary human decision or promoted
+adjacent concern remains. Ask and wait; do not write spec bytes to paper over
+it.
 
 ### 2. Inspect enough evidence
 
@@ -102,28 +103,28 @@ uniqueness claims with a search across plausible owners.
 Label a non-decision evidence gap as `⚠️ UNVERIFIED` everywhere it affects the
 cluster. A material decision may not be hidden under that label.
 
-### 3. Substrate-call, then close behavior
+### 3. Use the existing owner, then close behavior
 
-Before closure, quote the frozen four lanes. Classify every proposed major
-behavior with the lock discriminator: already bound to the landed machine, or
-a neighbor's product pulled forward.
+Before closure, quote the frozen boundary. For every proposed major behavior,
+decide whether the task owns it, an existing landed path owns it, or it belongs
+to neighboring work.
 
 A public interface, persistent state, transaction/recovery protocol,
 idempotency identity, provider operation, cross-component identity, or
-lifecycle branch needs outcome-lock authority as **owned outcome** or
-**substrate-call**. Current-system evidence may prove a frozen owned
-observable is unreachable in this child without that call; it cannot add an
-observable. Local mechanism ownership does not authorize swallowing a
-sibling's create/replace/cancel, a new framework, or sibling work.
+lifecycle branch needs Outcome-lock authority as the owned outcome or an
+existing owner/path. Current-system evidence may prove a frozen observable is
+unreachable without that path; it cannot add an observable. Local mechanism
+ownership does not authorize absorbing a neighbor's create/replace/cancel, a
+new framework, or neighboring work.
 
-**Substrate-call first.** Prefer entering the named landed owner. Absence of
-an applicable local interface is not a ban; it is Open K2 `call-substrate` or
-`defer-new-child`. Do not invent a parallel machine because the front door
-was not imported yet.
+Prefer the named landed owner. Absence of an applicable local interface is not
+permission to invent a parallel machine. If evidence does not decide whether
+to expose that entry now or leave the work with a separately owned task, ask
+the human.
 
 Compare every grounded viable minimal path. Choose the safe route that calls
 landed owners and adds the fewest task-owned states and boundaries. If no
-safe bounded route exists, stop without saving and ask the typed enum; never
+safe bounded route exists, stop without saving and ask the human; never
 silently select a framework.
 
 Once a **call** is selected, its observable failure path remains mandatory.
@@ -224,15 +225,18 @@ implementation was performed. Stop after the specification. Do not
 independently review it, implement it, change workflow documentation,
 mutate Git, open a PR, install, or merge.
 
-On an in-lock rewrite after a `first` FAIL, replace the cluster in place as
-the same spec identity; do not open a parallel spec folder.
+On any in-lock rewrite, read every supplied complete review report and decide
+each current finding as accepted or evidence-backed refuted. Replace the cluster
+in place as the same spec identity; close every accepted root family and its
+recorded consequence surface in one rewrite, not one visible manifestation.
+Do not open a parallel spec folder or leave accepted siblings for a later pass.
 
 ## Boundaries
 
 - Do not change the task contract to make specification or validation easier.
 - Do not silently select material product behavior or architecture.
-- Do not swallow a sibling outcome or invent a parallel machine because a
-  review stamped `necessity=outcome-required`.
+- Do not absorb a neighbor's outcome or invent a parallel machine because a
+  reviewer says it is necessary.
 - Do not force a full cross-product where variables cannot vary independently
   or do not change behavior.
 - Do not treat later `adversarial-spec-review` or `spec-readiness` as a reason

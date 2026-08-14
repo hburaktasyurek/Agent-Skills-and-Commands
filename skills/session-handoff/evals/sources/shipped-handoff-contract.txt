@@ -1,8 +1,0 @@
-Source: c666e9a:skills/session-handoff/SKILL.md
-Captured: 2026-08-03
-
-The shipped package required writing a .handoff file even when phase detection
-found neither conversation nor Git state, using an Unknown status. It also
-required every packet to end with two to four next-session options and a new
-choice prompt. The no-context scope case and single-next-action assertion are
-derived from those repository-backed behaviors.

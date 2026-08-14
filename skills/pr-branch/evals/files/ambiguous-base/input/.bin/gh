@@ -1,5 +1,0 @@
-#!/bin/sh
-printf '%s\n' "$*" >> .gh-mock-calls
-if [ "$1" = "repo" ]; then printf '%s\n' "main"; fi
-if [ "$1" = "pr" ] && [ "$2" = "create" ]; then printf '%s\n' "UNEXPECTED_CREATE"; fi
-exit 0

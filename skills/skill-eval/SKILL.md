@@ -1,7 +1,6 @@
 ---
 name: skill-eval
 description: "Use only when explicitly asked to evaluate one repository skill package against its exact old-skill or no-skill baseline. Run the same realistic cases on one named harness and model, judge produced artifacts, and return a current-package PASS, FAIL, NO_LIFT, or INCONCLUSIVE verdict. Do not edit or accept the target package or exercise live consequential systems."
-disable-model-invocation: true
 ---
 
 # Skill Eval
