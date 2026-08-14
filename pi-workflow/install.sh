@@ -37,6 +37,12 @@ check_installation() {
     failed=1
   fi
 
+  target="$PI_HOME/extensions/hospital-control/core.ts"
+  if ! cmp -s "$SCRIPT_DIR/extensions/hospital-control/core.ts" "$target"; then
+    echo "MISMATCH: $target" >&2
+    failed=1
+  fi
+
   for skill in task-groundwork to-spec commit-work adversarial-spec-review spec-readiness senior-implementer tdd review-implementation adversarial-diff-review pr-branch risk-calibrated-pr-review; do
     if [[ ! -f "$HOME/.agents/skills/$skill/SKILL.md" ]]; then
       echo "MISSING SKILL: $skill" >&2
@@ -94,6 +100,7 @@ for source in "$SCRIPT_DIR"/agents/*.md; do
   install -m 600 "$source" "$PI_HOME/agents/$(basename "$source")"
 done
 install -m 600 "$SCRIPT_DIR/extensions/hospital-spec.ts" "$PI_HOME/extensions/hospital-spec.ts"
+install -d -m 700 "$PI_HOME/extensions/hospital-control"
+install -m 600 "$SCRIPT_DIR/extensions/hospital-control/core.ts" "$PI_HOME/extensions/hospital-control/core.ts"
 
 check_installation
-

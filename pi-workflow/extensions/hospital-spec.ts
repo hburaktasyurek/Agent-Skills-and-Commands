@@ -5,11 +5,37 @@ import * as os from "node:os";
 import * as path from "node:path";
 import type { ExtensionAPI, ExtensionCommandContext, ExtensionContext } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
+import {
+	applyCorrection,
+	applyInvalidation,
+	applySupervisorSignal,
+	buildWidgetLines,
+	createHospitalState,
+	gateBlockers,
+	migrateHospitalState,
+	reconcileRuntimeSteering,
+	recordCorrection,
+	recordRunCompleted,
+	recordRunStarted,
+	resolveProtocolError,
+	terminalBlockers,
+	updateCorrectionDelivery,
+	type ActiveRun,
+	type CorrectionRecord,
+	type DeliveryState,
+	type HospitalState,
+	type InvalidationPhase,
+	type RuntimeStatus,
+} from "./hospital-control/core.ts";
 
 const EXTENSION_ID = "hospital-spec";
-const STATE_ROOT = path.join(os.homedir(), ".pi", "agent", "state", EXTENSION_ID);
-const HEARTBEAT_MS = 45_000;
+const AGENT_HOME = process.env.PI_CODING_AGENT_DIR
+	? path.resolve(process.env.PI_CODING_AGENT_DIR)
+	: path.join(os.homedir(), ".pi", "agent");
+const STATE_ROOT = path.join(AGENT_HOME, "state", EXTENSION_ID);
+const REFRESH_MS = 1_000;
 const PARENT = { provider: "opencode-go", model: "deepseek-v4-pro", thinking: "high" } as const;
+const CONTROL_PROTOCOL_MARKER = "HOSPITAL_SIGNAL";
 
 const STAFF = {
 	"workflow-groundwork": "opencode-go/deepseek-v4-pro",
@@ -29,33 +55,6 @@ const PHASE_BY_AGENT: Record<string, string> = {
 	"workflow-spec-readiness": "readiness review",
 };
 
-type HospitalStatus = "active" | "waiting" | "complete" | "blocked" | "stopped";
-
-interface ActiveRun {
-	id: string;
-	agents: string[];
-	asyncDir?: string;
-	startedAt: string;
-}
-
-interface HospitalState {
-	version: 2;
-	cwd: string;
-	repoRoot: string;
-	task: string;
-	status: HospitalStatus;
-	phase: string;
-	summary?: string;
-	question?: string;
-	specRoot?: string;
-	commitSha?: string;
-	missionId?: string;
-	parentApproved: boolean;
-	activeRuns: ActiveRun[];
-	startedAt: string;
-	updatedAt: string;
-}
-
 interface AsyncStartedPayload {
 	id?: string;
 	cwd?: string;
@@ -69,24 +68,6 @@ interface AsyncCompletePayload {
 	id?: string;
 }
 
-interface RuntimeStatus {
-	state?: string;
-	turnCount?: number;
-	toolCount?: number;
-	currentTool?: string;
-	currentPath?: string;
-	steps?: Array<{
-		agent?: string;
-		status?: string;
-		turnCount?: number;
-		toolCount?: number;
-		currentTool?: string;
-		currentToolArgs?: string;
-		currentPath?: string;
-		recentOutput?: string[];
-	}>;
-}
-
 const CONTROL_PARAMETERS = Type.Object({
 	action: Type.Union([
 		Type.Literal("checkpoint"),
@@ -95,6 +76,10 @@ const CONTROL_PARAMETERS = Type.Object({
 		Type.Literal("blocked"),
 		Type.Literal("stopped"),
 		Type.Literal("status"),
+		Type.Literal("correction_record"),
+		Type.Literal("correction_delivery"),
+		Type.Literal("correction_apply"),
+		Type.Literal("assumption_status"),
 	]),
 	phase: Type.Optional(Type.String()),
 	summary: Type.Optional(Type.String()),
@@ -102,6 +87,28 @@ const CONTROL_PARAMETERS = Type.Object({
 	specRoot: Type.Optional(Type.String()),
 	commitSha: Type.Optional(Type.String()),
 	missionId: Type.Optional(Type.String()),
+	text: Type.Optional(Type.String()),
+	runId: Type.Optional(Type.String()),
+	childIndex: Type.Optional(Type.Number()),
+	correctionId: Type.Optional(Type.String()),
+	requestId: Type.Optional(Type.String()),
+	deliveryState: Type.Optional(Type.Union([
+		Type.Literal("scheduled"),
+		Type.Literal("pending"),
+		Type.Literal("delivered"),
+		Type.Literal("partial"),
+		Type.Literal("recovered"),
+		Type.Literal("failed"),
+	])),
+	deliveryStatus: Type.Optional(Type.Union([Type.Literal("delivered"), Type.Literal("queued")])),
+	invalidatesFrom: Type.Optional(Type.Union([
+		Type.Literal("groundwork"),
+		Type.Literal("evidence"),
+		Type.Literal("to-spec"),
+		Type.Literal("commit"),
+		Type.Literal("review"),
+	])),
+	protocolErrorId: Type.Optional(Type.String()),
 });
 
 const GATE_PARAMETERS = Type.Object({
@@ -122,9 +129,10 @@ function statePath(cwd: string): string {
 
 function readState(cwd: string): HospitalState | undefined {
 	try {
-		const state = JSON.parse(fs.readFileSync(statePath(cwd), "utf8")) as HospitalState;
-		if (state.version !== 2 || state.cwd !== path.resolve(cwd)) return undefined;
-		state.activeRuns ??= [];
+		const raw = JSON.parse(fs.readFileSync(statePath(cwd), "utf8")) as unknown;
+		const state = migrateHospitalState(raw, cwd);
+		if (!state) return undefined;
+		if ((raw as { version?: unknown }).version === 2) writeState(state);
 		return state;
 	} catch {
 		return undefined;
@@ -161,14 +169,15 @@ function frontmatter(text: string): Record<string, string> {
 
 function verifyStaff(): void {
 	for (const [agent, model] of Object.entries(STAFF)) {
-		const file = path.join(os.homedir(), ".pi", "agent", "agents", `${agent}.md`);
+		const file = path.join(AGENT_HOME, "agents", `${agent}.md`);
 		let values: Record<string, string>;
 		try {
 			values = frontmatter(fs.readFileSync(file, "utf8"));
 		} catch {
 			throw new Error(`Zorunlu ajan kurulu değil: ${agent}`);
 		}
-		if (values.name !== agent || values.model !== model || values.thinking !== "high" || values.fallbackModels !== "[]") {
+		const text = fs.readFileSync(file, "utf8");
+		if (values.name !== agent || values.model !== model || values.thinking !== "high" || values.fallbackModels !== "[]" || !text.includes(CONTROL_PROTOCOL_MARKER)) {
 			throw new Error(`Ajan sözleşmesi eşleşmiyor: ${agent}`);
 		}
 	}
@@ -197,6 +206,16 @@ function activeRunText(state: HospitalState): string {
 	return state.activeRuns.map((run) => `${run.id} (${run.agents.join(" + ") || "unknown"})`).join(", ");
 }
 
+function controlLedgerText(state: HospitalState): string {
+	const assumptions = state.assumptions
+		.filter((item) => item.status === "open" || (item.status === "rejected" && !item.impactApplied))
+		.map((item) => `${item.id}@${item.runId}#${item.childIndex}:${item.status}`);
+	const corrections = state.corrections
+		.filter((item) => item.status !== "applied")
+		.map((item) => `${item.id}@${item.runId}${item.childIndex === undefined ? "" : `#${item.childIndex}`}:${item.status}`);
+	return `assumptions=${assumptions.join(", ") || "none"}; corrections=${corrections.join(", ") || "none"}`;
+}
+
 function supervisorPrompt(state: HospitalState): string {
 	return `
 HOSPITAL SPEC SUPERVISOR — ACTIVE
@@ -210,9 +229,14 @@ Authority:
 - Durable status: ${state.status}
 - Active async run(s): ${activeRunText(state)}
 - Mission: ${state.missionId ?? "not recorded"}
+- Control ledger: ${controlLedgerText(state)}
 
 Operator contract:
-- If the user comments on a running child's mistake, focus, path, or interpretation, inspect that exact run with subagent status/transcript when useful, then call subagent action=steer on its exact id. For a parallel review run, include the matching child index. Report the delivery receipt in plain language. Do not make the user remember a slash command.
+- Classify Hospital-related user input as status question, correction/direction, stop, or unrelated conversation. Do not route a status question as a correction.
+- For a correction, first call hospital_supervisor action=correction_record with the user's complete text and exact runId/childIndex. Then call subagent action=steer with the exact id/index and this envelope: "[Hospital <correctionId>] Pause after the current tool. Acknowledge with correction_ack, verify the user's claim against repository evidence, then send correction_resolved. Delivery alone is not compliance. User correction: <verbatim text>". Finally call hospital_supervisor action=correction_delivery with the returned requestId, delivery state, and deliveryStatus.
+- If exactly one Hospital child is active, target it. If parallel children are active and the intended child is not unambiguous, ask the user; never broadcast a correction. Fleet steering observed by Hospital already has a correction id: send the same acknowledgment/verification envelope as a follow-up to its exact target.
+- Report delivery, acknowledgment, verification, and application as separate facts. Never say a correction was applied merely because subagent steer returned delivered.
+- When correction_resolved arrives, inspect its evidence. If the user's correction was confirmed, call hospital_supervisor action=correction_apply; this rewinds from invalidatesFrom. If it was rejected, call correction_apply only after explaining the evidence; it closes as an evidenced no-op.
 - If the user asks what is happening, inspect the active run and summarize its current evidence, direction, and any risk—not merely “still running”.
 - If the user asks to stop, call subagent action=stop on every active Hospital run, then mark hospital_supervisor stopped.
 - A child question must surface in main. Mark hospital_supervisor waiting with the exact question, ask the user there, preserve the complete answer, and reply through subagent_supervisor. Never guess an owner decision.
@@ -222,10 +246,12 @@ Execution contract:
 - Launch every child with the model-facing subagent tool, workflowScript, async:true, context:"fresh", cwd:${JSON.stringify(state.repoRoot)}. End your turn after launch so main remains usable. Use no hidden prompt-template event or foreground child.
 - Use exactly these agents in order: workflow-groundwork → workflow-evidence → workflow-to-spec → workflow-commit → workflow-adversarial-spec + workflow-spec-readiness in parallel.
 - The two reviewers must examine the same committed SHA. Pass their exact verdicts and SHAs to hospital_spec_gate. STOP is legal only for PASS + READY on that SHA. ROOT_COMPLETE_REWRITE returns both complete reports to one fresh workflow-to-spec root-complete rewrite, then fresh commit and fresh parallel reviews. INVALID reruns only the malformed role once; a second malformed result blocks. There is no substantive rewrite-round limit.
-- Call hospital_supervisor checkpoint before each launch and after each completed stage. Record the enclosing mission id as soon as the first async launch returns it. Use that same mission for later launches and durable recovery.
+- On ROOT_COMPLETE_REWRITE, call hospital_supervisor checkpoint with phase=to-spec and invalidatesFrom=review before launching the rewrite. This clears the stale commit and review receipts while preserving the spec identity.
+- Call hospital_supervisor checkpoint before each launch and after each completed stage. A checkpoint fails closed while an assumption, correction, owner question, failed delivery, or protocol error is unresolved. Record the enclosing mission id as soon as the first async launch returns it. Use that same mission for later launches and durable recovery.
 - Only workflow-to-spec writes the four spec files. Only workflow-commit stages/commits those exact files. Never push. Reviewers remain read-only. Missing required model/role blocks; no fallback.
 - Do not run model evals, synthetic quality cases, baselines, or forward tests.
 - When a terminal state is reached, call hospital_supervisor complete/blocked. Include spec root and commit SHA when known.
+- Never continue from a rejected assumption. Apply the earliest invalidatesFrom with hospital_supervisor checkpoint before relaunching. Preserve an existing spec identity, but discard stale commit/review authority.
 
 Stage handoff:
 - Groundwork receives the exact task and returns the complete grounded brief, lock, and decision-bearing evidence.
@@ -256,6 +282,9 @@ function statusText(state: HospitalState): string {
 	if (state.question) lines.push(`Question: ${state.question}`);
 	if (state.specRoot) lines.push(`Spec: ${state.specRoot}`);
 	if (state.commitSha) lines.push(`Commit: ${state.commitSha}`);
+	lines.push(`Control: ${controlLedgerText(state)}`);
+	const protocolErrors = state.protocolErrors.filter((item) => !item.resolved);
+	if (protocolErrors.length) lines.push(`Protocol errors: ${protocolErrors.map((item) => item.id).join(", ")}`);
 	return lines.join("\n");
 }
 
@@ -267,12 +296,13 @@ function render(ctx: ExtensionContext, state?: HospitalState): void {
 		return;
 	}
 	const run = state.activeRuns[0];
+	const runtimes = new Map<string, RuntimeStatus>();
+	for (const active of state.activeRuns) {
+		const runtime = readRuntimeStatus(active);
+		if (runtime) runtimes.set(active.id, runtime);
+	}
 	ctx.ui.setStatus(EXTENSION_ID, `🏥 ${state.phase} · ${run ? run.id.slice(0, 8) : state.status}`);
-	ctx.ui.setWidget(EXTENSION_ID, [
-		`🏥 Hospital Spec · ${state.phase} · ${state.status}`,
-		run ? `Child: ${run.agents.join(" + ")} · ${run.id}` : "Supervisor is deciding the next stage in main.",
-		"Main'e doğal dille durum sorabilir, düzeltme yazabilir veya durdur diyebilirsiniz.",
-	], { placement: "belowEditor" });
+	ctx.ui.setWidget(EXTENSION_ID, buildWidgetLines(state, runtimes), { placement: "aboveEditor" });
 }
 
 function readRuntimeStatus(run: ActiveRun): RuntimeStatus | undefined {
@@ -282,27 +312,6 @@ function readRuntimeStatus(run: ActiveRun): RuntimeStatus | undefined {
 	} catch {
 		return undefined;
 	}
-}
-
-function heartbeatText(state: HospitalState): string | undefined {
-	if (state.activeRuns.length === 0) return undefined;
-	const parts = state.activeRuns.map((run) => {
-		const status = readRuntimeStatus(run);
-		const activeStep = status?.steps?.find((step) => step.status === "running") ?? status?.steps?.[0];
-		const agent = activeStep?.agent ?? run.agents.join(" + ") ?? "child";
-		const tool = activeStep?.currentTool ?? status?.currentTool;
-		const target = activeStep?.currentPath ?? status?.currentPath ?? activeStep?.currentToolArgs;
-		const turns = activeStep?.turnCount ?? status?.turnCount;
-		const tools = activeStep?.toolCount ?? status?.toolCount;
-		const latest = activeStep?.recentOutput?.at(-1)?.replace(/\s+/g, " ").trim();
-		return [
-			`${agent} ${status?.state ?? "running"}`,
-			tool ? `şu an: ${tool}${target ? ` · ${String(target).slice(0, 140)}` : ""}` : "model repo kanıtını değerlendiriyor",
-			latest ? `son not: ${latest.slice(0, 220)}` : undefined,
-			`aktivite: ${turns ?? "?"} turn · ${tools ?? "?"} tool`,
-		].filter(Boolean).join(" — ");
-	});
-	return `Hospital Supervisor · ${state.phase}\n${parts.join("\n")}\nMain'e gördüğünüz bir hatayı normal cümleyle yazın; aktif child'a yönlendireceğim.`;
 }
 
 function belongsToHospital(data: AsyncStartedPayload, state: HospitalState): boolean {
@@ -355,8 +364,7 @@ async function startCommand(pi: ExtensionAPI, args: string, ctx: ExtensionComman
 	}
 
 	const now = new Date().toISOString();
-	const state: HospitalState = {
-		version: 2,
+	const state = createHospitalState({
 		cwd: path.resolve(ctx.cwd),
 		repoRoot: root,
 		task,
@@ -366,7 +374,7 @@ async function startCommand(pi: ExtensionAPI, args: string, ctx: ExtensionComman
 		activeRuns: [],
 		startedAt: now,
 		updatedAt: now,
-	};
+	});
 	writeState(state);
 	render(ctx, state);
 	pi.sendUserMessage(kickoffPrompt(state), { expandPromptTemplates: false });
@@ -374,40 +382,119 @@ async function startCommand(pi: ExtensionAPI, args: string, ctx: ExtensionComman
 
 export default function hospitalSpec(pi: ExtensionAPI): void {
 	let lastContext: ExtensionContext | undefined;
-	let heartbeat: ReturnType<typeof setInterval> | undefined;
+	let controlPlane: ReturnType<typeof setInterval> | undefined;
 
-	const refreshHeartbeat = (ctx: ExtensionContext): void => {
-		if (heartbeat) clearInterval(heartbeat);
-		heartbeat = setInterval(() => {
+	const refreshControlPlane = (ctx: ExtensionContext): void => {
+		if (controlPlane) clearInterval(controlPlane);
+		controlPlane = setInterval(() => {
 			const state = readState(ctx.cwd);
-			if (!state || state.status !== "active" || state.activeRuns.length === 0) return;
-			const text = heartbeatText(state);
-			if (text) pi.sendMessage({ customType: `${EXTENSION_ID}-heartbeat`, content: text, display: true }, { triggerTurn: false });
+			if (!state || (state.status !== "active" && state.status !== "waiting")) return;
+			const observed: CorrectionRecord[] = [];
+			let changed = false;
+			for (const run of state.activeRuns) {
+				const runtime = readRuntimeStatus(run);
+				if (!runtime) continue;
+				const result = reconcileRuntimeSteering(state, run, runtime);
+				changed ||= result.changed;
+				observed.push(...result.observed);
+				for (const error of result.errors) if (ctx.hasUI) ctx.ui.notify(`Hospital protocol: ${error}`, "error");
+			}
+			if (changed) writeState(state);
 			render(ctx, state);
-		}, HEARTBEAT_MS);
-		heartbeat.unref?.();
+			if (observed.length) {
+				pi.sendMessage({
+					customType: `${EXTENSION_ID}-fleet-steer`,
+					content: [
+						"Hospital Fleet steering yakaladı. Bunlar teslim alındısıdır; henüz uygulanmış sayılmaz:",
+						...observed.map((item) => `- ${item.id}: ${item.runId}${item.childIndex === undefined ? "" : `#${item.childIndex}`} · ${item.status} · ${item.text}`),
+						"Her kayıt için exact child'a [Hospital C-xxx] zarfıyla ACK + kanıtlı resolution follow-up gönder.",
+					].join("\n"),
+					display: true,
+				}, { triggerTurn: true });
+			}
+		}, REFRESH_MS);
+		controlPlane.unref?.();
 	};
 
 	pi.registerTool({
 		name: "hospital_supervisor",
 		label: "Hospital Supervisor",
-		description: "Read or durably update the active Hospital Spec supervisor checkpoint. Use only for the current repository's Hospital workflow.",
-		promptSnippet: "Track the visible Hospital Spec phase, owner wait, and terminal result.",
+		description: "Read/update Hospital Spec checkpoints, assumptions, and the acknowledged correction ledger. Delivery is not application.",
+		promptSnippet: "Track Hospital phase and correction receipts; block progress while control signals remain unresolved.",
 		parameters: CONTROL_PARAMETERS,
 		async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
 			const state = readState(ctx.cwd);
 			if (!state) return { content: [{ type: "text", text: "No Hospital Spec state exists for this repository." }], details: {} };
-			if (params.action !== "status") {
+			try {
+				if (params.action === "correction_record") {
+					if (!params.text?.trim() || !params.runId?.trim()) throw new Error("correction_record text ve exact runId gerektirir.");
+					const correction = recordCorrection(state, { text: params.text, runId: params.runId, childIndex: params.childIndex });
+					writeState(state);
+					render(ctx, state);
+					return { content: [{ type: "text", text: `${correction.id} kaydedildi; şimdi exact child'a steer edin. Teslim, ACK ve uygulama ayrı kaydedilmelidir.` }], details: { correctionId: correction.id, status: correction.status } };
+				}
+				if (params.action === "correction_delivery") {
+					if (!params.correctionId?.trim() || !params.requestId?.trim() || !params.deliveryState || !params.deliveryStatus) throw new Error("correction_delivery correctionId, requestId, deliveryState ve deliveryStatus gerektirir.");
+					const correction = updateCorrectionDelivery(state, {
+						correctionId: params.correctionId,
+						requestId: params.requestId,
+						deliveryState: params.deliveryState as DeliveryState,
+						deliveryStatus: params.deliveryStatus,
+					});
+					writeState(state);
+					render(ctx, state);
+					return { content: [{ type: "text", text: `${correction.id}: ${correction.status}. Bu yalnız teslim durumudur; child ACK + kanıtlı resolution bekleniyor.` }], details: { correctionId: correction.id, status: correction.status } };
+				}
+				if (params.action === "correction_apply") {
+					if (!params.correctionId?.trim()) throw new Error("correction_apply correctionId gerektirir.");
+					const correction = applyCorrection(state, params.correctionId);
+					state.summary = correction.outcome === "confirmed"
+						? `${correction.id} kanıtlandı ve ${correction.invalidatesFrom} aşamasından geri sarıldı.`
+						: `${correction.id} kanıtla reddedildi; değişiklik gerektirmeyen no-op olarak kapatıldı.`;
+					writeState(state);
+					render(ctx, state);
+					return { content: [{ type: "text", text: `${correction.id}: applied\n${state.summary}` }], details: { correctionId: correction.id, status: correction.status, invalidatesFrom: correction.invalidatesFrom } };
+				}
+				if (params.action === "assumption_status") {
+					if (params.protocolErrorId?.trim()) {
+						if (!params.summary?.trim()) throw new Error("Protokol hatasını kapatmak için doğrulama özeti gerekir.");
+						if (!resolveProtocolError(state, params.protocolErrorId, params.summary)) throw new Error(`Açık protokol hatası bulunamadı: ${params.protocolErrorId}`);
+						writeState(state);
+					}
+					const open = gateBlockers(state);
+					render(ctx, state);
+					return { content: [{ type: "text", text: open.length ? `Hospital control blockers: ${open.join("; ")}` : "Hospital control ledger clear." }], details: { blockers: open, assumptions: state.assumptions, corrections: state.corrections, protocolErrors: state.protocolErrors } };
+				}
+				if (params.action === "status") {
+					render(ctx, state);
+					return { content: [{ type: "text", text: statusText(state) }], details: { status: state.status, phase: state.phase, blockers: gateBlockers(state) } };
+				}
+				if (params.action === "checkpoint") {
+					if (params.invalidatesFrom) applyInvalidation(state, params.invalidatesFrom as InvalidationPhase);
+					const blockers = gateBlockers(state);
+					if (blockers.length) throw new Error(`Checkpoint blocked: ${blockers.join("; ")}`);
+				}
+				if (params.action === "complete") {
+					const blockers = terminalBlockers(state);
+					if (blockers.length) throw new Error(`Completion blocked: ${blockers.join("; ")}`);
+				}
 				if (params.phase?.trim()) state.phase = params.phase.trim();
 				if (params.summary?.trim()) state.summary = params.summary.trim();
 				if (params.question?.trim()) state.question = params.question.trim();
 				if (params.specRoot?.trim()) state.specRoot = params.specRoot.trim();
-				if (params.commitSha?.trim()) state.commitSha = params.commitSha.trim();
+				if (params.commitSha?.trim()) {
+					const sha = params.commitSha.trim();
+					if (state.commitSha !== sha) state.reviews = {};
+					state.commitSha = sha;
+				}
 				if (params.missionId?.trim()) state.missionId = params.missionId.trim();
 				state.status = params.action === "checkpoint" ? "active" : params.action;
 				if (params.action !== "waiting") state.question = undefined;
 				if (["complete", "blocked", "stopped"].includes(params.action)) state.activeRuns = [];
 				writeState(state);
+			} catch (error) {
+				render(ctx, state);
+				return { content: [{ type: "text", text: error instanceof Error ? error.message : String(error) }], isError: true, details: { status: state.status, phase: state.phase, blockers: gateBlockers(state) } };
 			}
 			render(ctx, state);
 			return { content: [{ type: "text", text: statusText(state) }], details: { status: state.status, phase: state.phase } };
@@ -420,7 +507,7 @@ export default function hospitalSpec(pi: ExtensionAPI): void {
 		description: "Mechanically combine the two Hospital Spec reviewer verdicts on one exact committed SHA.",
 		promptSnippet: "Gate Hospital Spec only after both fresh reviewer reports return.",
 		parameters: GATE_PARAMETERS,
-		async execute(_toolCallId, params) {
+		async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
 			const validSha = (value: string): boolean => /^[0-9a-f]{40}(?:[0-9a-f]{24})?$/.test(value);
 			if (![params.expectedSha, params.adversarialSha, params.readinessSha].every(validSha)) {
 				return { content: [{ type: "text", text: "INVALID: malformed commit SHA" }], details: { state: "INVALID" } };
@@ -428,8 +515,22 @@ export default function hospitalSpec(pi: ExtensionAPI): void {
 			if (params.adversarialSha !== params.expectedSha || params.readinessSha !== params.expectedSha) {
 				return { content: [{ type: "text", text: "INVALID: reviewer commit SHA mismatch" }], details: { state: "INVALID" } };
 			}
-			const state = params.adversarial === "PASS" && params.readiness === "READY" ? "STOP" : "ROOT_COMPLETE_REWRITE";
-			return { content: [{ type: "text", text: state }], details: { state } };
+			const hospital = readState(ctx.cwd);
+			if (!hospital) return { content: [{ type: "text", text: "BLOCKED: Hospital state missing" }], isError: true, details: { state: "BLOCKED" } };
+			if (hospital.commitSha !== params.expectedSha) {
+				return { content: [{ type: "text", text: "INVALID: expected SHA is not the durable current Hospital commit" }], details: { state: "INVALID" } };
+			}
+			const recordedAt = new Date().toISOString();
+			hospital.reviews = {
+				adversarial: { verdict: params.adversarial, sha: params.adversarialSha, recordedAt },
+				readiness: { verdict: params.readiness, sha: params.readinessSha, recordedAt },
+			};
+			writeState(hospital);
+			render(ctx, hospital);
+			const blockers = gateBlockers(hospital);
+			if (blockers.length) return { content: [{ type: "text", text: `BLOCKED: ${blockers.join("; ")}` }], isError: true, details: { state: "BLOCKED", blockers } };
+			const gateState = params.adversarial === "PASS" && params.readiness === "READY" ? "STOP" : "ROOT_COMPLETE_REWRITE";
+			return { content: [{ type: "text", text: gateState }], details: { state: gateState } };
 		},
 	});
 
@@ -444,14 +545,39 @@ export default function hospitalSpec(pi: ExtensionAPI): void {
 		return { systemPrompt: `${event.systemPrompt}\n\n${supervisorPrompt(state)}` };
 	});
 
+	pi.on("context", (event, ctx) => {
+		const state = readState(ctx.cwd);
+		if (!state || (state.status !== "active" && state.status !== "waiting")) return undefined;
+		let changed = false;
+		for (const message of event.messages) {
+			if (message.role !== "custom" || message.customType !== "subagent_supervisor_request") continue;
+			const messageId = typeof (message.details as { id?: unknown } | undefined)?.id === "string"
+				? (message.details as { id: string }).id
+				: undefined;
+			if (state.signalCursor && (message.timestamp < state.signalCursor.timestamp
+				|| (message.timestamp === state.signalCursor.timestamp && messageId && state.signalCursor.ids.includes(messageId)))) continue;
+			const result = applySupervisorSignal(state, message.content, (message.details ?? {}) as Record<string, unknown>, state.phase);
+			changed ||= result.changed;
+			if (result.changed && messageId) {
+				if (!state.signalCursor || message.timestamp > state.signalCursor.timestamp) state.signalCursor = { timestamp: message.timestamp, ids: [messageId] };
+				else if (message.timestamp === state.signalCursor.timestamp) state.signalCursor.ids = [...new Set([...state.signalCursor.ids, messageId])];
+			}
+			if (result.error && ctx.hasUI) ctx.ui.notify(`Hospital protocol: ${result.error}`, "error");
+		}
+		if (changed) {
+			writeState(state);
+			render(ctx, state);
+		}
+		return undefined;
+	});
+
 	pi.events.on("subagent:async-started", (payload) => {
 		if (!lastContext) return;
 		const state = readState(lastContext.cwd);
 		const data = payload as AsyncStartedPayload;
 		if (!state || state.status !== "active" || !belongsToHospital(data, state)) return;
 		const agents = data.agents?.length ? data.agents : data.agent ? [data.agent] : [];
-		state.activeRuns = state.activeRuns.filter((run) => run.id !== data.id);
-		state.activeRuns.push({ id: data.id!, agents, asyncDir: data.asyncDir, startedAt: new Date().toISOString() });
+		recordRunStarted(state, { id: data.id!, agents, asyncDir: data.asyncDir, startedAt: new Date().toISOString() });
 		state.phase = agents.map((agent) => PHASE_BY_AGENT[agent] ?? agent).join(" + ");
 		writeState(state);
 		render(lastContext, state);
@@ -468,7 +594,7 @@ export default function hospitalSpec(pi: ExtensionAPI): void {
 		const data = payload as AsyncCompletePayload;
 		const runId = data.runId ?? data.id;
 		if (!state || !runId || !state.activeRuns.some((run) => run.id === runId)) return;
-		state.activeRuns = state.activeRuns.filter((run) => run.id !== runId);
+		recordRunCompleted(state, runId);
 		state.summary = `${runId} tamamlandı; supervisor sonucu değerlendiriyor.`;
 		writeState(state);
 		render(lastContext, state);
@@ -478,7 +604,7 @@ export default function hospitalSpec(pi: ExtensionAPI): void {
 		lastContext = ctx;
 		const state = readState(ctx.cwd);
 		render(ctx, state);
-		refreshHeartbeat(ctx);
+		refreshControlPlane(ctx);
 		if (!state || (state.status !== "active" && state.status !== "waiting")) return;
 		setTimeout(() => {
 			void (async () => {
@@ -496,8 +622,8 @@ export default function hospitalSpec(pi: ExtensionAPI): void {
 	});
 
 	pi.on("session_shutdown", (_event, ctx) => {
-		if (heartbeat) clearInterval(heartbeat);
-		heartbeat = undefined;
+		if (controlPlane) clearInterval(controlPlane);
+		controlPlane = undefined;
 		lastContext = undefined;
 		if (ctx.hasUI) {
 			ctx.ui.setStatus(EXTENSION_ID, undefined);

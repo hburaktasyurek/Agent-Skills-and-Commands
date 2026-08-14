@@ -29,7 +29,7 @@ Statuses mean:
 | [`pi-subagents`](https://github.com/nicobailon/pi-subagents) | **Installed** | The one subagent runtime. It provides async runs, fresh contexts, missions, transcript/status inspection, steering, stopping, completion delivery, and the native supervisor question channel. |
 | [`@juicesharp/rpiv-ask-user-question`](https://github.com/juicesharp/rpiv-mono/tree/main/packages/rpiv-ask-user-question) | **Installed** | Structured owner questions without forcing the model to guess. Small and complementary to the runtime. |
 | [`@hk_net/pi-thinking-command`](https://github.com/hknet/pi-extensions/tree/main/packages/pi-thinking-command) | **Installed** | Small manual reasoning-level control. It does not own workflow state or model routing. |
-| [`hospital-spec.ts`](extensions/hospital-spec.ts) | **Local** | The visible DeepSeek parent and Hospital-specific policy. It launches only async children, keeps main interactive, surfaces questions, and combines the two review verdicts mechanically. |
+| [`hospital-spec.ts`](extensions/hospital-spec.ts) | **Local** | The visible DeepSeek parent and Hospital-specific control plane. It launches only async children, keeps main interactive, shows live status, records assumptions/corrections, separates delivery from application, surfaces questions, and combines the two review verdicts mechanically. |
 
 ## Highest-value candidates
 
@@ -40,11 +40,12 @@ installed by default.
 
 [`rpiv-todo`](https://github.com/juicesharp/rpiv-mono/tree/main/packages/rpiv-todo)
 provides a live task overlay that survives reload and compaction. It could help
-when the operator needs a richer stage checklist than Hospital's compact
-widget and heartbeat.
+when the operator needs a richer stage checklist than Hospital's compact live
+control panel.
 
-Do not install it merely to prove that work is happening: Hospital now posts
-run id, agent, tool/path, recent output, and activity counts in main. Trial
+Do not install it merely to prove that work is happening: Hospital's persistent
+panel shows run id, agent/model, tool/path, recent output, assumptions,
+correction receipts, and activity counts. Trial
 Todo only if real use shows that the missing information is task topology or
 remaining work. If adopted, Hospital remains authoritative; Todo is a
 read-only projection, not a second state machine.
@@ -122,8 +123,8 @@ invocation, provider control, and cost, then select one.
 
 The same [`hknet/pi-extensions`](https://github.com/hknet/pi-extensions)
 collection also contains `pi-timestamp` and `pi-set-model`. Timestamp is held
-until timing visibility is demonstrably missing; Hospital already emits
-activity heartbeats. Per-project model memory is held because Hospital pins its
+until timing visibility is demonstrably missing; Hospital's live panel already
+shows elapsed activity. Per-project model memory is held because Hospital pins its
 parent and children explicitly, while an implicit remembered model could make
 non-Hospital session behavior harder to predict.
 

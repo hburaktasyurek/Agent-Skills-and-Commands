@@ -10,7 +10,9 @@ the installer again.
 pi-workflow/
 ├── agents/                 # pinned hospital roles
 ├── extensions/
-│   └── hospital-spec.ts    # visible main-session supervisor and async launcher
+│   ├── hospital-spec.ts    # visible main-session supervisor and async launcher
+│   └── hospital-control/   # tested state, signal, steering, and widget core
+├── tests/                  # deterministic control-loop tests
 ├── EXTENSIONS.md           # reviewed extension candidates and decisions
 ├── install.sh              # install/sync and verification
 └── README.md
@@ -121,16 +123,28 @@ Bu varsayımı yapmasın, mevcut lock içinde kalsın.
 Bu workflow'u durdur.
 ```
 
-The main supervisor resolves the exact active run id, optionally reads its
-live transcript, and sends the correction with `subagent steer`. It reports the
-delivery receipt back in main. `stop` is supported because Hospital children
-are async; the old foreground interrupt path is not used.
+The main supervisor resolves the exact active run id, records a durable
+`C-xxx` correction, and sends it with `subagent steer`. Delivery, child ACK,
+evidence-backed verification, and application are separate states. A delivered
+message is never presented as an applied correction. Parallel review targets
+must be unambiguous; Hospital asks instead of broadcasting a correction.
 
-Every 45 seconds the extension posts a compact heartbeat to main with the
-active agent, current tool/path when available, and turn/tool counts. This is
-supplementary: the parent can inspect and explain the transcript whenever the
-user asks. The Fleet inspector remains an optional low-level diagnostic, not
-the normal operator interface.
+A persistent panel above the editor refreshes every second from Hospital state
+and `pi-subagents` status. It shows the phase, agent/model, elapsed time,
+current tool/path, recent observable activity, open assumptions, corrections,
+and protocol errors. It does not post periodic chat heartbeats. Use
+`Ctrl+Alt+F` for the full Fleet transcript, `s` for deterministic direct
+steering, and `D` to stop. Fleet steering is reconciled into Hospital's ledger,
+so the direct path cannot bypass ACK and application checks.
+
+Decision-bearing uncertainty is explicit. A child opens an assumption with a
+structured `HOSPITAL_SIGNAL`, identifies its verification target, and resolves
+it with concrete evidence. While an assumption or correction is unresolved,
+the child may inspect evidence but must not write/stage an artifact or complete
+its stage. Hospital checkpoints and the final gate enforce the stage boundary
+mechanically. A rejected assumption or confirmed user correction invalidates
+the earliest affected phase, clears stale commit/review authority, and reruns
+the downstream stages while preserving an existing spec identity.
 
 When a child needs an owner decision, the native supervisor channel wakes the
 main session. The main agent asks the exact question, preserves the user's
@@ -141,6 +155,16 @@ before continuing; it never launches a duplicate while the old run is active.
 `/hospital-spec` without arguments prints the current durable state. The
 diagnostic `/hospital-spec self-test` verifies the pinned agents and required
 Pi tools; neither is needed during ordinary operation.
+
+Run the deterministic source tests after changing the control core:
+
+```bash
+node --experimental-strip-types --test pi-workflow/tests/hospital-control.test.ts
+```
+
+They cover state migration, signal identity and deduplication, delivery versus
+application, ACK ordering, invalidation, Fleet reconciliation, widget output,
+and terminal gate receipts.
 
 ## State and generated data
 
