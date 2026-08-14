@@ -11,6 +11,90 @@ decision-changing evidence and resolved scope, not a filled methodology form.
 Read `references/outcome-lock.md` and **produce** its four boundary fields. Do
 not copy that reference into the brief.
 
+## Codex adapter mode
+
+When the invocation includes `Adapter: codex-task-to-spec`, verify the named
+packet manifest and artifact hashes before work. Treat only the named task and
+authority artifacts as input; when `Authority resolutions:` is non-`none`, read
+the manifest and every listed owner-resolution JSON whole before grounding.
+Parent prose, conversation memory, and summaries are not authority.
+
+When that adapter invocation has `Stage: resolution-check`, read the named
+question-resolution artifact and return only this result, with no grounding
+brief or narration:
+
+```text
+Resolved: yes | no
+Lock: changed | unchanged
+Resume: task-groundwork | to-spec | commit | review-stage
+Basis: <absolute question-resolution artifact path> | sha256:<hash>
+```
+
+Verify the resolution JSON's source role/stage/mutation and `calling_phase`.
+Return `Resume: task-groundwork`; this role cannot skip rebuilding the brief
+and evidence seed. `Lock: changed` also resumes there.
+
+Stop after this resolution result; the remaining grounding-output rules do not
+apply to that invocation.
+
+For a normal adapter grounding stage, write the completed brief's exact bytes
+to the supplied `Groundwork artifact:` path. Copy the brief's exact four-field
+Outcome lock, without commentary or paraphrase, to the supplied `Lock
+artifact:` path. Also write the supplied `Evidence inventory:` artifact with
+one entry for every decision-bearing repository source actually used:
+
+```text
+Path: <repository-relative path>
+Role: <binding task | current behavior | acceptance | owner/path | constraint>
+Blob: <full lowercase Git blob hash of the examined bytes>
+State: committed | dirty | untracked
+```
+
+If no decision-bearing repository source was used, write the single line
+`none`. Otherwise separate entries with one blank line, sort by `Path`, and do
+not repeat a path.
+
+Do not inventory routine paths that cannot change a decision. Hash dirty or
+untracked evidence from its exact examined bytes rather than substituting the
+index or HEAD version, and label its state exactly. The parent cannot include
+dirty or untracked decision-bearing evidence in an immutable review basis; it
+will return `BLOCKED` without reconciling that owner state. The inventory does
+not replace citations or reasoning in the brief.
+
+After writing and hashing a ready brief and inventory, write the supplied
+`Groundwork status:` artifact in this exact form:
+
+```text
+Groundwork status
+State: READY_FOR_SPEC
+Basis:
+Groundwork: <absolute path> | sha256:<hash>
+Lock: <absolute path> | sha256:<hash>
+Evidence inventory: <absolute path> | sha256:<hash>
+```
+
+When unavailable evidence materially blocks outcome, safety, or scope, do not
+make the parent interpret prose. Write only this status form and return the
+same exact blocker text:
+
+```text
+Groundwork status
+State: BLOCKED
+Basis:
+Task: <absolute path> | sha256:<hash>
+Blocker: <exact evidence limit>
+```
+
+A necessary owner question uses the shared question protocol and writes no
+groundwork status until resolved. Its immutable return contains exactly one
+non-empty single-line `Question: <text>`; the adapter treats the entire returned
+bytes as evidence. Do not add another `Question:` line. Any other adapter
+status or question grammar is invalid.
+
+An explicit Codex task-to-spec run has already selected the spec path. Even
+when the task is narrow, produce a concise ready grounding brief and its
+artifacts; do not route it to direct execution as a negative-fit result.
+
 ## Establish fit and authority
 
 Use the supplied task source as authority. A direct request is sufficient; do
@@ -116,10 +200,13 @@ evidence blocker remains.
 Return the completed brief directly. Do not leave a research plan, approval
 wrapper, or instructions for a later response in place of the brief.
 
-After a completed ready positive-fit brief exists, write those
-same bytes to `.workflow/YYYY-MM-DD-HHMM-task-groundwork.md` using the local
-clock. Create `.workflow/` if needed. Still return the same brief in chat.
-This sidecar is the only briefing-file exception. Do not write spec or code.
+After a completed ready positive-fit brief exists, write those same bytes to
+`.workflow/YYYY-MM-DD-HHMM-task-groundwork.md` using the local clock. Create
+`.workflow/` if needed. Still return the same brief in chat. This sidecar is
+the only briefing-file exception. Do not write spec or code. In Codex adapter
+mode, the supplied `Groundwork artifact:` path replaces this timestamped
+sidecar; also write the separate lock, evidence inventory, and status artifacts
+defined above, and create no duplicate briefing sidecar.
 
 If the result is the existing negative-fit / already-narrow brief
 (implementation boundary already clear, groundwork adds no decision value),

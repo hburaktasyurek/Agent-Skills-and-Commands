@@ -18,11 +18,15 @@ GitHub issues are welcome, but there is no response SLA.
 1. Use your host's `skill-creator` with concrete usage examples.
 2. Create or edit `skills/<name>/`; include only runtime-relevant files.
 3. Run the creator's structural validation.
-4. For substantial behavior, compare the package with an exact Git or
-   without-skill baseline using [skill-eval](skills/skill-eval/SKILL.md).
-5. Review produced artifacts, not only headings or claimed procedure.
+4. Run changed deterministic scripts and their self-tests directly.
+5. Inspect the exact diff and review real-task artifacts when they exist.
 6. Update [skills/INDEX.md](skills/INDEX.md) and [README.md](README.md).
 7. Commit the coherent change. Global installation is separate.
+
+This repository does not run model-judged evals, synthetic eval cases,
+baseline comparisons, or `skill-eval` for skill maintenance. When real-task
+evidence is not available, state that the behavior is unobserved instead of
+substituting a scored simulation.
 
 ## Licensing
 

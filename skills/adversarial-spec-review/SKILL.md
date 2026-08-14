@@ -6,6 +6,31 @@ description: Evidence-bounded red-team review that challenges a plan or spec wit
 Review the current plan or spec as the engineer accountable for approving it.
 Treat every claim as unverified. Ignore author identity and tooling.
 
+When the invocation includes `Adapter: codex-task-to-spec`, verify the named
+packet manifest and hashes, read the frozen lock and seed inventory whole, and
+read every JSON in a non-`none` `Authority resolutions:` manifest. Review only
+the supplied detached commit. Parent prose and conversation memory are not
+authority. Use full mode and keep the detached worktree read-only.
+
+If that adapter invocation has `Stage: resolution-check`, the normal verdict
+format is suspended. Read the named question-resolution artifact and return
+only:
+
+```text
+Resolved: yes | no
+Lock: changed | unchanged
+Resume: task-groundwork | to-spec | commit | review-stage
+Basis: <absolute question-resolution artifact path> | sha256:<hash>
+```
+
+Verify the resolution JSON's source role/stage/mutation and `calling_phase`.
+A changed lock returns `task-groundwork`. With an unchanged lock, return
+`review-stage` only when the existing spec bytes remain valid under the answer;
+an in-lock spec change returns `to-spec`.
+
+Stop after this resolution result; every remaining verdict and report rule is
+inapplicable to that invocation.
+
 Keep spec, code, Git, and PR state read-only. Write a report only when the
 invocation includes `Write report under:`. Use local time and the name
 `YYYY-MM-DD-HHMM-adversarial-spec-review.md`; if it exists, append the lowest
@@ -75,6 +100,19 @@ Use one mode:
 | `incremental` | Complete prior report and matching basis; unchanged outcome, scope, acceptance, and activation; changes are prior closures or their required consequences |
 | `reset-to-full` | Missing/mismatched basis; changed task authority; new integration or architecture boundary; unexplained changes |
 
+For a normal `codex-task-to-spec` review, use this exact machine identity in
+the existing Basis line:
+
+```text
+Basis: full; commit-sha=<detached full Git SHA>; packet-sha256=<manifest SHA-256>; <paths and reviewer-owned basis detail>
+```
+
+Open a repository path absent from the seed inventory only when it is a direct
+load-bearing dependency required to prove or disprove a current claim. Do not
+perform an open-ended repository scan. For each such path, record its
+repository-relative path, full Git blob hash at the review commit, and reason
+as an `Evidence addition:` line in the report.
+
 An interaction neighbor exposed by a correction stays `incremental`. Reset
 only when the prior review can no longer own the basis, not because a new
 finding is inconvenient.
@@ -97,6 +135,10 @@ require removal or a human decision—not completion of that machinery. If the
 frozen outcome still requires part of the behavior, separate and close only
 that part. Name any landed owner/path in plain prose. A reviewer cannot enlarge
 the Outcome lock by declaring something necessary.
+
+Return `Next: to-spec` only when the closure stays inside the frozen owned
+outcome or existing owner/path. A neighbor outcome, new durable owner, or lock
+enlargement requires one `Question:` and `Next: wait for answer`.
 
 Do not revise the spec, approve your own correction, absorb implementation or
 PR review, use numeric confidence, aggregate risk scores, or finding quotas.
@@ -222,6 +264,16 @@ On re-review, add concise prior decisions before current findings:
 ```text
 Prior: <id> resolved | still present | superseded — <decisive current evidence>
 ```
+
+In Codex adapter mode, add one line for every direct path opened beyond the
+seed inventory:
+
+```text
+Evidence addition: <repository-relative path> | <full Git blob hash> | <reason>
+```
+
+Keep path and reason on one line and do not include the literal delimiter
+` | ` inside either value.
 
 Report findings in priority order:
 

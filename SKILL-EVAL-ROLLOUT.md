@@ -1,5 +1,8 @@
 # Skill Eval Rollout Queue
 
+> Historical, non-operative record. Current skill maintenance follows
+> [WORKFLOW.md](WORKFLOW.md) and does not run this rollout process.
+
 Evaluate only retained skills, one real primary harness at a time. This queue
 does not modify global copies.
 

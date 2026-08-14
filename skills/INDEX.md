@@ -4,6 +4,7 @@ The directory layout stays flat. This file is the curated reading order.
 
 ## Planning and Design
 
+- [codex-task-to-spec](codex-task-to-spec/SKILL.md) — Resumable Codex-native immutable spec gate with pinned ephemeral subagents.
 - [omp-task-to-spec](omp-task-to-spec/SKILL.md) — OMP parent spec gate under orchestrate.
 - [task-groundwork](task-groundwork/SKILL.md) — Ground a non-trivial task with decision-changing evidence.
 - [grill-me](grill-me/SKILL.md) — Stress-test a plan or decision one question at a time.

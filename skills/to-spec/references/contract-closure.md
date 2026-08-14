@@ -1,9 +1,11 @@
 # Contract closure protocol
 
-Use this protocol only when the task has a contract-bearing boundary. Its goal
-is totality over reachable material behavior selected by the **Outcome lock**
-and current system, not a maximal Cartesian product or every mechanism a draft
-could invent.
+Use this protocol proportionately for every task. Its goal is totality over
+reachable material behavior selected by the **Outcome lock** and current
+system, not a maximal Cartesian product or every mechanism a draft could
+invent. Trace every reachable task-owned consequence, collapse behaviorally
+equivalent rows, and omit rows the changed path cannot reach. Apply the rule
+before assigning any descriptive task label.
 
 Read `references/outcome-lock.md` before drawing nodes. Freeze its four fields;
 do not copy that reference here.
@@ -156,11 +158,67 @@ If a new rule narrows a valid-state set, rebuild every producer and consumer
 that can reach that set before accepting the rule. A producer may not emit a
 state that its factory or consumer rejects.
 
-## 6. Keep a private closure receipt
+## 6. Keep a closure receipt
 
 Before drafting, record the frozen existing owner/path, axes considered,
 collapsed equivalence rules, rejected rows, producer/consumer traces, required
 state/identity continuity, downstream-failure behavior, proof-domain bound,
-and acceptance oracles. The receipt is reasoning scaffolding, not a required
-fifth artifact. Put only the canonical contracts and useful tables in the
-four-file cluster.
+and acceptance oracles. Outside Codex adapter mode, this receipt is private
+reasoning scaffolding, not a required fifth artifact. Put only the canonical
+contracts and useful tables in the four-file cluster.
+
+When the invocation includes `Adapter: codex-task-to-spec`, write the receipt
+to the exact supplied path outside the spec cluster. Use this structure:
+
+```text
+Closure receipt
+Basis:
+Packet: <manifest path> | sha256:<packet hash>
+Task: <path> | sha256:<hash>
+Lock: <path> | sha256:<hash>
+Authority resolutions: none
+Reports:
+- none
+Spec:
+- <shape.md path> | sha256:<hash>
+- <plan.md path> | sha256:<hash>
+- <references.md path> | sha256:<hash>
+- <standards.md path> | sha256:<hash>
+
+Grounded coverage:
+<existing obligation or heading>
+→ <spec heading>
+→ <producer>
+→ <consumer/effect>
+→ <failure/retry result>
+→ <distinguishing proof>
+
+Review roots:
+none
+
+Evidence additions:
+none
+```
+
+On rewrite, list both complete current report paths and hashes under `Reports`.
+When the envelope's `Authority resolutions:` field is non-`none`, replace the
+receipt's `Authority resolutions: none` with that exact manifest path and hash.
+Under `Review roots`, copy every current `[P0]`, `[P1]`, `[P2]`, `[P3]`, and
+`[Blocker]` heading verbatim. Follow each immediately with exactly one
+`accepted: <spec heading + proof>` or `refuted: <evidence + frozen boundary>`
+line. Use existing obligation and finding headings; do not create K1/K2
+classes or artificial IDs.
+
+Under `Evidence additions`, write the single line `none`, or write one exact
+line per justified direct dependency:
+
+```text
+Evidence addition: <repository-relative path> | <full Git blob hash> | <reason>
+```
+
+Keep path and reason on one line and do not use the literal delimiter ` | `
+inside either value. Sort those lines bytewise and deduplicate them by path. Include only committed
+paths whose blob matches the adapter's repository basis. The receipt is not a
+PASS and must not be given to reviewers. The adapter parent verifies presence,
+source hashes, the final four-file hashes, and exact review-heading coverage
+mechanically; it does not judge the dispositions.

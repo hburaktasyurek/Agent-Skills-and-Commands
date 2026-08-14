@@ -55,10 +55,11 @@ it does not replace the opened-PR gate.
 
 ## Spec design
 
-Orchestrator contract. The OMP runtime spec gate is `omp-task-to-spec`; this
-file is the human contract, and the edges live in that skill.
+Orchestrator contract. The host adapters are `omp-task-to-spec` for OMP and
+`codex-task-to-spec` for Codex; this file is the human contract, and each
+adapter owns its runtime edges.
 
-The five spec-path packages ship the identical boundary file under
+The six spec-path packages ship the identical boundary file under
 `references/outcome-lock.md`. Use a landed owner/path when it already owns the
 needed result; do not rebuild that machine inside the current task.
 
@@ -95,6 +96,32 @@ needed result; do not rebuild that machine inside the current task.
    prior FAIL, or review count is neither a finding nor a reason to stop.
 10. Hand off only after both gates pass.
 
+### Codex runtime adapter
+
+`codex-task-to-spec` automates the spec gate with ephemeral runtime subagents:
+
+```text
+Terra/medium parent
+→ Terra/high task-groundwork
+→ Luna/high direct evidence scan
+→ Sol/high to-spec + closure receipt
+→ Terra/low spec-only commit
+→ parallel Sol/high adversarial + readiness review
+→ deterministic review gate
+```
+
+Every child receives a sealed hash manifest and exact artifacts, not a parent
+summary. The commit contains only the four-file spec cluster. Both reviewers
+use fresh context, the same packet, and a detached worktree at the exact commit
+SHA; `review-gate.mjs` alone combines their protocol states. The closure
+receipt is parent-verified scaffolding and is never given to reviewers. Missing
+required model/role support blocks the adapter rather than selecting a weaker
+fallback. A hash-checked `.workflow/<spec-id>/state/CURRENT` points to an
+immutable checkpoint containing the exact next action, packet manifest,
+artifacts, retry ledger, and host dispatch identity. After context
+compaction or a later turn, the adapter resumes that checkpoint instead of
+reconstructing workflow state from conversation prose.
+
 Spawn carries the frozen outcome lock. It does not add path-specific bans
 (for example "no PaymentAttempt", "do not call X").
 
@@ -116,8 +143,9 @@ same-outcome roots; it is not an unrelated full re-sweep.
 
 ## Spec hop
 
-The hop and `.workflow/` sidecars are for the multi-session spec path, not
-for tiny or already-narrow tasks.
+The paste-card hop and its sidecar rules are for the manual multi-session spec
+path, not the automated Codex adapter and not tiny or already-narrow tasks.
+Codex packet and authority sidecars follow `codex-task-to-spec` instead.
 
 Carry the next skill as one pasted block. Full briefs and (carded) review
 reports live under `.workflow/`; do not paste those bodies into the next
@@ -235,6 +263,10 @@ off the default branch. Drop `.workflow/` after merge or before squash.
 Deleting the feature branch loses lookback. This repository does not
 gitignore or CI-exclude `.workflow/`.
 
+The Codex adapter never stages `.workflow/`; its spec commit allowlist contains
+only `shape.md`, `plan.md`, `references.md`, and `standards.md` for the active
+spec identity.
+
 ## Implementation and PR
 
 1. For a named spec, give the exact spec cluster to `senior-implementer`.
@@ -328,7 +360,9 @@ runtime copies. Repository agents do not synchronize them.
 - Record the actual harness and model used for a review when it matters to the
   evidence.
 - Prefer independent review context.
-- Do not hard-code a model as a permanent workflow rule.
+- Keep the host-neutral workflow model-independent. A host-specific adapter may
+  pin model and effort in its own reproducibility contract; do not apply that
+  pin to other hosts or generic skill calls.
 
 ## Session continuity
 
@@ -337,6 +371,11 @@ when exact unresolved state must survive a fresh window, harness switch, or
 pause. Prefer existing durable artifacts when they already contain everything
 needed to resume. `session-handoff` is not a review report and does not
 replace `.workflow/` hop artifacts.
+
+For an active `codex-task-to-spec` run, context compaction and later-turn
+continuation use its verified immutable checkpoint and `CURRENT` pointer, not
+`session-handoff`. Do not reconstruct or advance that adapter from a prose
+handoff.
 
 For an interrupted critical review, carry the exact current base/head, prior
 reviewed head and complete report, review mode, open Root families, and

@@ -22,10 +22,44 @@ not copy that reference into the spec.
 
 ## Inputs and authority
 
-Use the complete conversation, `task-groundwork` result or equivalent grounded
-frame, and authoritative task artifacts. Require one bounded outcome, explicit
-scope/non-goals, acceptance or stop conditions, and an unambiguous output root.
-Do not restart groundwork when those are already present.
+Outside Codex adapter mode, use the complete conversation, `task-groundwork`
+result or equivalent grounded frame, and authoritative task artifacts. Require
+one bounded outcome, explicit scope/non-goals, acceptance or stop conditions,
+and an unambiguous output root. Do not restart groundwork when those are
+already present.
+
+When the invocation includes `Adapter: codex-task-to-spec`, verify the named
+packet manifest and every artifact hash before work. Use only the named task,
+frozen lock, inventories listed by the immutable `Evidence set`, current spec,
+complete reports listed by the immutable `Report set` when present, and every
+owner-resolution JSON listed by `Authority resolutions:` when present. Parent
+prose, summaries, correction recipes, and conversation memory are not authority.
+Use the supplied spec identity and receipt output path.
+
+When that adapter invocation has `Stage: resolution-check`, read the named
+question-resolution artifact and return only:
+
+```text
+Resolved: yes | no
+Lock: changed | unchanged
+Resume: task-groundwork | to-spec | commit | review-stage
+Basis: <absolute question-resolution artifact path> | sha256:<hash>
+```
+
+Verify the resolution JSON's source role/stage/mutation and `calling_phase`.
+For normal authoring, an unchanged lock returns `Resume: to-spec`. For a
+receipt-only source, return its recorded `commit` or `review-stage` calling
+phase only when the current spec remains byte-valid under the answer;
+otherwise return `to-spec`. A changed lock returns `task-groundwork`.
+
+Stop after this resolution response; it overrides every normal spec
+deliverable, receipt, and report rule below.
+
+When an adapter envelope sets `Mutation: receipt-only; spec forbidden`, verify
+the current packet and four-file spec manifest, leave every spec byte
+unchanged, and regenerate only the supplied closure receipt against that
+packet. If the receipt cannot be truthful without changing the spec, return
+`BLOCKED`; do not silently promote this call into a rewrite.
 
 Resolve premise types with the source that owns them:
 
@@ -53,26 +87,16 @@ the answer remains incomplete. Do not return ordinary technical consequences
 to the human when binding rules and repository evidence already determine
 them.
 
-## Consequence calibration
+## Proportional closure
 
-Calibrate from the worst credible consequence reachable through the change,
-not the task label, diff size, author confidence, or apparent simplicity.
+Read [`references/contract-closure.md`](references/contract-closure.md)
+completely for every task and apply it before writing prose. Calibrate depth
+from the worst credible consequence reachable through the changed path, not a
+task label, diff size, author confidence, or apparent simplicity.
 
-- **Focused:** one local presentation or implementation detail with no changed
-  public contract, durable state, authority, external effect, or multi-component
-  handoff. Trace its direct input → output → observer. Normally use one compact
-  acceptance group and one implementation task; never create a no-change or
-  audit-only task merely to make the plan look decomposed.
-- **Contract-bearing:** any public interface, independent input families,
-  producer/consumer handoff, identity or provenance rule, durable state,
-  permission, money, personal data, external provider, retry, recovery,
-  concurrency, or irreversible effect.
-
-For a contract-bearing task, read
-[`references/contract-closure.md`](references/contract-closure.md) completely
-and apply it before writing prose. For a focused task, do not invent unrelated
-matrices, threat models, systems, or infrastructure. In a mixed task, spend the
-extra depth only on the contract-bearing boundary.
+Trace every reachable task-owned material consequence. Collapse behaviorally
+equivalent rows and omit systems, axes, and matrices that binding evidence does
+not place on the changed path. The same closure rule applies to every call.
 
 ## Procedure
 
@@ -136,13 +160,11 @@ branches or acceptance tests. Specify only values that the Outcome lock or
 current-system evidence places on the changed path; leave other input behavior
 unchanged and unowned.
 
-For focused work, prove the direct changed path, its observable result, and one
-counterexample when exactness matters.
-
-For contract-bearing work, build the closure model required by
+Prove the direct changed path, its observable result, and one counterexample
+when exactness matters. Build the proportionate closure model required by
 `references/contract-closure.md`. Decide, reject, or deliberately leave as
-bounded implementation freedom every reachable **task-owned** material row. If
-a row changes product behavior and no authority selects it, stop before
+bounded implementation freedom every reachable **task-owned** material row.
+If a row changes product behavior and no authority selects it, stop before
 drafting.
 
 Do not confuse a clean name, plausible API, happy-path test, or green suite
@@ -178,12 +200,12 @@ Keep the cluster proportional. A one-literal local change still gets four
 files, but they should each be short: target no more than about 800 words across
 the cluster unless a task-owned discrepancy or validation detail makes the
 extra text necessary. Coalesce criteria that share one observable contract.
-For focused work, `references.md` needs only the controlling sources, material
-decision/discrepancy, evidence limit, link result, and unverified count; omit
-routine command narration and history that do not change the handoff. Do not
-repeat the same rule in several long forms, reproduce skill instructions,
-narrate the investigation, or add gates for excluded systems merely to make
-the spec look rigorous.
+`references.md` includes only controlling sources, material
+decisions/discrepancies, evidence limits, link results, and the unverified
+count; omit routine command narration and history that do not change the
+handoff. Do not repeat the same rule in several long forms, reproduce skill
+instructions, narrate the investigation, or add gates for excluded systems
+merely to make the spec look rigorous.
 
 ### 5. Validate the final cluster
 
@@ -225,11 +247,24 @@ implementation was performed. Stop after the specification. Do not
 independently review it, implement it, change workflow documentation,
 mutate Git, open a PR, install, or merge.
 
+In Codex adapter mode, also write the conditional closure receipt defined in
+`references/contract-closure.md` to the exact supplied path, then return that
+path and hash with the normal folder result. The receipt lives outside the
+spec folder and is not a fifth spec file or a review verdict. Do not commit;
+the adapter parent owns the later commit stage.
+
 On any in-lock rewrite, read every supplied complete review report and decide
 each current finding as accepted or evidence-backed refuted. Replace the cluster
 in place as the same spec identity; close every accepted root family and its
 recorded consequence surface in one rewrite, not one visible manifestation.
 Do not open a parallel spec folder or leave accepted siblings for a later pass.
+
+In Codex adapter mode, bind each finding back to the frozen authority before
+writing. If closure stays inside the owned outcome or existing owner/path,
+rewrite it. If it requires a neighbor outcome, new durable owner, or lock
+enlargement, do not write that change; return exactly one non-empty single-line
+`Question: <text>` and no second `Question:` line. The adapter treats the
+entire immutable returned bytes as evidence.
 
 ## Boundaries
 

@@ -1,9 +1,9 @@
 # Outcome lock
 
 Shared spec-path boundary contract. `task-groundwork` produces it, `to-spec`
-freezes it, `adversarial-spec-review` and `spec-readiness` score it, and
-`omp-task-to-spec` carries it between stages. Each package ships this identical
-file as `references/outcome-lock.md`.
+freezes it, `adversarial-spec-review` and `spec-readiness` score it, and the
+active parent gate carries it between stages. Each consumer package ships this
+identical file as `references/outcome-lock.md`.
 
 Record four things:
 

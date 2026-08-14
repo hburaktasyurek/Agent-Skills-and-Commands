@@ -10,6 +10,31 @@ Review the current spec from the implementer's chair:
 > If implementation started tomorrow, where would the implementer have to
 > choose a contract the spec should already have chosen?
 
+When the invocation includes `Adapter: codex-task-to-spec`, verify the named
+packet manifest and hashes, read the frozen lock and seed inventory whole, and
+read every JSON in a non-`none` `Authority resolutions:` manifest. Review only
+the supplied detached commit. Parent prose and conversation memory are not
+authority. Use full mode and keep the detached worktree read-only.
+
+If that adapter invocation has `Stage: resolution-check`, the normal verdict
+format is suspended. Read the named question-resolution artifact and return
+only:
+
+```text
+Resolved: yes | no
+Lock: changed | unchanged
+Resume: task-groundwork | to-spec | commit | review-stage
+Basis: <absolute question-resolution artifact path> | sha256:<hash>
+```
+
+Verify the resolution JSON's source role/stage/mutation and `calling_phase`.
+A changed lock returns `task-groundwork`. With an unchanged lock, return
+`review-stage` only when the existing spec bytes remain valid under the answer;
+an in-lock spec change returns `to-spec`.
+
+Stop after this resolution result; every remaining verdict and report rule is
+inapplicable to that invocation.
+
 Review artifacts, not the author. Do not edit the spec or code. Write a
 report file only when the invocation includes `Write report under:`; then
 write `YYYY-MM-DD-HHMM-spec-readiness.md` under that directory (local clock).
@@ -80,6 +105,10 @@ only that part. Name any existing owner/path in plain prose. Missing or
 contradictory task authority becomes a question for the human, never a stronger
 reviewer interpretation.
 
+Return `Next: to-spec` only when the closure stays inside the frozen owned
+outcome or existing owner/path. A neighbor outcome, new durable owner, or lock
+enlargement requires one `Question:` and `Next: wait for answer`.
+
 ## Review basis
 
 1. Resolve and reread the exact current spec and directly binding artifacts.
@@ -97,6 +126,19 @@ reviewer interpretation.
 
 If no identifiable current spec exists, return `NOT READY` with the missing
 basis and stop. Do not reconstruct a spec from guesses.
+
+For a normal `codex-task-to-spec` review, use this exact machine identity in
+the existing Basis line:
+
+```text
+Basis: full; commit-sha=<detached full Git SHA>; packet-sha256=<manifest SHA-256>; <paths and reviewer-owned basis detail>
+```
+
+Open a repository path absent from the seed inventory only when it is a direct
+load-bearing dependency needed to decide a current ledger or acceptance claim.
+Do not perform an open-ended repository scan. For each such path, record its
+repository-relative path, full Git blob hash at the review commit, and reason
+as an `Evidence addition:` line in the report.
 
 ## Review completeness
 
@@ -187,6 +229,16 @@ Prior lines:
 ```text
 Prior: <id> resolved | still present | superseded — <current-spec evidence that decides the status>
 ```
+
+In Codex adapter mode, add one line for every direct path opened beyond the
+seed inventory:
+
+```text
+Evidence addition: <repository-relative path> | <full Git blob hash> | <reason>
+```
+
+Keep path and reason on one line and do not include the literal delimiter
+` | ` inside either value.
 
 Report only current Blockers, using this compact form:
 
