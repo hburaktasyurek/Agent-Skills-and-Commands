@@ -25,15 +25,25 @@ Otherwise use `reset-to-full`. A fix-only label does not establish eligibility.
    `same-root-residual` or `mechanism-level-repeat` from causal evidence, not
    review count.
 5. Verify the correction mechanism, independent oracle, new hunks, affected
-   callers and contracts, and every prior coverage gap.
+   callers and contracts. Recheck only prior coverage gaps that touch the
+   correction or current delta, or independently satisfy convergence rule 3;
+   carry every other unchanged gap forward as residual risk without reopening
+   discovery.
 6. Sweep the complete current PR boundary for unexpected changes.
 7. Recompute impact and risk where the delta can affect them.
 8. Switch immediately to `reset-to-full` if eligibility stops holding.
+9. Run the one bounded final challenge required by the main skill. If it proves
+   a new P0/P1 root, complete that root family; do not start another sweep.
 
 Reuse only evidence proven unchanged from its exact recorded baseline. In the
 report, name the exact reused evidence, the current proof that it is unchanged,
 and why its prior coverage is adequate for every affected area. Do not carry
 forward old finding text as current evidence.
+
+Before reporting, batch every proved current P0/P1 root family and every
+convergence-law blocker. If neither remains after the bounded review, return
+`PASS`; do not reopen resolved roots, mine P2/P3, replace a still-missing named
+fact with a wider evidence request, or use the prior round count to continue.
 
 ## Reset-to-full
 
@@ -42,8 +52,8 @@ Root families and learned attack families only as hypotheses to challenge
 against the current revision.
 
 An interrupted session, partial notes, missing reviewed-head receipt, or report
-without complete coverage and a terminal result produced **no verdict** and no
-incremental baseline.
+without the complete bounded review and a terminal result produced **no
+verdict** and no incremental baseline.
 
 Any implementation change after `PASS` invalidates that result. The reviewer
 never fixes and certifies its own work.

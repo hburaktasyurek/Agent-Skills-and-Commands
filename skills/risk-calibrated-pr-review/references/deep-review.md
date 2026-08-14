@@ -20,8 +20,9 @@ Record for each surface:
 Do not infer immediate production harm from dormant code. Dormancy does not
 erase latent harm at an approved future activation boundary. When unknown
 activation could materially raise risk or depth, record the lowest defensible
-tier, name the upward uncertainty, and return `INCOMPLETE` unless another proven
-failure already requires `FAIL`.
+tier and name the upward uncertainty. Return `INCOMPLETE` only when that unknown
+meets the main skill's convergence rule 3 and no proven failure already
+requires `FAIL`.
 
 ## Risk and attack depth
 
@@ -40,7 +41,8 @@ failure already requires `FAIL`.
 - **Critical:** a concrete path can cause severe, broad, or difficult-to-reverse
   harm. Independently substantiate every material safety claim and verify
   recovery, containment, detection, rollout, rollback, and critical dependency
-  behavior. Unavailable material proof prevents `PASS`.
+  behavior. Specifically named unavailable material proof prevents `PASS` only
+  when it meets convergence rule 3.
 
 Set overall risk to the highest credible surface. Do not average harmless
 surfaces against one severe path. Diff size controls inspection effort, not
@@ -86,6 +88,15 @@ every changed entry point and boundary has an activation state, every material
 trace reaches a consumer, containment boundary, or named unknown, and every
 tier-appropriate attack is examined, inapplicable with reason, or blocked on
 named evidence. It does not require reading unrelated repository code.
+
+Treat a named unknown as the end of that discovery path, not an invitation to
+expand the task. It blocks the verdict only when it meets the SKILL convergence
+law: plausible answers could change the P0/P1 result or required attack depth,
+or a binding load-bearing open-world claim lacks a proof-domain boundary or
+mechanism capable of establishing it. Name the exact obligation, credible
+P0/P1 consequence, and bounded evidence or proof contract needed; do not turn
+unrelated possible consumers into blockers. Otherwise report the unknown as
+residual risk and finish the bounded review.
 
 Do not duplicate a finding's future closure proof as a separate evidence-only
 gap. Put that proof in the finding's `Proof obligations`. Reserve required

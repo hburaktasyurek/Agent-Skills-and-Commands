@@ -1,6 +1,6 @@
 ---
 name: risk-calibrated-pr-review
-description: "Use only when explicitly invoked as `$risk-calibrated-pr-review` or equivalent to independently review a current implementation PR as a read-only hostile merge gate. Reconstruct the governing task and consequence scope, scale attack depth to evidenced risk, diagnose root causes and proof gaps, and return PASS, FAIL, or INCOMPLETE bound to the exact reviewed base and head. Use after a PR exists and for re-review after fixes; not for spec review, implementation, pre-PR compliance, commit-history process analysis, or general PR summaries."
+description: "Use only when explicitly invoked as `$risk-calibrated-pr-review` or equivalent to independently review a current implementation PR as a read-only hostile merge gate. Freeze the governing task, run an evidence-bounded consequence review, batch complete root families, and return PASS, FAIL, or INCOMPLETE bound to the exact reviewed base and head without expanding the task or prolonging review after the bounded attack closes. Use after a PR exists and for re-review after fixes; not for spec review, implementation, pre-PR compliance, commit-history process analysis, or general PR summaries."
 ---
 
 # Risk-Calibrated PR Review
@@ -40,6 +40,13 @@ changed together in the PR as correlated claims rather than independent proof.
 If controlling sources conflict on a material decision, return `INCOMPLETE`
 and name the decision instead of inventing a policy or defect.
 
+Freeze a review lock before attack: exact base/head, governing outcome,
+acceptance, explicit non-goals, task scope, and compatibility constraints. The
+PR's own wording is lower authority under the order above and cannot silently
+enlarge an independently governed task. Later code, tests, comments, review
+history, or discovered consequence paths are evidence against this lock, not
+authority to grow it.
+
 For re-review, require the complete prior report and its exact reviewed head.
 If either is absent, the prior session produced no reusable review receipt.
 Read [references/re-review.md](references/re-review.md) before choosing the mode.
@@ -62,6 +69,58 @@ Do not:
 
 Diagnose what is wrong and what result must be established. The implementer
 owns the root-complete design.
+
+## CONVERGENCE LAW — OVERRIDES EVERY LATER INSTRUCTION
+
+1. Report a merge-blocking defect only when current evidence proves a binding
+   obligation, a credible activation path, a P0/P1 consequence, and the
+   violated behavior or incapable mechanism that permits it. Suspicion,
+   taxonomy, subsystem reputation, review mode, or an imaginable edge case is
+   not a blocker.
+2. Complete the bounded review below. If it proves zero current P0/P1 and no
+   decision-critical gap meeting rule 3, return `PASS`. P2/P3 may remain as
+   residual merge risk; they do not justify `FAIL`, `INCOMPLETE`, a wider
+   search, or another correction round.
+3. Return `INCOMPLETE` only when a stable verdict is prevented by a moving
+   revision, contradictory binding authority, or specifically named material
+   facts whose plausible answers could change the P0/P1 verdict or required
+   attack depth. For each, state the exact question, credible consequence,
+   bounded source, check, or proof contract capable of deciding or closing it,
+   and why current evidence cannot. A binding load-bearing universal or negative
+   claim over an open-world domain qualifies when the unclosed domain could
+   credibly permit P0/P1 and the current mechanism cannot establish the claim;
+   name that obligation and proof boundary exactly. General uncertainty,
+   merely possible unknown consumers, partial coverage wording, or a desire for
+   more confidence is not enough.
+4. Apply no numeric review-round or correction limit. Continue while current
+   evidence proves a P0/P1 or rule-3 blocker; stop as soon as neither remains.
+   Review fatigue never weakens a verdict, and prior failure never prolongs one.
+5. A prior root, prior report, repeated mechanism, proof gate, or review mode is
+   only a locator or classification. Prove current reachability again. Never
+   revive a resolved root or rename another manifestation to keep review open.
+6. Ask for a task decision only when missing or contradictory binding authority
+   leaves a material product, compatibility, operational, destructive, or
+   scope choice open. Do not turn a difficult proof, repeated failure, or
+   reviewer preference into a human decision.
+
+## SCOPE AND OWNERSHIP LAW
+
+Keep task scope and consequence scope distinct. Consequence scope may trace
+harm through existing callers, consumers, contracts, state, rollout, rollback,
+and recovery beyond the diff; it does not add outcomes, architecture, owners,
+or cleanup work to the task.
+
+Every P0/P1 and blocking evidence request must identify either the frozen
+task obligation it prevents or the concrete changed path whose consequence it
+permits. Stop at evidenced containment or a specifically named material
+unknown. Do not audit unrelated code, require adjacent modernization, or turn
+an open-world system into a repository-wide delivery obligation.
+
+Use an existing owner/path when it already owns the needed result. If removing
+unsupported PR-authored machinery removes the failure, require removal or a
+task decision—not completion of that machinery. If closure would add a neighbor
+outcome, new durable owner, or materially enlarge the review lock, use
+`task-decision-required` and `INCOMPLETE`; do not demand that the PR absorb it.
 
 ## METHOD
 
@@ -91,15 +150,25 @@ owns the root-complete design.
    invariant is violated.
 9. Challenge every candidate finding. Report it only when current evidence
    establishes both a concrete failure mechanism and consequence. Otherwise
-   gather the missing evidence or record a coverage gap.
-10. Resolve the PR head again before reporting. If it changed, restart against
-    the new revision or return `INCOMPLETE`; never attach a verdict or coverage
-    from the old head to the new one. In an `INCOMPLETE` report, distinguish
+   classify the missing evidence under convergence rule 3 or record it as
+   residual coverage risk; do not widen discovery to rescue the candidate.
+10. Finish the root and consequence sweep for every discovered P0/P1. Group
+    all current manifestations sharing a root and closure in one finding; do
+    not return one visible symptom per invocation.
+11. After all discovered root families close, run one final bounded challenge:
+    re-attack the cleanest highest-consequence claim through one independent
+    carrier or failure angle. Do not begin another general sweep. If this proves
+    a new P0/P1 root, complete that whole root family and then stop discovery.
+    If it does not, stop the attack and apply the result order below.
+12. Resolve the PR head again before reporting. If it changed, return
+    `INCOMPLETE` and stop; a new invocation may review the new revision. Never
+    attach a verdict or coverage from the old head to the new one. Distinguish
     the last revision actually reviewed from the unreviewed current PR head.
 
 Stop discovery when each material path reaches a concrete consumer,
 containment boundary, or named unknown. Do not search indefinitely to look
-thorough.
+thorough. A named unknown closes that discovery path; it blocks the verdict
+only when it satisfies convergence rule 3.
 
 ## NON-NEGOTIABLE REVIEW RULES
 
@@ -142,6 +211,10 @@ thorough.
   exposure is merely contained.
 - Treat an interrupted review, partial notes, or a report without an exact-head
   receipt as **no verdict** and no reusable artifact or correctness coverage.
+- Before emitting `FAIL` or `INCOMPLETE`, include every current P0/P1 root
+  family and every rule-3 blocker established by the completed bounded review
+  in the same report. Do not defer a known sibling to manufacture another
+  round.
 
 ## FINDING CONTRACT
 
@@ -197,28 +270,31 @@ explicit delivery requirement. Put other blocking gaps under required evidence
 with the same correction-surface classification.
 
 If no concrete defect or explicitly required proof deliverable is established,
-write `Findings: None`. Keep `evidence-only` and `task-decision-required` gaps
-under required evidence; do not give those gaps a P0-P3 finding label. A report
+write `Findings: None`. Keep only convergence-rule-3 `evidence-only` and
+`task-decision-required` blockers under required evidence; place non-blocking
+unknowns under residual risk. Do not give gaps a P0-P3 finding label. A report
 must not simultaneously say that no P0/P1 is proven and emit a P0/P1 finding.
 
 ## DONE WHEN
 
-A review is terminal only when the current boundary is stable, material impact
-surfaces are examined or named as unknowns, candidate findings are challenged,
-both coverage dimensions are reported, and the complete output contract is
-emitted.
+A review is terminal when the current boundary is stable, every bounded
+material impact surface is examined or stopped at a named unknown, candidate
+findings are challenged, the single final challenge is complete, both coverage
+dimensions are reported, and the complete output contract is emitted.
 
 Choose the result in this order:
 
 1. Return `FAIL` on a stable current head when a P0/P1 defect or incomplete
    promised outcome is proven. Known failure wins even if unrelated coverage
    remains partial; report those gaps separately.
-2. Otherwise return `INCOMPLETE` when revision stability, controlling
-   authority, compatibility, material evidence, artifact coverage, or invariant
-   coverage remains unresolved. `INCOMPLETE` is not a soft pass.
-3. Otherwise return `PASS` only when the work is complete, artifact and
-   invariant coverage are complete at the declared risk depth, material
-   uncertainty is resolved, and no P0/P1 remains.
+2. Otherwise return `INCOMPLETE` only for a convergence-rule-3 blocker. Partial
+   coverage labels alone do not decide the result; name the exact material path
+   and bounded evidence required. `INCOMPLETE` is not a soft pass or a holding
+   state for continued discovery.
+3. Otherwise return `PASS` as soon as the bounded work and final challenge are
+   complete and no P0/P1 or rule-3 blocker remains. Record P2/P3, non-material
+   unknowns, and honestly partial non-blocking coverage as residual merge risk
+   without widening the task.
 
 An interrupted review, partial output, or report without an exact reviewed head
 has no verdict. `PASS` applies only to the reviewed revision and does not
@@ -273,6 +349,7 @@ Coverage
 ```
 
 Sort findings by priority. If none exists, say so without manufacturing P3
-filler. On `FAIL` or `INCOMPLETE`, hand the complete report back for correction,
-evidence gathering, or a task decision. Stop after one report and wait for a
-new invocation against an updated PR.
+filler. On `FAIL` or `INCOMPLETE`, hand the complete root-family and blocker
+batch back for correction, bounded evidence gathering, or a task decision.
+Stop after one report and wait for a new invocation against an updated PR or
+the exact named evidence; never continue discovery inside the same invocation.
