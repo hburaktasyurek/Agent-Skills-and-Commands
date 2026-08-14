@@ -33,7 +33,7 @@ Use one stable spec ID allocated before groundwork:
 ├── dispatches/<dispatch-id>.envelope.txt
 ├── dispatches/<dispatch-id>.return.txt
 ├── receipts/closure-vNNNN.md
-└── reviews/<commit-sha>/<packet-hash>-<role>.md
+└── reviews/<commit-sha>/<packet-hash>-<role>-vNNNN.md
 ```
 
 `NNNN` is decimal padded to at least four digits; it has no numeric ceiling.
@@ -77,6 +77,23 @@ Report set
 Adversarial: artifacts/reports/adversarial.md | sha256:<hash>
 Readiness: artifacts/reports/readiness.md | sha256:<hash>
 ```
+
+Reviewer collection is ordered and durable. Give each reviewer a named
+`Review report:` under
+`.workflow/<spec-id>/reviews/<commit-sha>/<packet-hash>-<role>-vNNNN.md`. The
+reviewer writes its complete final report there before returning. The parent
+verifies that file against the returned report byte-for-byte, hashes it, and
+retains the agent ID and return binding. Only after both reports exist may the
+parent copy them into a sealed packet, write the Report set above, clear the
+reviewer dispatches, or run the gate. `ROOT_COMPLETE_REWRITE` requires that
+non-`none`, hash-verified Report set as its `Reports:` input.
+
+After interruption or compaction, ask the recorded reviewer agent—not the
+parent—to persist its existing complete final report to the next unused
+versioned recovery path. A partial or invalid unsealed path remains
+unreferenced; it does not prevent recovery. Rebuild the Report set and continue
+without owner input. If the exact report is unavailable or its hash cannot be
+verified, the state is `BLOCKED`.
 
 ## Evidence artifacts
 
@@ -154,6 +171,7 @@ Groundwork status: <absolute versioned output>
 Evidence inventory: <absolute versioned output>
 Scanner inventory: <absolute versioned output>
 Closure receipt: <absolute versioned output>
+Review report: <absolute versioned output>
 Mutation: <stage-specific allowlist or forbidden>
 ```
 
@@ -161,8 +179,9 @@ Groundwork receives its four output paths. Scanner receives only its inventory
 output. Normal `to-spec` receives the writable spec root and receipt; receipt
 refresh uses `Mutation: receipt-only; spec forbidden`. Commit receives the spec
 manifest/root and exact four-path allowlist. Reviewers receive review seed,
-spec, SHA, and detached worktree with `Mutation: forbidden`; they do not receive
-the closure receipt. Resolution-check receives the current question resolution,
+spec, SHA, detached worktree, and their named Review report with `Mutation:
+named review report only; repository/spec forbidden`; they do not receive the
+closure receipt. Resolution-check receives the current question resolution,
 prior resolution set, and the originating stage's read-only inputs.
 
 ## Compaction checkpoint
@@ -212,6 +231,21 @@ and stay bound to the same packet/SHA across compaction.
 Before resuming, the parent recomputes the repository and artifact hashes and
 runs `validate-checkpoint`. It then applies only `next_action`; no predecessor
 graph or conversation reconstruction is required.
+
+Turn termination is deliberately smaller than the checkpoint state set:
+
+- `STOP`, `BLOCKED`, and `WAIT_FOR_OWNER` may yield a final response;
+- every other state keeps the same turn alive and advances automatically;
+- any `planned` or `running` dispatch forbids a final response.
+
+Pending mandatory work is nonterminal. A successful author or commit transition
+must immediately schedule its required receipt, commit, or reviewer successor.
+The fact that the successor has not run yet cannot produce `BLOCKED`.
+
+Poll a running dispatch by its recorded agent ID in waits of at most 60
+seconds. A timeout means “still running,” not “turn complete.” Continue polling
+without owner input and send only a short commentary update after roughly two
+to three minutes with no state change.
 
 ## Question and resolution authority
 

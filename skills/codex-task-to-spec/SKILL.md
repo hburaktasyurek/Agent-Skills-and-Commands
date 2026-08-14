@@ -64,6 +64,22 @@ and the fixed runtime table. Continue only `next_action`. If a dispatch is
 `running`, query its recorded agent ID; do not respawn it from memory. Missing,
 ambiguous, or mismatched durable state is `BLOCKED`.
 
+Keep the current turn alive while the workflow is nonterminal. For every
+`planned` or `running` dispatch, use the host's wait/query mechanism against
+the recorded agent ID in bounded intervals of at most 60 seconds. An unchanged
+poll is not completion: poll again automatically. After roughly two to three
+minutes without a state change, send one short commentary status update and
+continue waiting; never require the owner to say “continue.” Do not emit a
+final answer while an active dispatch exists or while `next_action` can advance
+without owner input.
+
+Yield a final answer only for `STOP`, `BLOCKED`, or `WAIT_FOR_OWNER` with the
+exact owner question. A progress summary, slow child, wait timeout, context
+compaction, `INVALID`, or `ROOT_COMPLETE_REWRITE` is not a terminal condition.
+Neither is unfinished required work: after any successful author or commit
+stage, immediately advance to its required receipt, commit, or reviewer stage.
+“The next required stage has not run yet” is never a `BLOCKED` reason.
+
 A new explicit task resumes an existing workflow only on exact task-hash match.
 A reply to the selected workflow's `WAIT_FOR_OWNER` question is an answer, not
 a replacement task. Persist that message verbatim before any fresh-parent
@@ -169,8 +185,21 @@ review seed, spec manifest, and commit SHA.
 
 In parallel, spawn fresh Sol/high `adversarial-spec-review` and
 `spec-readiness` agents. Both use full mode, the same packet/SHA, the explicit
-read-only detached-worktree path, and no receipt. Persist their exact returned
-bytes outside that worktree.
+read-only detached-worktree path, no receipt, and a named report output outside
+that worktree. Each reviewer writes its complete final report to that output
+before returning; the parent verifies that the file and returned report are
+byte-identical and hashes the file before clearing its dispatch. After both
+returns are durable, create the packet-local Report set that names both copies,
+seal the next packet/checkpoint, and only then run the gate.
+
+If a report file is missing after compaction or interruption but its recorded
+reviewer agent ID is still retrievable, ask that same reviewer to persist its
+existing complete final report to a new versioned recovery path; do not
+transcribe it in the parent. Hash it, rebuild the Report set, and continue
+automatically. A failed, unsealed write is not immutable authority: leave it
+unreferenced and allocate the next versioned path. Do not discard reviewer IDs
+or returned bytes before this step. Return `BLOCKED` only when the exact report
+cannot be recovered or verified.
 
 Run:
 
@@ -188,8 +217,10 @@ Apply only its state:
   the same packet/SHA; a second malformed result is `BLOCKED`.
 - `WAIT_FOR_OWNER`: enter the question protocol.
 - `ROOT_COMPLETE_REWRITE`: give both complete reports to one fresh Sol/high
-  `to-spec`; root-completely rewrite the same spec identity, renew receipt,
-  commit, and run two fresh reviewers.
+  `to-spec`. Spawning this rewrite is illegal when the current packet lacks the
+  non-`none`, hash-verified Report set. Root-completely rewrite the same spec
+  identity, renew receipt, commit, and immediately run two fresh reviewers;
+  stopping between those steps is invalid.
 - `STOP`: only same-packet/SHA `PASS` plus `READY`; remove the detached worktree
   safely and report the commit and report artifacts.
 
