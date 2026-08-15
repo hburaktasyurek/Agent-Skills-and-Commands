@@ -26,7 +26,7 @@ Sonra, sırayla:
 3. [`config/settings.json`](config/settings.json) içindeki güvenli kanonik
    değerleri mevcut `~/.pi/agent/settings.json` dosyasına birleştirin.
 4. Codex Voice ve Ponytail yapılandırmalarını [EXTENSIONS.md](EXTENSIONS.md)
-   içindeki hedeflere kurun; iTerm2 dikte tuşunu aynı belgedeki adımlarla
+   içindeki hedeflere kurun; iTerm2 veya Ghostty/CMUX dikte tuşunu aynı belgedeki adımlarla
    eşleyin.
 5. [MCP.md](MCP.md) içindeki `mcp.json` dosyasını kurup Stripe OAuth
    yetkilendirmesini tamamlayın.
@@ -98,8 +98,9 @@ Beklenen sonuç:
 - `~/.pi/agent/agents/` altında özel workflow agent'ı yoktur.
 
 Kurulu olmayan adaylar ve kalibrasyon notları [EXTENSIONS.md](EXTENSIONS.md)
-içinde ayrı tutulur. Codex aboneliğiyle dikte ve iTerm2 tırnak-tuşu toggle
-eşlemesi de aynı dosyada yeniden kurulum adımlarıyla belgelenmiştir.
+içinde ayrı tutulur. Codex aboneliğiyle dikte ile iTerm2 veya Ghostty/CMUX
+tırnak-tuşu toggle eşlemesi de aynı dosyada yeniden kurulum adımlarıyla
+belgelenmiştir.
 
 ## Default kurulumun dışında kalanlar
 

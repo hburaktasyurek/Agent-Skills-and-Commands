@@ -143,6 +143,22 @@ tuşuna ilk basış dikteyi başlatır, ikinci basış durdurup yazıya çevirir
 iTerm2 eşlemesi normal tırnak girişini iTerm2 genelinde devre dışı bırakır;
 gerçek F tuşları ve medya/ses kontrolleri değişmez.
 
+### Ghostty / CMUX: Türkçe ISO tırnak tuşu
+
+Ghostty veya Ghostty altyapısını kullanan CMUX için
+`~/.config/ghostty/config.ghostty` dosyasına şu satırı ekleyin:
+
+```text
+# Esc'in hemen sağındaki, normal basışta `"` üreten Türkçe ISO tuşu.
+keybind = "=csi:100;7u
+```
+
+Bu, Pi'ye `Ctrl+Alt+D` karşılığı olan terminal dizisini gönderir. Ghostty'de
+bir kez `⌘⇧,` ile ayarı yenileyin; ardından aynı tuş dikteyi açıp kapatır.
+Tuş Ghostty/CMUX içinde artık normal çift tırnak yazmaz. Fiziksel tuş adıyla
+değil üretilen `"` karakteriyle eşlenir; bu ayrım Türkçe klavye düzeninde
+gereklidir.
+
 ## Kurulu olmayan adaylar
 
 ### Ayrı kontrollü deneme: pi-fabric
