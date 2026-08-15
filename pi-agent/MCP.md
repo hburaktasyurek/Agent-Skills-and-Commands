@@ -10,8 +10,8 @@ Default Pi kurulumunda iki uzak MCP sunucusu tanımlıdır. Yapılandırma dosya
 | `stripe` | `https://mcp.stripe.com` | OAuth |
 | `context7` | `https://mcp.context7.com/mcp` | Bu dosyada ek kimlik bilgisi yok |
 
-Yeni bilgisayarda `~/.pi/agent/mcp.json` dosyasına aşağıdaki yapılandırmayı
-yazın:
+Yeni bilgisayarda [`config/mcp.json`](config/mcp.json) dosyasını
+`~/.pi/agent/mcp.json` yoluna kurun. Kanonik yapılandırma:
 
 ```json
 {

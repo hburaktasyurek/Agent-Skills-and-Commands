@@ -4,8 +4,11 @@ Personal skill kit for Codex, Claude Code, Cursor, and other compatible agents.
 Install and manage it with `npx skills`. The stable product workflow is in
 [WORKFLOW.md](WORKFLOW.md).
 
-The reproducible Pi hospital setup—agents, extension, pinned packages, and
-installer—is documented in [pi-workflow/README.md](pi-workflow/README.md).
+The current reproducible default Pi setup—pinned packages, safe configuration,
+MCP, Codex Voice, and iTerm2 dictation—is documented in
+[pi-agent/README.md](pi-agent/README.md). The discontinued default Hospital
+experiment remains separately documented in
+[pi-workflow/README.md](pi-workflow/README.md) for future development.
 
 ## Quick Start
 

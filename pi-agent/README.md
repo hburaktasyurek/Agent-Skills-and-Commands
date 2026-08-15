@@ -21,35 +21,56 @@ Beklenen Pi sürümü: `0.84.2`.
 
 Sonra, sırayla:
 
-1. [EXTENSIONS.md](EXTENSIONS.md) içindeki beş npm paketini kurun.
+1. [EXTENSIONS.md](EXTENSIONS.md) içindeki dokuz npm paketini kurun.
 2. Pi'de `openai-codex` ve `opencode-go` hesaplarına giriş yapın.
-3. Varsayılan sağlayıcı/model ayarlarını aşağıdaki tabloya göre ayarlayın.
-4. [MCP.md](MCP.md) içindeki `mcp.json` dosyasını kurup Stripe OAuth
+3. [`config/settings.json`](config/settings.json) içindeki güvenli kanonik
+   değerleri mevcut `~/.pi/agent/settings.json` dosyasına birleştirin.
+4. Codex Voice ve Ponytail yapılandırmalarını [EXTENSIONS.md](EXTENSIONS.md)
+   içindeki hedeflere kurun; iTerm2 dikte tuşunu aynı belgedeki adımlarla
+   eşleyin.
+5. [MCP.md](MCP.md) içindeki `mcp.json` dosyasını kurup Stripe OAuth
    yetkilendirmesini tamamlayın.
-5. Pi'yi yeniden yükleyip kurulum kontrolünü çalıştırın.
+6. Pi'yi yeniden yükleyip kurulum kontrolünü çalıştırın.
+
+`pi-fff` kullanılırken home dizininin tamamının indekslenmesini önlemek için
+`~/.zshrc` içine şu kalıcı varsayılanı ekleyin:
+
+```bash
+export FFF_ENABLE_HOME_SCAN=0
+```
+
+Ardından yeni bir terminal açın veya `source ~/.zshrc` çalıştırın. Bu ayar
+proje dizinlerinin indekslenmesini engellemez; yalnız Pi doğrudan `$HOME`
+içinden başlatıldığında home taramasını kapatır.
 
 ## Kanonik varsayılanlar
 
 | Ayar | Değer |
 |---|---|
 | Sağlayıcı | `opencode-go` |
-| Model | `deepseek-v4-pro` |
-| Thinking | `high` |
+| Model | `deepseek-v4-flash` |
+| Thinking | `max` |
 | Tema | `dark` |
 
-`~/.pi/agent/settings.json` içinde bu tercihlerin karşılığı:
+Kanonik güvenli Pi ayarları [`config/settings.json`](config/settings.json)
+içinde bulunur. Dosya paketlerin exact sürümlerini, varsayılan modeli ve model
+seçicide görünmesi istenen kısa listeyi birlikte taşır.
+
+`~/.pi/agent/settings.json` içinde temel tercihlerin karşılığı:
 
 ```json
 {
   "theme": "dark",
   "defaultProvider": "opencode-go",
-  "defaultModel": "deepseek-v4-pro",
-  "defaultThinkingLevel": "high"
+  "defaultModel": "deepseek-v4-flash",
+  "defaultThinkingLevel": "max"
 }
 ```
 
-Bu parçayı mevcut `settings.json` içine birleştirin; paket listesini veya
-makineye özel başka ayarları yanlışlıkla silmeyin.
+Repo dosyasını mevcut `settings.json` içine birleştirin; `lastChangelogVersion`
+gibi Pi'nin yönettiği alanları veya makineye özel başka ayarları yanlışlıkla
+silmemek için bütün dosyanın üstüne körlemesine kopyalamayın. Günlük görev için
+model/thinking değiştirmek kanonik başlangıç defaultunu değiştirmez.
 
 ## Kurulum kontrolü
 
@@ -70,11 +91,15 @@ Pi içinde ayrıca:
 Beklenen sonuç:
 
 - Pi `0.84.2` çalışır.
-- [EXTENSIONS.md](EXTENSIONS.md) içindeki beş npm paketi yüklüdür.
-- Varsayılan oturum `opencode-go/deepseek-v4-pro`, `high` ile açılır.
+- [EXTENSIONS.md](EXTENSIONS.md) içindeki dokuz npm paketi yüklüdür.
+- Varsayılan oturum `opencode-go/deepseek-v4-flash`, `max` ile açılır.
 - `stripe` ve `context7` MCP sunucuları görünür.
 - `~/.pi/agent/extensions/` altında özel `.ts` extension yoktur.
 - `~/.pi/agent/agents/` altında özel workflow agent'ı yoktur.
+
+Kurulu olmayan adaylar ve kalibrasyon notları [EXTENSIONS.md](EXTENSIONS.md)
+içinde ayrı tutulur. Codex aboneliğiyle dikte ve iTerm2 tırnak-tuşu toggle
+eşlemesi de aynı dosyada yeniden kurulum adımlarıyla belgelenmiştir.
 
 ## Default kurulumun dışında kalanlar
 
@@ -111,5 +136,6 @@ yapın.
 pi-agent/
 ├── README.md       # kanonik kurulum sırası ve doğrulama
 ├── EXTENSIONS.md   # default npm paketleri ve hariç tutulan yerel eklentiler
-└── MCP.md          # Stripe ve Context7 yapılandırması
+├── MCP.md          # Stripe ve Context7 yapılandırması
+└── config/         # secretsiz, taşınabilir Pi/extension yapılandırmaları
 ```
