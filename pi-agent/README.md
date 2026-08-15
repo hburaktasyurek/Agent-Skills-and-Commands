@@ -1,33 +1,55 @@
 # Pi Agent
 
-Bu klasör, Pi Agent kurulumunun taşınabilir envanteri ve yeni bilgisayar
-kurulum rehberidir. Amaç, bu repoyu açan kişinin hangi Pi sürümünü,
-extension'ları, özel agent'ları ve MCP'leri kuracağını tek yerden görmesidir.
+Bu klasör, kişisel Pi Agent kurulumunun **kanonik/default** envanteridir.
+Yeni bir bilgisayarda Pi kurulurken bu bilgisayardaki düzeni yeniden üretmek
+için kullanılır.
 
-Bu doküman 15 Ağustos 2026'da bu Mac'teki kurulumdan çıkarılmıştır. Parola,
-API anahtarı, OAuth oturumu, geçmiş ve çalışma durumu burada tutulmaz.
+Referans durum 15 Ağustos 2026'da bu Mac'ten alınmıştır. Parolalar, API
+anahtarları, OAuth oturumları, sohbet geçmişi ve runtime state bu repoda
+tutulmaz.
 
-## Hızlı kurulum
+## Default kurulum
 
-Önkoşullar: Node.js/npm, Git ve bu reponun yerel klonu.
+Önkoşullar: Node.js/npm ve Git.
 
 ```bash
 npm install --global @earendil-works/pi-coding-agent@0.84.2
 pi --version
 ```
 
-Beklenen sürüm: `0.84.2`.
+Beklenen Pi sürümü: `0.84.2`.
 
-Ardından [EXTENSIONS.md](EXTENSIONS.md) içindeki beş npm extension komutunu
-çalıştırın. Repo tarafından yönetilen Hospital workflow ve on iki özel agent
-gerekliyse, repo kökünden şunu çalıştırın:
+Sonra, sırayla:
 
-```bash
-./pi-workflow/install.sh
+1. [EXTENSIONS.md](EXTENSIONS.md) içindeki beş npm paketini kurun.
+2. Pi'de `openai-codex` ve `opencode-go` hesaplarına giriş yapın.
+3. Varsayılan sağlayıcı/model ayarlarını aşağıdaki tabloya göre ayarlayın.
+4. [MCP.md](MCP.md) içindeki `mcp.json` dosyasını kurup Stripe OAuth
+   yetkilendirmesini tamamlayın.
+5. Pi'yi yeniden yükleyip kurulum kontrolünü çalıştırın.
+
+## Kanonik varsayılanlar
+
+| Ayar | Değer |
+|---|---|
+| Sağlayıcı | `opencode-go` |
+| Model | `deepseek-v4-pro` |
+| Thinking | `high` |
+| Tema | `dark` |
+
+`~/.pi/agent/settings.json` içinde bu tercihlerin karşılığı:
+
+```json
+{
+  "theme": "dark",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "deepseek-v4-pro",
+  "defaultThinkingLevel": "high"
+}
 ```
 
-Son olarak [MCP.md](MCP.md) içindeki `~/.pi/agent/mcp.json` yapılandırmasını
-oluşturun; Stripe için kendi hesabınızla OAuth yetkilendirmesini tamamlayın.
+Bu parçayı mevcut `settings.json` içine birleştirin; paket listesini veya
+makineye özel başka ayarları yanlışlıkla silmeyin.
 
 ## Kurulum kontrolü
 
@@ -36,43 +58,58 @@ pi --version
 pi list
 pi auth check --provider openai-codex
 pi auth check --provider opencode-go
-./pi-workflow/install.sh --check
 ```
 
-İlk iki `auth check` yalnızca sağlayıcı erişimini kontrol eder; hiçbir
-kimlik bilgisini bu repoya kopyalamayın. `pi-workflow` kullanılmıyorsa son
-kontrol gerekli değildir.
+Pi içinde ayrıca:
 
-## Bu Mac'teki varsayılanlar
+```text
+/reload
+/mcp
+```
 
-| Ayar | Değer |
-|---|---|
-| Sağlayıcı | `openai-codex` |
-| Model | `gpt-5.6-luna` |
-| Thinking | `high` |
-| Proje güveni | `ask` |
-| Etkin modeller | `openai-codex/gpt-5.6-sol`, `openai-codex/gpt-5.6-luna`, `opencode-go/deepseek-v4-pro`, `opencode-go/deepseek-v4-flash`, `opencode-go/qwen3.8-max` |
+Beklenen sonuç:
 
-Bu ayarlar tercih envanteridir; yeni bilgisayarda ilgili sağlayıcı erişimi
-olmadan model seçimi çalışmaz.
+- Pi `0.84.2` çalışır.
+- [EXTENSIONS.md](EXTENSIONS.md) içindeki beş npm paketi yüklüdür.
+- Varsayılan oturum `opencode-go/deepseek-v4-pro`, `high` ile açılır.
+- `stripe` ve `context7` MCP sunucuları görünür.
+- `~/.pi/agent/extensions/` altında özel `.ts` extension yoktur.
+- `~/.pi/agent/agents/` altında özel workflow agent'ı yoktur.
 
-## Taşınabilirlik durumu
+## Default kurulumun dışında kalanlar
 
-`pi-workflow/` repo tarafından sürümlenen Hospital workflow kaynağıdır.
-Ancak bu Mac'teki yüklü `~/.pi/agent/extensions/hospital-spec.ts`, mevcut
-repo kopyasıyla aynı değildir. Ayrıca `web-search.ts` yalnızca bu Mac'in
-`~/.pi/agent/extensions/` dizinindedir ve bu repoda kaynak kopyası yoktur.
+`pi-workflow/` içindeki Hospital sistemi repoda kaynak ve geliştirme geçmişi
+olarak tutulur; **default Pi kurulumunun parçası değildir ve
+`./pi-workflow/install.sh` çalıştırılmamalıdır**.
 
-Bu nedenle bu rehber npm extension'ları, MCP'leri ve repo-yönetimli workflow'u
-yeniden kurar; **mevcut Mac ile byte-byte aynı yerel extension durumunu henüz
-yeniden kurmaz**. Bu iki yerel dosya gözden geçirilip repoya açıkça kaynak
-olarak eklenmeden "aynı sistem" iddiası yapılmamalıdır.
+Default kurulumda şunlar yoktur:
+
+- `hospital-spec.ts`
+- Hospital'ın `workflow-*.md` özel agent'ları
+- Hospital runtime state'i
+- `web-search.ts`
+
+Web erişimi ayrı bir yerel `web-search.ts` dosyasıyla değil,
+`pi-web-access` npm paketiyle sağlanır.
+
+## Başka bilgisayara taşınmayan veriler
+
+Şunları cihazlar arasında kopyalamayın:
+
+- `auth.json` ve OAuth token'ları
+- API anahtarları
+- `sessions/`, `missions/` ve `run-history.jsonl`
+- MCP cache ve runtime state
+- makineye özgü binary veya geçici dosyalar
+
+Her bilgisayarda hesap girişlerini ve Stripe OAuth yetkilendirmesini yeniden
+yapın.
 
 ## Dizinler
 
 ```text
 pi-agent/
-├── README.md       # kurulum sırası, kontrol ve sınırlar
-├── EXTENSIONS.md   # npm, yerel extension ve özel agent envanteri
-└── MCP.md          # MCP sunucuları ve güvenli yapılandırma
+├── README.md       # kanonik kurulum sırası ve doğrulama
+├── EXTENSIONS.md   # default npm paketleri ve hariç tutulan yerel eklentiler
+└── MCP.md          # Stripe ve Context7 yapılandırması
 ```

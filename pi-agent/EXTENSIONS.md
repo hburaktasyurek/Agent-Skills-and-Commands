@@ -1,19 +1,18 @@
 # Pi Agent extensions
 
-Bu envanter, 15 Ağustos 2026'da `~/.pi/agent/settings.json` ve yerel
-extension dizininden çıkarılmıştır.
+Bu dosya, default Pi kurulumunda bulunması gereken extension'ların kanonik
+envanteridir. Sürümler 15 Ağustos 2026'da bu Mac'teki kurulumdan alınmıştır.
 
 ## npm extension'ları
 
-Yeni bilgisayarda aşağıdaki komutları tek tek çalıştırın. Sürümler, bu
-Mac'teki çözümlenmiş sürümlere sabitlenmiştir.
+Yeni bilgisayarda şu sürümleri kurun:
 
 ```bash
 pi install npm:pi-subagents@0.49.0
 pi install npm:@juicesharp/rpiv-ask-user-question@2.5.1
 pi install npm:@hk_net/pi-thinking-command@0.1.7
-pi install npm:pi-web-access@0.22.0
-pi install npm:pi-mcp-adapter@2.25.0
+pi install npm:pi-web-access@0.23.0
+pi install npm:pi-mcp-adapter@2.26.0
 ```
 
 | Paket | Kullanım alanı |
@@ -22,41 +21,42 @@ pi install npm:pi-mcp-adapter@2.25.0
 | `@juicesharp/rpiv-ask-user-question` | Kullanıcıya yapılandırılmış soru sorma |
 | `@hk_net/pi-thinking-command` | Thinking düzeyini komutla değiştirme |
 | `pi-web-access` | Web erişim araçları |
-| `pi-mcp-adapter` | MCP araçlarını Pi araçlarına bağlama |
+| `pi-mcp-adapter` | MCP sunucularını Pi araçlarına bağlama |
 
-Kurulumdan sonra `pi list` ile paketlerin ayarlara eklendiğini doğrulayın.
+Kurulumdan sonra `pi list` ile bu beş paketi ve sürümlerini doğrulayın.
 
-## Dosya tabanlı extension'lar
+## Dosya tabanlı extension ve özel agent durumu
 
-| Dosya | Durum | Not |
-|---|---|---|
-| `hospital-spec.ts` | Repo tarafından yönetiliyor, fakat bu Mac'te kurulu kopya farklı | Kaynak: `pi-workflow/extensions/hospital-spec.ts`; `./pi-workflow/install.sh` bunu ve bağımlı kontrol çekirdeğini kurar. |
-| `web-search.ts` | Yalnızca bu Mac'te yerel | `~/.pi/agent/extensions/web-search.ts`; repo içinde sürümlenmiş kaynak henüz yok. |
+Default kurulumda:
 
-Yerel extension kaynakları, Pi'nin `~/.pi/agent/extensions/` dizininden
-yüklenir. Oturum, state veya `auth.json` dosyalarını başka bilgisayara
-kopyalamayın.
+- `~/.pi/agent/extensions/` altında özel `.ts` extension yoktur.
+- `~/.pi/agent/agents/` altında özel agent yoktur.
+- `hospital-spec.ts` ve `web-search.ts` kurulu değildir.
+- Hospital'ın on iki `workflow-*.md` agent'ı kurulu değildir.
 
-## Özel workflow agent'ları
-
-Bu Mac'te aşağıdaki 12 agent yüklüdür. Sürümlenen kaynakları
-`pi-workflow/agents/` altında bulunur ve `./pi-workflow/install.sh` ile
-kurulur.
+Eski bir bilgisayarı bu defaulta geçirirken Hospital kurulumu varsa
+`hospital-spec.ts`, aşağıdaki agent'lar ve `~/.pi/agent/state/hospital-spec/`
+kaldırılmalıdır:
 
 ```text
-workflow-groundwork
-workflow-evidence
-workflow-to-spec
-workflow-commit
-workflow-adversarial-spec
-workflow-spec-readiness
-workflow-consult
-workflow-implement
-workflow-implementation-review
-workflow-diff-review
-workflow-pr
-workflow-pr-review
+workflow-groundwork.md
+workflow-evidence.md
+workflow-to-spec.md
+workflow-commit.md
+workflow-adversarial-spec.md
+workflow-spec-readiness.md
+workflow-consult.md
+workflow-implement.md
+workflow-implementation-review.md
+workflow-diff-review.md
+workflow-pr.md
+workflow-pr-review.md
 ```
 
-Bu workflow, `openai-codex` ve `opencode-go` sağlayıcılarındaki sabit model
-adlarına dayanır. Sağlayıcı erişimi doğrulanmadan çalıştırılmamalıdır.
+Silmeden önce hedeflerin gerçekten Hospital kurulumuna ait olduğunu kontrol
+edin ve mümkünse kalıcı silme yerine sistem Çöp'ünü kullanın.
+
+`pi-workflow/` repoda kalır, ancak deneysel/gelecekte geliştirilebilecek ayrı
+bir sistemdir; default kurulum komutlarına dahil değildir.
+
+Oturum, state veya `auth.json` dosyalarını başka bilgisayara kopyalamayın.
