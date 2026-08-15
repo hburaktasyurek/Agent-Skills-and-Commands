@@ -51,6 +51,12 @@ editing and follow its reconciliation protocol.
 6. Verify the required artifact or state with the nearest deterministic loop,
    then run proportionate affected-surface regression checks.
 
+When test-first execution is the appropriate mechanism — feature work, a bug
+whose failure reproduces at a test boundary, or a contract best proven by
+tests — run the RED-GREEN-REFACTOR cycles through the tdd skill instead of
+ad-hoc verification, and follow its contract gate. Ad-hoc verification remains
+for durable or cross-boundary state that tests cannot observe.
+
 When correctness depends on durable or cross-boundary state, observe it through
 an independent consumer or fresh process where feasible. Do not treat a green
 test, success response, log line, or self-report as completion when the required
