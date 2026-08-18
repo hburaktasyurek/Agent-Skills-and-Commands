@@ -4,7 +4,7 @@ Bu klasör, kişisel Pi Agent kurulumunun **kanonik/default** envanteridir.
 Yeni bir bilgisayarda Pi kurulurken bu bilgisayardaki düzeni yeniden üretmek
 için kullanılır.
 
-Referans durum 15 Ağustos 2026'da bu Mac'ten alınmıştır. Parolalar, API
+Referans durum 18 Ağustos 2026'da bu Mac'ten alınmıştır. Parolalar, API
 anahtarları, OAuth oturumları, sohbet geçmişi ve runtime state bu repoda
 tutulmaz.
 
@@ -21,7 +21,7 @@ Beklenen Pi sürümü: `0.84.2`.
 
 Sonra, sırayla:
 
-1. [EXTENSIONS.md](EXTENSIONS.md) içindeki dokuz npm paketini kurun.
+1. [EXTENSIONS.md](EXTENSIONS.md) içindeki on npm paketini kurun.
 2. Pi'de `openai-codex` ve `opencode-go` hesaplarına giriş yapın.
 3. [`config/settings.json`](config/settings.json) içindeki güvenli kanonik
    değerleri mevcut `~/.pi/agent/settings.json` dosyasına birleştirin.
@@ -48,8 +48,8 @@ içinden başlatıldığında home taramasını kapatır.
 | Ayar | Değer |
 |---|---|
 | Sağlayıcı | `opencode-go` |
-| Model | `deepseek-v4-flash` |
-| Thinking | `max` |
+| Model | `minimax-m3` |
+| Thinking | `high` |
 | Tema | `dark` |
 
 Kanonik güvenli Pi ayarları [`config/settings.json`](config/settings.json)
@@ -62,15 +62,17 @@ seçicide görünmesi istenen kısa listeyi birlikte taşır.
 {
   "theme": "dark",
   "defaultProvider": "opencode-go",
-  "defaultModel": "deepseek-v4-flash",
-  "defaultThinkingLevel": "max"
+  "defaultModel": "minimax-m3",
+  "defaultThinkingLevel": "high"
 }
 ```
 
 Repo dosyasını mevcut `settings.json` içine birleştirin; `lastChangelogVersion`
 gibi Pi'nin yönettiği alanları veya makineye özel başka ayarları yanlışlıkla
 silmemek için bütün dosyanın üstüne körlemesine kopyalamayın. Günlük görev için
-model/thinking değiştirmek kanonik başlangıç defaultunu değiştirmez.
+Pi içinde Ctrl+P ile model değiştirmek `defaultModel` ve `defaultProvider`
+alanlarını canlı ayarlarda güncelleyebilir; bu dosya bu bilgisayardaki son
+kanonik başlangıç değerlerini taşır.
 
 ## Kurulum kontrolü
 
@@ -91,8 +93,8 @@ Pi içinde ayrıca:
 Beklenen sonuç:
 
 - Pi `0.84.2` çalışır.
-- [EXTENSIONS.md](EXTENSIONS.md) içindeki dokuz npm paketi yüklüdür.
-- Varsayılan oturum `opencode-go/deepseek-v4-flash`, `max` ile açılır.
+- [EXTENSIONS.md](EXTENSIONS.md) içindeki on npm paketi yüklüdür.
+- Varsayılan oturum `opencode-go/minimax-m3`, `high` ile açılır.
 - `stripe` ve `context7` MCP sunucuları görünür.
 - `~/.pi/agent/extensions/` altında özel `.ts` extension yoktur.
 - `~/.pi/agent/agents/` altında özel workflow agent'ı yoktur.

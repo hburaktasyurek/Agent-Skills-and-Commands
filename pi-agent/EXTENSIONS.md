@@ -1,7 +1,7 @@
 # Pi Agent extensions
 
 Bu dosya, default Pi kurulumunda bulunması gereken extension'ların kanonik
-envanteridir. Sürümler 15 Ağustos 2026'da bu Mac'teki kurulumdan alınmıştır.
+envanteridir. Sürümler 18 Ağustos 2026'da bu Mac'teki kurulumdan alınmıştır.
 
 ## npm extension'ları
 
@@ -17,6 +17,7 @@ pi install npm:@juicesharp/rpiv-todo@2.2.0
 pi install npm:@dietrichgebert/ponytail@4.9.0
 pi install npm:@ff-labs/pi-fff@0.10.3
 pi install npm:@howaboua/pi-codex-conversion@3.0.14
+pi install npm:pi-commandcode-provider@0.5.1
 ```
 
 | Paket | Kullanım alanı |
@@ -30,8 +31,9 @@ pi install npm:@howaboua/pi-codex-conversion@3.0.14
 | `@dietrichgebert/ponytail` | Orantılı çözüm ve aşırı mühendislik kontrolü |
 | `@ff-labs/pi-fff` | Hızlı dosya araçları ve `@` tamamlama |
 | `@howaboua/pi-codex-conversion` | Codex aboneliğiyle toggle dikte |
+| `pi-commandcode-provider` | Command Code API sağlayıcısı |
 
-Kurulumdan sonra `pi list` ile bu dokuz paketi ve sürümlerini doğrulayın.
+Kurulumdan sonra `pi list` ile bu on paketi ve sürümlerini doğrulayın.
 
 ## Default: rpiv-todo
 
